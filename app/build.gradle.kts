@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,6 +57,27 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.material.icons.extended)
 
-    // My dependencies
+    // Retrofit & Moshi
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+
+    // Kotlin Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Jetpack Lifecycle (ViewModel, LiveData)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    // Jetpack Navigation Compose
+    implementation(libs.androidx.navigation.compose)
+
+    // Secure Storage
+    implementation(libs.androidx.security.crypto)
+
+    // Material Components (déjà via Material3 normalement mais au cas où pour compatibilité)
+    implementation(libs.material)
+
 }

@@ -1,0 +1,101 @@
+package com.delhomme.jobbingtrack.data.fake
+
+import com.delhomme.jobbingtrack.data.classes.*
+import kotlin.random.Random
+
+object FakeDataProvider {
+
+    private fun randomSyncHash(prefix: String) = "$prefix-${Random.nextInt(1000, 9999)}"
+
+    val entreprises = List(10) { index ->
+        Entreprise(
+            id = (index + 1).toString(),
+            name = "Entreprise ${index + 1}",
+            type = listOf("Tech", "E-commerce", "Finance", "Santé").random(),
+            phone = "01${Random.nextInt(10,99)}${Random.nextInt(10,99)}${Random.nextInt(10,99)}",
+            email = "contact${index + 1}@example.com",
+            hrEmail = "rh${index + 1}@example.com",
+            address = "Adresse ${index + 1} rue Excellente",
+            syncHash = randomSyncHash("entreprise")
+        )
+    }
+
+    val contacts = List(10) { index ->
+        Contact(
+            id = (index + 1).toString(),
+            firstName = "Prénom$index",
+            lastName = "Nom$index",
+            phone = "06${Random.nextInt(10,99)}${Random.nextInt(10,99)}${Random.nextInt(10,99)}",
+            email = "contact${index}@mail.com",
+            position = listOf("Manager", "Recruteur", "Chef de projet").random(),
+            department = listOf("RH", "Tech", "Marketing").random(),
+            entrepriseId = entreprises.random().id,
+            syncHash = randomSyncHash("contact")
+        )
+    }
+
+    val candidatures = List(10) { index ->
+        Candidature(
+            id = (index + 1).toString(),
+            title = "Poste ${listOf("Développeur", "Ingénieur", "Chef de Projet").random()}",
+            companyName = entreprises.random().name,
+            applicationDate = System.currentTimeMillis() - Random.nextLong(0, 1000000000),
+            location = listOf("Paris", "Lyon", "Marseille", "Lille").random(),
+            platform = listOf("LinkedIn", "Indeed", "Monster", "Welcome to the Jungle").random(),
+            contractType = listOf("CDI", "CDD", "Alternance", "Stage").random(),
+            notes = "Note sur la candidature ${index + 1}",
+            applicationType = ApplicationType.values().random(),
+            applicationStatus = ApplicationStatus.values().random(),
+            companyId = entreprises.random().id,
+            syncHash = randomSyncHash("candidature")
+        )
+    }
+
+    val appels = List(10) { index ->
+        Appel(
+            id = (index + 1).toString(),
+            subject = "Appel ${listOf("Suivi", "Relance", "Information").random()} ${index + 1}",
+            companyId = entreprises.random().id,
+            contactId = contacts.random().id,
+            candidatureId = candidatures.random().id,
+            dateTime = System.currentTimeMillis() - Random.nextLong(0, 500000000),
+            notes = "Notes de l'appel ${index + 1}",
+            syncHash = randomSyncHash("appel")
+        )
+    }
+
+    val relances = List(10) { index ->
+        Relance(
+            id = (index + 1).toString(),
+            date = System.currentTimeMillis() - Random.nextLong(0, 700000000),
+            contactId = contacts.random().id,
+            candidatureId = candidatures.random().id,
+            companyId = entreprises.random().id,
+            responseStatus = RelanceStatus.values().random(),
+            type = RelanceType.values().random(),
+            notes = "Note sur la relance ${index + 1}",
+            syncHash = randomSyncHash("relance")
+        )
+    }
+
+    val entretiens = List(10) { index ->
+        Entretien(
+            id = (index + 1).toString(),
+            candidatureId = candidatures.random().id,
+            companyId = entreprises.random().id,
+            dateTime = System.currentTimeMillis() + Random.nextLong(0, 1000000000),
+            durationMinutes = listOf(30, 45, 60).random(),
+            location = listOf("Paris", "Lyon", "Visio").random(),
+            contacts = listOf(contacts.random().id),
+            style = EntretienStyle.values().random(),
+            type = EntretienType.values().random(),
+            preInterviewNotes = "Notes de préparation ${index + 1}",
+            interviewNotes = "Notes pendant entretien ${index + 1}",
+            postInterviewNotes = "Notes post entretien ${index + 1}",
+            returnDate = System.currentTimeMillis() + Random.nextLong(100000000, 200000000),
+            testsNeeded = Random.nextBoolean(),
+            testsDeadline = System.currentTimeMillis() + Random.nextLong(200000000, 300000000),
+            syncHash = randomSyncHash("entretien")
+        )
+    }
+}
