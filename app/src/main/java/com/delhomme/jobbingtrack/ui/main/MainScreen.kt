@@ -55,10 +55,7 @@ fun MainScreen(navController: NavController) {
                 BottomNavigationBar(
                     selectedRoute = currentScreen.value,
                     onTabSelected = { route ->
-                        navController.navigate(route) {
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                        currentScreen.value = route
                     }
                 )
             },

@@ -5,11 +5,13 @@ import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.data.classes.Contact
+import com.delhomme.jobbingtrack.utils.toFieldMap
 
 @Composable
 fun AddOrEditContactScreen(
     navController: NavController? = null,
-    existingContactData: Map<String, String>? = null,
+    existingContactData: Contact? = null,
     onSave: (Map<String, String>) -> Unit,
     linkedCandidatureId: String? = null
 ) {
@@ -32,7 +34,7 @@ fun AddOrEditContactScreen(
 
     ReusableForm(
         fields = fields,
-        initialValues = existingContactData,
+        initialValues = existingContactData?.toFieldMap(),
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack()

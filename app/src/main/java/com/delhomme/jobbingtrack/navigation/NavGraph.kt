@@ -1,7 +1,6 @@
 package com.delhomme.jobbingtrack.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.NavHostController
@@ -14,7 +13,6 @@ import com.delhomme.jobbingtrack.ui.appels.AppelsScreen
 import com.delhomme.jobbingtrack.ui.candidatures.AddOrEditCandidatureScreen
 import com.delhomme.jobbingtrack.ui.candidatures.CandidatureDetailScreen
 import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesScreen
-import com.delhomme.jobbingtrack.ui.components.BottomSheetContentType
 import com.delhomme.jobbingtrack.ui.contacts.AddOrEditContactScreen
 import com.delhomme.jobbingtrack.ui.contacts.ContactDetailScreen
 import com.delhomme.jobbingtrack.ui.contacts.ContactsScreen
@@ -24,8 +22,8 @@ import com.delhomme.jobbingtrack.ui.entreprises.EntreprisesScreen
 import com.delhomme.jobbingtrack.ui.entreprises.EntretienDetailScreen
 import com.delhomme.jobbingtrack.ui.entretiens.AddOrEditEntretienScreen
 import com.delhomme.jobbingtrack.ui.entretiens.EntretiensScreen
-import com.delhomme.jobbingtrack.ui.main.DashboardScreen
 import com.delhomme.jobbingtrack.ui.login.LoginScreen
+import com.delhomme.jobbingtrack.ui.main.CalendarScreen
 import com.delhomme.jobbingtrack.ui.main.MainScreen
 import com.delhomme.jobbingtrack.ui.relances.AddOrEditRelanceScreen
 import com.delhomme.jobbingtrack.ui.relances.RelanceDetailScreen
@@ -235,5 +233,107 @@ fun NavGraph(navController: NavHostController) {
                 )
             }
         }
+
+        // Modifier une candidature
+        composable("${Routes.EDIT_CANDIDATURE}/{candidatureId}") { backStackEntry ->
+            val candidatureId = backStackEntry.arguments?.getString("candidatureId")
+            val candidature = FakeDataProvider.candidatures.find { it.id == candidatureId }
+            if (candidature != null) {
+                AddOrEditCandidatureScreen(
+                    navController = navController,
+                    existingCandidatureData = candidature,
+                    onSave = { updatedCandidature ->
+                        println("Candidature modifiée : $updatedCandidature")
+                    }
+                )
+            }
+        }
+
+        // Modifier un contact
+        composable("${Routes.EDIT_CONTACT}/{contactId}") { backStackEntry ->
+            val contactId = backStackEntry.arguments?.getString("contactId")
+            val contact = FakeDataProvider.contacts.find { it.id == contactId }
+            if (contact != null) {
+                AddOrEditContactScreen(
+                    navController = navController,
+                    existingContactData = contact,
+                    onSave = { updatedContact ->
+                        println("Contact modifié : $updatedContact")
+                    }
+                )
+            }
+        }
+
+        // Modifier un entretien
+        composable("${Routes.EDIT_ENTRETIEN}/{entretienId}") { backStackEntry ->
+            val entretienId = backStackEntry.arguments?.getString("entretienId")
+            val entretien = FakeDataProvider.entretiens.find { it.id == entretienId }
+            if (entretien != null) {
+                AddOrEditEntretienScreen(
+                    navController = navController,
+                    existingEntretienData = entretien,
+                    onSave = { updatedEntretien ->
+                        println("Entretien modifié : $updatedEntretien")
+                    }
+                )
+            }
+        }
+
+        // Modifier une relance
+        composable("${Routes.EDIT_RELANCE}/{relanceId}") { backStackEntry ->
+            val relanceId = backStackEntry.arguments?.getString("relanceId")
+            val relance = FakeDataProvider.relances.find { it.id == relanceId }
+            if (relance != null) {
+                AddOrEditRelanceScreen(
+                    navController = navController,
+                    existingRelanceData = relance,
+                    onSave = { updatedRelance ->
+                        println("Relance modifiée : $updatedRelance")
+                    }
+                )
+            }
+        }
+
+        // Modifier un appel
+        composable("${Routes.EDIT_APPEL}/{appelId}") { backStackEntry ->
+            val appelId = backStackEntry.arguments?.getString("appelId")
+            val appel = FakeDataProvider.appels.find { it.id == appelId }
+            if (appel != null) {
+                AddOrEditAppelScreen(
+                    navController = navController,
+                    existingAppelData = appel,
+                    onSave = { updatedAppel ->
+                        println("Appel modifié : $updatedAppel")
+                    }
+                )
+            }
+        }
+
+        // Modifier une entreprise
+        composable("${Routes.EDIT_ENTREPRISE}/{entrepriseId}") { backStackEntry ->
+            val entrepriseId = backStackEntry.arguments?.getString("entrepriseId")
+            val entreprise = FakeDataProvider.entreprises.find { it.id == entrepriseId }
+            if (entreprise != null) {
+                AddOrEditEntrepriseScreen(
+                    navController = navController,
+                    existingEntrepriseData = entreprise,
+                    onSave = { updatedEntreprise ->
+                        println("Entreprise modifiée : $updatedEntreprise")
+                    }
+                )
+            }
+        }
+        composable(Routes.CALENDAR) {
+            AppelsScreen(
+                appels = FakeDataProvider.appels,
+                onItemClick = { appel ->
+                    navController.navigate("${Routes.APPEL_DETAIL}/${appel.id}")
+                },
+                onAddClick = {
+                    navController.navigate(Routes.ADD_APPEL)
+                }
+            )
+        }
+
     }
 }

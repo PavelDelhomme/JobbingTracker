@@ -5,11 +5,13 @@ import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.data.classes.Candidature
+import com.delhomme.jobbingtrack.utils.toFieldMap
 
 @Composable
 fun AddOrEditCandidatureScreen(
     navController: NavController? = null,
-    existingCandidatureData: Map<String, String>? = null, // null pour ajout
+    existingCandidatureData: Candidature? = null, // null pour ajout
     onSave: (Map<String, String>) -> Unit
 ) {
     val fields = listOf(
@@ -27,6 +29,7 @@ fun AddOrEditCandidatureScreen(
 
     ReusableForm(
         fields = fields,
+        initialValues = existingCandidatureData?.toFieldMap(),
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack() // Retour automatique après sauvegarde

@@ -2,9 +2,6 @@ package com.delhomme.jobbingtrack.ui.components
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.ui.appels.AddOrEditAppelScreen
 import com.delhomme.jobbingtrack.ui.candidatures.AddOrEditCandidatureScreen
 import com.delhomme.jobbingtrack.ui.contacts.AddOrEditContactScreen

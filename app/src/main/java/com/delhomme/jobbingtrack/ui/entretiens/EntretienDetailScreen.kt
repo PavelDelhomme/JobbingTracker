@@ -36,7 +36,7 @@ fun EntretienDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("edit_page_route")
+                        navController.navigate("${Routes.EDIT_ENTRETIEN}/${entretien.id}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }

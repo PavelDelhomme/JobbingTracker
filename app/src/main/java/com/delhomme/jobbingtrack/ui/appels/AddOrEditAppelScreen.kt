@@ -3,13 +3,15 @@ package com.delhomme.jobbingtrack.ui.appels
 import androidx.compose.runtime.Composable
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.data.classes.Appel
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
+import com.delhomme.jobbingtrack.utils.toFieldMap
 
 @Composable
 fun AddOrEditAppelScreen(
     navController: NavController? = null,
-    existingAppelData: Map<String, String>? = null,
+    existingAppelData: Appel? = null,
     onSave: (Map<String, String>) -> Unit,
     linkedCandidatureId: String? = null // Ajout par défaut null
 ) {
@@ -58,7 +60,7 @@ fun AddOrEditAppelScreen(
 
     ReusableForm(
         fields = fields,
-        initialValues = existingAppelData,
+        initialValues = existingAppelData?.toFieldMap(),
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack()

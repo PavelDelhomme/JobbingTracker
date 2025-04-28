@@ -37,7 +37,7 @@ fun AppelDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("edit_page_route")
+                        navController.navigate("${Routes.EDIT_APPEL}/${appel.id}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }

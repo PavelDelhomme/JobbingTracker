@@ -43,7 +43,7 @@ fun EntrepriseDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("edit_page_route")
+                        navController.navigate("${Routes.EDIT_ENTREPRISE}/${entreprise.id}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }

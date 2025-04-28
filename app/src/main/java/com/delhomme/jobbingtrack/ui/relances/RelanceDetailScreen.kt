@@ -36,7 +36,7 @@ fun RelanceDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("edit_page_route")
+                        navController.navigate("${Routes.EDIT_RELANCE}/${relance.id}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }

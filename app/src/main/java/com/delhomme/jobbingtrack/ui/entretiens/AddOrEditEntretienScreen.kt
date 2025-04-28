@@ -2,14 +2,16 @@ package com.delhomme.jobbingtrack.ui.entretiens
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.data.classes.Entretien
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
+import com.delhomme.jobbingtrack.utils.toFieldMap
 
 @Composable
 fun AddOrEditEntretienScreen(
     navController: NavController? = null,
-    existingEntretienData: Map<String, String>? = null,
+    existingEntretienData: Entretien? = null,
     linkedCandidatureId: String? = null,
     linkedCompanyId: String? = null,
     onSave: (Map<String, String>) -> Unit
@@ -93,7 +95,7 @@ fun AddOrEditEntretienScreen(
 
     ReusableForm(
         fields = fields,
-        initialValues = existingEntretienData,
+        initialValues = existingEntretienData?.toFieldMap(),
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack()

@@ -52,9 +52,9 @@ fun CandidatureDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("edit_page_route")
+                        navController.navigate("${Routes.EDIT_CANDIDATURE}/${candidature.id}")
                     }) {
-                        Icon(Icons.Default.Edit, contentDescription = "Modifier")
+                        Icon(Icons.Default.Edit, contentDescription = "Modifier la candidature")
                     }
                 }
             )

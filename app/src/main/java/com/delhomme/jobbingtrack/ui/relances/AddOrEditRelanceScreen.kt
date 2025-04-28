@@ -3,13 +3,15 @@ package com.delhomme.jobbingtrack.ui.relances
 import androidx.compose.runtime.Composable
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.data.classes.Relance
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
+import com.delhomme.jobbingtrack.utils.toFieldMap
 
 @Composable
 fun AddOrEditRelanceScreen(
     navController: NavController? = null,
-    existingRelanceData: Map<String, String>? = null,
+    existingRelanceData: Relance? = null,
     linkedCandidatureId: String? = null,
     linkedCompanyId: String? = null,
     onSave: (Map<String, String>) -> Unit
@@ -62,7 +64,7 @@ fun AddOrEditRelanceScreen(
 
     ReusableForm(
         fields = fields,
-        initialValues = existingRelanceData,
+        initialValues = existingRelanceData?.toFieldMap(),
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack()
