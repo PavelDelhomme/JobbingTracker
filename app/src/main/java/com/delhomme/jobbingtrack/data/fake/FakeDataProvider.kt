@@ -30,6 +30,7 @@ object FakeDataProvider {
             position = listOf("Manager", "Recruteur", "Chef de projet").random(),
             department = listOf("RH", "Tech", "Marketing").random(),
             entrepriseId = entreprises.random().id,
+            notes = "Notes $index",
             syncHash = randomSyncHash("contact")
         )
     }
@@ -51,19 +52,6 @@ object FakeDataProvider {
         )
     }
 
-    val appels = List(10) { index ->
-        Appel(
-            id = (index + 1).toString(),
-            subject = "Appel ${listOf("Suivi", "Relance", "Information").random()} ${index + 1}",
-            companyId = entreprises.random().id,
-            contactId = contacts.random().id,
-            candidatureId = candidatures.random().id,
-            dateTime = System.currentTimeMillis() - Random.nextLong(0, 500000000),
-            notes = "Notes de l'appel ${index + 1}",
-            syncHash = randomSyncHash("appel")
-        )
-    }
-
     val relances = List(10) { index ->
         Relance(
             id = (index + 1).toString(),
@@ -77,6 +65,21 @@ object FakeDataProvider {
             syncHash = randomSyncHash("relance")
         )
     }
+
+    val appels = List(10) { index ->
+        Appel(
+            id = (index + 1).toString(),
+            subject = "Appel ${listOf("Suivi", "Relance", "Information").random()} ${index + 1}",
+            companyId = entreprises.random().id,
+            contactId = contacts.random().id,
+            candidatureId = candidatures.random().id,
+            dateTime = System.currentTimeMillis() - Random.nextLong(0, 500000000),
+            notes = "Notes de l'appel ${index + 1}",
+            syncHash = randomSyncHash("appel"),
+            relanceId = relances.random().id,
+        )
+    }
+
 
     val entretiens = List(10) { index ->
         Entretien(
