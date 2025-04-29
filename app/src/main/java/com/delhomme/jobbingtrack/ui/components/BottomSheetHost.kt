@@ -1,7 +1,14 @@
 package com.delhomme.jobbingtrack.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.ui.appels.AddOrEditAppelScreen
 import com.delhomme.jobbingtrack.ui.candidatures.AddOrEditCandidatureScreen
 import com.delhomme.jobbingtrack.ui.contacts.AddOrEditContactScreen
@@ -28,8 +35,28 @@ fun BottomSheetHost(
 ) {
     if (visibleContent != BottomSheetContentType.NONE) {
         ModalBottomSheet(
-            onDismissRequest = { onDismissRequest() }
+            onDismissRequest = { onDismissRequest() },
+            dragHandle = { },
+            modifier = Modifier.fillMaxHeight(0.9f)
         ) {
+            Text(
+                text = when (visibleContent) {
+                    BottomSheetContentType.ADD_CANDIDATURE -> "Nouvelle candidature"
+                    BottomSheetContentType.ADD_CONTACT -> "Nouveau contact"
+                    BottomSheetContentType.ADD_ENTREPRISE -> "Nouvelle entreprise"
+                    BottomSheetContentType.ADD_APPEL -> "Nouvel appel"
+                    BottomSheetContentType.ADD_RELANCE -> "Nouvelle relance"
+                    BottomSheetContentType.ADD_ENTRETIEN -> "Nouvel entretien"
+                    else -> ""
+                },
+                style = MaterialTheme.typography.headlineSmall
+            )
+            /*Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {*/
             when (visibleContent) {
                 BottomSheetContentType.ADD_CANDIDATURE -> {
                     AddOrEditCandidatureScreen(

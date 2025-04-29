@@ -10,5 +10,19 @@ data class Contact(
     val position: String?,
     val department: String?,
     val entrepriseId: String,
-    val syncHash: String
+    val syncHash: String,
+    val notes: String,
 )
+
+fun Contact.toFormMap(): Map<String, String> {
+    return mapOf(
+        "firstName" to (firstName ?: ""),
+        "lastName" to (lastName ?: ""),
+        "phone" to (phone ?: ""),
+        "email" to (email ?: ""),
+        "position" to (position ?: ""),
+        "department" to (department ?: ""),
+        "entrepriseId" to (entrepriseId ?: ""),
+        "notes" to (notes ?: "")
+    )
+}
