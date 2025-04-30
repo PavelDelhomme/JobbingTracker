@@ -9,29 +9,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.navigation.Routes
+import com.delhomme.jobbingtrack.ui.main.MainSection
 
 @Composable
 fun BottomNavigationBar(
-    selectedRoute: String,
-    onTabSelected: (String) -> Unit
+    //selectedRoute: String,
+    //onTabSelected: (String) -> Unit
+    selectedSection: MainSection,
+    onTabSelected: (MainSection) -> Unit
 ) {
     NavigationBar {
         NavigationBarItem(
             label = { Text("Dashboard") },
-            selected = selectedRoute == Routes.HOME,
-            onClick = { onTabSelected(Routes.HOME) },
+            selected = selectedSection == MainSection.DASHBOARD,
+            onClick = { onTabSelected(MainSection.DASHBOARD) },
             icon = { Icon(Icons.Default.Home, contentDescription = "Dashboard") }
         )
         NavigationBarItem(
             label = { Text("Candidatures") },
-            selected = selectedRoute == Routes.CANDIDATURES,
-            onClick = { onTabSelected(Routes.CANDIDATURES) },
+            selected = selectedSection == MainSection.CANDIDATURES,
+            onClick = { onTabSelected(MainSection.CANDIDATURES) },
             icon = { Icon(Icons.Default.List, contentDescription = "Candidatures") }
         )
         NavigationBarItem(
             label = { Text("Calendrier") },
-            selected = selectedRoute == Routes.CALENDAR,
-            onClick = { onTabSelected(Routes.CALENDAR) },
+            selected = selectedSection == MainSection.CALENDAR,
+            onClick = { onTabSelected(MainSection.CALENDAR) },
             icon = { Icon(Icons.Default.DateRange, contentDescription = "Calendrier") }
         )
     }

@@ -37,7 +37,11 @@ fun EntrepriseDetailScreen(
             TopAppBar(
                 title = { Text(entreprise.name) },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        navController.navigate(Routes.CANDIDATURES) {
+                            popUpTo(Routes.CANDIDATURES) { inclusive = true }
+                        }
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
                 },

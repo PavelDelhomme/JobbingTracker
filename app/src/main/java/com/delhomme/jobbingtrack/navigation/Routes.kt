@@ -1,15 +1,8 @@
 package com.delhomme.jobbingtrack.navigation
 
 object Routes {
+    const val MAIN = "main"
     const val LOGIN = "login"
-    const val HOME = "home"
-    const val CANDIDATURES = "candidatures"
-    const val CONTACTS = "contacts"
-    const val APPELS = "appels"
-    const val RELANCES = "relances"
-    const val ENTRETIENS = "entretiens"
-    const val ENTREPRISES = "entreprises"
-    const val CALENDAR = "calendar"
 
     // Routes Détails avec paramètre
     const val CANDIDATURE_DETAIL = "candidature_detail"

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
@@ -30,8 +31,12 @@ fun EntretienDetailScreen(
             TopAppBar(
                 title = { Text(entretien.candidatureId) },
                 navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Retour")
+                    IconButton(onClick = {
+                        navController.navigate(Routes.CANDIDATURES) {
+                            popUpTo(Routes.CANDIDATURES) { inclusive = true }
+                        }
+                    }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
                 },
                 actions = {

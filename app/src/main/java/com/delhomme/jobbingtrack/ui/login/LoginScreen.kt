@@ -21,9 +21,12 @@ fun LoginScreen(navController: NavController? = null, loginViewModel: LoginViewM
     val errorMessage by loginViewModel.errorMessage.observeAsState()
     val loginSuccess by loginViewModel.loginSuccess.observeAsState(false)
 
-    if (loginSuccess) {
-        navController?.navigate(Routes.HOME) {
-            popUpTo(Routes.LOGIN) { inclusive = true }
+    // ✅ navigation sécurisée
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess) {
+            navController?.navigate(Routes.MAIN) {
+                popUpTo(Routes.LOGIN) { inclusive = true }
+            }
         }
     }
 

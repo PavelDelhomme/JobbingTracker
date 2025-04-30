@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.appels.AppelsScreen
+import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesScreen
 import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesTabScreen
 import com.delhomme.jobbingtrack.ui.contacts.ContactsScreen
 import com.delhomme.jobbingtrack.ui.entreprises.EntreprisesScreen
@@ -19,24 +23,31 @@ import com.delhomme.jobbingtrack.ui.relances.RelancesScreen
 import com.delhomme.jobbingtrack.ui.components.*
 import kotlinx.coroutines.launch
 
+enum class MainSection {
+    DASHBOARD, CANDIDATURES, CALENDAR
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavHostController) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
-    val currentScreen = remember { mutableStateOf(Routes.HOME) }
     var bottomSheetContent by remember { mutableStateOf(BottomSheetContentType.NONE) }
     var linkedCandidatureId by remember { mutableStateOf<String?>(null) }
 
+    var currentSection by rememberSaveable { mutableStateOf(MainSection.DASHBOARD) }
+
+    var selectedTabIndex by rememberSaveable { mutableStateOf(0) }
+
     ModalNavigationDrawer(
+        drawerState = drawerState,
         drawerContent = {
             DrawerContent(
                 onProfileClick = { /* TODO */ },
                 onSettingsClick = { /* TODO */ },
                 onLogoutClick = { /* TODO */ }
             )
-        },
-        drawerState = drawerState
+        }
     ) {
         Scaffold(
             topBar = {
@@ -52,71 +63,67 @@ fun MainScreen(navController: NavController) {
                 )
             },
             bottomBar = {
-                BottomNavigationBar(
-                    selectedRoute = currentScreen.value,
+                /*BottomNavigationBar(
+                    selectedRoute = currentRoute,
                     onTabSelected = { route ->
-                        currentScreen.value = route
+                        navController.navigate(route) {
+                            popUpTo(Routes.HOME) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )*/
+                BottomNavigationBar(
+                    selectedSection = currentSection,
+                    onTabSelected = { section ->
+                        currentSection = section
                     }
                 )
             },
             floatingActionButton = {
-                FloatingActionButton(
-                    onClick = {
-                        bottomSheetContent = when (currentScreen.value) {
-                            Routes.HOME, Routes.CANDIDATURES -> BottomSheetContentType.ADD_CANDIDATURE
-                            Routes.CONTACTS -> BottomSheetContentType.ADD_CONTACT
-                            Routes.ENTREPRISES -> BottomSheetContentType.ADD_ENTREPRISE
-                            Routes.RELANCES -> BottomSheetContentType.ADD_RELANCE
-                            Routes.ENTRETIENS -> BottomSheetContentType.ADD_ENTRETIEN
-                            Routes.CALENDAR -> BottomSheetContentType.ADD_APPEL
-                            else -> BottomSheetContentType.NONE
-                        }
+                val fabContentType = when (currentSection) {
+                    MainSection.DASHBOARD -> BottomSheetContentType.NONE
+                    MainSection.CANDIDATURES -> when (selectedTabIndex) {
+                        0 -> BottomSheetContentType.ADD_CANDIDATURE
+                        1 -> BottomSheetContentType.ADD_ENTREPRISE
+                        3 -> BottomSheetContentType.ADD_APPEL
+                        4 -> BottomSheetContentType.ADD_CONTACT
+                        5 -> BottomSheetContentType.ADD_ENTRETIEN
+                        else -> BottomSheetContentType.NONE
                     }
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Ajouter")
+                    MainSection.CALENDAR -> BottomSheetContentType.ADD_APPEL
+                }
+
+                if (fabContentType != BottomSheetContentType.NONE) {
+                    FloatingActionButton(
+                        onClick = {
+                            bottomSheetContent = fabContentType
+                        }
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Ajouter")
+                    }
                 }
             }
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                when (currentScreen.value) {
-                    Routes.HOME -> DashboardScreen()
-                    Routes.CANDIDATURES -> CandidaturesTabScreen(
+                when (currentSection) {
+                    MainSection.DASHBOARD -> DashboardScreen()
+                    MainSection.CANDIDATURES -> CandidaturesTabsContent(
                         navController = navController,
-                        candidatures = FakeDataProvider.candidatures,
-                        entreprises = FakeDataProvider.entreprises,
-                        relances = FakeDataProvider.relances,
+                        selectedTabIndex = selectedTabIndex,
+                        onTabChange = { selectedTabIndex = it }
+                    )
+                    MainSection.CALENDAR -> AppelsScreen(
                         appels = FakeDataProvider.appels,
-                        contacts = FakeDataProvider.contacts,
-                        entretiens = FakeDataProvider.entretiens,
-                    )
-                    Routes.CONTACTS -> ContactsScreen(
-                        contacts = FakeDataProvider.contacts,
-                        onItemClick = { /* TODO ouvrir détail contact */ },
-                        onAddClick = { /* handled by FAB */ }
-
-                    )
-                    Routes.ENTREPRISES -> EntreprisesScreen(
-                        entreprises = FakeDataProvider.entreprises,
-                        onItemClick = { /* TODO ouvrir détail entreprise */ },
-                        onAddClick = { /* handled by FAB */ }
-
-                    )
-                    Routes.RELANCES -> RelancesScreen(
-                        relances = FakeDataProvider.relances,
-                        onItemClick = { /* TODO ouvrir détail relance */ },
-                   )
-                    Routes.ENTRETIENS -> EntretiensScreen(
-                        entretiens = FakeDataProvider.entretiens,
-                        onItemClick = { /* TODO ouvrir détail entretien */ },
-                    )
-                    Routes.CALENDAR -> AppelsScreen(
-                        appels = FakeDataProvider.appels,
-                        onItemClick = { /* TODO ouvrir détail appel */ },
-                        onAddClick = { /* handled by FAB */ }
+                        onItemClick = { appel ->
+                            navController.navigate("${Routes.APPEL_DETAIL}/${appel.id}")
+                        },
+                        onAddClick = { bottomSheetContent = BottomSheetContentType.ADD_APPEL }
                     )
                 }
             }
         }
+
         BottomSheetHost(
             visibleContent = bottomSheetContent,
             linkedCandidatureId = linkedCandidatureId,

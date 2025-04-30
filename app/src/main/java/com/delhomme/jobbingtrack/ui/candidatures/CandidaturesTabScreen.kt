@@ -3,6 +3,7 @@ package com.delhomme.jobbingtrack.ui.candidatures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -25,7 +26,7 @@ fun CandidaturesTabScreen(
     contacts: List<Contact>,
     entretiens: List<Entretien>
 ) {
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by rememberSaveable  { mutableStateOf(0) }
     val tabs = listOf("Candidatures", "Entreprises", "Relances", "Appels", "Contacts", "Entretiens")
 
     fun handleItemClick(item: Any) {

@@ -31,7 +31,11 @@ fun AppelDetailScreen(
             TopAppBar(
                 title = { Text("Détail Appel") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        navController.navigate(Routes.CANDIDATURES) {
+                            popUpTo(Routes.CANDIDATURES) { inclusive = true }
+                        }
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
                 },

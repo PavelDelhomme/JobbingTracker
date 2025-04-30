@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.Candidature
+import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.components.ListScreen
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
@@ -26,7 +27,10 @@ fun CandidaturesScreen(
             centerInfoProvider = { candidature -> candidature.applicationStatus.name },
             bottomLeftInfoProvider = { candidature -> candidature.companyName },
             items = sortedCandidatures,
-            onItemClick = onItemClick
+            onItemClick = { candidature ->
+                onItemClick(candidature)
+            }
+
         )
 
         FloatingActionButton(

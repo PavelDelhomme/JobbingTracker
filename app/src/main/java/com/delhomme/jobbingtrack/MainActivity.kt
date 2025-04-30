@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.compose.rememberNavController
 import com.delhomme.jobbingtrack.navigation.NavGraph
 
@@ -13,10 +15,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            Surface(
-                color = MaterialTheme.colorScheme.background
-            ) {
-                NavGraph(navController = navController)
+
+            val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current) {
+                "ViewModelStoreOwner is not available"
+            }
+
+            Surface(color = MaterialTheme.colorScheme.background) {
+                CompositionLocalProvider(
+                    LocalViewModelStoreOwner provides viewModelStoreOwner
+                ) {
+                    NavGraph(navController = navController)
+                }
             }
         }
     }
