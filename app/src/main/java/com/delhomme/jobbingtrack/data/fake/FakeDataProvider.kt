@@ -7,7 +7,7 @@ object FakeDataProvider {
 
     private fun randomSyncHash(prefix: String) = "$prefix-${Random.nextInt(1000, 9999)}"
 
-    val entreprises = List(10) { index ->
+    val entreprises = MutableList(10) { index ->
         Entreprise(
             id = (index + 1).toString(),
             name = "Entreprise ${index + 1}",
@@ -20,7 +20,7 @@ object FakeDataProvider {
         )
     }
 
-    val contacts = List(10) { index ->
+    val contacts = MutableList(10) { index ->
         Contact(
             id = (index + 1).toString(),
             firstName = "Prénom$index",
@@ -35,7 +35,7 @@ object FakeDataProvider {
         )
     }
 
-    val candidatures = List(10) { index ->
+    val candidatures = MutableList(10) { index ->
         Candidature(
             id = (index + 1).toString(),
             title = "Poste ${listOf("Développeur", "Ingénieur", "Chef de Projet").random()}",
@@ -52,7 +52,7 @@ object FakeDataProvider {
         )
     }
 
-    val relances = List(10) { index ->
+    val relances = MutableList(10) { index ->
         Relance(
             id = (index + 1).toString(),
             date = System.currentTimeMillis() - Random.nextLong(0, 700000000),
@@ -66,7 +66,7 @@ object FakeDataProvider {
         )
     }
 
-    val appels = List(10) { index ->
+    val appels = MutableList(10) { index ->
         Appel(
             id = (index + 1).toString(),
             subject = "Appel ${listOf("Suivi", "Relance", "Information").random()} ${index + 1}",
@@ -80,7 +80,7 @@ object FakeDataProvider {
         )
     }
 
-    val entretiens = List(10) { index ->
+    val entretiens = MutableList(10) { index ->
         Entretien(
             id = (index + 1).toString(),
             candidatureId = candidatures.random().id,

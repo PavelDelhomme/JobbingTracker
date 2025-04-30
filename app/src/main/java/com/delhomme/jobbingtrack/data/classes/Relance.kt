@@ -13,6 +13,7 @@ data class Relance(
     val notes: String?,
     val syncHash: String,
     var isArchived: Boolean = false,
+    val isDeleted: Boolean = false,
 )
 
 enum class RelanceStatus {

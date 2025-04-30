@@ -15,6 +15,7 @@ data class Candidature(
     val applicationStatus: ApplicationStatus,
     val syncHash: String,
     var isArchived: Boolean = false,
+    var isDeleted: Boolean = false,
 )
 
 enum class ApplicationType {

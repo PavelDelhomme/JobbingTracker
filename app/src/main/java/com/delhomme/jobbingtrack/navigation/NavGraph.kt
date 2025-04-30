@@ -10,6 +10,8 @@ import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.ui.appels.AddOrEditAppelScreen
 import com.delhomme.jobbingtrack.ui.appels.AppelDetailScreen
 import com.delhomme.jobbingtrack.ui.appels.AppelsScreen
+import com.delhomme.jobbingtrack.ui.archive_bin.ArchiveScreen
+import com.delhomme.jobbingtrack.ui.archive_bin.TrashScreen
 import com.delhomme.jobbingtrack.ui.candidatures.AddOrEditCandidatureScreen
 import com.delhomme.jobbingtrack.ui.candidatures.CandidatureDetailScreen
 import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesScreen
@@ -284,6 +286,13 @@ fun NavGraph(navController: NavHostController) {
                     }
                 )
             }
+        }
+
+        composable(Routes.ARCHIVES) {
+            ArchiveScreen(navController)
+        }
+        composable(Routes.TRASH) {
+            TrashScreen(navController)
         }
 
 

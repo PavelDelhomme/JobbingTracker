@@ -3,6 +3,7 @@ package com.delhomme.jobbingtrack.ui.appels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
@@ -49,7 +50,7 @@ fun AppelDetailScreen(
                         FakeDataProvider.removeAppel(appel.id)
                         navController.popBackStack()
                     }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Archiver")
+                        Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
 
                     IconButton(onClick = {

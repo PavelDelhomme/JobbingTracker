@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteForever
@@ -65,7 +66,7 @@ fun CandidatureDetailScreen(
                         FakeDataProvider.removeCandidature(candidature.id)
                         navController.popBackStack()
                     }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Archiver")
+                        Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
 
                     IconButton(onClick = {

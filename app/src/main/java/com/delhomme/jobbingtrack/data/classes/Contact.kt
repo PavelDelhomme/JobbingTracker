@@ -13,6 +13,7 @@ data class Contact(
     val syncHash: String,
     val notes: String,
     var isArchived: Boolean = false,
+    val isDeleted: Boolean = false,
 )
 
 fun Contact.toFormMap(): Map<String, String> {

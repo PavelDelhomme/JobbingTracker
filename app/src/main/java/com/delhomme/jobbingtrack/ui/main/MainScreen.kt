@@ -53,7 +53,9 @@ fun MainScreen(navController: NavHostController) {
             DrawerContent(
                 onProfileClick = { /* TODO */ },
                 onSettingsClick = { /* TODO */ },
-                onLogoutClick = { /* TODO */ }
+                onLogoutClick = { /* TODO */ },
+                onArchiveClick = { navController.navigate(Routes.ARCHIVES)},
+                onTrashClick = { navController.navigate(Routes.TRASH)},
             )
         }
     ) {

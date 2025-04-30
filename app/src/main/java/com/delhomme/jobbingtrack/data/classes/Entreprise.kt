@@ -11,4 +11,5 @@ data class Entreprise(
     val address: String?,
     val syncHash: String,
     var isArchived: Boolean = false,
+    val isDeleted: Boolean = false,
 )

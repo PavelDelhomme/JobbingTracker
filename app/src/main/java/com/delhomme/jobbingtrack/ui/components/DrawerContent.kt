@@ -10,7 +10,9 @@ import androidx.compose.ui.unit.dp
 fun DrawerContent(
     onProfileClick: () -> Unit,
     onSettingsClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    onArchiveClick: () -> Unit,
+    onTrashClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -23,6 +25,14 @@ fun DrawerContent(
         Spacer(modifier = Modifier.height(8.dp))
         TextButton(onClick = onSettingsClick) {
             Text("Paramètres")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        TextButton(onClick = onArchiveClick) {
+            Text("Archives")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        TextButton(onClick = onTrashClick) {
+            Text("Corbeille")
         }
         Spacer(modifier = Modifier.height(8.dp))
         TextButton(onClick = onLogoutClick) {
