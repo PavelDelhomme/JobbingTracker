@@ -9,5 +9,6 @@ data class Entreprise(
     val email: String?,
     val hrEmail: String?,
     val address: String?,
-    val syncHash: String
+    val syncHash: String,
+    var isArchived: Boolean = false,
 )

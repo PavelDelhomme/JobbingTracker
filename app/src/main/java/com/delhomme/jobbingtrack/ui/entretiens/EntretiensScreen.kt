@@ -12,12 +12,14 @@ fun EntretiensScreen(
     onItemClick: (Entretien) -> Unit,
 ) {
     val sortedEntretiens = entretiens.sortedByDescending { it.dateTime }
+    val visibleEntretiens = sortedEntretiens.filter { !it.isArchived }
+
     ListScreen(
         dateProvider = { it.dateTime.toFormattedDate() },
         titleProvider = { it.type.name },
         centerInfoProvider = { it.style.name },
         bottomLeftInfoProvider = { "Entreprise ID: ${it.companyId}" },
-        items = sortedEntretiens,
+        items = visibleEntretiens,
         onItemClick = onItemClick
     )
 }

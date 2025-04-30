@@ -11,7 +11,8 @@ data class Relance(
     val responseStatus: RelanceStatus,
     val type: RelanceType,
     val notes: String?,
-    val syncHash: String
+    val syncHash: String,
+    var isArchived: Boolean = false,
 )
 
 enum class RelanceStatus {

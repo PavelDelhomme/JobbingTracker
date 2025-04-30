@@ -13,7 +13,8 @@ data class Candidature(
     val notes: String?,
     val applicationType: ApplicationType,
     val applicationStatus: ApplicationStatus,
-    val syncHash: String
+    val syncHash: String,
+    var isArchived: Boolean = false,
 )
 
 enum class ApplicationType {

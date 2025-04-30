@@ -22,6 +22,7 @@ import com.delhomme.jobbingtrack.ui.entretiens.EntretiensScreen
 import com.delhomme.jobbingtrack.ui.relances.RelancesScreen
 import com.delhomme.jobbingtrack.ui.components.*
 import kotlinx.coroutines.launch
+import androidx.activity.compose.BackHandler
 
 enum class MainSection {
     DASHBOARD, CANDIDATURES, CALENDAR
@@ -38,6 +39,13 @@ fun MainScreen(navController: NavHostController) {
     var currentSection by rememberSaveable { mutableStateOf(MainSection.DASHBOARD) }
 
     var selectedTabIndex by rememberSaveable { mutableStateOf(0) }
+
+    BackHandler {
+        // Si on est déjà dans le MAIN, on ne quitte pas
+        if (navController.currentDestination?.route != Routes.MAIN) {
+            navController.popBackStack()
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,

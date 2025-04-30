@@ -11,6 +11,7 @@ data class Appel(
     val dateTime: Long,
     val notes: String?,
     val syncHash: String,
+    var isArchived: Boolean = false,
 )
 
 fun Appel.toFormMap(): Map<String, String> {

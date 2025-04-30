@@ -12,12 +12,14 @@ fun EntreprisesScreen(
     onAddClick: (Contact) -> Unit
 ) {
     val sortedEntreprises = entreprises.sortedBy { it.name.lowercase() }
+    val visibleEntreprises = sortedEntreprises.filter { !it.isArchived }
+
     ListScreen(
         dateProvider = { null },
         titleProvider = { it.name },
         centerInfoProvider = { it.type ?: "" },
         bottomLeftInfoProvider = { it.phone ?: it.email ?: "" },
-        items = sortedEntreprises,
+        items = visibleEntreprises,
         onItemClick = onItemClick
     )
 }

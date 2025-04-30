@@ -25,4 +25,7 @@ object Routes {
     const val EDIT_RELANCE = "edit_relance"
     const val EDIT_ENTREPRISE = "edit_entreprise"
     const val EDIT_ENTRETIEN = "edit_entretien"
+
+    const val ARCHIVES = "archives"
+    const val TRASH = "trash"
 }

@@ -21,12 +21,14 @@ fun CandidaturesScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val sortedCandidatures = candidatures.sortedByDescending { it.applicationDate }
+        val visibleCandidature = sortedCandidatures.filter { !it.isArchived }
+
         ListScreen(
             dateProvider = { candidature -> candidature.applicationDate.toFormattedDate() },
             titleProvider = { candidature -> candidature.title },
             centerInfoProvider = { candidature -> candidature.applicationStatus.name },
             bottomLeftInfoProvider = { candidature -> candidature.companyName },
-            items = sortedCandidatures,
+            items = visibleCandidature,
             onItemClick = { candidature ->
                 onItemClick(candidature)
             }

@@ -12,12 +12,14 @@ fun RelancesScreen(
     onItemClick: (Relance) -> Unit,
 ) {
     val sortedRelances = relances.sortedByDescending { it.date }
+    val visibleRelances = sortedRelances.filter { !it.isArchived }
+
     ListScreen(
         dateProvider = { it.date.toFormattedDate() },
         titleProvider = { it.type.name },
         centerInfoProvider = { it.responseStatus.name },
         bottomLeftInfoProvider = { "Entreprise ID: ${it.companyId}" },
-        items = sortedRelances,
+        items = visibleRelances,
         onItemClick = onItemClick
     )
 }

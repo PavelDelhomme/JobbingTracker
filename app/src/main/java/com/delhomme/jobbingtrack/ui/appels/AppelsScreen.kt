@@ -13,12 +13,14 @@ fun AppelsScreen(
     onAddClick: (Contact) -> Unit
 ) {
     val sortedAppels = appels.sortedByDescending { it.dateTime }
+    val visibleAppels = sortedAppels.filter { !it.isArchived }
+
     ListScreen(
         dateProvider = { it.dateTime.toFormattedDate() },
         titleProvider = { it.subject },
         centerInfoProvider = { null },
         bottomLeftInfoProvider = { "Entreprise ID: ${it.companyId}" },
-        items = sortedAppels,
+        items = visibleAppels,
         onItemClick = onItemClick
     )
 }

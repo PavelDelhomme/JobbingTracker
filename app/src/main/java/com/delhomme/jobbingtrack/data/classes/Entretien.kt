@@ -16,7 +16,8 @@ data class Entretien(
     val returnDate: Long?,
     val testsNeeded: Boolean,
     val testsDeadline: Long?,
-    val syncHash: String
+    val syncHash: String,
+    var isArchived: Boolean = false,
 )
 
 enum class EntretienStyle {

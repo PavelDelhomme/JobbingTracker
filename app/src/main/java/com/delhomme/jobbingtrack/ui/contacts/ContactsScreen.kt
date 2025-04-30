@@ -11,12 +11,14 @@ fun ContactsScreen(
     onAddClick: (Contact) -> Unit
 ) {
     val sortedContacts = contacts.sortedBy { it.lastName.lowercase() }
+    val visibleContacts = sortedContacts.filter { !it.isArchived }
+
     ListScreen(
         dateProvider = { null },
         titleProvider = { "${it.lastName.uppercase()} ${it.firstName}" },
         centerInfoProvider = { it.position ?: "Pas de fonction" },
         bottomLeftInfoProvider = { it.phone ?: it.email ?: "" },
-        items = sortedContacts,
+        items = visibleContacts,
         onItemClick = onItemClick
     )
 }

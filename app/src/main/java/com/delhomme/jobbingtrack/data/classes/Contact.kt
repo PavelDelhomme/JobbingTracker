@@ -12,6 +12,7 @@ data class Contact(
     val entrepriseId: String,
     val syncHash: String,
     val notes: String,
+    var isArchived: Boolean = false,
 )
 
 fun Contact.toFormMap(): Map<String, String> {
@@ -23,6 +24,6 @@ fun Contact.toFormMap(): Map<String, String> {
         "position" to (position ?: ""),
         "department" to (department ?: ""),
         "entrepriseId" to (entrepriseId ?: ""),
-        "notes" to (notes ?: "")
+        "notes" to (notes ?: ""),
     )
 }

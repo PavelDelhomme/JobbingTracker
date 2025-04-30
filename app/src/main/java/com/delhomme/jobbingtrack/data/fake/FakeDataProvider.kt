@@ -80,7 +80,6 @@ object FakeDataProvider {
         )
     }
 
-
     val entretiens = List(10) { index ->
         Entretien(
             id = (index + 1).toString(),
@@ -100,5 +99,53 @@ object FakeDataProvider {
             testsDeadline = System.currentTimeMillis() + Random.nextLong(200000000, 300000000),
             syncHash = randomSyncHash("entretien")
         )
+    }
+
+    fun removeCandidature(id: String) {
+        candidatures.find { it.id == id }?.isArchived = true
+    }
+
+    fun deleteCandidature(id: String) {
+        candidatures.removeAll { it.id == id }
+    }
+
+    fun removeEntreprise(id: String) {
+        entreprises.find { it.id == id }?.isArchived = true
+    }
+
+    fun deleteEntreprise(id: String) {
+        entreprises.removeAll { it.id == id }
+    }
+
+    fun removeContact(id: String) {
+        contacts.find { it.id == id }?.isArchived = true
+    }
+
+    fun deleteContact(id: String) {
+        contacts.removeAll { it.id == id }
+    }
+
+    fun removeRelance(id: String) {
+        relances.find { it.id == id }?.isArchived = true
+    }
+
+    fun deleteRelance(id: String) {
+        relances.removeAll { it.id == id }
+    }
+
+    fun removeEntretien(id: String) {
+        entretiens.find { it.id == id }?.isArchived = true
+    }
+
+    fun deleteEntretien(id: String) {
+        entretiens.removeAll { it.id == id }
+    }
+
+    fun removeAppel(id: String) {
+        appels.find { it.id == id }?.isArchived = true
+    }
+
+    fun deleteAppel(id: String) {
+        appels.removeAll { it.id == id }
     }
 }

@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -36,21 +38,33 @@ fun EntrepriseDetailScreen(
         topBar = {
             TopAppBar(
                 title = { Text(entreprise.name) },
-                navigationIcon = {
+                /*navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(Routes.CANDIDATURES) {
-                            popUpTo(Routes.CANDIDATURES) { inclusive = true }
-                        }
+                        navController.navigate(Routes.MAIN)
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
-                },
+                },*/
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_ENTREPRISE}/${entreprise.id}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }
+                    IconButton(onClick = {
+                        FakeDataProvider.removeEntreprise(entreprise.id)
+                        navController.popBackStack()
+                    }) {
+                        Icon(Icons.Default.Delete, contentDescription = "Archiver")
+                    }
+
+                    IconButton(onClick = {
+                        FakeDataProvider.deleteEntreprise(entreprise.id)
+                        navController.popBackStack()
+                    }) {
+                        Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
+                    }
+
                 }
             )
         }

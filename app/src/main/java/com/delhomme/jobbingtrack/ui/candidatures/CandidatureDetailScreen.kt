@@ -9,6 +9,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
@@ -23,6 +25,7 @@ import com.delhomme.jobbingtrack.data.classes.Relance
 import com.delhomme.jobbingtrack.data.classes.Appel
 import com.delhomme.jobbingtrack.data.classes.Entretien
 import com.delhomme.jobbingtrack.data.classes.Contact
+import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.components.DetailItemCard
 import com.delhomme.jobbingtrack.utils.toFormattedDate
@@ -45,21 +48,33 @@ fun CandidatureDetailScreen(
         topBar = {
             TopAppBar(
                 title = { Text(text = candidature.title) },
-                navigationIcon = {
+                /*navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(Routes.CANDIDATURES) {
-                            popUpTo(Routes.CANDIDATURES) { inclusive = true }
-                        }
+                        navController.navigate(Routes.MAIN)
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
-                },
+                },*/
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_CANDIDATURE}/${candidature.id}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier la candidature")
                     }
+                    IconButton(onClick = {
+                        FakeDataProvider.removeCandidature(candidature.id)
+                        navController.popBackStack()
+                    }) {
+                        Icon(Icons.Default.Delete, contentDescription = "Archiver")
+                    }
+
+                    IconButton(onClick = {
+                        FakeDataProvider.deleteCandidature(candidature.id)
+                        navController.popBackStack()
+                    }) {
+                        Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
+                    }
+
                 }
             )
         },
