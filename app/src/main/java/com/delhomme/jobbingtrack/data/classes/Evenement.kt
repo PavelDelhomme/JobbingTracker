@@ -7,5 +7,6 @@ data class Evenement(
     val description: String?,
     val startDate: Long,
     val endDate: Long?,
-    val syncHash: String
+    val syncHash: String,
+    val type: String // Type d'évènement
 )

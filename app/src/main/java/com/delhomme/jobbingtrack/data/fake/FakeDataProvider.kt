@@ -2,6 +2,8 @@ package com.delhomme.jobbingtrack.data.fake
 
 import com.delhomme.jobbingtrack.data.classes.*
 import kotlin.random.Random
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 object FakeDataProvider {
 
@@ -112,7 +114,8 @@ object FakeDataProvider {
                     description = appel.notes,
                     startDate = appel.dateTime,
                     endDate = appel.dateTime,
-                    syncHash = randomSyncHash("appel")
+                    syncHash = randomSyncHash("appel"),
+                    type = "Appels"
                 )
             )
         }
@@ -127,7 +130,8 @@ object FakeDataProvider {
                     startDate = entretien.dateTime,
                     endDate = entretien.dateTime + (entretien.durationMinutes?.times(60)
                         ?.times(1000) ?: (30 * 60 * 1000)),
-                    syncHash = randomSyncHash("entretien")
+                    syncHash = randomSyncHash("entretien"),
+                    type = "Entretiens"
                 )
             )
         }
@@ -141,7 +145,8 @@ object FakeDataProvider {
                     description = relance.notes,
                     startDate = relance.date,
                     endDate = relance.date,
-                    syncHash = randomSyncHash("relance")
+                    syncHash = randomSyncHash("relance"),
+                    type = "Relances"
                 )
             )
         }
@@ -155,11 +160,32 @@ object FakeDataProvider {
                     description = candidature.notes,
                     startDate = candidature.applicationDate,
                     endDate = candidature.applicationDate,
-                    syncHash = randomSyncHash("candidature")
+                    syncHash = randomSyncHash("candidature"),
+                    type = "Candidatures"
+                )
+            )
+        }
+
+        val baseTime = LocalDateTime.now().plusDays(1).withHour(9).withMinute(0)
+            .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+
+        repeat(3) { i ->
+            add(
+                Evenement(
+                    id = "manual-$i",
+                    relatedObjectId = "manual-$i",
+                    title = "Test $i",
+                    description = "Événement test $i",
+                    startDate = baseTime + i * 15 * 60 * 1000, // toutes les 15 minutes
+                    endDate = baseTime + (i + 1) * 15 * 60 * 1000,
+                    syncHash = "manual-${i}",
+                    type = "Test"
                 )
             )
         }
     }
+
+
 
     fun removeCandidature(id: String) {
         candidatures.find { it.id == id }?.isArchived = true

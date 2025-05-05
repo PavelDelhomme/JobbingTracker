@@ -23,7 +23,8 @@ import com.delhomme.jobbingtrack.ui.relances.RelancesScreen
 import com.delhomme.jobbingtrack.ui.components.*
 import kotlinx.coroutines.launch
 import androidx.activity.compose.BackHandler
-import com.delhomme.jobbingtrack.ui.calendar.CalendarScreen
+import com.delhomme.jobbingtrack.ui.calendar.CalendarScreenContent
+import java.time.LocalDate
 
 enum class MainSection {
     DASHBOARD, CANDIDATURES, CALENDAR
@@ -41,6 +42,10 @@ fun MainScreen(navController: NavHostController) {
 
     var selectedTabIndex by rememberSaveable { mutableStateOf(0) }
 
+    val selectedDate = remember { mutableStateOf(LocalDate.now()) }
+
+    var calendarViewType by rememberSaveable { mutableStateOf(CalendarViewType.DAY) }
+
     /*
     BackHandler {
         // Si on est déjà dans le MAIN, on ne quitte pas
@@ -54,6 +59,14 @@ fun MainScreen(navController: NavHostController) {
         // Rien à faire ici pour le désactiver
     }
 
+    val filterStates = remember {
+        mutableStateMapOf(
+            "Relances" to true,
+            "Candidatures" to true,
+            "Entretiens" to true,
+            "Appels" to true
+        )
+    }
 
 
     ModalNavigationDrawer(
@@ -65,13 +78,25 @@ fun MainScreen(navController: NavHostController) {
                 onLogoutClick = { /* TODO */ },
                 onArchiveClick = { navController.navigate(Routes.ARCHIVES)},
                 onTrashClick = { navController.navigate(Routes.TRASH)},
+                filters = if (currentSection == MainSection.CALENDAR) filterStates else null,
+                onFilterChange = if (currentSection == MainSection.CALENDAR)
+                    { name, checked -> filterStates[name] = checked } else null,
+                onViewTypeChange = { viewType -> calendarViewType = viewType },
+                drawerState = drawerState,
             )
         }
     ) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("JobbingTrack") },
+                    title = {
+                        Text(
+                            if (currentSection == MainSection.CALENDAR)
+                                "Vue Calendrier – ${selectedDate.value}"
+                            else
+                                "JobbingTrack"
+                        )
+                    },
                     navigationIcon = {
                         IconButton(onClick = {
                             coroutineScope.launch { drawerState.open() }
@@ -134,7 +159,17 @@ fun MainScreen(navController: NavHostController) {
                         selectedTabIndex = selectedTabIndex,
                         onTabChange = { selectedTabIndex = it }
                     )
-                    MainSection.CALENDAR -> CalendarScreen(navController)
+
+                    MainSection.CALENDAR -> CalendarScreenContent(
+                        currentDate = selectedDate.value,
+                        filterStates = filterStates,
+                        onFilterChange = { name, checked -> filterStates[name] = checked },
+                        calendarViewType = calendarViewType,
+                        onDateSelected = { date, newViewType ->
+                            selectedDate.value = date
+                            if (newViewType != null) calendarViewType = newViewType
+                        }
+                    )
                 }
             }
         }

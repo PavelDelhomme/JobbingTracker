@@ -82,4 +82,9 @@ dependencies {
     implementation(libs.material)
     implementation(libs.material3)
 
+    // Calendar
+    implementation("com.kizitonwose.calendar:compose:2.6.2")
+    // Navigation by swipe
+    implementation(libs.accompanist.pager)
+
 }

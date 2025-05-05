@@ -1,56 +1,28 @@
-package com.delhomme.jobbingtrack.ui.calendar
+package com.delhomme.jobbingtrack.ui.calendar.monthly
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.TextStyle
-import java.util.Locale
-
+import androidx.compose.material3.Card
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.navigation.NavController
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import java.time.Instant
+import java.time.LocalDate
+import java.time.YearMonth
 import java.time.ZoneId
-
-@Composable
-fun CalendarScreen(navController: NavController) {
-    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
-
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text(
-            text = "📅 ${currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())} ${currentMonth.year}",
-            style = MaterialTheme.typography.headlineMedium
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-
-        // Grille des jours
-        MonthGrid(
-            month = currentMonth,
-            onDayClick = { date ->
-                // on pourrait ici naviguer vers une vue détail par jour
-                println("Date sélectionnée : $date")
-            }
-        )
-
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text("📌 Événements du mois", style = MaterialTheme.typography.titleMedium)
-
-        // Afficher les événements filtrés du mois
-        MonthlyEventsList(month = currentMonth)
-    }
-}
+import kotlin.collections.forEach
 
 
 @Composable
