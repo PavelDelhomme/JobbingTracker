@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.places)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,5 +80,6 @@ dependencies {
 
     // Material Components (déjà via Material3 normalement mais au cas où pour compatibilité)
     implementation(libs.material)
+    implementation(libs.material3)
 
 }

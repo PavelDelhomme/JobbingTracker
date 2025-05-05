@@ -14,7 +14,10 @@ fun <T> ListScreen(
     centerInfoProvider: (T) -> String?,
     bottomLeftInfoProvider: (T) -> String?,
     items: List<T>,
-    onItemClick: (T) -> Unit
+    onItemClick: (T) -> Unit,
+    onEdit: ((T) -> Unit)? = null,
+    onArchive: ((T) -> Unit)? = null,
+    onDelete: ((T) -> Unit)? = null,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -23,13 +26,20 @@ fun <T> ListScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(items) { item ->
-            CustomListItemCard(
-                date = dateProvider(item),
-                title = titleProvider(item),
-                centerInfo = centerInfoProvider(item),
-                bottomLeftInfo = bottomLeftInfoProvider(item),
-                onClick = { onItemClick(item) }
-            )
+            SwipeToDismissItem(
+                item = item,
+                onEdit = { onEdit?.invoke(item) },
+                onArchive = { onArchive?.invoke(item) },
+                onDelete = { onDelete?.invoke(item) },
+            ) {
+                CustomListItemCard(
+                    date = dateProvider(item),
+                    title = titleProvider(item),
+                    centerInfo = centerInfoProvider(item),
+                    bottomLeftInfo = bottomLeftInfoProvider(item),
+                    onClick = { onItemClick(item) }
+                )
+            }
         }
     }
 }

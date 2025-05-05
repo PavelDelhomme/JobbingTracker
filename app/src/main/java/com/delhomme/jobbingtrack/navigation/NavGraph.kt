@@ -26,7 +26,6 @@ import com.delhomme.jobbingtrack.ui.entreprises.EntretienDetailScreen
 import com.delhomme.jobbingtrack.ui.entretiens.AddOrEditEntretienScreen
 import com.delhomme.jobbingtrack.ui.entretiens.EntretiensScreen
 import com.delhomme.jobbingtrack.ui.login.LoginScreen
-import com.delhomme.jobbingtrack.ui.main.CalendarScreen
 import com.delhomme.jobbingtrack.ui.main.MainScreen
 import com.delhomme.jobbingtrack.ui.relances.AddOrEditRelanceScreen
 import com.delhomme.jobbingtrack.ui.relances.RelanceDetailScreen

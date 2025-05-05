@@ -101,6 +101,67 @@ object FakeDataProvider {
         )
     }
 
+    val evenements = mutableListOf<Evenement>()
+
+    // Génération à partir des appels
+    appels.forEach { appel ->
+        evenements.add(
+            Evenement(
+                id = appel.id,
+                relatedObjectId = appel.id,
+                title = appel.subject,
+                description = appel.notes,
+                startDate = appel.dateTime,
+                endDate = appel.dateTime,
+                syncHash = randomSyncHash("appel")
+            )
+        )
+    }
+
+// Génération à partir des entretiens
+    entretiens.forEach { entretien ->
+        evenements.add(
+            Evenement(
+                id = entretien.id,
+                relatedObjectId = entretien.id,
+                title = "Entretien",
+                description = entretien.preInterviewNotes,
+                startDate = entretien.dateTime,
+                endDate = entretien.dateTime + entretien.durationMinutes * 60 * 1000,
+                syncHash = randomSyncHash("entretien")
+            )
+        )
+    }
+
+// Génération à partir des relances
+    relances.forEach { relance ->
+        evenements.add(
+            Evenement(
+                id = relance.id,
+                relatedObjectId = relance.id,
+                title = "Relance",
+                description = relance.notes,
+                startDate = relance.date,
+                endDate = relance.date,
+                syncHash = randomSyncHash("relance")
+            )
+        )
+    }
+
+    // Génération à partir des candidatures
+    candidatures.forEach { candidature ->
+        evenements.add(
+            Evenement(
+                id = candidature.id,
+                relatedObjectId = candidature.id,
+                title = candidature.title,
+                description = candidature.notes,
+                startDate = candidature.applicationDate,
+                endDate = candidature.applicationDate,
+                syncHash = randomSyncHash("candidature")
+            )
+        )
+    }
     fun removeCandidature(id: String) {
         candidatures.find { it.id == id }?.isArchived = true
     }

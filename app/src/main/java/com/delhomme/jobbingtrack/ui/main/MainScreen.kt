@@ -23,6 +23,7 @@ import com.delhomme.jobbingtrack.ui.relances.RelancesScreen
 import com.delhomme.jobbingtrack.ui.components.*
 import kotlinx.coroutines.launch
 import androidx.activity.compose.BackHandler
+import com.delhomme.jobbingtrack.ui.calendar.CalendarScreen
 
 enum class MainSection {
     DASHBOARD, CANDIDATURES, CALENDAR
@@ -40,12 +41,20 @@ fun MainScreen(navController: NavHostController) {
 
     var selectedTabIndex by rememberSaveable { mutableStateOf(0) }
 
+    /*
     BackHandler {
         // Si on est déjà dans le MAIN, on ne quitte pas
         if (navController.currentDestination?.route != Routes.MAIN) {
             navController.popBackStack()
         }
     }
+     */
+    BackHandler(enabled = navController.currentBackStackEntryAsState().value?.destination?.route == Routes.MAIN) {
+        // Bloquer le retour SEULEMENT sur MainScreen
+        // Rien à faire ici pour le désactiver
+    }
+
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -101,7 +110,7 @@ fun MainScreen(navController: NavHostController) {
                         5 -> BottomSheetContentType.ADD_ENTRETIEN
                         else -> BottomSheetContentType.NONE
                     }
-                    MainSection.CALENDAR -> BottomSheetContentType.ADD_APPEL
+                    MainSection.CALENDAR -> BottomSheetContentType.NONE
                 }
 
                 if (fabContentType != BottomSheetContentType.NONE) {
@@ -117,19 +126,15 @@ fun MainScreen(navController: NavHostController) {
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
                 when (currentSection) {
-                    MainSection.DASHBOARD -> DashboardScreen()
+                    MainSection.DASHBOARD -> DashboardScreen(
+                        navController = navController,
+                    )
                     MainSection.CANDIDATURES -> CandidaturesTabsContent(
                         navController = navController,
                         selectedTabIndex = selectedTabIndex,
                         onTabChange = { selectedTabIndex = it }
                     )
-                    MainSection.CALENDAR -> AppelsScreen(
-                        appels = FakeDataProvider.appels,
-                        onItemClick = { appel ->
-                            navController.navigate("${Routes.APPEL_DETAIL}/${appel.id}")
-                        },
-                        onAddClick = { bottomSheetContent = BottomSheetContentType.ADD_APPEL }
-                    )
+                    MainSection.CALENDAR -> CalendarScreen(navController)
                 }
             }
         }
