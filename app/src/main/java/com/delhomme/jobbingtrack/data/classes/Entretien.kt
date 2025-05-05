@@ -5,7 +5,7 @@ data class Entretien(
     val candidatureId: String,
     val companyId: String,
     val dateTime: Long,
-    val durationMinutes: Int?,
+    val durationMinutes: Int,
     val location: String?,
     val contacts: List<String>,
     val style: EntretienStyle,
