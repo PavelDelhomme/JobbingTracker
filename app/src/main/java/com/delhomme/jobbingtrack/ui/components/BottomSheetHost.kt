@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.data.logic.saveCandidatureFromForm
 import com.delhomme.jobbingtrack.ui.appels.AddOrEditAppelScreen
 import com.delhomme.jobbingtrack.ui.candidatures.AddOrEditCandidatureScreen
 import com.delhomme.jobbingtrack.ui.contacts.AddOrEditContactScreen
@@ -60,7 +61,7 @@ fun BottomSheetHost(
                             navController = null,
                             existingCandidatureData = null,
                             onSave = {
-                                println("Ajout candidature effectué: $it")
+                                saveCandidatureFromForm(it)
                                 onDismissRequest()
                             }
                         )
@@ -71,7 +72,7 @@ fun BottomSheetHost(
                             existingContactData = null,
                             linkedCandidatureId = linkedCandidatureId,
                             onSave = {
-                                println("Ajout contact effectué: $it")
+                                saveContactFromForm(it)
                                 onDismissRequest()
                             }
                         )
@@ -81,7 +82,7 @@ fun BottomSheetHost(
                             navController = null,
                             existingEntrepriseData = null,
                             onSave = {
-                                println("Ajout entreprise effectué: $it")
+                                saveEntrepriseFromForm(it)
                                 onDismissRequest()
                             }
                         )
@@ -92,7 +93,7 @@ fun BottomSheetHost(
                             existingRelanceData = null,
                             linkedCandidatureId = linkedCandidatureId,
                             onSave = {
-                                println("Ajout relance effectué: $it")
+                                saveRelanceFromForm(it)
                                 onDismissRequest()
                             }
                         )
@@ -103,7 +104,7 @@ fun BottomSheetHost(
                             existingEntretienData = null,
                             linkedCandidatureId = linkedCandidatureId,
                             onSave = {
-                                println("Ajout entretien effectué: $it")
+                                saveEntretienFromForm(it)
                                 onDismissRequest()
                             }
                         )
@@ -114,7 +115,7 @@ fun BottomSheetHost(
                             existingAppelData = null,
                             linkedCandidatureId = linkedCandidatureId,
                             onSave = {
-                                println("Ajout appel effectué: $it")
+                                saveAppelFromForm(it)
                                 onDismissRequest()
                             }
                         )

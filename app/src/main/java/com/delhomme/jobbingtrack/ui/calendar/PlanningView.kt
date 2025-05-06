@@ -17,12 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.Evenement
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import com.delhomme.jobbingtrack.ui.calendar.event.getEventColor
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
@@ -120,11 +122,14 @@ fun EventPlanningCard(event: Evenement) {
         Instant.ofEpochMilli(it).atZone(zone).format(formatter)
     } ?: "??:??"
 
+    val cardColor = getEventColor(event.type)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 4.dp),
         shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = cardColor)
     ) {
         Column(Modifier.padding(10.dp)) {
             Text("${event.type}: ${event.title}", style = MaterialTheme.typography.titleSmall)

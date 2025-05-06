@@ -2,6 +2,7 @@ package com.delhomme.jobbingtrack.ui.calendar.event
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,11 +28,14 @@ fun EventCard(event: Evenement, modifier: Modifier = Modifier, compact: Boolean 
             .format(DateTimeFormatter.ofPattern("HH:mm"))
     }
 
+    val cardColor = getEventColor(event.type)
+
     Card(
         modifier = modifier
             .padding(2.dp)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.small,
+        colors = CardDefaults.cardColors(containerColor = cardColor)
     ) {
         Column(
             modifier = Modifier.padding(if (compact) 4.dp else 10.dp),
