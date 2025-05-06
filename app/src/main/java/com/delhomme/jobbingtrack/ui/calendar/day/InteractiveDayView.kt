@@ -1,26 +1,26 @@
 package com.delhomme.jobbingtrack.ui.calendar.day
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.Evenement
-import com.delhomme.jobbingtrack.ui.calendar.EventCard
+import com.delhomme.jobbingtrack.ui.calendar.event.EventCard
 import com.delhomme.jobbingtrack.ui.calendar.computeOverlappingEvents
+import com.google.common.collect.Multimaps.index
 import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.LocalDate
@@ -36,159 +36,154 @@ fun InteractiveDayView(
     val minScale = 0.5f
     val maxScale = 2.5f
     var scale by remember { mutableStateOf(1f) }
-    val verticalScroll = rememberScrollState()
+    val scrollState = rememberScrollState()
 
-    val currentTime by produceState(initialValue = LocalDateTime.now()) {
+    val density = LocalDensity.current
+
+    val currentTime by produceState(LocalDateTime.now()) {
         while (true) {
             value = LocalDateTime.now()
-            delay(1000)
+            delay(60000) // update chaque minute suffit
         }
     }
 
-    val nowHour = currentTime.hour + currentTime.minute / 60f
-    val redLineOffsetDp = (nowHour * 60 * scale).dp
-
-    LaunchedEffect(Unit) {
-        if (date == LocalDate.now()) {
-            verticalScroll.scrollTo((redLineOffsetDp.value - 200).coerceAtLeast(0f).toInt())
-        }
+    val positionedEvents = remember(events) {
+        computeOverlappingEvents(
+            events.filter {
+                Instant.ofEpochMilli(it.startDate).atZone(ZoneId.systemDefault()).toLocalDate() == date
+            }
+        )
     }
-
-    val dayEvents = remember(events) {
-        events.filter {
-            Instant.ofEpochMilli(it.startDate).atZone(ZoneId.systemDefault()).toLocalDate() == date
-        }
-    }
-    val positionedEvents = computeOverlappingEvents(dayEvents)
 
     var selectedEvent by remember { mutableStateOf<Evenement?>(null) }
 
-    Box(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(verticalScroll)
-                .pointerInput(Unit) {
-                    detectTransformGestures { _, _, zoom, _ ->
-                        scale = (scale * zoom).coerceIn(minScale, maxScale)
-                    }
-                }
-        ) {
-            val totalMinutes = 24 * 60
-            val totalHeightDp = (totalMinutes * scale).dp
+    val totalHeightDp = (24 * 60 * scale).dp
+    val redLineOffset = ((currentTime.hour * 60 + currentTime.minute) * scale).dp
 
-            // Fond avec lignes horaires
-            Canvas(modifier = Modifier
-                .fillMaxWidth()
-                .height(totalHeightDp)
-            ) {
-                for (hour in 0..23) {
-                    val y = hour * 60 * scale
-                    drawLine(
-                        color = Color.LightGray,
-                        start = Offset(0f, y.toFloat()),
-                        end = Offset(size.width, y.toFloat()),
-                        strokeWidth = 1.dp.toPx()
-                    )
+// Scroll initial corrigé vers l'heure actuelle avec gestion d'offset en pixels correcte
+    LaunchedEffect(date, scale) {
+        if (date == LocalDate.now()) {
+            val initialOffsetPx = with(density) { (redLineOffset - 200.dp).toPx() }
+            scrollState.scrollTo(initialOffsetPx.coerceAtLeast(0f).toInt())
+        } else {
+            scrollState.scrollTo(0)
+        }
+    }
+
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTransformGestures { _, _, zoom, _ ->
+                    scale = (scale * zoom).coerceIn(minScale, maxScale)
                 }
             }
-
-            // Étiquettes d'heure à gauche
-            Column(
-                modifier = Modifier
-                    .height(totalHeightDp)
-                    .width(48.dp)
-                    .absoluteOffset(x = 0.dp)
-            ) {
+            .verticalScroll(scrollState)
+    ){
+        Row(modifier = Modifier.fillMaxWidth()) {
+            // Colonnes des heures à gauche
+            Column(Modifier.width(56.dp)) {
                 for (hour in 0..23) {
-                    val height = (60 * scale).dp
                     Box(
-                        modifier = Modifier.height(height),
-                        contentAlignment = Alignment.TopStart
+                        Modifier
+                            .height((60 * scale).dp)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.TopEnd
                     ) {
                         Text(
-                            text = String.format("%02d:00", hour),
-                            style = MaterialTheme.typography.bodySmall
+                            "%02d:00".format(hour),
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(end = 4.dp, top = 2.dp)
                         )
                     }
                 }
             }
-
-            // Événements positionnés
-            Box(modifier = Modifier
-                .padding(start = 48.dp)
-                .height(totalHeightDp)
+            // Zone des événements
+            BoxWithConstraints(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(totalHeightDp)
             ) {
+                val density = LocalDensity.current
+                val boxWidthPx = constraints.maxWidth.toFloat()
+
+                Canvas(Modifier.matchParentSize()) {
+                    for (hour in 0..24) {
+                        val y = hour * 60 * scale * density.density
+                        drawLine(
+                            Color.LightGray,
+                            Offset(0f, y),
+                            Offset(size.width, y),
+                            strokeWidth = 1.dp.toPx()
+                        )
+                    }
+                    if (date == LocalDate.now()) {
+                        val redLineY = redLineOffset.toPx()
+                        drawLine(
+                            Color.Red,
+                            Offset(0f, redLineY),
+                            Offset(size.width, redLineY),
+                            strokeWidth = 2.dp.toPx()
+                        )
+                    }
+                }
+
                 positionedEvents.forEach { positioned ->
-                    val startTime = Instant.ofEpochMilli(positioned.event.startDate)
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalTime()
-                    val endTime = positioned.event.endDate?.let {
-                        Instant.ofEpochMilli(it)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalTime()
-                    } ?: startTime.plusMinutes(30)
+                    val startInstant = Instant.ofEpochMilli(positioned.event.startDate)
+                        .atZone(ZoneId.systemDefault()).toLocalTime()
+                    val endInstant = positioned.event.endDate?.let {
+                        Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalTime()
+                    } ?: startInstant.plusMinutes(30)
 
-                    val startMinutes = startTime.hour * 60 + startTime.minute
-                    val endMinutes = endTime.hour * 60 + endTime.minute
-                    val durationMinutes = (endMinutes - startMinutes).coerceAtLeast(15)
+                    val startMinutes = startInstant.hour * 60 + startInstant.minute
+                    val durationMinutes = (endInstant.hour * 60 + endInstant.minute - startMinutes)
+                        .coerceAtLeast(15)
 
-                    val topOffsetDp = (startMinutes * scale).dp
-                    val heightDp = (durationMinutes * scale).dp
-                    val columnWidthFraction = 1f / positioned.totalColumns
+                    val topOffset = (startMinutes * scale).dp
+                    val baseMinHeight = 30.dp
+                    val minEventHeightDp = if (scale < 1f) baseMinHeight / scale else baseMinHeight
+                    val calculatedEventHeight = (durationMinutes * scale).dp
+                    val eventHeight = maxOf(minEventHeightDp, calculatedEventHeight)
+
+                    val eventWidthFraction = 1f / positioned.totalColumns
+                    val eventWidth = with(density) { (boxWidthPx * eventWidthFraction).toDp() }
+                    val xOffset = with(density) {
+                        (boxWidthPx * positioned.column * eventWidthFraction).toDp()
+                    }
 
                     Box(
                         modifier = Modifier
-                            .absoluteOffset(y = topOffsetDp, x = (positioned.column * (columnWidthFraction * 100)).dp)
-                            .fillMaxWidth(columnWidthFraction)
-                            .height(heightDp)
+                            .absoluteOffset(
+                                x = xOffset,
+                                y = topOffset
+                            )
+                            .width(eventWidth)
+                            .height(eventHeight)
                             .padding(2.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                shape = RoundedCornerShape(4.dp)
+                            )
                             .clickable { selectedEvent = positioned.event }
                     ) {
-                        Text(
-                            text = positioned.event.title,
-                            style = MaterialTheme.typography.labelMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                        EventCard(
+                            event = positioned.event,
+                            modifier = Modifier.fillMaxSize(),
+                            compact = eventHeight < 50.dp // active le mode compact si la hauteur est trop faible
                         )
                     }
+
                 }
             }
         }
 
-        // Ligne rouge de l’heure actuelle
-        if (date == LocalDate.now()) {
-            Canvas(modifier = Modifier
-                .fillMaxWidth()
-                .offset(y = redLineOffsetDp)
-                .height(2.dp)
-            ) {
-                drawLine(
-                    color = Color.Red,
-                    start = Offset(0f, 1f),
-                    end = Offset(size.width, 1f),
-                    strokeWidth = 2.dp.toPx()
-                )
-            }
-        }
 
-        // Détails d’événement
         selectedEvent?.let { event ->
             AlertDialog(
                 onDismissRequest = { selectedEvent = null },
-                title = { Text(text = event.title) },
-                text = {
-                    Column {
-                        Text("Début : ${Instant.ofEpochMilli(event.startDate).atZone(ZoneId.systemDefault()).toLocalTime()}")
-                        event.endDate?.let {
-                            Text("Fin : ${Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalTime()}")
-                        }
-                        event.description?.let {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(it)
-                        }
-                    }
-                },
+                title = { Text("${event.type}: ${event.title}") },
+                text = { Text(event.description ?: "") },
                 confirmButton = {
                     TextButton(onClick = { selectedEvent = null }) {
                         Text("Fermer")

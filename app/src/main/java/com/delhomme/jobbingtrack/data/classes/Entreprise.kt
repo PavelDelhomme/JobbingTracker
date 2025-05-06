@@ -13,3 +13,19 @@ data class Entreprise(
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
 )
+
+
+fun Entreprise.toFormMap(): Map<String, String> {
+    return mapOf(
+        "id" to (id ?: ""),
+        "name" to (name ?: ""),
+        "type" to (type ?: ""),
+        "phone" to (phone ?: ""),
+        "email" to (email ?: ""),
+        "hrEmail" to (hrEmail ?: ""),
+        "address" to (address ?: ""),
+        "syncHash" to (syncHash ?: ""),
+        "isArchived" to (isArchived.toString()),
+        "isDeleted" to (isDeleted.toString()),
+    )
+}

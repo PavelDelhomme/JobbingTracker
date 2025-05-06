@@ -1,6 +1,5 @@
 package com.delhomme.jobbingtrack.ui.calendar.weeks
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.ui.components.CalendarViewType
@@ -12,8 +11,8 @@ fun WeeklyPagerView(
     selectedDate: LocalDate,
     onDateSelected: (LocalDate, CalendarViewType?) -> Unit
 ) {
-    WeeklyCalendarViewWithEvents(
-        selectedDate = selectedDate,
+    WeeklySliding3DayView(
+        initialDate = selectedDate,
         events = FakeDataProvider.evenements,
         onDateSelected = onDateSelected
     )

@@ -17,20 +17,26 @@ fun DailyPagerView(
     onDateChange: (LocalDate) -> Unit
 ) {
     val pagerState = rememberPagerState(initialPage = 1000) // Centre fictif
-    val scope = rememberCoroutineScope()
+    val currentDate by remember {
+        derivedStateOf { initialDate.plusDays((pagerState.currentPage - 1000).toLong()) }
+    }
+
+    LaunchedEffect(currentDate) {
+        onDateChange(currentDate)
+    }
 
     HorizontalPager(
         count = Int.MAX_VALUE,
         state = pagerState,
         modifier = Modifier.fillMaxSize()
     ) { page ->
-        val offset = page - 1000
-        val currentDate = initialDate.plusDays((page - 1000).toLong())
-        onDateChange(currentDate)
-        InteractiveDayView(date = currentDate, events = events.filter {
-            Instant.ofEpochMilli(it.startDate)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate() == currentDate
-        })
+        val pageDate = initialDate.plusDays((page - 1000).toLong())
+
+        InteractiveDayView(
+            date = pageDate,
+            events = events.filter {
+                Instant.ofEpochMilli(it.startDate).atZone(ZoneId.systemDefault()).toLocalDate() == pageDate
+            }
+        )
     }
 }

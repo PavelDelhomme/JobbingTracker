@@ -7,23 +7,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.data.classes.Evenement
 import com.delhomme.jobbingtrack.ui.calendar.day.DayContent
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.daysOfWeek
+import java.time.Instant
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun MonthlyCalendarView(
     selectedDate: LocalDate,
+    events: List<Evenement>,
     onDateSelected: (LocalDate) -> Unit
 ) {
     val currentMonth = remember { YearMonth.now() }
     val startMonth = remember { currentMonth.minusMonths(12) }
     val endMonth = remember { currentMonth.plusMonths(12) }
     val daysOfWeek = remember { daysOfWeek() }
+
+    val groupedEvents = remember(events) {
+        events.groupBy {
+            Instant.ofEpochMilli(it.startDate).atZone(ZoneId.systemDefault()).toLocalDate()
+        }
+    }
 
     val state = rememberCalendarState(
         startMonth = startMonth,
@@ -35,9 +45,13 @@ fun MonthlyCalendarView(
     VerticalCalendar(
         state = state,
         dayContent = { day ->
-            DayContent(day, isSelected = day.date == selectedDate) {
-                onDateSelected(day.date)
-            }
+            val eventsForDay = groupedEvents[day.date] ?: emptyList()
+            DayContent(
+                day,
+                eventsForDay,
+                isSelected = day.date == selectedDate,
+                onClick = { onDateSelected(day.date) }
+            )
         },
         monthHeader = { month ->
             Text(

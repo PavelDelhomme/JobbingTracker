@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.calendar
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -27,28 +28,45 @@ fun CalendarScreenContent(
         }
     }
 
-    when (calendarViewType) {
-        CalendarViewType.DAY -> DailyPagerView(
-            initialDate = currentDate,
-            events = filteredEvents
-        ) { newDate ->
-            onDateSelected(newDate, null)
-        }
-        CalendarViewType.WEEK -> WeeklyPagerView(
+    Column {
+        CalendarTopBar(
             selectedDate = currentDate,
-            onDateSelected = onDateSelected
-        )
-        CalendarViewType.TWO_WEEKS -> TwoWeekPagerView(
-            startDate = currentDate,
-            events = filteredEvents,
-            modifier = Modifier.fillMaxSize()
-        )
-        CalendarViewType.MONTH -> MonthlyCalendarView(
-            selectedDate = currentDate,
-            onDateSelected = { clickedDate ->
-                onDateSelected(clickedDate, CalendarViewType.DAY)
+            onGoToToday = {
+                onDateSelected(LocalDate.now(), CalendarViewType.DAY)
             }
         )
-        CalendarViewType.PLANNING -> PlanningView(date = currentDate, events = filteredEvents)
+
+        when (calendarViewType) {
+            CalendarViewType.DAY -> DailyPagerView(
+                initialDate = currentDate,
+                events = filteredEvents
+            ) { newDate ->
+                onDateSelected(newDate, null)
+            }
+
+            CalendarViewType.WEEK -> WeeklyPagerView(
+                selectedDate = currentDate,
+                onDateSelected = onDateSelected
+            )
+
+            CalendarViewType.TWO_WEEKS -> TwoWeekPagerView(
+                startDate = currentDate,
+                events = filteredEvents,
+                modifier = Modifier.fillMaxSize()
+            )
+
+            CalendarViewType.MONTH -> MonthlyCalendarView(
+                selectedDate = currentDate,
+                events = filteredEvents,
+                onDateSelected = { clickedDate ->
+                    onDateSelected(clickedDate, CalendarViewType.DAY)
+                }
+            )
+
+            CalendarViewType.PLANNING -> PlanningView(
+                date = currentDate,
+                events = filteredEvents
+            )
+        }
     }
 }

@@ -18,7 +18,6 @@ fun computeOverlappingEvents(events: List<Evenement>): List<PositionedEvent> {
         val start = event.startDate
         val end = event.endDate ?: (start + 30 * 60 * 1000) // default 30 min
 
-        // ❌ ici tu utilisais `it` alors que tu as nommé la variable différemment
         active.removeIf { (activeEvent, _) ->
             val aEnd = activeEvent.endDate ?: (activeEvent.startDate + 30 * 60 * 1000)
             aEnd <= start
