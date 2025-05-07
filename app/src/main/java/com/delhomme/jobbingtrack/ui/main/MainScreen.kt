@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.main
 
+import android.widget.Toast
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
@@ -23,7 +24,10 @@ import com.delhomme.jobbingtrack.ui.relances.RelancesScreen
 import com.delhomme.jobbingtrack.ui.components.*
 import kotlinx.coroutines.launch
 import androidx.activity.compose.BackHandler
+import androidx.compose.ui.platform.LocalContext
+import com.delhomme.jobbingtrack.MainActivity
 import com.delhomme.jobbingtrack.ui.calendar.CalendarScreenContent
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 
 enum class MainSection {
@@ -46,17 +50,51 @@ fun MainScreen(navController: NavHostController) {
 
     var calendarViewType by rememberSaveable { mutableStateOf(CalendarViewType.DAY) }
 
-    /*
-    BackHandler {
-        // Si on est déjà dans le MAIN, on ne quitte pas
-        if (navController.currentDestination?.route != Routes.MAIN) {
-            navController.popBackStack()
-        }
-    }
-     */
-    BackHandler(enabled = navController.currentBackStackEntryAsState().value?.destination?.route == Routes.MAIN) {
+    /*BackHandler(enabled = navController.currentBackStackEntryAsState().value?.destination?.route == Routes.MAIN) {
         // Bloquer le retour SEULEMENT sur MainScreen
         // Rien à faire ici pour le désactiver
+    }*/
+
+    /*BackHandler {
+        if (currentSection != MainSection.DASHBOARD) {
+            currentSection = MainSection.DASHBOARD
+        } else {
+            // Afficher un toast pour "Appuyez encore pour quitter"
+        }
+    }*/
+
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    val backPressCount = remember { mutableStateOf(0) }
+    val context = LocalContext.current
+    val backPressTimeout = 2000L // 2 Secondes
+
+    LaunchedEffect(backPressCount.value) {
+        if (backPressCount.value > 0) {
+            delay(backPressTimeout)
+            backPressCount.value = 0
+        }
+    }
+
+    BackHandler(enabled = currentRoute == Routes.MAIN) {
+        when (currentSection) {
+            MainSection.CALENDAR,
+            MainSection.CANDIDATURES -> {
+                currentSection = MainSection.DASHBOARD
+            }
+            MainSection.DASHBOARD -> {
+                if (backPressCount.value < 2) {
+                    backPressCount.value++
+                    Toast.makeText(
+                        context,
+                        "Appuyez ${3 - backPressCount.value} fois pour quitter l'app",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    (context as? MainActivity)?.finish()
+                }
+            }
+        }
     }
 
     val filterStates = remember {

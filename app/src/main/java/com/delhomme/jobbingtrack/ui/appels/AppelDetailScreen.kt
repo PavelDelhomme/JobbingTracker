@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.appels
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -28,18 +29,21 @@ fun AppelDetailScreen(
     val candidature = FakeDataProvider.candidatures.find { it.id == appel.candidatureId }
     val contact = FakeDataProvider.contacts.find { it.id == appel.contactId }
 
+    BackHandler {
+        navController.popBackStack()
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Détail Appel") },
-                /*navigationIcon = {
+                navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(Routes.MAIN)
+                        navController.popBackStack()
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
-                },*/
+                },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_APPEL}/${appel.id}")

@@ -59,9 +59,9 @@ fun BottomSheetHost(
                     modifier = Modifier.padding(top = 16.dp)
                 )
 
-                Box(
+                BoxWithConstraints(
                     modifier = Modifier
-                        .weight(1f, fill = true)
+                        .fillMaxHeight(0.85f)
                         .verticalScroll(rememberScrollState())
                         .padding(bottom = 24.dp)
                 ) {

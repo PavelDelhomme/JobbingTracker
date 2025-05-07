@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.contacts
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -44,17 +45,21 @@ fun ContactDetailScreen(
     val appels = FakeDataProvider.appels.filter { it.contactId == contact.id }
     val entretiens = FakeDataProvider.entretiens.filter { it.contacts.contains(contact.id) }
 
+    BackHandler {
+        navController.popBackStack()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("${contact.firstName} ${contact.lastName}") },
-                /*navigationIcon = {
+                navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(Routes.MAIN)
+                        navController.popBackStack()
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
-                },*/
+                },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_CONTACT}/${contact.id}")

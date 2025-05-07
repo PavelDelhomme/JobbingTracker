@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.entreprises
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,15 +30,22 @@ fun EntretienDetailScreen(
     navController: NavController,
     onBackClick: () -> Unit
 ) {
+
+    BackHandler {
+        navController.popBackStack()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(entretien.candidatureId) },
-                /*navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
-                },*/
+                },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_ENTRETIEN}/${entretien.id}")

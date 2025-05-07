@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.entreprises
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,17 +36,21 @@ fun EntrepriseDetailScreen(
     val relances = FakeDataProvider.relances.filter { it.companyId == entreprise.id }
 
 
+    BackHandler {
+        navController.popBackStack()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(entreprise.name) },
-                /*navigationIcon = {
+                navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(Routes.MAIN)
+                        navController.popBackStack()
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
-                },*/
+                },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_ENTREPRISE}/${entreprise.id}")

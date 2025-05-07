@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.relances
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -27,17 +28,21 @@ fun RelanceDetailScreen(
     val candidature = FakeDataProvider.candidatures.find { it.id == relance.candidatureId }
     val contact = FakeDataProvider.contacts.find { it.id == relance.contactId }
 
+    BackHandler {
+        navController.popBackStack()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Détail Relance") },
-                /*navigationIcon = {
+                navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(Routes.MAIN)
+                        navController.popBackStack()
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
-                },*/
+                },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_RELANCE}/${relance.id}")

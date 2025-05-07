@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ScrollableTabRow
@@ -28,8 +29,11 @@ fun CandidaturesTabsContent(
     selectedTabIndex: Int,
     onTabChange: (Int) -> Unit
 ) {
-    navController.popBackStack()
     val tabs = listOf("Candidatures", "Entreprises", "Relances", "Appels", "Contacts", "Entretiens")
+
+    BackHandler {
+        onTabChange(0)
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         ScrollableTabRow(

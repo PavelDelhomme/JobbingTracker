@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.candidatures
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,17 +46,22 @@ fun CandidatureDetailScreen(
     onAddContact: (String) -> Unit,
     navController: NavController
 ) {
+
+    BackHandler {
+        navController.popBackStack()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = candidature.title) },
-                /*navigationIcon = {
+                navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(Routes.MAIN)
+                        navController.popBackStack()
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
-                },*/
+                },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_CANDIDATURE}/${candidature.id}")
