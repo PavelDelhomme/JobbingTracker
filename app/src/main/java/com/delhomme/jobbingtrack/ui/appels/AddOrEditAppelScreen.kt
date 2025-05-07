@@ -25,8 +25,9 @@ fun AddOrEditAppelScreen(
         FormField(
             name = "subject",
             label = "Objet de l'appel",
-            type = FieldType.TEXT,
-            isRequired = true
+            type = FieldType.SUGGESTION_TEXT, // <-- si besoin
+            isRequired = true,
+            options = listOf("Appel de suivi", "Prise de contact", "Demande d'informations")
         ),
         FormField(
             name = "companyId",

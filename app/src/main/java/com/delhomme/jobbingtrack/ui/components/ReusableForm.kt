@@ -9,6 +9,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import kotlin.math.exp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +79,7 @@ fun ReusableForm(
                         )
                     }
                 }
-                FieldType.DATE, FieldType.TIME, FieldType.DROPDOWN -> {
+                FieldType.DATE, FieldType.TIME -> {
                     // TODO plus tard : date picker / dropdown
                     OutlinedTextField(
                         value = fieldValues[field.name] ?: "",
@@ -83,6 +87,122 @@ fun ReusableForm(
                         label = { Text(field.label) },
                         modifier = Modifier.fillMaxWidth()
                     )
+                }
+                FieldType.DROPDOWN -> {
+                    var showAddDialog by remember { mutableStateOf(false) }
+                    var newOptionText by remember { mutableStateOf("") }
+
+                    val options = remember { mutableStateListOf<String>().apply { addAll(field.options ?: emptyList()) } }
+                    var expanded by remember { mutableStateOf(false) }
+
+                    Column {
+                        ExposedDropdownMenuBox(
+                            expanded = expanded,
+                            onExpandedChange = { expanded = !expanded }
+                        ) {
+                            OutlinedTextField(
+                                value = fieldValues[field.name] ?: "",
+                                onValueChange = { fieldValues[field.name] = it },
+                                label = { Text(field.label) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .menuAnchor(),
+                                readOnly = true
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                options.forEach { option ->
+                                    DropdownMenuItem(
+                                        text = { Text(option) },
+                                        onClick = {
+                                            fieldValues[field.name] = option
+                                            expanded = false
+                                        }
+                                    )
+                                }
+                                DropdownMenuItem(
+                                    text = { Text("➕ Ajouter une nouvelle...") },
+                                    onClick = {
+                                        expanded = false
+                                        showAddDialog = true
+                                    }
+                                )
+                            }
+                        }
+
+                        if (showAddDialog) {
+                            AlertDialog(
+                                onDismissRequest = { showAddDialog = false },
+                                confirmButton = {
+                                    TextButton(onClick = {
+                                        if (newOptionText.isNotBlank()) {
+                                            options.add(newOptionText)
+                                            fieldValues[field.name] = newOptionText
+                                        }
+                                        newOptionText = ""
+                                        showAddDialog = false
+                                    }) {
+                                        Text("Ajouter")
+                                    }
+                                },
+                                dismissButton = {
+                                    TextButton(onClick = {
+                                        newOptionText = ""
+                                        showAddDialog = false
+                                    }) {
+                                        Text("Annuler")
+                                    }
+                                },
+                                title = { Text("Ajouter une nouvelle option") },
+                                text = {
+                                    OutlinedTextField(
+                                        value = newOptionText,
+                                        onValueChange = { newOptionText = it },
+                                        label = { Text("Nouvelle valeur") },
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+
+                FieldType.SUGGESTION_TEXT -> {
+                    var expanded by remember { mutableStateOf(false) }
+                    val input = fieldValues[field.name] ?: ""
+                    val suggestions = field.options?.filter { it.contains(input, ignoreCase = true) } ?: emptyList()
+
+                    Column {
+                        OutlinedTextField(
+                            value = input,
+                            onValueChange = {
+                                if (!field.readOnly) fieldValues[field.name] = it
+                                expanded = true
+                            },
+                            label = { Text(field.label) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        if (expanded && suggestions.isNotEmpty()) {
+                            DropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                suggestions.forEach { suggestion ->
+                                    DropdownMenuItem(
+                                        text = { Text(suggestion) },
+                                        onClick = {
+                                            fieldValues[field.name] = suggestion
+                                            expanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -7,6 +7,8 @@ import com.delhomme.jobbingtrack.data.forms.FormField
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Contact
 import com.delhomme.jobbingtrack.data.classes.toFormMap
+import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
+import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.utils.toFieldMap
 
 @Composable
@@ -16,20 +18,21 @@ fun AddOrEditContactScreen(
     onSave: (Map<String, String>) -> Unit,
     linkedCandidatureId: String? = null
 ) {
+    val knownContactTypes = listOf("Manager", "Recruteur", "CTO", "Chargé RH", "CEO")
+
     val fields = listOf(
         FormField(name = "firstName", label = "Prénom", type = FieldType.TEXT, isRequired = true),
         FormField(name = "lastName", label = "Nom", type = FieldType.TEXT, isRequired = true),
         FormField(name = "phone", label = "Téléphone", type = FieldType.PHONE),
         FormField(name = "email", label = "Email", type = FieldType.EMAIL),
-        FormField(name = "position", label = "Poste dans l'entreprise", type = FieldType.TEXT),
-        FormField(name = "department", label = "Service", type = FieldType.TEXT),
         FormField(
-            name = "companyName",
-            label = "Entreprise",
-            type = FieldType.TEXT,
-            isRequired = true
-            // éventuellement on pourrait ici aussi préremplir companyName avec la candidature liée
+            name = "position",
+            label = "Poste",
+            type = FieldType.DROPDOWN,
+            options = FormSuggestions.contactPositions
         ),
+        FormField(name = "department", label = "Service", type = FieldType.TEXT),
+        FormField(name = "companyName", label = "Entreprise", type = FieldType.SUGGESTION_TEXT, isRequired = true, options = FakeDataProvider.entreprises.map { it.name }),
         FormField(name = "notes", label = "Notes", type = FieldType.MULTILINE_TEXT)
     )
 

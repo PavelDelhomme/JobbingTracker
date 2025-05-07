@@ -23,14 +23,15 @@ fun AddOrEditCandidatureScreen(
 
     // todo pré-remplissage des champs avec existingCandidatureData
     val entrepriseSuggestions = FakeDataProvider.entreprises.map { it.name }.distinct()
-    val allPlatforms = remember { mutableStateListOf("LinkedIn", "Indeed", "Welcome to the Jungle", "HelloWork") }
+    val knownPlatforms = listOf("LinkedIn", "Indeed", "Welcome to the Jungle", "HelloWork", "Pôle Emploi")
+    val typePostes = listOf("Développeur", "Designer", "Chef de Projet", "Data Analyst", "DevOps")
 
 
     val fields = listOf(
         FormField(name = "title", label = "Titre du poste", type = FieldType.TEXT, isRequired = true),
         FormField(name = "companyName", label = "Entreprise", type = FieldType.TEXT, isRequired = true),
         FormField(name = "applicationDate", label = "Date de candidature", type = FieldType.DATE, isRequired = true),
-        FormField(name = "platform", label = "Plateforme", type = FieldType.DROPDOWN, options = allPlatforms.toList()),
+        FormField(name = "platform", label = "Plateforme", type = FieldType.DROPDOWN, options = knownPlatforms),
         FormField(name = "contractType", label = "Type de contrat", type = FieldType.TEXT),
         FormField(name = "location", label = "Lieu du poste", type = FieldType.TEXT),
         FormField(name = "isSpontaneous", label = "Candidature Spontanée", type = FieldType.BOOLEAN),

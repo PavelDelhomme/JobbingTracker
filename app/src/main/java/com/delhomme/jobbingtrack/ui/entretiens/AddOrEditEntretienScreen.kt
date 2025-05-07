@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Entretien
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
+import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import com.delhomme.jobbingtrack.utils.toFieldMap
 
@@ -51,15 +52,17 @@ fun AddOrEditEntretienScreen(
         ),
         FormField(
             name = "style",
-            label = "Style d'entretien (ON_SITE ou REMOTE)",
-            type = FieldType.TEXT,
-            isRequired = true
+            label = "Style d'entretien",
+            type = FieldType.DROPDOWN,
+            isRequired = true,
+            options = FormSuggestions.entretienStyles
         ),
         FormField(
             name = "type",
-            label = "Type d'entretien (RH ou TECHNICAL)",
-            type = FieldType.TEXT,
-            isRequired = true
+            label = "Type d'entretien",
+            type = FieldType.DROPDOWN,
+            isRequired = true,
+            options = FormSuggestions.entretienTypes
         ),
         FormField(
             name = "preInterviewNotes",
