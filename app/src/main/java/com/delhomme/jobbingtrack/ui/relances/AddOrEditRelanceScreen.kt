@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Relance
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
+import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.utils.toFieldMap
 
 @Composable
@@ -14,7 +15,8 @@ fun AddOrEditRelanceScreen(
     existingRelanceData: Relance? = null,
     linkedCandidatureId: String? = null,
     linkedCompanyId: String? = null,
-    onSave: (Map<String, String>) -> Unit
+    onSave: (Map<String, String>) -> Unit,
+    onCancel: (() -> Unit)? = null,
 ) {
     val fields = listOf(
         FormField(
@@ -47,8 +49,15 @@ fun AddOrEditRelanceScreen(
         FormField(
             name = "type",
             label = "Type de relance (Appel, Email, Sur place)",
-            type = FieldType.TEXT,
-            isRequired = true
+            type = FieldType.DROPDOWN,
+            isRequired = true,
+            onNewOptionAdded = { FormSuggestions.relanceTypes.add(it) },
+            onOptionRemoved = { FormSuggestions.relanceTypes.remove(it) },
+            onOptionRenamed = { old, new ->
+                val index = FormSuggestions.relanceTypes.indexOf(old)
+                if (index != -1) FormSuggestions.relanceTypes[index] = new
+            }
+
         ),
         FormField(
             name = "responseStatus",
@@ -68,6 +77,7 @@ fun AddOrEditRelanceScreen(
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack()
-        }
+        },
+        onCancel = onCancel
     )
 }

@@ -16,7 +16,8 @@ fun AddOrEditContactScreen(
     navController: NavController? = null,
     existingContactData: Contact? = null,
     onSave: (Map<String, String>) -> Unit,
-    linkedCandidatureId: String? = null
+    linkedCandidatureId: String? = null,
+    onCancel: (() -> Unit)? = null,
 ) {
     val knownContactTypes = listOf("Manager", "Recruteur", "CTO", "Chargé RH", "CEO")
 
@@ -29,7 +30,11 @@ fun AddOrEditContactScreen(
             name = "position",
             label = "Poste",
             type = FieldType.DROPDOWN,
-            options = FormSuggestions.contactPositions
+            options = FormSuggestions.contactPositions,
+            onOptionRenamed = { old, new ->
+                val index = FormSuggestions.contactPositions.indexOf(old)
+                if (index != -1) FormSuggestions.contactPositions[index] = new
+            }
         ),
         FormField(name = "department", label = "Service", type = FieldType.TEXT),
         FormField(name = "companyName", label = "Entreprise", type = FieldType.SUGGESTION_TEXT, isRequired = true, options = FakeDataProvider.entreprises.map { it.name }),
@@ -42,6 +47,7 @@ fun AddOrEditContactScreen(
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack()
-        }
+        },
+        onCancel = onCancel
     )
 }

@@ -69,8 +69,8 @@ fun RelanceDetailScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Type : ${relance.type.name}")
-            Text("Statut de réponse : ${relance.responseStatus.name}")
+            Text("Type : ${relance.type?.name ?: "Non spécifié"}")
+            Text("Statut de réponse : ${relance.responseStatus?.name ?: "Non spécifié"}")
             Text("Date : ${relance.date.toFormattedDate()}")
             relance.notes?.let { Text("Notes : $it") }
             candidature?.let {

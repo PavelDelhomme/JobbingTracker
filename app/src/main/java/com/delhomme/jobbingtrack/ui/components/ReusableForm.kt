@@ -12,6 +12,11 @@ import com.delhomme.jobbingtrack.data.forms.FormField
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import kotlin.math.exp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,7 +24,8 @@ import kotlin.math.exp
 fun ReusableForm(
     fields: List<FormField>,
     initialValues: Map<String, String>? = null,
-    onSubmit: (Map<String, String>) -> Unit
+    onSubmit: (Map<String, String>) -> Unit,
+    onCancel: (() -> Unit)? = null
 ) {
     val fieldValues = remember { mutableStateMapOf<String, String>() }
 
@@ -34,6 +40,7 @@ fun ReusableForm(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -95,6 +102,9 @@ fun ReusableForm(
                     val options = remember { mutableStateListOf<String>().apply { addAll(field.options ?: emptyList()) } }
                     var expanded by remember { mutableStateOf(false) }
 
+                    var optionBeingEdited by remember { mutableStateOf<String?>(null) }
+                    var editDialogText by remember { mutableStateOf("") }
+
                     Column {
                         ExposedDropdownMenuBox(
                             expanded = expanded,
@@ -116,7 +126,28 @@ fun ReusableForm(
                             ) {
                                 options.forEach { option ->
                                     DropdownMenuItem(
-                                        text = { Text(option) },
+                                        text = {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Text(option, modifier = Modifier.weight(1f))
+
+                                                IconButton(onClick = {
+                                                    optionBeingEdited = option
+                                                    editDialogText = option
+                                                }) {
+                                                    Icon(Icons.Default.Edit, contentDescription = "Modifier")
+                                                }
+
+                                                IconButton(onClick = {
+                                                    options.remove(option)
+                                                    field.onOptionRemoved?.invoke(option)
+                                                }) {
+                                                    Icon(Icons.Default.Delete, contentDescription = "Supprimer")
+                                                }
+                                            }
+                                        },
                                         onClick = {
                                             fieldValues[field.name] = option
                                             expanded = false
@@ -167,6 +198,46 @@ fun ReusableForm(
                                 }
                             )
                         }
+                        if (optionBeingEdited != null) {
+                            AlertDialog(
+                                onDismissRequest = { optionBeingEdited = null },
+                                confirmButton = {
+                                    TextButton(onClick = {
+                                        val old = optionBeingEdited!!
+                                        val new = editDialogText.trim()
+                                        if (new.isNotBlank() && new != old) {
+                                            val index = options.indexOf(old)
+                                            if (index != -1) {
+                                                options[index] = new
+                                                field.onOptionRenamed?.invoke(old, new)
+                                                if (fieldValues[field.name] == old) {
+                                                    fieldValues[field.name] = new
+                                                }
+                                            }
+                                        }
+                                        optionBeingEdited = null
+                                    }) {
+                                        Text("Modifier")
+                                    }
+                                },
+                                dismissButton = {
+                                    TextButton(onClick = {
+                                        optionBeingEdited = null
+                                    }) {
+                                        Text("Annuler")
+                                    }
+                                },
+                                title = { Text("Modifier l'option") },
+                                text = {
+                                    OutlinedTextField(
+                                        value = editDialogText,
+                                        onValueChange = { editDialogText = it },
+                                        label = { Text("Nouvelle valeur") },
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
 
@@ -208,12 +279,22 @@ fun ReusableForm(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { onSubmit(fieldValues) },
-            modifier = Modifier.fillMaxWidth()
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth().padding(top = 24.dp)
         ) {
-            Text("Enregistrer")
+            if (onCancel != null) {
+                OutlinedButton(onClick = onCancel) {
+                    Text("Annuler")
+                }
+                Spacer(Modifier.width(12.dp))
+            }
+            Button(
+                onClick = { onSubmit(fieldValues) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Enregistrer")
+            }
         }
     }
 }

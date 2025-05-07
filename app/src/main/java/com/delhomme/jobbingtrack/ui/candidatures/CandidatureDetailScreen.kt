@@ -122,7 +122,7 @@ fun CandidatureDetailScreen(
             }
             items(relances) { relance ->
                 DetailItemCard(
-                    title = "${relance.type.name} (${relance.responseStatus.name})",
+                    title = "${relance.type?.name ?: "Type inconnu"} (${relance.responseStatus?.name ?: "Statut inconnu"})",
                     subtitle = relance.date.toString(),
                     onClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${relance.id}")}
                 )
@@ -144,7 +144,7 @@ fun CandidatureDetailScreen(
             }
             items(entretiens) { entretien ->
                 DetailItemCard(
-                    title = "${entretien.type.name} - ${entretien.style.name}",
+                    title = "${entretien.type?.name ?: "Type inconnu"} - ${entretien.style?.name ?: "Style inconnu"}",
                     subtitle = "${entretien.contacts}",
                     onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.id}")}
                 )

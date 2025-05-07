@@ -13,7 +13,8 @@ fun AddOrEditAppelScreen(
     navController: NavController? = null,
     existingAppelData: Appel? = null,
     onSave: (Map<String, String>) -> Unit,
-    linkedCandidatureId: String? = null // Ajout par défaut null
+    linkedCandidatureId: String? = null, // Ajout par défaut null
+    onCancel: (() -> Unit)? = null,
 ) {
     val fields = listOf(
         FormField(
@@ -65,6 +66,7 @@ fun AddOrEditAppelScreen(
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack()
-        }
+        },
+        onCancel = onCancel
     )
 }

@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.data.fake
 
+import androidx.compose.runtime.mutableStateListOf
 import com.delhomme.jobbingtrack.data.classes.*
 import kotlin.random.Random
 import java.time.LocalDateTime
@@ -104,7 +105,7 @@ object FakeDataProvider {
     }
 
 
-    val evenements = buildList {
+    val evenements = mutableStateListOf<Evenement>().apply {
         appels.forEach { appel ->
             add(
                 Evenement(

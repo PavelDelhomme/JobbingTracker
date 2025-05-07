@@ -1,7 +1,19 @@
 package com.delhomme.jobbingtrack.utils
 
+import com.delhomme.jobbingtrack.data.classes.ApplicationType
+
 fun Any?.toFieldMap(): Map<String, String> {
     return when (this) {
+        is com.delhomme.jobbingtrack.data.classes.Candidature -> mapOf(
+            "title" to this.title,
+            "companyName" to this.companyName,
+            "applicationDate" to this.applicationDate.toString(),
+            "platform" to (this.platform ?: ""),
+            "contractType" to (this.contractType ?: ""),
+            "location" to (this.location ?: ""),
+            "isSpontaneous" to (this.applicationType == ApplicationType.SPONTANEOUS).toString(),
+            "notes" to (this.notes ?: "")
+        )
         is com.delhomme.jobbingtrack.data.classes.Appel -> mapOf(
             "subject" to (this.subject ?: ""),
             "companyId" to (this.companyId ?: ""),
@@ -25,8 +37,8 @@ fun Any?.toFieldMap(): Map<String, String> {
             "companyId" to this.companyId,
             "location" to (this.location ?: ""),
             "contacts" to this.contacts.joinToString(","),
-            "style" to this.style.name,
-            "type" to this.type.name,
+            "type" to (this.type?.name ?: ""),
+            "style" to (this.style?.name ?: ""),
             "preInterviewNotes" to (this.preInterviewNotes ?: ""),
             "interviewNotes" to (this.interviewNotes ?: ""),
             "postInterviewNotes" to (this.postInterviewNotes ?: ""),
@@ -40,8 +52,8 @@ fun Any?.toFieldMap(): Map<String, String> {
             "candidatureId" to this.candidatureId,
             "companyId" to this.companyId,
             "contactId" to (this.contactId ?: ""),
-            "type" to this.type.name,
-            "responseStatus" to this.responseStatus.name,
+            "type" to (this.type?.name ?: ""),
+            "responseStatus" to (this.responseStatus?.name ?: ""),
             "notes" to (this.notes ?: "")
         )
         else -> emptyMap()

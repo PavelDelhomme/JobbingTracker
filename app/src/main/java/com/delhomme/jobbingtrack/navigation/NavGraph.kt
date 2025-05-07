@@ -7,6 +7,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
+import com.delhomme.jobbingtrack.data.logic.saveAppelFromForm
+import com.delhomme.jobbingtrack.data.logic.saveCandidatureFromForm
+import com.delhomme.jobbingtrack.data.logic.saveContactFromForm
+import com.delhomme.jobbingtrack.data.logic.saveEntrepriseFromForm
+import com.delhomme.jobbingtrack.data.logic.saveEntretienFromForm
+import com.delhomme.jobbingtrack.data.logic.saveRelanceFromForm
 import com.delhomme.jobbingtrack.ui.appels.AddOrEditAppelScreen
 import com.delhomme.jobbingtrack.ui.appels.AppelDetailScreen
 import com.delhomme.jobbingtrack.ui.appels.AppelsScreen
@@ -129,7 +135,7 @@ fun NavGraph(navController: NavHostController) {
                 navController = navController,
                 existingCandidatureData = null,
                 onSave = {
-                    println("Candidature ajoutée : $it")
+                    saveCandidatureFromForm(it)
                     navController.popBackStack()
                 }
             )
@@ -141,7 +147,7 @@ fun NavGraph(navController: NavHostController) {
                 existingContactData = null,
                 linkedCandidatureId = null,
                 onSave = {
-                    println("Contact ajouté : $it")
+                    saveContactFromForm(it)
                     navController.popBackStack()
                 }
             )
@@ -152,7 +158,7 @@ fun NavGraph(navController: NavHostController) {
                 navController = navController,
                 existingEntrepriseData = null,
                 onSave = {
-                    println("Entreprise ajoutée : $it")
+                    saveEntrepriseFromForm(it)
                     navController.popBackStack()
                 }
             )
@@ -164,7 +170,7 @@ fun NavGraph(navController: NavHostController) {
                 existingRelanceData = null,
                 linkedCandidatureId = null,
                 onSave = {
-                    println("Relance ajoutée : $it")
+                    saveRelanceFromForm(it)
                     navController.popBackStack()
                 }
             )
@@ -176,7 +182,7 @@ fun NavGraph(navController: NavHostController) {
                 existingAppelData = null,
                 linkedCandidatureId = null,
                 onSave = {
-                    println("Appel ajouté : $it")
+                    saveAppelFromForm(it)
                     navController.popBackStack()
                 }
             )
@@ -188,7 +194,7 @@ fun NavGraph(navController: NavHostController) {
                 existingEntretienData = null,
                 linkedCandidatureId = null,
                 onSave = {
-                    println("Entretien ajouté : $it")
+                    saveEntretienFromForm(it)
                     navController.popBackStack()
                 }
             )
@@ -202,7 +208,7 @@ fun NavGraph(navController: NavHostController) {
                     navController = navController,
                     existingCandidatureData = item,
                     onSave = {
-                        println("Candidature modifiée : $it")
+                        saveCandidatureFromForm(it)
                         navController.popBackStack()
                     }
                 )
@@ -217,7 +223,7 @@ fun NavGraph(navController: NavHostController) {
                     navController = navController,
                     existingContactData = item,
                     onSave = {
-                        println("Contact modifié : $it")
+                        saveContactFromForm(it)
                         navController.popBackStack()
                     }
                 )
@@ -232,7 +238,7 @@ fun NavGraph(navController: NavHostController) {
                     navController = navController,
                     existingEntrepriseData = item,
                     onSave = {
-                        println("Entreprise modifiée : $it")
+                        saveEntrepriseFromForm(it)
                         navController.popBackStack()
                     }
                 )
@@ -248,7 +254,7 @@ fun NavGraph(navController: NavHostController) {
                     existingRelanceData = item,
                     linkedCandidatureId = item.candidatureId,
                     onSave = {
-                        println("Relance modifiée : $it")
+                        saveRelanceFromForm(it)
                         navController.popBackStack()
                     }
                 )
@@ -264,7 +270,7 @@ fun NavGraph(navController: NavHostController) {
                     existingAppelData = item,
                     linkedCandidatureId = item.candidatureId,
                     onSave = {
-                        println("Appel modifié : $it")
+                        saveAppelFromForm(it)
                         navController.popBackStack()
                     }
                 )
@@ -280,7 +286,7 @@ fun NavGraph(navController: NavHostController) {
                     existingEntretienData = item,
                     linkedCandidatureId = item.candidatureId,
                     onSave = {
-                        println("Entretien modifié : $it")
+                        saveEntretienFromForm(it)
                         navController.popBackStack()
                     }
                 )

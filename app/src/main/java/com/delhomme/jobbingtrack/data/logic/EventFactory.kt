@@ -19,7 +19,7 @@ object EventFactory {
     fun fromRelance(r: Relance): Evenement = Evenement(
         id = UUID.randomUUID().toString(),
         relatedObjectId = r.id,
-        title = "Relance ${r.type.name} ${r.companyId} ${r.candidatureId}",
+        title = "Relance ${r.type?.name ?: "Inconnu"} ${r.companyId} ${r.candidatureId}",
         description = r.notes,
         startDate = r.date,
         endDate = r.date,
@@ -41,10 +41,10 @@ object EventFactory {
     fun fromEntretien(e: Entretien): Evenement = Evenement(
         id = UUID.randomUUID().toString(),
         relatedObjectId = e.id,
-        title = "Entretien ${e.type.name}",
+        title = "Entretien ${e.type?.name ?: "?"}",
         description = e.preInterviewNotes,
         startDate = e.dateTime,
-        endDate = e.dateTime + (e.durationMinutes * 60 * 1000),
+        endDate = e.dateTime + ((e.durationMinutes ?: 30) * 60 * 1000L),
         syncHash = "evt-entretien-${UUID.randomUUID()}",
         type = "Entretiens"
     )

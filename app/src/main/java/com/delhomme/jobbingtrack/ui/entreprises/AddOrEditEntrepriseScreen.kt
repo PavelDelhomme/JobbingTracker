@@ -12,7 +12,8 @@ import com.delhomme.jobbingtrack.utils.toFieldMap
 fun AddOrEditEntrepriseScreen(
     navController: NavController? = null,
     existingEntrepriseData: Entreprise? = null,
-    onSave: (Map<String, String>) -> Unit
+    onSave: (Map<String, String>) -> Unit,
+    onCancel: (() -> Unit)? = null,
 ) {
     val fields = listOf(
         FormField(name = "name", label = "Nom de l'entreprise", type = FieldType.TEXT, isRequired = true),
@@ -30,6 +31,7 @@ fun AddOrEditEntrepriseScreen(
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack()
-        }
+        },
+        onCancel = onCancel
     )
 }

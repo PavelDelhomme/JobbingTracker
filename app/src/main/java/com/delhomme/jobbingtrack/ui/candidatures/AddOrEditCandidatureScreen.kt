@@ -11,6 +11,7 @@ import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Candidature
+import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.utils.toFieldMap
 
 
@@ -18,7 +19,8 @@ import com.delhomme.jobbingtrack.utils.toFieldMap
 fun AddOrEditCandidatureScreen(
     navController: NavController? = null,
     existingCandidatureData: Candidature? = null, // null pour ajout
-    onSave: (Map<String, String>) -> Unit
+    onSave: (Map<String, String>) -> Unit,
+    onCancel: (() -> Unit)? = null,
 ) {
 
     // todo pré-remplissage des champs avec existingCandidatureData
@@ -29,10 +31,35 @@ fun AddOrEditCandidatureScreen(
 
     val fields = listOf(
         FormField(name = "title", label = "Titre du poste", type = FieldType.TEXT, isRequired = true),
-        FormField(name = "companyName", label = "Entreprise", type = FieldType.TEXT, isRequired = true),
+        FormField(name = "companyName", label = "Entreprise", type = FieldType.SUGGESTION_TEXT, options = entrepriseSuggestions, isRequired = true),
         FormField(name = "applicationDate", label = "Date de candidature", type = FieldType.DATE, isRequired = true),
-        FormField(name = "platform", label = "Plateforme", type = FieldType.DROPDOWN, options = knownPlatforms),
-        FormField(name = "contractType", label = "Type de contrat", type = FieldType.TEXT),
+
+        FormField(
+            name = "platform",
+            label = "Plateforme",
+            type = FieldType.SUGGESTION_TEXT,
+            options = FormSuggestions.platforms,
+            onNewOptionAdded = { FormSuggestions.platforms.add(it) },
+            onOptionRemoved = { FormSuggestions.platforms.remove(it) },
+            onOptionRenamed = { old, new ->
+                val index = FormSuggestions.platforms.indexOf(old)
+                if (index != -1) FormSuggestions.platforms[index] = new
+            }
+        ),
+
+        FormField(
+            name = "contractType",
+            label = "Type de contrat",
+            type = FieldType.SUGGESTION_TEXT,
+            options = FormSuggestions.contractTypes,
+            onNewOptionAdded = { FormSuggestions.contractTypes.add(it) },
+            onOptionRemoved = { FormSuggestions.contractTypes.remove(it) },
+            onOptionRenamed = { old, new ->
+                val index = FormSuggestions.contractTypes.indexOf(old)
+                if (index != -1) FormSuggestions.contractTypes[index] = new
+            }
+        ),
+
         FormField(name = "location", label = "Lieu du poste", type = FieldType.TEXT),
         FormField(name = "isSpontaneous", label = "Candidature Spontanée", type = FieldType.BOOLEAN),
         FormField(name = "notes", label = "Notes", type = FieldType.MULTILINE_TEXT)
@@ -45,6 +72,7 @@ fun AddOrEditCandidatureScreen(
         onSubmit = { formData ->
             onSave(formData)
             navController?.popBackStack() // Retour automatique après sauvegarde
-        }
+        },
+        onCancel = onCancel
     )
 }

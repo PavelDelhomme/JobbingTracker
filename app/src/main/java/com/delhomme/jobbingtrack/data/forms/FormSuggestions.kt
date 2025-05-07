@@ -1,17 +1,19 @@
 package com.delhomme.jobbingtrack.data.forms
 
+import androidx.compose.runtime.mutableStateListOf
+
 
 object FormSuggestions {
 
-    val platforms = mutableListOf(
+    val platforms = mutableStateListOf(
         "LinkedIn", "Indeed", "Welcome to the Jungle", "HelloWork", "Pôle Emploi"
     )
 
-    val contractTypes = mutableListOf(
+    val contractTypes = mutableStateListOf(
         "CDI", "CDD", "Alternance", "Stage", "Freelance"
     )
 
-    val jobTitles = mutableListOf(
+    val jobTitles = mutableStateListOf(
         "Développeur", "Designer", "Chef de Projet", "Data Analyst", "DevOps"
     )
 

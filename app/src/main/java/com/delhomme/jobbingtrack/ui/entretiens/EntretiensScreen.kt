@@ -16,8 +16,8 @@ fun EntretiensScreen(
 
     ListScreen(
         dateProvider = { it.dateTime.toFormattedDate() },
-        titleProvider = { it.type.name },
-        centerInfoProvider = { it.style.name },
+        titleProvider = { it.type?.name ?: "Type inconnu" },
+        centerInfoProvider = { it.style?.name ?: "Style inconnu" },
         bottomLeftInfoProvider = { "Entreprise ID: ${it.companyId}" },
         items = visibleEntretiens,
         onItemClick = onItemClick

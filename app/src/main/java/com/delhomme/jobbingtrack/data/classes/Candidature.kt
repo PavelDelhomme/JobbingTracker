@@ -3,17 +3,17 @@ package com.delhomme.jobbingtrack.data.classes
 
 data class Candidature(
     val id: String,
-    val title: String,
-    val companyName: String,
-    val companyId: String,
-    val applicationDate: Long, // timestamp
-    val location: String?,
-    val platform: String?,
-    val contractType: String?,
-    val notes: String?,
-    val applicationType: ApplicationType,
-    val applicationStatus: ApplicationStatus,
-    val syncHash: String,
+    var title: String,
+    var companyName: String,
+    var companyId: String,
+    var applicationDate: Long, // timestamp
+    var location: String?,
+    var platform: String?,
+    var contractType: String?,
+    var notes: String?,
+    var applicationType: ApplicationType,
+    var applicationStatus: ApplicationStatus,
+    var syncHash: String,
     var isArchived: Boolean = false,
     var isDeleted: Boolean = false,
 )

@@ -16,8 +16,8 @@ fun RelancesScreen(
 
     ListScreen(
         dateProvider = { it.date.toFormattedDate() },
-        titleProvider = { it.type.name },
-        centerInfoProvider = { it.responseStatus.name },
+        titleProvider = { it.type?.name ?: "Type inconnu" },
+        centerInfoProvider = { it.responseStatus?.name ?: "Statut inconnu" },
         bottomLeftInfoProvider = { "Entreprise ID: ${it.companyId}" },
         items = visibleRelances,
         onItemClick = onItemClick

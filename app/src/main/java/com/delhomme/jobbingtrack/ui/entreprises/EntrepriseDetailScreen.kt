@@ -113,7 +113,7 @@ fun EntrepriseDetailScreen(
                 item { SectionTitle("Entretiens liés") }
                 items(entretiens) { entretien ->
                     DetailItemCard(
-                        title = "${entretien.type.name} - ${entretien.style.name}",
+                        title = "${entretien.type?.name ?: "Type inconnu"} - ${entretien.style?.name ?: "Style inconnu"}",
                         subtitle = entretien.dateTime.toFormattedDate(),
                         onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.id}") }
                     )
@@ -124,8 +124,8 @@ fun EntrepriseDetailScreen(
                 item { SectionTitle("Relances liées") }
                 items(relances) { relance ->
                     DetailItemCard(
-                        title = relance.type.name,
-                        subtitle = relance.responseStatus.name,
+                        title = relance.type?.name ?: "Type inconnu",
+                        subtitle = relance.responseStatus?.name ?: "Statut inconnu",
                         onClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${relance.id}") }
                     )
                 }
