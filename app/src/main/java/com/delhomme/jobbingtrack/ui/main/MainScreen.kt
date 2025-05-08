@@ -16,7 +16,6 @@ import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.appels.AppelsScreen
 import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesScreen
-import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesTabScreen
 import com.delhomme.jobbingtrack.ui.contacts.ContactsScreen
 import com.delhomme.jobbingtrack.ui.entreprises.EntreprisesScreen
 import com.delhomme.jobbingtrack.ui.entretiens.EntretiensScreen

@@ -21,7 +21,6 @@ import com.delhomme.jobbingtrack.ui.archive_bin.TrashScreen
 import com.delhomme.jobbingtrack.ui.candidatures.AddOrEditCandidatureScreen
 import com.delhomme.jobbingtrack.ui.candidatures.CandidatureDetailScreen
 import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesScreen
-import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesTabScreen
 import com.delhomme.jobbingtrack.ui.contacts.AddOrEditContactScreen
 import com.delhomme.jobbingtrack.ui.contacts.ContactDetailScreen
 import com.delhomme.jobbingtrack.ui.contacts.ContactsScreen
