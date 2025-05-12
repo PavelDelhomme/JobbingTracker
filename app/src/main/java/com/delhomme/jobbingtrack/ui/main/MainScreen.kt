@@ -9,17 +9,9 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.navigation.Routes
-import com.delhomme.jobbingtrack.ui.appels.AppelsScreen
-import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesScreen
-import com.delhomme.jobbingtrack.ui.contacts.ContactsScreen
-import com.delhomme.jobbingtrack.ui.entreprises.EntreprisesScreen
-import com.delhomme.jobbingtrack.ui.entretiens.EntretiensScreen
-import com.delhomme.jobbingtrack.ui.relances.RelancesScreen
 import com.delhomme.jobbingtrack.ui.components.*
 import kotlinx.coroutines.launch
 import androidx.activity.compose.BackHandler

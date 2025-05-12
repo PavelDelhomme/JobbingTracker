@@ -34,17 +34,20 @@ fun BottomSheetHost(
     onDismissRequest: () -> Unit
 ) {
     if (visibleContent != BottomSheetContentType.NONE) {
+        val sheetState = rememberModalBottomSheetState(
+            skipPartiallyExpanded = false, // Permet le swipe vers le bas au lieu d'être fixé
+            confirmValueChange = { true } // Pour ajouter des contrôles de validation
+        )
+
         ModalBottomSheet(
             onDismissRequest = { onDismissRequest() },
-            modifier = Modifier.fillMaxHeight(0.95f)
+            sheetState = sheetState,
+            modifier = Modifier.fillMaxWidth() // Largeur seulement
         ) {
-            val scrollState = rememberScrollState()
-
+            // NE PAS FORCER DE scroll externe ici, laisse le contenu gérer
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .heightIn(max = 600.dp) // ✅ CONTRAINTE DE HAUTEUR MAX !!!
-                    .verticalScroll(scrollState)
+                    .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -62,6 +65,7 @@ fun BottomSheetHost(
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
+                // ✅ Le contenu gère son scroll lui-même (comme ReusableForm déjà scrollable)
                 when (visibleContent) {
                     BottomSheetContentType.ADD_CANDIDATURE -> {
                         AddOrEditCandidatureScreen(
