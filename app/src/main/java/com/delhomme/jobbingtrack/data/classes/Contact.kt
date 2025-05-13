@@ -1,8 +1,10 @@
 package com.delhomme.jobbingtrack.data.classes
 
+import com.delhomme.jobbingtrack.data.HasId
+
 
 data class Contact(
-    val id: String,
+    override val id: String,
     val firstName: String,
     val lastName: String,
     val phone: String?,
@@ -14,7 +16,7 @@ data class Contact(
     val notes: String,
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
-)
+) : HasId
 
 fun Contact.toFormMap(): Map<String, String> {
     return mapOf(

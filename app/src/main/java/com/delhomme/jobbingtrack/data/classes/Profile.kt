@@ -1,7 +1,9 @@
 package com.delhomme.jobbingtrack.data.classes
 
+import com.delhomme.jobbingtrack.data.HasId
+
 data class Profile(
-    val id: String,
+    override val id: String,
     val userId: String,
     val cvs: List<String>,
     val skills: List<String>,
@@ -9,7 +11,7 @@ data class Profile(
     val projects: List<String>,
     val languages: List<Language>,
     val syncHash: String
-)
+) : HasId
 
 data class Language(
     val name: String,

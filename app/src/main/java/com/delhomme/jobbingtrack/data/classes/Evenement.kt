@@ -1,7 +1,9 @@
 package com.delhomme.jobbingtrack.data.classes
 
+import com.delhomme.jobbingtrack.data.HasId
+
 data class Evenement(
-    val id: String,
+    override val id: String,
     val relatedObjectId: String?,
     val title: String,
     val description: String?,
@@ -9,4 +11,4 @@ data class Evenement(
     val endDate: Long?,
     val syncHash: String,
     val type: String // Type d'évènement
-)
+) : HasId

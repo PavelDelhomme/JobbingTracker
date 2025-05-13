@@ -13,28 +13,22 @@ import com.delhomme.jobbingtrack.data.logic.saveContactFromForm
 import com.delhomme.jobbingtrack.data.logic.saveEntrepriseFromForm
 import com.delhomme.jobbingtrack.data.logic.saveEntretienFromForm
 import com.delhomme.jobbingtrack.data.logic.saveRelanceFromForm
-import com.delhomme.jobbingtrack.ui.appels.AddOrEditAppelScreen
-import com.delhomme.jobbingtrack.ui.appels.AppelDetailScreen
-import com.delhomme.jobbingtrack.ui.appels.AppelsScreen
-import com.delhomme.jobbingtrack.ui.archive_bin.ArchiveScreen
-import com.delhomme.jobbingtrack.ui.archive_bin.TrashScreen
-import com.delhomme.jobbingtrack.ui.candidatures.AddOrEditCandidatureScreen
-import com.delhomme.jobbingtrack.ui.candidatures.CandidatureDetailScreen
-import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesScreen
-import com.delhomme.jobbingtrack.ui.contacts.AddOrEditContactScreen
-import com.delhomme.jobbingtrack.ui.contacts.ContactDetailScreen
-import com.delhomme.jobbingtrack.ui.contacts.ContactsScreen
-import com.delhomme.jobbingtrack.ui.entreprises.AddOrEditEntrepriseScreen
-import com.delhomme.jobbingtrack.ui.entreprises.EntrepriseDetailScreen
-import com.delhomme.jobbingtrack.ui.entreprises.EntreprisesScreen
-import com.delhomme.jobbingtrack.ui.entreprises.EntretienDetailScreen
-import com.delhomme.jobbingtrack.ui.entretiens.AddOrEditEntretienScreen
-import com.delhomme.jobbingtrack.ui.entretiens.EntretiensScreen
-import com.delhomme.jobbingtrack.ui.login.LoginScreen
+import com.delhomme.jobbingtrack.ui.major.appels.AddOrEditAppelScreen
+import com.delhomme.jobbingtrack.ui.major.appels.AppelDetailScreen
+import com.delhomme.jobbingtrack.ui.major.archive_bin.ArchiveScreen
+import com.delhomme.jobbingtrack.ui.major.archive_bin.TrashScreen
+import com.delhomme.jobbingtrack.ui.major.candidatures.AddOrEditCandidatureScreen
+import com.delhomme.jobbingtrack.ui.major.candidatures.CandidatureDetailScreen
+import com.delhomme.jobbingtrack.ui.major.contacts.AddOrEditContactScreen
+import com.delhomme.jobbingtrack.ui.major.contacts.ContactDetailScreen
+import com.delhomme.jobbingtrack.ui.major.entreprises.AddOrEditEntrepriseScreen
+import com.delhomme.jobbingtrack.ui.major.entreprises.EntrepriseDetailScreen
+import com.delhomme.jobbingtrack.ui.major.entretiens.EntretienDetailScreen
+import com.delhomme.jobbingtrack.ui.major.entretiens.AddOrEditEntretienScreen
+import com.delhomme.jobbingtrack.ui.major.login.LoginScreen
 import com.delhomme.jobbingtrack.ui.main.MainScreen
-import com.delhomme.jobbingtrack.ui.relances.AddOrEditRelanceScreen
-import com.delhomme.jobbingtrack.ui.relances.RelanceDetailScreen
-import com.delhomme.jobbingtrack.ui.relances.RelancesScreen
+import com.delhomme.jobbingtrack.ui.major.relances.AddOrEditRelanceScreen
+import com.delhomme.jobbingtrack.ui.major.relances.RelanceDetailScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -69,6 +63,30 @@ fun NavGraph(navController: NavHostController) {
                     navController = navController
                 )
             }
+        }
+
+        composable("${Routes.ADD_CONTACT}?linkedCandidatureId={linkedCandidatureId}&linkedEntrepriseId={linkedEntrepriseId}",
+            arguments = listOf(
+                navArgument("linkedCandidatureId") { nullable = true; type = NavType.StringType },
+                navArgument("linkedEntrepriseId") { nullable = true; type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val candidatureId = backStackEntry.arguments?.getString("linkedCandidatureId")
+            var entrepriseId = backStackEntry.arguments?.getString("linkedEntrepriseId")
+
+            if (entrepriseId == null && candidatureId != null) {
+                entrepriseId = FakeDataProvider.candidatures.find { it.id == candidatureId }?.companyId
+            }
+
+            AddOrEditContactScreen(
+                navController = navController,
+                existingContactData = null,
+                linkedEntrepriseId = entrepriseId,
+                onSave = {
+                    saveContactFromForm(it)
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable("${Routes.CONTACT_DETAIL}/{contactId}") { backStackEntry ->
@@ -139,17 +157,38 @@ fun NavGraph(navController: NavHostController) {
                 }
             )
         }
+        composable(
+            "${Routes.ADD_CONTACT}?linkedEntrepriseId={linkedEntrepriseId}",
+            arguments = listOf(navArgument("linkedEntrepriseId") { nullable = true; type = NavType.StringType })
+        ) { backStackEntry ->
+            val entrepriseId = backStackEntry.arguments?.getString("linkedEntrepriseId")
 
-        composable(Routes.ADD_CONTACT) {
             AddOrEditContactScreen(
                 navController = navController,
                 existingContactData = null,
-                linkedCandidatureId = null,
+                linkedEntrepriseId = entrepriseId,
                 onSave = {
                     saveContactFromForm(it)
                     navController.popBackStack()
                 }
             )
+        }
+
+
+        composable("${Routes.EDIT_CONTACT}/{contactId}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("contactId")
+            val item = FakeDataProvider.contacts.find { it.id == id }
+            if (item != null) {
+                AddOrEditContactScreen(
+                    navController = navController,
+                    existingContactData = item,
+                    linkedEntrepriseId = item.entrepriseId,
+                    onSave = {
+                        saveContactFromForm(it)
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
 
         composable(Routes.ADD_ENTREPRISE) {
@@ -163,11 +202,20 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        composable(Routes.ADD_RELANCE) {
+        composable("${Routes.ADD_RELANCE}?linkedCandidatureId={linkedCandidatureId}&linkedCompanyId={linkedCompanyId}",
+            arguments = listOf(
+                navArgument("linkedCandidatureId") { nullable = true; type = NavType.StringType },
+                navArgument("linkedCompanyId") { nullable = true; type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val candidatureId = backStackEntry.arguments?.getString("linkedCandidatureId")
+            val companyId = backStackEntry.arguments?.getString("linkedCompanyId")
+
             AddOrEditRelanceScreen(
                 navController = navController,
                 existingRelanceData = null,
-                linkedCandidatureId = null,
+                linkedCandidatureId = candidatureId,
+                linkedCompanyId = companyId,
                 onSave = {
                     saveRelanceFromForm(it)
                     navController.popBackStack()
@@ -175,11 +223,20 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        composable(Routes.ADD_APPEL) {
+        composable("${Routes.ADD_APPEL}?linkedCandidatureId={linkedCandidatureId}&linkedCompanyId={linkedCompanyId}",
+            arguments = listOf(
+                navArgument("linkedCandidatureId") { nullable = true; type = NavType.StringType },
+                navArgument("linkedCompanyId") { nullable = true; type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val candidatureId = backStackEntry.arguments?.getString("linkedCandidatureId")
+            val companyId = backStackEntry.arguments?.getString("linkedCompanyId")
+
             AddOrEditAppelScreen(
                 navController = navController,
                 existingAppelData = null,
-                linkedCandidatureId = null,
+                linkedCandidatureId = candidatureId,
+                linkedCompanyId = companyId,
                 onSave = {
                     saveAppelFromForm(it)
                     navController.popBackStack()
@@ -187,11 +244,20 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        composable(Routes.ADD_ENTRETIEN) {
+        composable("${Routes.ADD_ENTRETIEN}?linkedCandidatureId={linkedCandidatureId}&linkedCompanyId={linkedCompanyId}",
+            arguments = listOf(
+                navArgument("linkedCandidatureId") { nullable = true; type = NavType.StringType },
+                navArgument("linkedCompanyId") { nullable = true; type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val candidatureId = backStackEntry.arguments?.getString("linkedCandidatureId")
+            val companyId = backStackEntry.arguments?.getString("linkedCompanyId")
+
             AddOrEditEntretienScreen(
                 navController = navController,
                 existingEntretienData = null,
-                linkedCandidatureId = null,
+                linkedCandidatureId = candidatureId,
+                linkedCompanyId = companyId,
                 onSave = {
                     saveEntretienFromForm(it)
                     navController.popBackStack()
@@ -199,93 +265,75 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        composable("${Routes.EDIT_CANDIDATURE}/{candidatureId}") { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("candidatureId")
-            val item = FakeDataProvider.candidatures.find { it.id == id }
-            if (item != null) {
-                AddOrEditCandidatureScreen(
-                    navController = navController,
-                    existingCandidatureData = item,
-                    onSave = {
-                        saveCandidatureFromForm(it)
-                        navController.popBackStack()
-                    }
-                )
-            }
-        }
 
-        composable("${Routes.EDIT_CONTACT}/{contactId}") { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("contactId")
-            val item = FakeDataProvider.contacts.find { it.id == id }
-            if (item != null) {
-                AddOrEditContactScreen(
-                    navController = navController,
-                    existingContactData = item,
-                    onSave = {
-                        saveContactFromForm(it)
-                        navController.popBackStack()
-                    }
-                )
-            }
-        }
-
-        composable("${Routes.EDIT_ENTREPRISE}/{entrepriseId}") { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("entrepriseId")
-            val item = FakeDataProvider.entreprises.find { it.id == id }
-            if (item != null) {
+        composable("${Routes.EDIT_ENTREPRISE}/{entrepriseId}",
+            arguments = listOf(navArgument("entrepriseId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val entrepriseId = backStackEntry.arguments?.getString("entrepriseId")
+            val entreprise = FakeDataProvider.entreprises.find { it.id == entrepriseId }
+            entreprise?.let {
                 AddOrEditEntrepriseScreen(
                     navController = navController,
-                    existingEntrepriseData = item,
-                    onSave = {
-                        saveEntrepriseFromForm(it)
+                    existingEntrepriseData = it,
+                    onSave = { updated ->
+                        saveEntrepriseFromForm(updated)
                         navController.popBackStack()
                     }
                 )
             }
         }
 
-        composable("${Routes.EDIT_RELANCE}/{relanceId}") { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("relanceId")
-            val item = FakeDataProvider.relances.find { it.id == id }
-            if (item != null) {
+        composable("${Routes.EDIT_RELANCE}/{relanceId}",
+            arguments = listOf(navArgument("relanceId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val relanceId = backStackEntry.arguments?.getString("relanceId")
+            val relance = FakeDataProvider.relances.find { it.id == relanceId }
+            relance?.let {
                 AddOrEditRelanceScreen(
                     navController = navController,
-                    existingRelanceData = item,
-                    linkedCandidatureId = item.candidatureId,
-                    onSave = {
-                        saveRelanceFromForm(it)
+                    existingRelanceData = it,
+                    linkedCandidatureId = it.candidatureId,
+                    linkedCompanyId = it.companyId,
+                    onSave = { updated ->
+                        saveRelanceFromForm(updated)
                         navController.popBackStack()
                     }
                 )
             }
         }
 
-        composable("${Routes.EDIT_APPEL}/{appelId}") { backStackEntry ->
+        composable("${Routes.EDIT_APPEL}/{appelId}",
+            arguments = listOf(navArgument("appelId") { type = NavType.StringType })
+        ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("appelId")
-            val item = FakeDataProvider.appels.find { it.id == id }
-            if (item != null) {
+            val appel = FakeDataProvider.appels.find { it.id == id }
+            appel?.let {
                 AddOrEditAppelScreen(
                     navController = navController,
-                    existingAppelData = item,
-                    linkedCandidatureId = item.candidatureId,
-                    onSave = {
-                        saveAppelFromForm(it)
+                    existingAppelData = it,
+                    linkedCandidatureId = it.candidatureId,
+                    linkedCompanyId = it.companyId,
+                    onSave = { updated ->
+                        saveAppelFromForm(updated)
                         navController.popBackStack()
                     }
                 )
             }
         }
 
-        composable("${Routes.EDIT_ENTRETIEN}/{entretienId}") { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("entretienId")
-            val item = FakeDataProvider.entretiens.find { it.id == id }
-            if (item != null) {
+        composable("${Routes.EDIT_ENTRETIEN}/{entretienId}",
+            arguments = listOf(navArgument("entretienId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val entretienId = backStackEntry.arguments?.getString("entretienId")
+            val entretien = FakeDataProvider.entretiens.find { it.id == entretienId }
+            entretien?.let {
                 AddOrEditEntretienScreen(
                     navController = navController,
-                    existingEntretienData = item,
-                    linkedCandidatureId = item.candidatureId,
-                    onSave = {
-                        saveEntretienFromForm(it)
+                    existingEntretienData = it,
+                    linkedCandidatureId = it.candidatureId,
+                    linkedCompanyId = it.companyId,
+                    onSave = { updated ->
+                        saveEntretienFromForm(updated)
                         navController.popBackStack()
                     }
                 )

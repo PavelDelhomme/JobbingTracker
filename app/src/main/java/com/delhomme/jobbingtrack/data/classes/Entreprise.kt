@@ -1,8 +1,10 @@
 package com.delhomme.jobbingtrack.data.classes
 
+import com.delhomme.jobbingtrack.data.HasId
+
 
 data class Entreprise(
-    val id: String,
+    override val id: String,
     var name: String,
     var type: String?,
     var phone: String?,
@@ -10,9 +12,10 @@ data class Entreprise(
     var hrEmail: String?,
     var address: String?,
     val syncHash: String,
+    var notes: String?,
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
-)
+) : HasId
 
 
 fun Entreprise.toFormMap(): Map<String, String> {
@@ -25,6 +28,7 @@ fun Entreprise.toFormMap(): Map<String, String> {
         "hrEmail" to (hrEmail ?: ""),
         "address" to (address ?: ""),
         "syncHash" to (syncHash ?: ""),
+        "notes" to (notes ?: ""),
         "isArchived" to (isArchived.toString()),
         "isDeleted" to (isDeleted.toString()),
     )

@@ -1,20 +1,18 @@
 package com.delhomme.jobbingtrack.ui.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.logic.*
-import com.delhomme.jobbingtrack.ui.appels.AddOrEditAppelScreen
-import com.delhomme.jobbingtrack.ui.candidatures.AddOrEditCandidatureScreen
-import com.delhomme.jobbingtrack.ui.contacts.AddOrEditContactScreen
-import com.delhomme.jobbingtrack.ui.entreprises.AddOrEditEntrepriseScreen
-import com.delhomme.jobbingtrack.ui.entretiens.AddOrEditEntretienScreen
-import com.delhomme.jobbingtrack.ui.relances.AddOrEditRelanceScreen
+import com.delhomme.jobbingtrack.ui.major.appels.AddOrEditAppelScreen
+import com.delhomme.jobbingtrack.ui.major.candidatures.AddOrEditCandidatureScreen
+import com.delhomme.jobbingtrack.ui.major.contacts.AddOrEditContactScreen
+import com.delhomme.jobbingtrack.ui.major.entreprises.AddOrEditEntrepriseScreen
+import com.delhomme.jobbingtrack.ui.major.entretiens.AddOrEditEntretienScreen
+import com.delhomme.jobbingtrack.ui.major.relances.AddOrEditRelanceScreen
 
 enum class BottomSheetContentType {
     ADD_CANDIDATURE,
@@ -33,6 +31,10 @@ fun BottomSheetHost(
     linkedCandidatureId: String?,
     onDismissRequest: () -> Unit
 ) {
+    val entrepriseIdFromCandidature = linkedCandidatureId?.let {
+        FakeDataProvider.candidatures.find { c -> c.id == it }?.companyId
+    }
+
     if (visibleContent != BottomSheetContentType.NONE) {
         val sheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = false, // Permet le swipe vers le bas au lieu d'être fixé
@@ -43,13 +45,18 @@ fun BottomSheetHost(
             onDismissRequest = { onDismissRequest() },
             sheetState = sheetState,
             modifier = Modifier.fillMaxWidth() // Largeur seulement
+                .padding(top = 16.dp)
+                .imePadding()
+                .fillMaxHeight(0.98f), // A viré si pause probmème
+            dragHandle = { /* optionnel : custom handle ici */}
         ) {
             // NE PAS FORCER DE scroll externe ici, laisse le contenu gérer
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(16.dp),
+                    //.padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
                     text = when (visibleContent) {
@@ -62,7 +69,7 @@ fun BottomSheetHost(
                         else -> ""
                     },
                     style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = 4.dp)
                 )
 
                 // ✅ Le contenu gère son scroll lui-même (comme ReusableForm déjà scrollable)
@@ -83,7 +90,7 @@ fun BottomSheetHost(
                         AddOrEditContactScreen(
                             navController = null,
                             existingContactData = null,
-                            linkedCandidatureId = linkedCandidatureId,
+                            linkedEntrepriseId = entrepriseIdFromCandidature,
                             onSave = {
                                 saveContactFromForm(it)
                                 onDismissRequest()
@@ -121,6 +128,7 @@ fun BottomSheetHost(
                         AddOrEditEntretienScreen(
                             navController = null,
                             existingEntretienData = null,
+                            linkedCompanyId = null,
                             linkedCandidatureId = linkedCandidatureId,
                             onSave = {
                                 saveEntretienFromForm(it)

@@ -1,9 +1,10 @@
 package com.delhomme.jobbingtrack.data.classes
 
+import com.delhomme.jobbingtrack.data.HasId
 
 
 data class Relance(
-    val id: String,
+    override val id: String,
     val date: Long,
     val contactId: String?,
     val candidatureId: String,
@@ -14,7 +15,7 @@ data class Relance(
     val syncHash: String,
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
-)
+) : HasId
 
 enum class RelanceStatus {
     WAITING, POSITIVE_RESPONSE, NEGATIVE_RESPONSE, NO_RESPONSE

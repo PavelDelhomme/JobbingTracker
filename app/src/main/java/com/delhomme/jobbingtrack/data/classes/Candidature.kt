@@ -1,8 +1,10 @@
 package com.delhomme.jobbingtrack.data.classes
 
+import com.delhomme.jobbingtrack.data.HasId
+
 
 data class Candidature(
-    val id: String,
+    override val id: String,
     var title: String,
     var companyName: String,
     var companyId: String,
@@ -16,7 +18,7 @@ data class Candidature(
     var syncHash: String,
     var isArchived: Boolean = false,
     var isDeleted: Boolean = false,
-)
+) : HasId
 
 enum class ApplicationType {
     SPONTANEOUS, OFFER

@@ -9,15 +9,78 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import kotlin.math.exp
+
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.ui.platform.LocalContext
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+
+
+@Composable
+fun rememberFormattedDateTime(millis: Long?): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+    return millis?.let { sdf.format(Date(it)) } ?: ""
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ModernDateTimePickerField(
+    label: String,
+    initialMillis: Long? = null,
+    onDateTimeSelected: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    var displayMillis by remember { mutableStateOf(initialMillis ?: System.currentTimeMillis()) }
+
+    val dateFormat = remember { SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()) }
+
+    OutlinedTextField(
+        value = dateFormat.format(Date(displayMillis)),
+        onValueChange = {}, // désactivé : on ne tape pas manuellement
+        readOnly = true,
+        label = { Text(label) },
+        trailingIcon = {
+            IconButton(onClick = {
+                val calendar = Calendar.getInstance().apply { timeInMillis = displayMillis }
+                DatePickerDialog(
+                    context,
+                    { _, year, month, dayOfMonth ->
+                        TimePickerDialog(
+                            context,
+                            { _, hourOfDay, minute ->
+                                calendar.set(year, month, dayOfMonth, hourOfDay, minute)
+                                displayMillis = calendar.timeInMillis
+                                onDateTimeSelected(displayMillis)
+                            },
+                            calendar.get(Calendar.HOUR_OF_DAY),
+                            calendar.get(Calendar.MINUTE),
+                            true
+                        ).show()
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }) {
+                Icon(Icons.Default.Schedule, contentDescription = "Sélectionner date/heure")
+            }
+        },
+        //modifier = modifier.fillMaxWidth()
+        modifier = modifier
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,11 +92,33 @@ fun ReusableForm(
 ) {
     val fieldValues = remember { mutableStateMapOf<String, String>() }
 
+    // Format général
+    val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+
     // Préremplir les valeurs initiales
     LaunchedEffect(Unit) {
+        val now = System.currentTimeMillis()
+        val tomorrow9AM = Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_MONTH, 1)
+            set(Calendar.HOUR_OF_DAY, 9)
+            set(Calendar.MINUTE, 0)
+        }.timeInMillis
+
         fields.forEach { field ->
-            val value = initialValues?.get(field.name) ?: field.initialValue ?: ""
-            fieldValues[field.name] = value
+            val initial = initialValues?.get(field.name) ?: field.initialValue
+            val defaultDate = when (field.name) {
+                "applicationDate", "date", "dateTime" -> now.toString()
+                "returnDate", "testsDeadline" -> tomorrow9AM.toString()
+                else -> null
+            }
+
+            // Entretien spécial -> Demain 9h
+            val entretienDefaultDateTime = if (field.name == "dateTime" && fields.any { it.label.contains("entretien", ignoreCase = true) }) {
+                LocalDate.now().plusDays(1).atTime(9, 0).format(dateTimeFormatter)
+            } else null
+
+            fieldValues[field.name] = initial ?: entretienDefaultDateTime ?: defaultDate ?: ""
         }
     }
 
@@ -42,7 +127,7 @@ fun ReusableForm(
             .fillMaxWidth()
             .wrapContentHeight()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         fields.forEach { field ->
@@ -87,15 +172,16 @@ fun ReusableForm(
                         )
                     }
                 }
+
                 FieldType.DATE, FieldType.TIME -> {
-                    // TODO plus tard : date picker / dropdown
-                    OutlinedTextField(
-                        value = fieldValues[field.name] ?: "",
-                        onValueChange = { fieldValues[field.name] = it },
-                        label = { Text(field.label) },
+                    ModernDateTimePickerField(
+                        label = field.label,
+                        initialMillis = fieldValues[field.name] as Long?,
+                        onDateTimeSelected = { if (!field.readOnly) fieldValues[field.name] = it.toString() },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
+
                 FieldType.DROPDOWN -> {
                     var showAddDialog by remember { mutableStateOf(false) }
                     var newOptionText by remember { mutableStateOf("") }
@@ -241,13 +327,15 @@ fun ReusableForm(
                         }
                     }
                 }
-
-                FieldType.SUGGESTION_TEXT -> {
+                FieldType.SELECTION -> {
                     var expanded by remember { mutableStateOf(false) }
                     val input = fieldValues[field.name] ?: ""
                     val suggestions = field.options?.filter { it.contains(input, ignoreCase = true) } ?: emptyList()
 
-                    Column {
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = { expanded = !expanded }
+                    ) {
                         OutlinedTextField(
                             value = input,
                             onValueChange = {
@@ -255,23 +343,65 @@ fun ReusableForm(
                                 expanded = true
                             },
                             label = { Text(field.label) },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(),
+                            readOnly = false,
+                            singleLine = true
                         )
 
-                        if (expanded && suggestions.isNotEmpty()) {
-                            DropdownMenu(
-                                expanded = expanded,
-                                onDismissRequest = { expanded = false }
-                            ) {
-                                suggestions.forEach { suggestion ->
-                                    DropdownMenuItem(
-                                        text = { Text(suggestion) },
-                                        onClick = {
-                                            fieldValues[field.name] = suggestion
-                                            expanded = false
-                                        }
-                                    )
-                                }
+                        ExposedDropdownMenu(
+                            expanded = expanded && suggestions.isNotEmpty(),
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            suggestions.forEach { suggestion ->
+                                DropdownMenuItem(
+                                    text = { Text(suggestion) },
+                                    onClick = {
+                                        fieldValues[field.name] = suggestion
+                                        expanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                FieldType.SUGGESTION_TEXT -> {
+                    var expanded by remember { mutableStateOf(false) }
+                    val input = fieldValues[field.name] ?: ""
+                    val suggestions = field.options?.filter { it.contains(input, ignoreCase = true) }?.take(5) ?: emptyList()
+
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = { expanded = !expanded }
+                    ) {
+                        OutlinedTextField(
+                            value = input,
+                            onValueChange = {
+                                if (!field.readOnly) fieldValues[field.name] = it
+                                expanded = true
+                            },
+                            label = { Text(field.label) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(),
+                            readOnly = false, // IMPORTANT : laisser editable
+                            singleLine = true
+                        )
+
+                        ExposedDropdownMenu(
+                            expanded = expanded && suggestions.isNotEmpty(),
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            suggestions.forEach { suggestion ->
+                                DropdownMenuItem(
+                                    text = { Text(suggestion) },
+                                    onClick = {
+                                        fieldValues[field.name] = suggestion
+                                        expanded = false
+                                    }
+                                )
                             }
                         }
                     }
@@ -291,7 +421,14 @@ fun ReusableForm(
                 Spacer(Modifier.width(12.dp))
             }
             Button(
-                onClick = { onSubmit(fieldValues) },
+                onClick = { onSubmit(
+                    fieldValues.mapValues { (key, value) ->
+                        if (key.endsWith("Id") || key == "contactId") {
+                            // Exemple de format : "Nom complet (ID)" -> on récupère juste l'ID entre parenthèse
+                            value.substringAfterLast("(").removeSuffix(")").trim()
+                        } else value
+                    }
+                ) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Enregistrer")

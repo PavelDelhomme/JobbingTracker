@@ -2,7 +2,7 @@ package com.delhomme.jobbingtrack.data.forms
 
 enum class FieldType {
     TEXT, MULTILINE_TEXT, DATE, TIME, DROPDOWN, NUMBER, EMAIL, PHONE, CHECKBOX, BOOLEAN,
-    SUGGESTION_TEXT
+    SUGGESTION_TEXT, SELECTION
 }
 
 data class FormField(

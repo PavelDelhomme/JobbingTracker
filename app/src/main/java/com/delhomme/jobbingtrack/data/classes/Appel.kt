@@ -1,8 +1,10 @@
 package com.delhomme.jobbingtrack.data.classes
 
+import com.delhomme.jobbingtrack.data.HasId
+
 
 data class Appel(
-    val id: String,
+    override val id: String,
     val subject: String,
     val companyId: String,
     val contactId: String?,
@@ -13,7 +15,7 @@ data class Appel(
     val syncHash: String,
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
-)
+) : HasId
 
 fun Appel.toFormMap(): Map<String, String> {
     return mapOf(

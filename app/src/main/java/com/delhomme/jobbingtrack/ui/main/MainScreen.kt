@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import androidx.activity.compose.BackHandler
 import androidx.compose.ui.platform.LocalContext
 import com.delhomme.jobbingtrack.MainActivity
-import com.delhomme.jobbingtrack.ui.calendar.CalendarScreenContent
+import com.delhomme.jobbingtrack.ui.major.calendar.CalendarScreenContent
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 

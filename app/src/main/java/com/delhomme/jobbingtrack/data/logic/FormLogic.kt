@@ -8,24 +8,9 @@ import com.delhomme.jobbingtrack.utils.safeEnumValueOf
 import java.util.UUID
 
 fun saveCandidatureFromForm(data: Map<String, String>) {
-    val existingId = data["id"];
-
+    val existingId = data["id"]
     val companyName = data["companyName"]?.trim().orEmpty()
-    var entreprise = FakeDataProvider.entreprises.find { it.name.equals(companyName, ignoreCase = true) }
-
-    if (entreprise == null) {
-        entreprise = Entreprise(
-            id = UUID.randomUUID().toString(),
-            name = companyName,
-            type = null,
-            phone = null,
-            email = null,
-            hrEmail = null,
-            address = null,
-            syncHash = "ent-${UUID.randomUUID()}"
-        )
-        FakeDataProvider.entreprises.add(entreprise)
-    }
+    val entreprise = FakeDataProvider.addEntrepriseIfNotExists(companyName)
 
     val existing = existingId?.let { FakeDataProvider.candidatures.find { c -> c.id == it } }
 
@@ -38,7 +23,9 @@ fun saveCandidatureFromForm(data: Map<String, String>) {
         existing.platform = data["platform"]
         existing.contractType = data["contractType"]
         existing.notes = data["notes"]
-        existing.applicationType = if (data["isSpontaneous"]?.toBoolean() == true) ApplicationType.SPONTANEOUS else ApplicationType.OFFER
+        existing.applicationType = safeEnumValueOf<ApplicationType>(data["applicationType"]) ?: ApplicationType.OFFER
+        existing.applicationStatus = safeEnumValueOf<ApplicationStatus>(data["applicationStatus"]) ?: ApplicationStatus.WAITING
+        existing.isArchived = data["isArchived"]?.toBooleanStrictOrNull() ?: false
         return
     }
 
@@ -52,8 +39,9 @@ fun saveCandidatureFromForm(data: Map<String, String>) {
         platform = data["platform"],
         contractType = data["contractType"],
         notes = data["notes"],
-        applicationType = if (data["isSpontaneous"]?.toBoolean() == true) ApplicationType.SPONTANEOUS else ApplicationType.OFFER,
-        applicationStatus = ApplicationStatus.WAITING,
+        applicationType = safeEnumValueOf<ApplicationType>(data["applicationType"]) ?: ApplicationType.OFFER,
+        applicationStatus = safeEnumValueOf<ApplicationStatus>(data["applicationStatus"]) ?: ApplicationStatus.WAITING,
+        isArchived = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
         syncHash = "cand-${UUID.randomUUID()}"
     )
 
@@ -63,21 +51,7 @@ fun saveCandidatureFromForm(data: Map<String, String>) {
 
 fun saveContactFromForm(data: Map<String, String>) {
     val companyName = data["companyName"]?.trim().orEmpty()
-    var entreprise = FakeDataProvider.entreprises.find { it.name.equals(companyName, ignoreCase = true) }
-
-    if (entreprise == null) {
-        entreprise = Entreprise(
-            id = UUID.randomUUID().toString(),
-            name = companyName,
-            type = null,
-            phone = null,
-            email = null,
-            hrEmail = null,
-            address = null,
-            syncHash = "ent-${UUID.randomUUID()}"
-        )
-        FakeDataProvider.entreprises.add(entreprise)
-    }
+    val entreprise = FakeDataProvider.addEntrepriseIfNotExists(companyName)
 
     val contact = Contact(
         id = UUID.randomUUID().toString(),
@@ -88,29 +62,22 @@ fun saveContactFromForm(data: Map<String, String>) {
         position = data["position"],
         department = data["department"],
         entrepriseId = entreprise.id,
-        notes = data["notes"].toString(),
+        notes = data["notes"] ?: "",
         syncHash = "contact-${UUID.randomUUID()}"
     )
 
     FakeDataProvider.contacts.add(contact)
 }
-
 fun saveRelanceFromForm(data: Map<String, String>) {
     val candidatureId = data["candidatureId"]?.trim().orEmpty()
     val companyId = data["companyId"]?.trim().orEmpty()
     val contactId = data["contactId"]?.trim()?.takeIf { it.isNotBlank() }
 
-    val candidature = FakeDataProvider.candidatures.find { it.id == candidatureId }
-        ?: return // Ou créer une nouvelle candidature si nécessaire
-
-    val entreprise = FakeDataProvider.entreprises.find { it.id == companyId }
-        ?: return // Pareil ici, on peut aussi créer une nouvelle si besoin
-
     val relance = Relance(
         id = UUID.randomUUID().toString(),
         date = parseDateToMillis(data["date"]),
-        candidatureId = candidature.id,
-        companyId = entreprise.id,
+        candidatureId = candidatureId,
+        companyId = companyId,
         contactId = contactId,
         type = safeEnumValueOf<RelanceType>(data["type"]),
         responseStatus = safeEnumValueOf<RelanceStatus>(data["responseStatus"]),
@@ -119,73 +86,36 @@ fun saveRelanceFromForm(data: Map<String, String>) {
     )
 
     FakeDataProvider.relances.add(relance)
-
-    // Créer l'événement correspondant
-    val evenement = Evenement(
-        id = relance.id,
-        relatedObjectId = relance.id,
-        title = "Relance",
-        description = relance.notes,
-        startDate = relance.date,
-        endDate = relance.date,
-        syncHash = "evt-relance-${UUID.randomUUID()}",
-        type = "Relances"
-    )
-
-    FakeDataProvider.evenements.add(evenement)
+    FakeDataProvider.evenements.add(EventFactory.fromRelance(relance))
 }
-
 fun saveAppelFromForm(data: Map<String, String>) {
     val companyId = data["companyId"]?.trim().orEmpty()
-    val candidatureId = data["candidatureId"]?.trim()?.takeIf { it.isNotBlank() }
-    val contactId = data["contactId"]?.trim()?.takeIf { it.isNotBlank() }
-    val relanceId = data["relanceId"]?.trim()?.takeIf { it.isNotBlank() }
-
-    val entreprise = FakeDataProvider.entreprises.find { it.id == companyId }
-        ?: return // Ou crée une entreprise ici si tu le souhaites
 
     val appel = Appel(
         id = UUID.randomUUID().toString(),
         subject = data["subject"] ?: "Appel",
-        companyId = entreprise.id,
-        candidatureId = candidatureId,
-        contactId = contactId,
-        relanceId = relanceId,
+        companyId = companyId,
+        candidatureId = data["candidatureId"]?.trim(),
+        contactId = data["contactId"]?.trim(),
+        relanceId = data["relanceId"]?.trim(),
         dateTime = parseDateToMillis(data["dateTime"]),
         notes = data["notes"],
         syncHash = "appel-${UUID.randomUUID()}"
     )
 
     FakeDataProvider.appels.add(appel)
-
-    val evenement = Evenement(
-        id = appel.id,
-        relatedObjectId = appel.id,
-        title = appel.subject,
-        description = appel.notes,
-        startDate = appel.dateTime,
-        endDate = appel.dateTime,
-        syncHash = "evt-appel-${UUID.randomUUID()}",
-        type = "Appels"
-    )
-
-    FakeDataProvider.evenements.add(evenement)
+    FakeDataProvider.evenements.add(EventFactory.fromAppel(appel))
 }
 
-
 fun saveEntretienFromForm(data: Map<String, String>) {
-    val candidatureId = data["candidatureId"]?.trim().orEmpty()
-    val companyId = data["companyId"]?.trim().orEmpty()
-    val contacts = data["contacts"]?.split(",")?.map { it.trim() }?.filter { it.isNotBlank() } ?: emptyList()
-
     val entretien = Entretien(
         id = UUID.randomUUID().toString(),
-        candidatureId = candidatureId,
-        companyId = companyId,
+        candidatureId = data["candidatureId"]?.trim().orEmpty(),
+        companyId = data["companyId"]?.trim().orEmpty(),
         dateTime = parseDateToMillis(data["dateTime"]),
         durationMinutes = data["durationMinutes"]?.toIntOrNull(),
         location = data["location"],
-        contacts = contacts,
+        contacts = data["contacts"]?.split(",")?.map { it.trim() }?.filter { it.isNotBlank() } ?: emptyList(),
         style = safeEnumValueOf<EntretienStyle>(data["style"]),
         type = safeEnumValueOf<EntretienType>(data["type"]),
         preInterviewNotes = data["preInterviewNotes"],
@@ -198,24 +128,8 @@ fun saveEntretienFromForm(data: Map<String, String>) {
     )
 
     FakeDataProvider.entretiens.add(entretien)
-
-    val durationMillis = (entretien.durationMinutes ?: 30) * 60 * 1000L
-
-    val event = Evenement(
-        id = entretien.id,
-        relatedObjectId = entretien.id,
-        title = "Entretien",
-        description = entretien.preInterviewNotes,
-        startDate = entretien.dateTime,
-        endDate = entretien.dateTime + durationMillis,
-        //endDate = entretien.dateTime + (entretien.durationMinutes?.times(60)?.times(1000) ?: 30 * 60 * 1000),
-        syncHash = "evt-entretien-${UUID.randomUUID()}",
-        type = "Entretiens"
-    )
-
-    FakeDataProvider.evenements.add(event)
+    FakeDataProvider.evenements.add(EventFactory.fromEntretien(entretien))
 }
-
 
 fun saveEntrepriseFromForm(data: Map<String, String>) {
     val entrepriseId = data["id"]?.trim()
@@ -232,6 +146,8 @@ fun saveEntrepriseFromForm(data: Map<String, String>) {
         existing.email = data["email"]
         existing.hrEmail = data["hrEmail"]
         existing.address = data["address"]
+        existing.notes = data["notes"]
+        existing.isArchived = data["isArchived"]?.toBooleanStrictOrNull() ?: false
     } else {
         val newEntreprise = Entreprise(
             id = UUID.randomUUID().toString(),
@@ -241,11 +157,13 @@ fun saveEntrepriseFromForm(data: Map<String, String>) {
             email = data["email"],
             hrEmail = data["hrEmail"],
             address = data["address"],
-            syncHash = "ent-${UUID.randomUUID()}"
+            notes = data["notes"],
+            syncHash = "ent-${UUID.randomUUID()}",
+            isArchived = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
+            isDeleted = data["isDeleted"]?.toBooleanStrictOrNull() ?: false
         )
         FakeDataProvider.entreprises.add(newEntreprise)
     }
 }
-
 
 

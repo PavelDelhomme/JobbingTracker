@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.navigation.Routes
-import com.delhomme.jobbingtrack.ui.appels.AppelsScreen
-import com.delhomme.jobbingtrack.ui.candidatures.CandidaturesScreen
-import com.delhomme.jobbingtrack.ui.contacts.ContactsScreen
-import com.delhomme.jobbingtrack.ui.entreprises.EntreprisesScreen
-import com.delhomme.jobbingtrack.ui.entretiens.EntretiensScreen
-import com.delhomme.jobbingtrack.ui.relances.RelancesScreen
+import com.delhomme.jobbingtrack.ui.major.appels.AppelsScreen
+import com.delhomme.jobbingtrack.ui.major.candidatures.CandidaturesScreen
+import com.delhomme.jobbingtrack.ui.major.contacts.ContactsScreen
+import com.delhomme.jobbingtrack.ui.major.entreprises.EntreprisesScreen
+import com.delhomme.jobbingtrack.ui.major.entretiens.EntretiensScreen
+import com.delhomme.jobbingtrack.ui.major.relances.RelancesScreen
 
 @Composable
 fun CandidaturesTabsContent(

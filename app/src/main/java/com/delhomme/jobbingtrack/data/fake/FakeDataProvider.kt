@@ -5,6 +5,7 @@ import com.delhomme.jobbingtrack.data.classes.*
 import kotlin.random.Random
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.UUID
 
 object FakeDataProvider {
 
@@ -19,7 +20,8 @@ object FakeDataProvider {
             email = "contact${index + 1}@example.com",
             hrEmail = "rh${index + 1}@example.com",
             address = "Adresse ${index + 1} rue Excellente",
-            syncHash = randomSyncHash("entreprise")
+            syncHash = randomSyncHash("entreprise"),
+            notes = "Notes ${index + 1}"
         )
     }
 
@@ -195,6 +197,24 @@ object FakeDataProvider {
     fun deleteCandidature(id: String) {
         candidatures.removeAll { it.id == id }
     }
+
+    fun addEntrepriseIfNotExists(name: String): Entreprise {
+        return entreprises.find { it.name.equals(name, ignoreCase = true) }
+            ?: Entreprise(
+                id = UUID.randomUUID().toString(),
+                name = name,
+                type = null,
+                phone = null,
+                email = null,
+                hrEmail = null,
+                address = null,
+                notes = "",
+                isArchived = false,
+                isDeleted = false,
+                syncHash = "ent-${UUID.randomUUID()}"
+            ).also { entreprises.add(it) }
+    }
+
 
     fun removeEntreprise(id: String) {
         entreprises.find { it.id == id }?.isArchived = true
