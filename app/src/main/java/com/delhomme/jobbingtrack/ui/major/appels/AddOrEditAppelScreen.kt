@@ -1,6 +1,14 @@
 package com.delhomme.jobbingtrack.ui.major.appels
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Appel
@@ -18,40 +26,29 @@ fun AddOrEditAppelScreen(
     onCancel: (() -> Unit)? = null,
 ) {
     val fields = listOf(
-        FormField(name = "dateTime", label = "Date et heure de l'appel", type = FieldType.DATE, isRequired = true),
-        FormField(name = "subject", label = "Objet de l'appel", type = FieldType.SUGGESTION_TEXT, options = listOf("Appel de suivi", "Prise de contact", "Demande d'informations"), isRequired = true),
-        FormField(
-            name = "companyId",
-            label = "Entreprise",
-            type = FieldType.SELECTION,
-            initialValue = linkedCompanyId
-        ),
-        FormField(
-            name = "contactId",
-            label = "Contact (optionnel)",
-            type = FieldType.SELECTION
-        ),
-        FormField(
-            name = "candidatureId",
-            label = "Candidature (optionnel)",
-            type = FieldType.SELECTION,
-            initialValue = linkedCandidatureId
-        ),
-        FormField(
-            name = "relanceId",
-            label = "Relance liée (optionnel)",
-            type = FieldType.SELECTION
-        ),
-        FormField(name = "notes", label = "Notes sur l'appel", type = FieldType.MULTILINE_TEXT)
+        FormField("dateTime", "Date et heure de l'appel", FieldType.DATE, isRequired = true),
+        FormField("subject", "Objet de l'appel", FieldType.SUGGESTION_TEXT, options = listOf("Appel de suivi", "Prise de contact", "Demande d'informations"), isRequired = true),
+        FormField("companyId", "Entreprise", FieldType.SELECTION, initialValue = linkedCompanyId),
+        FormField("contactId", "Contact (optionnel)", FieldType.SELECTION),
+        FormField("candidatureId", "Candidature (optionnel)", FieldType.SELECTION, initialValue = linkedCandidatureId),
+        FormField("relanceId", "Relance liée (optionnel)", FieldType.SELECTION),
+        FormField("notes", "Notes sur l'appel", FieldType.MULTILINE_TEXT)
     )
 
-    ReusableForm(
-        fields = fields,
-        initialValues = existingAppelData?.toFieldMap(),
-        onSubmit = { formData ->
-            onSave(formData)
-            navController?.popBackStack()
-        },
-        onCancel = onCancel
-    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        ReusableForm(
+            fields = fields,
+            initialValues = existingAppelData?.toFieldMap(),
+            onSubmit = { formData ->
+                onSave(formData)
+                navController?.popBackStack()
+            },
+            onCancel = onCancel
+        )
+    }
 }

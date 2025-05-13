@@ -57,8 +57,8 @@ fun AddOrEditEntretienScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         ModernDateTimePickerField(

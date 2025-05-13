@@ -1,6 +1,14 @@
 package com.delhomme.jobbingtrack.ui.major.entreprises
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.Entreprise
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
@@ -25,10 +33,18 @@ fun AddOrEditEntrepriseScreen(
         FormField("notes", "Notes", FieldType.MULTILINE_TEXT)
     )
 
-    ReusableForm(
-        fields = fields,
-        initialValues = existingEntrepriseData?.toFieldMap(),
-        onSubmit = { onSave(it) },
-        onCancel = (onCancel ?: { navController?.popBackStack() }) as (() -> Unit)?
-    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        ReusableForm(
+            fields = fields,
+            initialValues = existingEntrepriseData?.toFieldMap(),
+            onSubmit = { onSave(it) },
+            onCancel = onCancel
+        )
+    }
 }

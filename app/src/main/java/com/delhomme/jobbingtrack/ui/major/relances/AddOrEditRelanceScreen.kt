@@ -1,6 +1,14 @@
 package com.delhomme.jobbingtrack.ui.major.relances
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Relance
@@ -40,10 +48,18 @@ fun AddOrEditRelanceScreen(
         FormField("notes", "Notes", FieldType.MULTILINE_TEXT)
     )
 
-    ReusableForm(
-        fields = fields,
-        initialValues = existingRelanceData?.toFieldMap(),
-        onSubmit = { onSave(it) },
-        onCancel = onCancel
-    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        ReusableForm(
+            fields = fields,
+            initialValues = existingRelanceData?.toFieldMap(),
+            onSubmit = { onSave(it) },
+            onCancel = onCancel
+        )
+    }
 }

@@ -1,6 +1,8 @@
 package com.delhomme.jobbingtrack.ui.major.contacts
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -13,7 +15,6 @@ import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
-import com.delhomme.jobbingtrack.utils.getEntityById
 
 @Composable
 fun AddOrEditContactScreen(
@@ -36,7 +37,12 @@ fun AddOrEditContactScreen(
         FormField("notes", "Notes", FieldType.MULTILINE_TEXT)
     )
 
-    Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         EntitySelectorField(
             label = "Entreprise liée",
             selectedEntityId = selectedCompanyId,

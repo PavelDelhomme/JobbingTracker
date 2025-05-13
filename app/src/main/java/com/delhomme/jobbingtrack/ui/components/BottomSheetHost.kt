@@ -31,129 +31,197 @@ fun BottomSheetHost(
     linkedCandidatureId: String?,
     onDismissRequest: () -> Unit
 ) {
-    val entrepriseIdFromCandidature = linkedCandidatureId?.let {
-        FakeDataProvider.candidatures.find { c -> c.id == it }?.companyId
+    if (visibleContent == BottomSheetContentType.NONE) return
+
+    val entrepriseIdFromCandidature = linkedCandidatureId?.let { id ->
+        FakeDataProvider.candidatures.find { it.id == id }?.companyId
     }
 
-    if (visibleContent != BottomSheetContentType.NONE) {
-        val sheetState = rememberModalBottomSheetState(
-            skipPartiallyExpanded = false, // Permet le swipe vers le bas au lieu d'être fixé
-            confirmValueChange = { true } // Pour ajouter des contrôles de validation
-        )
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false, // Permet le swipe vers le bas au lieu d'être fixé
+        confirmValueChange = { true } // Pour ajouter des contrôles de validation
+    )
 
-        ModalBottomSheet(
-            onDismissRequest = { onDismissRequest() },
-            sheetState = sheetState,
-            modifier = Modifier.fillMaxWidth() // Largeur seulement
-                .padding(top = 16.dp)
-                .imePadding()
-                .fillMaxHeight(0.98f), // A viré si pause probmème
-            dragHandle = { /* optionnel : custom handle ici */}
-        ) {
-            // NE PAS FORCER DE scroll externe ici, laisse le contenu gérer
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                    //.padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = when (visibleContent) {
-                        BottomSheetContentType.ADD_CANDIDATURE -> "Nouvelle candidature"
-                        BottomSheetContentType.ADD_CONTACT -> "Nouveau contact"
-                        BottomSheetContentType.ADD_ENTREPRISE -> "Nouvelle entreprise"
-                        BottomSheetContentType.ADD_RELANCE -> "Nouvelle relance"
-                        BottomSheetContentType.ADD_ENTRETIEN -> "Nouvel entretien"
-                        BottomSheetContentType.ADD_APPEL -> "Nouvel appel"
-                        else -> ""
-                    },
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
+    ModalBottomSheet(
+        onDismissRequest = { onDismissRequest() },
+        sheetState = sheetState,
+        modifier = Modifier.fillMaxWidth().imePadding()
+    ) {
 
-                // ✅ Le contenu gère son scroll lui-même (comme ReusableForm déjà scrollable)
-                when (visibleContent) {
-                    BottomSheetContentType.ADD_CANDIDATURE -> {
-                        AddOrEditCandidatureScreen(
-                            navController = null,
-                            existingCandidatureData = null,
-                            onSave = {
-                                saveCandidatureFromForm(it)
-                                onDismissRequest()
-                            },
-                            onCancel = { onDismissRequest() }
-                        )
-                    }
+        when (visibleContent) {
+            BottomSheetContentType.ADD_CANDIDATURE -> AddOrEditCandidatureScreen(
+                navController = null,
+                existingCandidatureData = null,
+                onSave = {
+                    saveCandidatureFromForm(it)
+                    onDismissRequest()
+                },
+                onCancel = onDismissRequest
+            )
 
-                    BottomSheetContentType.ADD_CONTACT -> {
-                        AddOrEditContactScreen(
-                            navController = null,
-                            existingContactData = null,
-                            linkedEntrepriseId = entrepriseIdFromCandidature,
-                            onSave = {
-                                saveContactFromForm(it)
-                                onDismissRequest()
-                            },
-                            onCancel = { onDismissRequest() }
-                        )
-                    }
+            BottomSheetContentType.ADD_CONTACT -> AddOrEditContactScreen(
+                navController = null,
+                existingContactData = null,
+                linkedEntrepriseId = entrepriseIdFromCandidature,
+                onSave = {
+                    saveContactFromForm(it)
+                    onDismissRequest()
+                },
+                onCancel = onDismissRequest
+            )
 
-                    BottomSheetContentType.ADD_ENTREPRISE -> {
-                        AddOrEditEntrepriseScreen(
-                            navController = null,
-                            existingEntrepriseData = null,
-                            onSave = {
-                                saveEntrepriseFromForm(it)
-                                onDismissRequest()
-                            },
-                            onCancel = { onDismissRequest() }
-                        )
-                    }
+            BottomSheetContentType.ADD_ENTREPRISE -> AddOrEditEntrepriseScreen(
+                navController = null,
+                existingEntrepriseData = null,
+                onSave = {
+                    saveEntrepriseFromForm(it)
+                    onDismissRequest()
+                },
+                onCancel = onDismissRequest
+            )
 
-                    BottomSheetContentType.ADD_RELANCE -> {
-                        AddOrEditRelanceScreen(
-                            navController = null,
-                            existingRelanceData = null,
-                            linkedCandidatureId = linkedCandidatureId,
-                            onSave = {
-                                saveRelanceFromForm(it)
-                                onDismissRequest()
-                            },
-                            onCancel = { onDismissRequest() }
-                        )
-                    }
+            BottomSheetContentType.ADD_RELANCE -> AddOrEditRelanceScreen(
+                navController = null,
+                existingRelanceData = null,
+                linkedCandidatureId = linkedCandidatureId,
+                linkedCompanyId = entrepriseIdFromCandidature,
+                onSave = {
+                    saveRelanceFromForm(it)
+                    onDismissRequest()
+                },
+                onCancel = onDismissRequest
+            )
 
-                    BottomSheetContentType.ADD_ENTRETIEN -> {
-                        AddOrEditEntretienScreen(
-                            navController = null,
-                            existingEntretienData = null,
-                            linkedCompanyId = null,
-                            linkedCandidatureId = linkedCandidatureId,
-                            onSave = {
-                                saveEntretienFromForm(it)
-                                onDismissRequest()
-                            },
-                            onCancel = { onDismissRequest() }
-                        )
-                    }
+            BottomSheetContentType.ADD_ENTRETIEN -> AddOrEditEntretienScreen(
+                navController = null,
+                existingEntretienData = null,
+                linkedCandidatureId = linkedCandidatureId,
+                linkedCompanyId = entrepriseIdFromCandidature,
+                onSave = {
+                    saveEntretienFromForm(it)
+                    onDismissRequest()
+                },
+                onCancel = onDismissRequest
+            )
 
-                    BottomSheetContentType.ADD_APPEL -> {
-                        AddOrEditAppelScreen(
-                            navController = null,
-                            existingAppelData = null,
-                            linkedCandidatureId = linkedCandidatureId,
-                            onSave = {
-                                saveAppelFromForm(it)
-                                onDismissRequest()
-                            },
-                            onCancel = { onDismissRequest() }
-                        )
-                    }
+            BottomSheetContentType.ADD_APPEL -> AddOrEditAppelScreen(
+                navController = null,
+                existingAppelData = null,
+                linkedCandidatureId = linkedCandidatureId,
+                linkedCompanyId = entrepriseIdFromCandidature,
+                onSave = {
+                    saveAppelFromForm(it)
+                    onDismissRequest()
+                },
+                onCancel = onDismissRequest
+            )
 
-                    else -> {}
-                }
-            }
+            else -> {}
         }
+        /*
+        // NE PAS FORCER DE scroll externe ici, laisse le contenu gérer
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+                //.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = when (visibleContent) {
+                    BottomSheetContentType.ADD_CANDIDATURE -> "Nouvelle candidature"
+                    BottomSheetContentType.ADD_CONTACT -> "Nouveau contact"
+                    BottomSheetContentType.ADD_ENTREPRISE -> "Nouvelle entreprise"
+                    BottomSheetContentType.ADD_RELANCE -> "Nouvelle relance"
+                    BottomSheetContentType.ADD_ENTRETIEN -> "Nouvel entretien"
+                    BottomSheetContentType.ADD_APPEL -> "Nouvel appel"
+                    else -> ""
+                },
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+
+            // ✅ Le contenu gère son scroll lui-même (comme ReusableForm déjà scrollable)
+            when (visibleContent) {
+                BottomSheetContentType.ADD_CANDIDATURE -> {
+                    AddOrEditCandidatureScreen(
+                        navController = null,
+                        existingCandidatureData = null,
+                        onSave = {
+                            saveCandidatureFromForm(it)
+                            onDismissRequest()
+                        },
+                        onCancel = { onDismissRequest() }
+                    )
+                }
+
+                BottomSheetContentType.ADD_CONTACT -> {
+                    AddOrEditContactScreen(
+                        navController = null,
+                        existingContactData = null,
+                        linkedEntrepriseId = entrepriseIdFromCandidature,
+                        onSave = {
+                            saveContactFromForm(it)
+                            onDismissRequest()
+                        },
+                        onCancel = { onDismissRequest() }
+                    )
+                }
+
+                BottomSheetContentType.ADD_ENTREPRISE -> {
+                    AddOrEditEntrepriseScreen(
+                        navController = null,
+                        existingEntrepriseData = null,
+                        onSave = {
+                            saveEntrepriseFromForm(it)
+                            onDismissRequest()
+                        },
+                        onCancel = { onDismissRequest() }
+                    )
+                }
+
+                BottomSheetContentType.ADD_RELANCE -> {
+                    AddOrEditRelanceScreen(
+                        navController = null,
+                        existingRelanceData = null,
+                        linkedCandidatureId = linkedCandidatureId,
+                        onSave = {
+                            saveRelanceFromForm(it)
+                            onDismissRequest()
+                        },
+                        onCancel = { onDismissRequest() }
+                    )
+                }
+
+                BottomSheetContentType.ADD_ENTRETIEN -> {
+                    AddOrEditEntretienScreen(
+                        navController = null,
+                        existingEntretienData = null,
+                        linkedCompanyId = null,
+                        linkedCandidatureId = linkedCandidatureId,
+                        onSave = {
+                            saveEntretienFromForm(it)
+                            onDismissRequest()
+                        },
+                        onCancel = { onDismissRequest() }
+                    )
+                }
+
+                BottomSheetContentType.ADD_APPEL -> {
+                    AddOrEditAppelScreen(
+                        navController = null,
+                        existingAppelData = null,
+                        linkedCandidatureId = linkedCandidatureId,
+                        onSave = {
+                            saveAppelFromForm(it)
+                            onDismissRequest()
+                        },
+                        onCancel = { onDismissRequest() }
+                    )
+                }
+
+                else -> {}
+            }
+        }*/
     }
 }
