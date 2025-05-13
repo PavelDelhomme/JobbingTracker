@@ -42,6 +42,16 @@ fun AddOrEditEntretienScreen(
     var selectedContacts by remember { mutableStateOf<List<Contact>>(emptyList()) }
     var dateTimeMillis by remember { mutableStateOf(existingEntretienData?.dateTime ?: System.currentTimeMillis()) }
 
+    var selectedCandidatureId by remember {
+        mutableStateOf(existingEntretienData?.candidatureId ?: linkedCandidatureId)
+    }
+
+    val entrepriseIdFromCandidature = selectedCandidatureId?.let {
+        FakeDataProvider.candidatures.find { c -> c.id == it }?.companyId
+    }
+
+    val effectiveCompanyId = entrepriseIdFromCandidature ?: linkedCompanyId
+
     val fields = listOf(
         FormField("location", "Lieu de l'entretien", FieldType.TEXT),
         FormField("style", "Style d'entretien", FieldType.DROPDOWN, isRequired = true, options = FormSuggestions.entretienStyles),
@@ -57,7 +67,6 @@ fun AddOrEditEntretienScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -67,20 +76,33 @@ fun AddOrEditEntretienScreen(
             onDateTimeSelected = { dateTimeMillis = it }
         )
 
-        EntitySelectorField(
-            label = "Candidature",
-            selectedEntityId = linkedCandidatureId,
-            allEntities = FakeDataProvider.candidatures,
-            getEntityLabel = { it.title },
-            onEntitySelected = { /* handled later in onSubmit */ }
-        )
 
-        EntitySelectorField(
-            label = "Entreprise",
-            selectedEntityId = linkedCompanyId,
-            allEntities = FakeDataProvider.entreprises,
-            getEntityLabel = { it.name },
-            onEntitySelected = { /* handled later in onSubmit */ }
+        if (linkedCandidatureId == null) {
+            EntitySelectorField(
+                label = "Candidature",
+                selectedEntityId = selectedCandidatureId,
+                allEntities = FakeDataProvider.candidatures,
+                getEntityLabel = { it.title },
+                onEntitySelected = {
+                    selectedCandidatureId = it.id
+                }
+            )
+        } else {
+            OutlinedTextField(
+                value = FakeDataProvider.candidatures.find { it.id == linkedCandidatureId }?.title ?: "",
+                onValueChange = {},
+                label = { Text("Candidature") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        OutlinedTextField(
+            value = FakeDataProvider.entreprises.find { it.id == effectiveCompanyId }?.name ?: "",
+            onValueChange = {},
+            label = { Text("Entreprise") },
+            readOnly = true,
+            modifier = Modifier.fillMaxWidth()
         )
 
         ContactSelectorField(
@@ -97,8 +119,8 @@ fun AddOrEditEntretienScreen(
                 onSave(
                     formData + mapOf(
                         "dateTime" to dateTimeMillis.toString(),
-                        "candidatureId" to (linkedCandidatureId ?: ""),
-                        "companyId" to (linkedCompanyId ?: ""),
+                        "candidatureId" to (selectedCandidatureId ?: ""),
+                        "companyId" to (effectiveCompanyId ?: ""),
                         "contacts" to selectedContacts.joinToString(",") { it.id }
                     )
                 )

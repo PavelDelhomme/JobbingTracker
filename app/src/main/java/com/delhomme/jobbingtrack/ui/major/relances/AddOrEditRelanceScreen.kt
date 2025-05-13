@@ -6,15 +6,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Relance
+import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
+import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.utils.toFieldMap
 
 @Composable
@@ -26,11 +34,19 @@ fun AddOrEditRelanceScreen(
     onSave: (Map<String, String>) -> Unit,
     onCancel: (() -> Unit)? = null,
 ) {
+    var selectedCandidatureId by remember {
+        mutableStateOf(existingRelanceData?.candidatureId ?: linkedCandidatureId)
+    }
+
+    // Ondéduit l'entreprie à partir de la candidature sélectionnée, sinon on prend celle passée manueklllement
+    val entrepriseIdFromCandidature = selectedCandidatureId?.let {
+        FakeDataProvider.candidatures.find { c -> c.id == it }?.companyId
+    }
+
+    val effectiveCompanyId = entrepriseIdFromCandidature ?: linkedCompanyId
+
     val fields = listOf(
         FormField("date", "Date de relance", FieldType.DATE, isRequired = true),
-        FormField("candidatureId", "ID Candidature", FieldType.TEXT, isRequired = true, initialValue = linkedCandidatureId, readOnly = linkedCandidatureId != null),
-        FormField("companyId", "ID Entreprise", FieldType.TEXT, isRequired = true, initialValue = linkedCompanyId, readOnly = linkedCompanyId != null),
-        FormField("contactId", "ID Contact (optionnel)", FieldType.TEXT),
         FormField(
             "type",
             "Type de relance",
@@ -44,6 +60,7 @@ fun AddOrEditRelanceScreen(
                 if (index != -1) FormSuggestions.relanceTypes[index] = new
             }
         ),
+        FormField("contactId", "ID Contact (optionnel)", FieldType.TEXT),
         FormField("responseStatus", "Statut réponse (En attente, Positif, Négatif, Aucun retour)", FieldType.TEXT),
         FormField("notes", "Notes", FieldType.MULTILINE_TEXT)
     )
@@ -51,14 +68,47 @@ fun AddOrEditRelanceScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        if (linkedCandidatureId == null) {
+            EntitySelectorField(
+                label = "Candidature",
+                selectedEntityId = selectedCandidatureId,
+                allEntities = FakeDataProvider.candidatures,
+                getEntityLabel = { it.title },
+                onEntitySelected = { selectedCandidatureId == it.id }
+            )
+        } else {
+            OutlinedTextField(
+                value = FakeDataProvider.candidatures.find { it.id == linkedCandidatureId }?.title ?: "",
+                onValueChange = {},
+                label = { Text("Candidature") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        OutlinedTextField(
+            value = FakeDataProvider.entreprises.find { it.id == effectiveCompanyId }?.name ?: "",
+            onValueChange = {},
+            label = { Text("Entreprise") },
+            readOnly = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+
         ReusableForm(
             fields = fields,
             initialValues = existingRelanceData?.toFieldMap(),
-            onSubmit = { onSave(it) },
+            onSubmit = { formData ->
+                onSave(
+                    formData + mapOf(
+                        "candidatureId" to (selectedCandidatureId ?: ""),
+                        "companyId" to (effectiveCompanyId ?: "")
+                    )
+                )
+                navController?.popBackStack()
+            },
             onCancel = onCancel
         )
     }

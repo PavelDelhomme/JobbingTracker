@@ -36,7 +36,6 @@ fun AddOrEditEntrepriseScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
