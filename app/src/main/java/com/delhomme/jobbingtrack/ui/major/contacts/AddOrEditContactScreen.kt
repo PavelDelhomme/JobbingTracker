@@ -1,20 +1,19 @@
 package com.delhomme.jobbingtrack.ui.major.contacts
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Contact
-import com.delhomme.jobbingtrack.data.classes.toFormMap
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
+import com.delhomme.jobbingtrack.utils.toFieldMap
+import com.delhomme.jobbingtrack.utils.toSafeFieldMap
 
 @Composable
 fun AddOrEditContactScreen(
@@ -58,7 +57,7 @@ fun AddOrEditContactScreen(
 
         ReusableForm(
             fields = fields,
-            initialValues = existingContactData?.toFormMap(),
+            initialValues = existingContactData?.toFieldMap()?.toSafeFieldMap(),
             onSubmit = { formData ->
                 onSave(formData + mapOf("companyId" to (selectedCompanyId ?: "")))
                 navController?.popBackStack()

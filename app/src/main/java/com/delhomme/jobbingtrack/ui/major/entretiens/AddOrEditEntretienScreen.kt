@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +26,7 @@ import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.ModernDateTimePickerField
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import com.delhomme.jobbingtrack.utils.toFieldMap
+import com.delhomme.jobbingtrack.utils.toSafeFieldMap
 
 
 @Composable
@@ -114,7 +113,7 @@ fun AddOrEditEntretienScreen(
 
         ReusableForm(
             fields = fields,
-            initialValues = existingEntretienData?.toFieldMap(),
+            initialValues = existingEntretienData?.toFieldMap()?.toSafeFieldMap("dateTime", "returnDate", "testsDeadline") ?: emptyMap(),
             onSubmit = { formData ->
                 onSave(
                     formData + mapOf(

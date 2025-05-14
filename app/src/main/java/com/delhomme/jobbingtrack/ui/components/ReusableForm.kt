@@ -86,7 +86,7 @@ fun ModernDateTimePickerField(
 @Composable
 fun ReusableForm(
     fields: List<FormField>,
-    initialValues: Map<String, String>? = null,
+    initialValues: Map<out Any?, Any?> = null,
     onSubmit: (Map<String, String>) -> Unit,
     onCancel: (() -> Unit)? = null
 ) {

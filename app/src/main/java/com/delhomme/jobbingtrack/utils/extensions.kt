@@ -1,6 +1,7 @@
 package com.delhomme.jobbingtrack.utils
 
 import com.delhomme.jobbingtrack.data.classes.ApplicationType
+import java.util.Date
 
 fun Any?.toFieldMap(): Map<String, String> {
     return when (this) {
@@ -58,4 +59,15 @@ fun Any?.toFieldMap(): Map<String, String> {
         )
         else -> emptyMap()
     }
+}
+
+
+fun Map<String, Any?>.toSafeFieldMap(vararg keysToConvert: String = arrayOf("date", "dateTime", "applicationDate", "returnDate", "testsDeadline")): MutableMap<String, Any?> {
+    val mutableMap = this.toMutableMap()
+    keysToConvert.forEach { key ->
+        mutableMap[key]?.let {
+            if (it is Long || it is Date) mutableMap[key] = it.toString()
+        }
+    }
+    return mutableMap
 }

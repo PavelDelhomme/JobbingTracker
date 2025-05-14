@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +22,7 @@ import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.utils.toFieldMap
+import com.delhomme.jobbingtrack.utils.toSafeFieldMap
 
 @Composable
 fun AddOrEditRelanceScreen(
@@ -37,6 +36,7 @@ fun AddOrEditRelanceScreen(
     var selectedCandidatureId by remember {
         mutableStateOf(existingRelanceData?.candidatureId ?: linkedCandidatureId)
     }
+    var selectedContactId by remember { mutableStateOf(existingRelanceData?.contactId ?: "") }
 
     // Ondéduit l'entreprie à partir de la candidature sélectionnée, sinon on prend celle passée manueklllement
     val entrepriseIdFromCandidature = selectedCandidatureId?.let {
@@ -60,7 +60,6 @@ fun AddOrEditRelanceScreen(
                 if (index != -1) FormSuggestions.relanceTypes[index] = new
             }
         ),
-        FormField("contactId", "ID Contact (optionnel)", FieldType.TEXT),
         FormField("responseStatus", "Statut réponse (En attente, Positif, Négatif, Aucun retour)", FieldType.TEXT),
         FormField("notes", "Notes", FieldType.MULTILINE_TEXT)
     )
@@ -97,19 +96,38 @@ fun AddOrEditRelanceScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
+        // ✅ Sélecteur intelligent de contact (optionnel)
+        EntitySelectorField(
+            label = "Contact (optionnel)",
+            selectedEntityId = selectedContactId,
+            allEntities = FakeDataProvider.contacts,
+            getEntityLabel = { "${it.firstName} ${it.lastName}" },
+            onEntitySelected = { selectedContactId = it.id },
+            allowCreation = true,
+            onCreateEntity = { fullName ->
+                val names = fullName.trim().split(" ")
+                val firstName = names.firstOrNull() ?: ""
+                val lastName = names.drop(1).joinToString(" ")
+                val newContact = FakeDataProvider.addContactIfNotExists(firstName, lastName, effectiveCompanyId)
+                selectedContactId = newContact.id
+            }
+        )
+
         ReusableForm(
             fields = fields,
-            initialValues = existingRelanceData?.toFieldMap(),
+            initialValues = existingRelanceData?.toFieldMap()?.toSafeFieldMap("date") ?: emptyMap(),
             onSubmit = { formData ->
                 onSave(
                     formData + mapOf(
                         "candidatureId" to (selectedCandidatureId ?: ""),
-                        "companyId" to (effectiveCompanyId ?: "")
+                        "companyId" to (effectiveCompanyId ?: ""),
+                        "contactId" to (selectedContactId)
                     )
                 )
                 navController?.popBackStack()
             },
             onCancel = onCancel
         )
+
     }
 }

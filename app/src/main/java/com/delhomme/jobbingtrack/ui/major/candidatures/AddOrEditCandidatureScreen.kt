@@ -1,8 +1,6 @@
 package com.delhomme.jobbingtrack.ui.major.candidatures
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +15,7 @@ import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import com.delhomme.jobbingtrack.utils.toFieldMap
+import com.delhomme.jobbingtrack.utils.toSafeFieldMap
 
 @Composable
 fun AddOrEditCandidatureScreen(
@@ -63,7 +62,7 @@ fun AddOrEditCandidatureScreen(
 
         ReusableForm(
             fields = fields,
-            initialValues = existingCandidatureData?.toFieldMap(),
+            initialValues = existingCandidatureData?.toFieldMap()?.toSafeFieldMap("applicationDate") ?: emptyMap(),
             onSubmit = { formData ->
                 onSave(formData + mapOf("companyId" to selectedEntrepriseId))
                 navController?.popBackStack()

@@ -224,6 +224,24 @@ object FakeDataProvider {
         entreprises.removeAll { it.id == id }
     }
 
+    fun addContactIfNotExists(firstName: String, lastName: String, entrepriseId: String?): Contact {
+        return contacts.find { it.firstName.equals(firstName, ignoreCase = true) && it.lastName.equals(lastName, ignoreCase = true) }
+            ?: Contact(
+                id = UUID.randomUUID().toString(),
+                firstName = firstName,
+                lastName = lastName,
+                phone = null,
+                email = null,
+                position = null,
+                department = null,
+                entrepriseId = entrepriseId.toString(),
+                notes = "",
+                syncHash = "contact-${UUID.randomUUID()}",
+                isArchived = false,
+                isDeleted = false
+            ).also { contacts.add(it) }
+    }
+
     fun removeContact(id: String) {
         contacts.find { it.id == id }?.isArchived = true
     }
