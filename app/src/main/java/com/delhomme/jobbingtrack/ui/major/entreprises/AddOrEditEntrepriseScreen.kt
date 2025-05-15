@@ -40,7 +40,7 @@ fun AddOrEditEntrepriseScreen(
     ) {
         ReusableForm(
             fields = fields,
-            initialValues = existingEntrepriseData?.toFieldMap()?.toSafeFieldMap(),
+            initialValues = existingEntrepriseData?.toFieldMap()?.toSafeFieldMap() ?: emptyMap(),
             onSubmit = { onSave(it) },
             onCancel = onCancel
         )

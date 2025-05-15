@@ -86,7 +86,7 @@ fun ModernDateTimePickerField(
 @Composable
 fun ReusableForm(
     fields: List<FormField>,
-    initialValues: Map<out Any?, Any?> = null,
+    initialValues: Map<String, Any?> = emptyMap(),
     onSubmit: (Map<String, String>) -> Unit,
     onCancel: (() -> Unit)? = null
 ) {
@@ -118,7 +118,7 @@ fun ReusableForm(
                 LocalDate.now().plusDays(1).atTime(9, 0).format(dateTimeFormatter)
             } else null
 
-            fieldValues[field.name] = initial ?: entretienDefaultDateTime ?: defaultDate ?: ""
+            fieldValues[field.name] = (initial ?: entretienDefaultDateTime ?: defaultDate ?: "").toString()
         }
     }
 
@@ -176,7 +176,7 @@ fun ReusableForm(
                 FieldType.DATE, FieldType.TIME -> {
                     ModernDateTimePickerField(
                         label = field.label,
-                        initialMillis = fieldValues[field.name] as Long?,
+                        initialMillis = fieldValues[field.name]?.toLongOrNull(),
                         onDateTimeSelected = { if (!field.readOnly) fieldValues[field.name] = it.toString() },
                         modifier = Modifier.fillMaxWidth()
                     )

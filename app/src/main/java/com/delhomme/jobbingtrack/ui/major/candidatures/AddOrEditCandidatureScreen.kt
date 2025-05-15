@@ -62,7 +62,7 @@ fun AddOrEditCandidatureScreen(
 
         ReusableForm(
             fields = fields,
-            initialValues = existingCandidatureData?.toFieldMap()?.toSafeFieldMap("applicationDate") ?: emptyMap(),
+            initialValues = existingCandidatureData?.toFieldMap()?.toSafeFieldMap() ?: emptyMap(),
             onSubmit = { formData ->
                 onSave(formData + mapOf("companyId" to selectedEntrepriseId))
                 navController?.popBackStack()

@@ -109,7 +109,9 @@ fun AddOrEditAppelScreen(
 
         ReusableForm(
             fields = fields,
-            initialValues = existingAppelData?.toFieldMap()?.toSafeFieldMap("dateTime") ?: emptyMap(),
+            initialValues = existingAppelData?.toFieldMap()?.toMutableMap()?.apply {
+                existingAppelData.dateTime.let { this["dateTime"] = it.toString() }
+            } ?: emptyMap(),
             onSubmit = { formData ->
                 onSave(
                     formData + mapOf(

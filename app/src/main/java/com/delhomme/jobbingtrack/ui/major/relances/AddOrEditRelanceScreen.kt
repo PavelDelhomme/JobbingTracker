@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Relance
+import com.delhomme.jobbingtrack.data.classes.toSafeFieldMap
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.utils.toFieldMap
-import com.delhomme.jobbingtrack.utils.toSafeFieldMap
 
 @Composable
 fun AddOrEditRelanceScreen(
@@ -100,22 +100,26 @@ fun AddOrEditRelanceScreen(
         EntitySelectorField(
             label = "Contact (optionnel)",
             selectedEntityId = selectedContactId,
-            allEntities = FakeDataProvider.contacts,
+            allEntities = FakeDataProvider.contacts.filter { it.entrepriseId == effectiveCompanyId },
             getEntityLabel = { "${it.firstName} ${it.lastName}" },
             onEntitySelected = { selectedContactId = it.id },
             allowCreation = true,
             onCreateEntity = { fullName ->
-                val names = fullName.trim().split(" ")
-                val firstName = names.firstOrNull() ?: ""
-                val lastName = names.drop(1).joinToString(" ")
-                val newContact = FakeDataProvider.addContactIfNotExists(firstName, lastName, effectiveCompanyId)
+                val parts = fullName.trim().split(" ", limit = 2)
+                val newContact = FakeDataProvider.addContactIfNotExists(
+                    firstName = parts.getOrElse(0) { "" },
+                    lastName = parts.getOrElse(1) { "" },
+                    entrepriseId = effectiveCompanyId ?: ""
+                )
                 selectedContactId = newContact.id
             }
         )
 
         ReusableForm(
             fields = fields,
-            initialValues = existingRelanceData?.toFieldMap()?.toSafeFieldMap("date") ?: emptyMap(),
+            initialValues = existingRelanceData?.toFieldMap()?.toMutableMap()?.apply {
+                existingRelanceData.date.let { this["date"] = it.toString() }
+            } ?: emptyMap(),
             onSubmit = { formData ->
                 onSave(
                     formData + mapOf(

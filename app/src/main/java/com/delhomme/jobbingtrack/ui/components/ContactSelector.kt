@@ -34,33 +34,41 @@ fun ContactSelectorField(
     onContactsChanged: (List<Contact>) -> Unit
 ) {
     var searchText by remember { mutableStateOf("") }
-    val filteredContacts = allContacts.filter {
-        "${it.firstName} ${it.lastName}".contains(searchText, ignoreCase = true) && it !in selectedContacts
-    }
+    var expanded by remember { mutableStateOf(false) }
+
+    // on affiche les suggestions seulement quand on tape
+    val filtered = allContacts
+        .filter { "${it.firstName} ${it.lastName}".contains(searchText, true) }
+        .filter { it !in selectedContacts }
 
     Column {
         OutlinedTextField(
             value = searchText,
-            onValueChange = { searchText = it },
+            onValueChange = {
+                searchText = it
+                expanded   = it.isNotBlank() && filtered.isNotEmpty()
+            },
             label = { Text(label) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
 
-        if (filteredContacts.isNotEmpty()) {
-            DropdownMenu(
-                expanded = true,
-                onDismissRequest = { searchText = "" }
-            ) {
-                filteredContacts.take(5).forEach { contact ->
-                    DropdownMenuItem(
-                        text = { Text("${contact.firstName} ${contact.lastName}") },
-                        onClick = {
-                            onContactsChanged(selectedContacts + contact)
-                            searchText = ""
-                        }
-                    )
-                }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = {
+                expanded   = false
+                searchText = ""    // ou seulement `expanded = false`
+            }
+        ) {
+            filtered.take(5).forEach { contact ->
+                DropdownMenuItem(
+                    text = { Text("${contact.firstName} ${contact.lastName}") },
+                    onClick = {
+                        onContactsChanged(selectedContacts + contact)
+                        searchText = ""
+                        expanded   = false
+                    }
+                )
             }
         }
 

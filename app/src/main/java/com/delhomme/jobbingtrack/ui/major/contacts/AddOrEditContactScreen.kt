@@ -57,7 +57,7 @@ fun AddOrEditContactScreen(
 
         ReusableForm(
             fields = fields,
-            initialValues = existingContactData?.toFieldMap()?.toSafeFieldMap(),
+            initialValues = existingContactData?.toFieldMap()?.toSafeFieldMap() ?: emptyMap(),
             onSubmit = { formData ->
                 onSave(formData + mapOf("companyId" to (selectedCompanyId ?: "")))
                 navController?.popBackStack()

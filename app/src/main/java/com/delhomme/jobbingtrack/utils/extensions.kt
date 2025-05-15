@@ -61,12 +61,19 @@ fun Any?.toFieldMap(): Map<String, String> {
     }
 }
 
-
-fun Map<String, Any?>.toSafeFieldMap(vararg keysToConvert: String = arrayOf("date", "dateTime", "applicationDate", "returnDate", "testsDeadline")): MutableMap<String, Any?> {
-    val mutableMap = this.toMutableMap()
-    keysToConvert.forEach { key ->
-        mutableMap[key]?.let {
-            if (it is Long || it is Date) mutableMap[key] = it.toString()
+/**
+ * Convertit toutes les valeurs de la Map en String si besoin.
+ * Plus besoin de passer les clés à la main.
+ */
+fun Map<String, Any?>.toSafeFieldMap(): MutableMap<String, String> {
+    val mutableMap = mutableMapOf<String, String>()
+    for ((key, value) in this) {
+        mutableMap[key] = when (value) {
+            is Long, is Int, is Double, is Date -> value.toString()
+            is Enum<*> -> value.name
+            is String -> value
+            null -> ""
+            else -> value.toString()
         }
     }
     return mutableMap

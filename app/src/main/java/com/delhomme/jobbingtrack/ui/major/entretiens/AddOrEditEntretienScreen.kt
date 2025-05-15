@@ -113,7 +113,7 @@ fun AddOrEditEntretienScreen(
 
         ReusableForm(
             fields = fields,
-            initialValues = existingEntretienData?.toFieldMap()?.toSafeFieldMap("dateTime", "returnDate", "testsDeadline") ?: emptyMap(),
+            initialValues = existingEntretienData?.toFieldMap()?.toSafeFieldMap() ?: emptyMap(),
             onSubmit = { formData ->
                 onSave(
                     formData + mapOf(
