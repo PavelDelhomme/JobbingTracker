@@ -9,10 +9,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.compose.rememberNavController
 import com.delhomme.jobbingtrack.navigation.NavGraph
+import com.delhomme.jobbingtrack.utils.TokenManager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val token = TokenManager.getToken(this);
         setContent {
             val navController = rememberNavController()
 
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalViewModelStoreOwner provides viewModelStoreOwner
                 ) {
-                    NavGraph(navController = navController)
+                    NavGraph(navController = navController, isLoggedIn = token != null)
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.delhomme.jobbingtrack.navigation
 object Routes {
     const val MAIN = "main"
     const val LOGIN = "login"
+    const val REGISTER = "register"
 
     // Routes Détails avec paramètre
     const val CANDIDATURE_DETAIL = "candidature_detail"

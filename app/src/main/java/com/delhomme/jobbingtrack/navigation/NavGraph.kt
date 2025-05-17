@@ -27,17 +27,22 @@ import com.delhomme.jobbingtrack.ui.major.entretiens.EntretienDetailScreen
 import com.delhomme.jobbingtrack.ui.major.entretiens.AddOrEditEntretienScreen
 import com.delhomme.jobbingtrack.ui.major.login.LoginScreen
 import com.delhomme.jobbingtrack.ui.main.MainScreen
+import com.delhomme.jobbingtrack.ui.major.login.RegisterScreen
 import com.delhomme.jobbingtrack.ui.major.relances.AddOrEditRelanceScreen
 import com.delhomme.jobbingtrack.ui.major.relances.RelanceDetailScreen
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
     NavHost(
         navController = navController,
-        startDestination = Routes.MAIN
+        startDestination = if (isLoggedIn) Routes.MAIN else Routes.LOGIN
     ) {
         composable(Routes.LOGIN) {
             LoginScreen(navController = navController)
+        }
+
+        composable(Routes.REGISTER) {
+            RegisterScreen(navController)
         }
 
         composable(Routes.MAIN) {

@@ -8,12 +8,12 @@ import androidx.lifecycle.viewModelScope
 
 import kotlinx.coroutines.launch
 import androidx.lifecycle.MutableLiveData
-import com.delhomme.jobbingtrack.data.repository.LoginRepository
+import com.delhomme.jobbingtrack.data.repository.RegisterRepository
 import com.delhomme.jobbingtrack.utils.TokenManager
 
-class LoginViewModel(
+class RegisterViewModel(
     app: Application,
-    private val repository: LoginRepository = LoginRepository()
+    private val repository: RegisterRepository = RegisterRepository()
 ) : AndroidViewModel(app) {
 
     private val _isLoading = MutableLiveData(false)
@@ -25,12 +25,16 @@ class LoginViewModel(
     private val _loginSuccess = MutableLiveData(false)
     val loginSuccess: LiveData<Boolean> = _loginSuccess
 
-    fun login(email: String, password: String) {
+    /**
+     * Simule un appel d'API d'inscription, sauvegarde un token factice
+     * et notifie la vue.
+     */
+    fun register(email: String, password: String) {
         _isLoading.value = true
         _errorMessage.value = null
 
         viewModelScope.launch {
-            val success = repository.login(email, password)
+            val success = repository.register(email, password)
             _isLoading.value = false
             if (success) {
                 // Simuler un token : dans la vraie vie il faudra prendre response.access
