@@ -3,7 +3,6 @@ package com.delhomme.jobbingtrack.ui.major.login
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
 import kotlinx.coroutines.launch
@@ -11,10 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import com.delhomme.jobbingtrack.data.repository.RegisterRepository
 import com.delhomme.jobbingtrack.utils.TokenManager
 
-class RegisterViewModel(
-    app: Application,
-    private val repository: RegisterRepository = RegisterRepository()
-) : AndroidViewModel(app) {
+class RegisterViewModel(app: Application) : AndroidViewModel(app) {
+    private val repository = RegisterRepository()
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -22,8 +19,8 @@ class RegisterViewModel(
     private val _errorMessage = MutableLiveData<String?>(null)
     val errorMessage: LiveData<String?> = _errorMessage
 
-    private val _loginSuccess = MutableLiveData(false)
-    val loginSuccess: LiveData<Boolean> = _loginSuccess
+    private val _registerSuccess = MutableLiveData(false)
+    val registerSuccess: LiveData<Boolean> = _registerSuccess
 
     /**
      * Simule un appel d'API d'inscription, sauvegarde un token factice
@@ -41,7 +38,7 @@ class RegisterViewModel(
                 val fakeToken = "fake_jwt_token_${System.currentTimeMillis()}"
                 // Sauvegarde en SharedPreferences chiffrées
                 TokenManager.saveToken(getApplication(), fakeToken)
-                _loginSuccess.value = true
+                _registerSuccess.value = true
             } else {
                 _errorMessage.value = "Email ou mot de passe incorrect."
             }

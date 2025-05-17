@@ -11,10 +11,9 @@ import androidx.lifecycle.MutableLiveData
 import com.delhomme.jobbingtrack.data.repository.LoginRepository
 import com.delhomme.jobbingtrack.utils.TokenManager
 
-class LoginViewModel(
-    app: Application,
-    private val repository: LoginRepository = LoginRepository()
-) : AndroidViewModel(app) {
+class LoginViewModel(app: Application) : AndroidViewModel(app) {
+
+    private val repository = LoginRepository()
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
