@@ -2,38 +2,54 @@ package com.delhomme.jobbingtrack.ui.major.contacts
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.classes.Contact
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
-import com.delhomme.jobbingtrack.data.forms.FieldType
-import com.delhomme.jobbingtrack.data.forms.FormField
-import com.delhomme.jobbingtrack.data.forms.FormSuggestions
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
-import com.delhomme.jobbingtrack.utils.toFieldMap
-import com.delhomme.jobbingtrack.utils.toSafeFieldMap
+import com.delhomme.jobbingtrack.data.forms.FieldType
+import com.delhomme.jobbingtrack.data.forms.FormField
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
+import com.delhomme.jobbingtrack.data.local.entities.EntrepriseEntity
+import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
+import java.util.UUID
 
 @Composable
 fun AddOrEditContactScreen(
-    navController: NavController? = null,
-    existingContactData: Contact? = null,
+    contactId: String? = null,
+    linkedCandidatureId: String? = null,
     linkedEntrepriseId: String? = null,
-    onSave: (Map<String, String>) -> Unit,
-    onCancel: (() -> Unit)? = null,
+    onCancel: () -> Unit,
+    contactVm: ContactViewModel               = viewModel(),
+    entrepriseVm: EntrepriseViewModel         = viewModel(),
+    candidatureVm: CandidatureViewModel       = viewModel()
 ) {
-    val entreprises = FakeDataProvider.entreprises
-    var selectedCompanyId by remember { mutableStateOf(existingContactData?.entrepriseId ?: linkedEntrepriseId) }
+    // 1) Charger les listes
+    val allContacts    by contactVm.contacts.observeAsState(emptyList())
+    val allEntreprises by entrepriseVm.entreprises.observeAsState(emptyList())
+    val allCandidats   by candidatureVm.candidatures.observeAsState(emptyList())
 
+    // 2) Chercher l’existant si on édite
+    val existing = contactId?.let { id -> allContacts.find { it.id == id } }
+
+    // 3) État local pour l’entreprise liée
+    var selCompanyId      by remember { mutableStateOf(existing?.entrepriseId ?: linkedEntrepriseId.orEmpty()) }
+    var selCandidatureId  by remember { mutableStateOf(linkedCandidatureId ?: existing?.candidatureId.orEmpty()) }
+
+
+    // 4) Les champs du formulaire
     val fields = listOf(
-        FormField("firstName", "Prénom", FieldType.TEXT, isRequired = true),
-        FormField("lastName", "Nom", FieldType.TEXT, isRequired = true),
-        FormField("phone", "Téléphone", FieldType.PHONE),
-        FormField("email", "Email", FieldType.EMAIL),
-        FormField("position", "Poste", FieldType.DROPDOWN, options = FormSuggestions.contactPositions),
-        FormField("department", "Service", FieldType.TEXT),
-        FormField("notes", "Notes", FieldType.MULTILINE_TEXT)
+        FormField("firstName", "Prénom",             FieldType.TEXT,      isRequired = true),
+        FormField("lastName",  "Nom",                FieldType.TEXT,      isRequired = true),
+        FormField("phone",     "Téléphone",          FieldType.PHONE),
+        FormField("email",     "Email",              FieldType.EMAIL),
+        FormField("position",  "Poste",              FieldType.TEXT),
+        FormField("department","Département",        FieldType.TEXT),
+        FormField("notes",     "Notes",              FieldType.MULTILINE_TEXT)
     )
 
     Column(
@@ -42,25 +58,80 @@ fun AddOrEditContactScreen(
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Sélecteur d’entreprise
         EntitySelectorField(
-            label = "Entreprise liée",
-            selectedEntityId = selectedCompanyId,
-            allEntities = entreprises,
-            getEntityLabel = { it.name },
-            onEntitySelected = { selectedCompanyId = it.id },
-            allowCreation = true,
-            onCreateEntity = { name ->
-                val newEntreprise = FakeDataProvider.addEntrepriseIfNotExists(name)
-                selectedCompanyId = newEntreprise.id
+            label            = "Entreprise liée",
+            selectedEntityId = selCompanyId,
+            allEntities      = allEntreprises,
+            getEntityLabel   = { it.name },
+            onEntitySelected = { selCompanyId = it.id },
+            allowCreation    = true,
+            onCreateEntity   = { name ->
+                // si vous voulez permettre la création inline
+                val newId = UUID.randomUUID().toString()
+                entrepriseVm.save(
+                    EntrepriseEntity(
+                        id        = newId,
+                        name      = name,
+                        type      = null,
+                        phone     = null,
+                        email     = null,
+                        hrEmail   = null,
+                        address   = null,
+                        notes     = null,
+                        syncHash  = "ent-$newId"
+                    )
+                )
+                selCompanyId = newId
             }
         )
 
+        // Champ “Candidature” (optionnel)
+        EntitySelectorField(
+            label            = "Lier à une candidature (opt.)",
+            selectedEntityId = selCandidatureId,
+            allEntities      = allCandidats.filter { it.companyId == selCompanyId },
+            getEntityLabel   = { it.title },
+            onEntitySelected = { selCandidatureId = it.id },
+            allowCreation    = false
+        )
+
+
+        // Formulaire Réutilisable
         ReusableForm(
             fields = fields,
-            initialValues = existingContactData?.toFieldMap()?.toSafeFieldMap() ?: emptyMap(),
-            onSubmit = { formData ->
-                onSave(formData + mapOf("companyId" to (selectedCompanyId ?: "")))
-                navController?.popBackStack()
+            initialValues = existing?.run {
+                mapOf(
+                    "firstName"  to (firstName ?: ""),
+                    "lastName"   to (lastName  ?: ""),
+                    "phone"      to (phone     ?: ""),
+                    "email"      to (email     ?: ""),
+                    "position"   to (position  ?: ""),
+                    "department" to (department?: ""),
+                    "notes"      to (notes     ?: "")
+                )
+            } ?: emptyMap(),
+            onSubmit = { form ->
+                val id = existing?.id ?: UUID.randomUUID().toString()
+                val hash = existing?.syncHash ?: "ct-$id"
+                val entity = ContactEntity(
+                    id           = id,
+                    firstName    = form["firstName"],
+                    lastName     = form["lastName"],
+                    phone        = form["phone"],
+                    email        = form["email"],
+                    position     = form["position"],
+                    department   = form["department"],
+                    entrepriseId = selCompanyId,
+                    candidatureId = selCandidatureId,
+                    notes        = form["notes"],
+                    syncHash     = hash,
+                    isArchived   = existing?.isArchived ?: false,
+                    isDeleted    = existing?.isDeleted ?: false
+                )
+
+                contactVm.save(entity)
+                onCancel()
             },
             onCancel = onCancel
         )

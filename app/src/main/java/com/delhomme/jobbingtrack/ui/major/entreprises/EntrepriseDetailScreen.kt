@@ -26,7 +26,7 @@ import com.delhomme.jobbingtrack.utils.toFormattedDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EntrepriseDetailScreen(
-    entreprise: Entreprise,
+    entrepriseId: String,
     navController: NavController
 ) {
     val contacts = FakeDataProvider.contacts.filter { it.entrepriseId == entreprise.id }

@@ -9,7 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.compose.rememberNavController
 import com.delhomme.jobbingtrack.navigation.NavGraph
-import com.delhomme.jobbingtrack.utils.TokenManager
+import com.delhomme.jobbingtrack.data.networks.TokenManager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

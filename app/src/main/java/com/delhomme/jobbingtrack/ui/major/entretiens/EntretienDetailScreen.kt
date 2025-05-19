@@ -13,12 +13,15 @@ import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Entretien
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider.contacts
+import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.major.candidatures.SectionTitle
 import com.delhomme.jobbingtrack.ui.components.DetailItemCard
@@ -26,46 +29,39 @@ import com.delhomme.jobbingtrack.ui.components.DetailItemCard
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EntretienDetailScreen(
-    entretien: Entretien,
+    entretienId: String,
     navController: NavController,
     onBackClick: () -> Unit
 ) {
+    // 1) Récupérer la VM et lister les entretiens
+    val entVm = viewModel<EntretienViewModel>()
+    val allEnts by entVm.entretiens.observeAsState(emptyList())
+    val entretien = allEnts.find { it.id == entretienId } ?: return
 
-    BackHandler {
-        navController.popBackStack()
-    }
+    BackHandler { onBackClick }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(entretien.candidatureId) },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }
                 },
                 actions = {
                     IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_ENTRETIEN}/${entretien.id}")
-                    }) {
-                        Icon(Icons.Default.Edit, contentDescription = "Modifier")
-                    }
+                    }) { Icon(Icons.Default.Edit, null) }
                     IconButton(onClick = {
-                        FakeDataProvider.removeEntretien(entretien.id)
-                        navController.popBackStack()
-                    }) {
-                        Icon(Icons.Default.Archive, contentDescription = "Archiver")
-                    }
+                        entVm.remove(entretien.id)
+                        onBackClick()
+                    }) { Icon(Icons.Default.Archive, null) }
 
                     IconButton(onClick = {
-                        FakeDataProvider.deleteEntretien(entretien.id)
-                        navController.popBackStack()
-                    }) {
-                        Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
-                    }
-
+                        entVm.delete(entretien.id)
+                        onBackClick()
+                    }) { Icon(Icons.Default.DeleteForever, null) }
                 }
             )
         }

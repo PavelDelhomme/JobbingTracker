@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.utils
+package com.delhomme.jobbingtrack.data.networks
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences

@@ -13,11 +13,19 @@ import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Contact
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
+import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.major.candidatures.SectionTitle
 import com.delhomme.jobbingtrack.ui.components.DetailItemCard
@@ -26,24 +34,38 @@ import com.delhomme.jobbingtrack.utils.toFormattedDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactDetailScreen(
-    contact: Contact,
-    navController: NavController
+    contactId: String,
+    navController: NavController,
+    contactVm: ContactViewModel = viewModel(),
+    entrepriseVm: EntrepriseViewModel = viewModel(),
+    candidatureVm: CandidatureViewModel = viewModel(),
+    appelVm: AppelViewModel = viewModel(),
+    entretienVm: EntretienViewModel = viewModel(),
+    relanceVm: RelanceViewModel = viewModel()
 ) {
-// Meilleur :
-    val candidatures = FakeDataProvider.candidatures.filter { candidature ->
-        FakeDataProvider.relances.any { relance ->
-            relance.candidatureId == candidature.id && relance.contactId == contact.id
-        } ||
-                FakeDataProvider.appels.any { appel ->
-                    appel.candidatureId == candidature.id && appel.contactId == contact.id
-                } ||
-                FakeDataProvider.entretiens.any { entretien ->
-                    entretien.contacts.contains(contact.id)
-                }
+    // 1) Charger le contact
+    val allContacts by contactVm.contacts.observeAsState(emptyList())
+    val contact    = allContacts.find { it.id == contactId } ?: return
+
+    // 2) Charger l'entreprise associée (pour le nom)
+    val allEnts     by entrepriseVm.entreprises.observeAsState(emptyList())
+    val entreprise = allEnts.find { it.id == contact.entrepriseId } ?: return
+
+    // 3) Charger tous les oobjets et filtrere ceux qui concernent ce contact
+    val allCands by candidatureVm.candidatures.observeAsState(emptyList())
+    val allRelances by relanceVm.relances.observeAsState(emptyList())
+    val allAppels by appelVm.appels.observeAsState(emptyList())
+    val allEntretiens by entretienVm.entretiens.observeAsState(emptyList())
+
+    val linkedCands = allCands.filter { c ->
+        allAppels.any { it.contactId == contactId && it.candidatureId == c.id } ||
+        allRelances.any { it.contactId == contactId && it.candidatureId == c.id } ||
+        allEntretiens.any { it.contacts.split(",").contains(contactId) && it.candidatureId == c.id }
     }
-    val relances = FakeDataProvider.relances.filter { it.contactId == contact.id }
-    val appels = FakeDataProvider.appels.filter { it.contactId == contact.id }
-    val entretiens = FakeDataProvider.entretiens.filter { it.contacts.contains(contact.id) }
+    val linkedAppels = allAppels.filter { it.contactId == contactId }
+    val linkedEntretiens = allEntretiens.filter { it.contacts.split(",").contains(contactId) }
+    val linkedRelances = allRelances.filter { it.contactId == contactId }
+
 
     BackHandler {
         navController.popBackStack()
@@ -62,19 +84,19 @@ fun ContactDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("${Routes.EDIT_CONTACT}/${contact.id}")
+                        navController.navigate("${Routes.EDIT_CONTACT}/${contactId}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier Contact")
                     }
                     IconButton(onClick = {
-                        FakeDataProvider.removeContact(contact.id)
+                        contactVm.archive(contactId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
 
                     IconButton(onClick = {
-                        FakeDataProvider.deleteContact(contact.id)
+                        contactVm.delete(contactId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
@@ -94,52 +116,56 @@ fun ContactDetailScreen(
             item {
                 Text(text = "Informations sur le contact", style = MaterialTheme.typography.headlineSmall)
                 Spacer(modifier = Modifier.height(8.dp))
+                Text("Entreprise : ${entreprise?.name ?: "-"}", style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(8.dp))
                 Text(text = "Téléphone : ${contact.phone ?: "Non spécifié"}")
                 Text(text = "Email : ${contact.email ?: "Non spécifié"}")
                 Text(text = "Poste : ${contact.position ?: "Non spécifié"}")
                 Text(text = "Service : ${contact.department ?: "Non spécifié"}")
             }
 
-            if (candidatures.isNotEmpty()) {
+
+            if (linkedCands.isNotEmpty()) {
                 item { SectionTitle("Candidatures liées") }
-                items(candidatures) { candidature ->
+                items(linkedCands) { c ->
                     DetailItemCard(
-                        title = candidature.title,
-                        subtitle = candidature.applicationStatus.name,
-                        onClick = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${candidature.id}") }
+                        title    = c.title,
+                        subtitle = c.applicationStatus.name,
+                        onClick  = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${c.id}") }
                     )
                 }
             }
 
-            if (relances.isNotEmpty()) {
-                item { SectionTitle("Relances liées") }
-                items(relances) { relance ->
-                    DetailItemCard(
-                        title = relance.type?.name ?: "Type inconnu",
-                        subtitle = relance.responseStatus?.name ?: "Statut inconnu",
-                        onClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${relance.id}") }
-                    )
-                }
-            }
 
-            if (appels.isNotEmpty()) {
+            if (linkedAppels.isNotEmpty()) {
                 item { SectionTitle("Appels liés") }
-                items(appels) { appel ->
+                items(linkedAppels) { a ->
                     DetailItemCard(
-                        title = appel.subject,
-                        subtitle = appel.dateTime.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.APPEL_DETAIL}/${appel.id}") }
+                        title    = a.subject,
+                        subtitle = a.dateTime.toFormattedDate(),
+                        onClick  = { navController.navigate("${Routes.APPEL_DETAIL}/${a.id}") }
                     )
                 }
             }
 
-            if (entretiens.isNotEmpty()) {
+            if (linkedEntretiens.isNotEmpty()) {
                 item { SectionTitle("Entretiens liés") }
-                items(entretiens) { entretien ->
+                items(linkedEntretiens) { e ->
                     DetailItemCard(
-                        title = "${entretien.type?.name ?: "Type inconnu"} - ${entretien.style?.name ?: "Style inconnu"}",
-                        subtitle = entretien.dateTime.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.id}") }
+                        title    = "${e.type} — ${e.style}",
+                        subtitle = e.dateTime.toFormattedDate(),
+                        onClick  = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.id}") }
+                    )
+                }
+            }
+
+            if (linkedRelances.isNotEmpty()) {
+                item { SectionTitle("Relances liées") }
+                items(linkedRelances) { r ->
+                    DetailItemCard(
+                        title    = r.type ?: "—",
+                        subtitle = r.date.toFormattedDate(),
+                        onClick  = { navController.navigate("${Routes.RELANCE_DETAIL}/${r.id}") }
                     )
                 }
             }

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.DropdownMenu
@@ -24,14 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.Contact
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ContactSelectorField(
     label: String,
-    allContacts: List<Contact>,
-    selectedContacts: List<Contact>,
-    onContactsChanged: (List<Contact>) -> Unit
+    allContacts: List<ContactEntity>,
+    selectedContacts: List<ContactEntity>,
+    onContactsChanged: (List<ContactEntity>) -> Unit
 ) {
     var searchText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }

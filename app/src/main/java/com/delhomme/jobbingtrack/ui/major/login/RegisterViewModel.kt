@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 
 import kotlinx.coroutines.launch
 import androidx.lifecycle.MutableLiveData
-import com.delhomme.jobbingtrack.data.repository.RegisterRepository
-import com.delhomme.jobbingtrack.utils.TokenManager
+import com.delhomme.jobbingtrack.data.local.repository.RegisterRepository
+import com.delhomme.jobbingtrack.data.networks.TokenManager
 
 class RegisterViewModel(app: Application) : AndroidViewModel(app) {
     private val repository = RegisterRepository()

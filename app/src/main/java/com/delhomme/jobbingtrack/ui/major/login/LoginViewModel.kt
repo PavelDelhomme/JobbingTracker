@@ -3,13 +3,12 @@ package com.delhomme.jobbingtrack.ui.major.login
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
 import kotlinx.coroutines.launch
 import androidx.lifecycle.MutableLiveData
-import com.delhomme.jobbingtrack.data.repository.LoginRepository
-import com.delhomme.jobbingtrack.utils.TokenManager
+import com.delhomme.jobbingtrack.data.local.repository.LoginRepository
+import com.delhomme.jobbingtrack.data.networks.TokenManager
 
 class LoginViewModel(app: Application) : AndroidViewModel(app) {
 

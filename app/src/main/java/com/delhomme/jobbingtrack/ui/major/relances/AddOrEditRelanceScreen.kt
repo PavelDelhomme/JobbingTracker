@@ -8,58 +8,52 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.ui.components.ReusableForm
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.data.classes.Relance
-import com.delhomme.jobbingtrack.data.classes.toSafeFieldMap
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
+import com.delhomme.jobbingtrack.data.local.RelanceEntity
+import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
 import com.delhomme.jobbingtrack.utils.toFieldMap
+import java.util.UUID
 
 @Composable
 fun AddOrEditRelanceScreen(
-    navController: NavController? = null,
-    existingRelanceData: Relance? = null,
+    relanceId: String? = null,
     linkedCandidatureId: String? = null,
     linkedCompanyId: String? = null,
-    onSave: (Map<String, String>) -> Unit,
-    onCancel: (() -> Unit)? = null,
+    vm: RelanceViewModel = viewModel(),
+    candVm: CandidatureViewModel = viewModel(),
+    contactVm: ContactViewModel = viewModel(),
+    onCancel: () -> Unit
 ) {
-    var selectedCandidatureId by remember {
-        mutableStateOf(existingRelanceData?.candidatureId ?: linkedCandidatureId)
-    }
-    var selectedContactId by remember { mutableStateOf(existingRelanceData?.contactId ?: "") }
+    val all = vm.relances.observeAsState(emptyList()).value
+    val existing = all.find { it.id == relanceId }
 
-    // Ondéduit l'entreprie à partir de la candidature sélectionnée, sinon on prend celle passée manueklllement
-    val entrepriseIdFromCandidature = selectedCandidatureId?.let {
-        FakeDataProvider.candidatures.find { c -> c.id == it }?.companyId
-    }
+    val candidats = candVm.candidatures.observeAsState(emptyList()).value
+    val contacts  = contactVm.contacts.observeAsState(emptyList()).value
 
-    val effectiveCompanyId = entrepriseIdFromCandidature ?: linkedCompanyId
+    var selCandId by remember { mutableStateOf(existing?.candidatureId ?: linkedCandidatureId) }
+    var selContactId by remember { mutableStateOf(existing?.contactId ?: "") }
+    var selCompanyId by remember { mutableStateOf(existing?.companyId     ?: linkedCompanyId.orEmpty()) }
+
 
     val fields = listOf(
         FormField("date", "Date de relance", FieldType.DATE, isRequired = true),
-        FormField(
-            "type",
-            "Type de relance",
-            FieldType.DROPDOWN,
-            isRequired = true,
-            options = FormSuggestions.relanceTypes,
-            onNewOptionAdded = { FormSuggestions.relanceTypes.add(it) },
-            onOptionRemoved = { FormSuggestions.relanceTypes.remove(it) },
-            onOptionRenamed = { old, new ->
-                val index = FormSuggestions.relanceTypes.indexOf(old)
-                if (index != -1) FormSuggestions.relanceTypes[index] = new
-            }
-        ),
+        FormField("type",           "Type",           FieldType.DROPDOWN,      isRequired = true, options = FormSuggestions.relanceTypes), // Permettre l'ajout ou la suppression de type de relance en live dans le formulaire
         FormField("responseStatus", "Statut réponse (En attente, Positif, Négatif, Aucun retour)", FieldType.TEXT),
         FormField("notes", "Notes", FieldType.MULTILINE_TEXT)
     )
@@ -70,68 +64,51 @@ fun AddOrEditRelanceScreen(
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        if (linkedCandidatureId == null) {
-            EntitySelectorField(
-                label = "Candidature",
-                selectedEntityId = selectedCandidatureId,
-                allEntities = FakeDataProvider.candidatures,
-                getEntityLabel = { it.title },
-                onEntitySelected = { selectedCandidatureId == it.id }
-            )
-        } else {
-            OutlinedTextField(
-                value = FakeDataProvider.candidatures.find { it.id == linkedCandidatureId }?.title ?: "",
-                onValueChange = {},
-                label = { Text("Candidature") },
-                readOnly = true,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-
-        OutlinedTextField(
-            value = FakeDataProvider.entreprises.find { it.id == effectiveCompanyId }?.name ?: "",
-            onValueChange = {},
-            label = { Text("Entreprise") },
-            readOnly = true,
-            modifier = Modifier.fillMaxWidth()
+        EntitySelectorField(
+            label = "Candidature liée",
+            selectedEntityId = selCandId,
+            allEntities = candidats,
+            getEntityLabel = { it.title },
+            onEntitySelected = { selCandId = it.id }
         )
 
-        // ✅ Sélecteur intelligent de contact (optionnel)
         EntitySelectorField(
-            label = "Contact (optionnel)",
-            selectedEntityId = selectedContactId,
-            allEntities = FakeDataProvider.contacts.filter { it.entrepriseId == effectiveCompanyId },
+            label = "Contact (opt.)",
+            selectedEntityId = selContactId,
+            allEntities = contacts.filter { it.entrepriseId == existing?.companyId },
             getEntityLabel = { "${it.firstName} ${it.lastName}" },
-            onEntitySelected = { selectedContactId = it.id },
-            allowCreation = true,
-            onCreateEntity = { fullName ->
-                val parts = fullName.trim().split(" ", limit = 2)
-                val newContact = FakeDataProvider.addContactIfNotExists(
-                    firstName = parts.getOrElse(0) { "" },
-                    lastName = parts.getOrElse(1) { "" },
-                    entrepriseId = effectiveCompanyId ?: ""
-                )
-                selectedContactId = newContact.id
-            }
+            onEntitySelected = { selContactId = it.id },
+            allowCreation = false
         )
 
         ReusableForm(
             fields = fields,
-            initialValues = existingRelanceData?.toFieldMap()?.toMutableMap()?.apply {
-                existingRelanceData.date.let { this["date"] = it.toString() }
-            } ?: emptyMap(),
-            onSubmit = { formData ->
-                onSave(
-                    formData + mapOf(
-                        "candidatureId" to (selectedCandidatureId ?: ""),
-                        "companyId" to (effectiveCompanyId ?: ""),
-                        "contactId" to (selectedContactId)
-                    )
+            initialValues = existing?.let {
+                mapOf(
+                    "date"           to it.date.toString(),
+                    "type"           to (it.type ?: ""),
+                    "responseStatus" to (it.responseStatus ?: ""),
+                    "notes"          to (it.notes ?: "")
                 )
-                navController?.popBackStack()
+            } ?: emptyMap(),
+            onSubmit = { form ->
+                val relance  = RelanceEntity(
+                    id            = existing?.id ?: UUID.randomUUID().toString(),
+                    date          = form["date"]!!.toLong(),
+                    type          = form["type"],
+                    responseStatus= form["responseStatus"],
+                    notes         = form["notes"],
+                    candidatureId = selCandId!!,
+                    companyId     = selCompanyId,
+                    contactId     = selContactId.ifBlank { null },
+                    syncHash      = existing?.syncHash ?: "rel-${UUID.randomUUID()}",
+                    isArchived    = existing?.isArchived ?: false,
+                    isDeleted     = existing?.isDeleted ?: false
+                )
+                vm.save(relance)
+                onCancel()
             },
             onCancel = onCancel
         )
-
     }
 }

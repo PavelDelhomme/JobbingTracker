@@ -204,6 +204,7 @@ fun MainScreen(navController: NavHostController) {
         }
 
         BottomSheetHost(
+            navController = navController,
             visibleContent = bottomSheetContent,
             linkedCandidatureId = linkedCandidatureId,
             onDismissRequest = {

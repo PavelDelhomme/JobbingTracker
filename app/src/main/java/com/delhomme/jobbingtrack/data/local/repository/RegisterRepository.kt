@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.data.repository
+package com.delhomme.jobbingtrack.data.local.repository
 
 import com.delhomme.jobbingtrack.data.service.RegisterService
 

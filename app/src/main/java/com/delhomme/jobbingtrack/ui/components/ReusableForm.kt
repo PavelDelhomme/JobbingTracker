@@ -86,7 +86,7 @@ fun ModernDateTimePickerField(
 @Composable
 fun ReusableForm(
     fields: List<FormField>,
-    initialValues: Map<String, Any?> = emptyMap(),
+    initialValues: Map<String, String> = emptyMap(),
     onSubmit: (Map<String, String>) -> Unit,
     onCancel: (() -> Unit)? = null
 ) {
@@ -428,7 +428,9 @@ fun ReusableForm(
                             value.substringAfterLast("(").removeSuffix(")").trim()
                         } else value
                     }
-                ) },
+                )
+                    onCancel
+                          },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Enregistrer")
