@@ -15,6 +15,6 @@ data class EventEntity(
     val enddate: Long?,
     val synchHash: String,
     val type: String,
-    val isArchived: Boolean,
-    val isDeleted: Boolean
+    val isArchived: Boolean = false,
+    val isDeleted: Boolean = false
 ) : HasId

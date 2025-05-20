@@ -3,23 +3,30 @@ package com.delhomme.jobbingtrack.data.viewmodel
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.repository.EventRepository
-import com.delhomme.jobbingtrack.data.local.AppDatabase
 import com.delhomme.jobbingtrack.data.local.entities.EventEntity
+import com.delhomme.jobbingtrack.data.local.repository.EventRepository
 import kotlinx.coroutines.launch
 
-class EventViewModel(application: Application) : AndroidViewModel(application) {
-    private val repo = EventRepository(
-        JobbingTrackApp.database.eventDao()
-    )
+class EventViewModel(app: Application) : AndroidViewModel(app) {
+    private val repo = EventRepository(JobbingTrackApp.database.eventDao())
 
-    val events: LiveData<List<EventEntity>> = repo.getAll() as LiveData<List<EventEntity>>
+    /** LiveData exposant la liste des événements */
+    val events: LiveData<List<EventEntity>> = repo
+        .eventsFlow
+        .asLiveData()
 
-    fun add(event: EventEntity) = viewModelScope.launch {
-        repo.insert(event)
+    /** Sauvegarde (insert ou update) */
+    fun save(event: EventEntity) = viewModelScope.launch {
+        repo.save(event)
     }
 
-    fun remove(event: EventEntity) = viewModelScope.launch {
-        repo.delete(event)
+    /** Archive */
+    fun archive(id: String) = viewModelScope.launch {
+        repo.archive(id)
+    }
+
+    /** Supprime “logiquement” */
+    fun delete(id: String) = viewModelScope.launch {
+        repo.delete(id)
     }
 }
