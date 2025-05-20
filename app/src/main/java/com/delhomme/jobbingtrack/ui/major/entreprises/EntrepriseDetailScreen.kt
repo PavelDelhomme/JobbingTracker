@@ -25,9 +25,8 @@ import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.major.candidatures.SectionTitle
-import com.delhomme.jobbingtrack.ui.components.DetailItemCard
+import com.delhomme.jobbingtrack.ui.components.items.DetailItemCard
 import com.delhomme.jobbingtrack.utils.toFormattedDate
-import org.checkerframework.checker.units.qual.cd
 
 
 @OptIn(ExperimentalMaterial3Api::class)

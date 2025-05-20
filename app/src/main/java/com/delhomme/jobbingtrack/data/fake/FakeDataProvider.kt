@@ -11,6 +11,7 @@ object FakeDataProvider {
 
     private fun randomSyncHash(prefix: String) = "$prefix-${Random.nextInt(1000, 9999)}"
 
+    /*
     val entreprises = MutableList(10) { index ->
         Entreprise(
             id = (index + 1).toString(),
@@ -273,4 +274,5 @@ object FakeDataProvider {
     fun deleteAppel(id: String) {
         appels.removeAll { it.id == id }
     }
+    */
 }

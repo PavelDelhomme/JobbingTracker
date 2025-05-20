@@ -13,3 +13,5 @@ fun <T : HasId> getEntityById(id: String?, items: List<T>): T? {
 fun extractIdFromFormattedString(value: String): String {
     return value.substringAfterLast("(").removeSuffix(")").trim()
 }
+
+enum class DialogType { ARCHIVE, DELETE }

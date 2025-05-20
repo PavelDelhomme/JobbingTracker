@@ -7,6 +7,7 @@ import com.delhomme.jobbingtrack.data.HasId
 @Entity(tableName = "relances")
 data class RelanceEntity(
     @PrimaryKey override val id: String,
+    val userId: String,
     val date: Long,
     val type: String?,
     val responseStatus: String?,

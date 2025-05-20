@@ -10,7 +10,7 @@ import com.delhomme.jobbingtrack.ui.major.calendar.day.DailyPagerView
 import com.delhomme.jobbingtrack.ui.major.calendar.monthly.MonthlyCalendarView
 import com.delhomme.jobbingtrack.ui.major.calendar.weeks.TwoWeekPagerView
 import com.delhomme.jobbingtrack.ui.major.calendar.weeks.WeeklyPagerView
-import com.delhomme.jobbingtrack.ui.components.CalendarViewType
+import com.delhomme.jobbingtrack.ui.components.navigation.CalendarViewType
 import java.time.LocalDate
 
 

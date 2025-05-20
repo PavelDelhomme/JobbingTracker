@@ -7,6 +7,7 @@ import com.delhomme.jobbingtrack.data.HasId
 @Entity(tableName = "entretiens")
 data class EntretienEntity(
     @PrimaryKey override val id: String,
+    val userId: String,
     val candidatureId: String,
     val companyId: String,
     val dateTime: Long,

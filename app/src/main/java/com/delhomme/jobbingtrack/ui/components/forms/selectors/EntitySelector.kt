@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.ui.components
+package com.delhomme.jobbingtrack.ui.components.forms.selectors
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 class EntretienRepository(private val dao: EntretienDao) {
     val entretiensWithContacts: Flow<List<EntretienWithContacts>> = dao.getAllWithContacts()
 
+    val entretiens: Flow<List<EntretienEntity>> = dao.getAll()
 
     suspend fun save(entretien: EntretienEntity, contactIds: List<String>) {
         dao.insert(entretien)

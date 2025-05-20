@@ -9,15 +9,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.data.classes.Entreprise
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
-import com.delhomme.jobbingtrack.ui.components.ReusableForm
-import com.delhomme.jobbingtrack.utils.toFieldMap
-import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
 import com.delhomme.jobbingtrack.data.local.entities.EntrepriseEntity
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
-import com.delhomme.jobbingtrack.utils.toSafeFieldMap
 import java.util.UUID
 
 @Composable

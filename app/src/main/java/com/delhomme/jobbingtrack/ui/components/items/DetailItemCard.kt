@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.ui.components
+package com.delhomme.jobbingtrack.ui.components.items
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

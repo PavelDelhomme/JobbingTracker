@@ -20,7 +20,7 @@ fun DashboardScreen(modifier: Modifier = Modifier, navController: NavController)
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Bienvenue sur JobbingTrack 🎯", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Bienvenue", style = MaterialTheme.typography.headlineMedium)
     }
     BackHandler(enabled = navController.currentBackStackEntryAsState().value?.destination?.route == Routes.MAIN) {
         // Bloquer le retour SEULEMENT sur MainScreen

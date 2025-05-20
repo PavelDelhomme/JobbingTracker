@@ -12,14 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.delhomme.jobbingtrack.navigation.Routes
-import com.delhomme.jobbingtrack.ui.components.*
 import kotlinx.coroutines.launch
 import androidx.activity.compose.BackHandler
 import androidx.compose.ui.platform.LocalContext
 import com.delhomme.jobbingtrack.MainActivity
+import com.delhomme.jobbingtrack.ui.components.forms.BottomSheetContentType
+import com.delhomme.jobbingtrack.ui.components.forms.BottomSheetHost
+import com.delhomme.jobbingtrack.ui.components.navigation.AppDrawer
+import com.delhomme.jobbingtrack.ui.components.navigation.BottomNavigationBar
+import com.delhomme.jobbingtrack.ui.components.navigation.CalendarViewType
 import com.delhomme.jobbingtrack.ui.major.calendar.CalendarScreenContent
 import kotlinx.coroutines.delay
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 enum class MainSection {
     DASHBOARD, CANDIDATURES, CALENDAR
@@ -139,7 +145,7 @@ fun MainScreen(navController: NavHostController) {
                             if (currentSection == MainSection.CALENDAR)
                                 "Vue Calendrier – ${selectedDate.value}"
                             else
-                                "JobbingTrack"
+                                LocalDate.now().format(DateTimeFormatter.ofPattern("EEE dd MMM", Locale.FRANCE))
                         )
                     },
                     navigationIcon = {

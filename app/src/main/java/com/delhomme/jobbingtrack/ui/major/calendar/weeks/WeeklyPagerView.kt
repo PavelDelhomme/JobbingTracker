@@ -2,7 +2,7 @@ package com.delhomme.jobbingtrack.ui.major.calendar.weeks
 
 import androidx.compose.runtime.Composable
 import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
-import com.delhomme.jobbingtrack.ui.components.CalendarViewType
+import com.delhomme.jobbingtrack.ui.components.navigation.CalendarViewType
 import java.time.LocalDate
 
 

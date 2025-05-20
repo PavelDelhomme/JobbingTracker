@@ -1,15 +1,12 @@
-package com.delhomme.jobbingtrack.ui.components
+package com.delhomme.jobbingtrack.ui.components.forms
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
-import com.delhomme.jobbingtrack.data.logic.*
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.ui.major.appels.AddOrEditAppelScreen

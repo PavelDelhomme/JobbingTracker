@@ -8,6 +8,7 @@ import com.delhomme.jobbingtrack.data.HasId
 data class EntrepriseEntity(
     @PrimaryKey override val id: String,
     val name: String,
+    val userId: String,
     val type: String?,
     val phone: String?,
     val email: String?,

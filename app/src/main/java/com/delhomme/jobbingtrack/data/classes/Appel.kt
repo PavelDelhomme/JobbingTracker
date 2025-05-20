@@ -5,6 +5,7 @@ import com.delhomme.jobbingtrack.data.HasId
 
 data class Appel(
     override val id: String,
+    val userId: String,
     val subject: String,
     val companyId: String,
     val contactId: String?,

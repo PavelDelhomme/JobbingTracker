@@ -4,6 +4,7 @@ import com.delhomme.jobbingtrack.data.HasId
 
 data class Evenement(
     override val id: String,
+    val userId: String,
     val relatedObjectId: String?,
     val title: String,
     val description: String?,

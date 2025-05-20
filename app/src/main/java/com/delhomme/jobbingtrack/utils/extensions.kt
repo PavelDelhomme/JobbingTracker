@@ -1,6 +1,9 @@
 package com.delhomme.jobbingtrack.utils
 
 import com.delhomme.jobbingtrack.data.classes.ApplicationType
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 
 fun Any?.toFieldMap(): Map<String, String> {
@@ -77,4 +80,26 @@ fun Map<String, Any?>.toSafeFieldMap(): MutableMap<String, String> {
         }
     }
     return mutableMap
+}
+
+
+/**
+ * Agrégation d'une liste d'entités datés par jour.
+ */
+fun <T> List<T>.countByDay(
+    dateSelector: (T) -> Instant,
+    start: Instant,
+    end: Instant
+): List<Pair<LocalDate, Int>> {
+    return this
+        .asSequence()
+        .filter {it ->
+            val ts = dateSelector(it).toEpochMilli()
+            ts in start.toEpochMilli()..end.toEpochMilli()
+        }
+        .groupBy { Instant.ofEpochMilli(dateSelector(it).toEpochMilli())
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate() }
+        .map { it.key to it.value.size }
+        .sortedBy { it.first }
 }

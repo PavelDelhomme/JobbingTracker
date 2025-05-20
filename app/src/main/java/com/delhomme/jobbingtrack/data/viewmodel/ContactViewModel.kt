@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class ContactViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = ContactRepository(JobbingTrackApp.database.contactDao())
 
-    val contacts: LiveData<List<ContactEntity>> = repo.contacts.asLiveData()
+    val contacts: LiveData<List<ContactEntity>> = repo.all.asLiveData()
 
     fun save(contact: ContactEntity) = viewModelScope.launch {
         repo.save(contact)

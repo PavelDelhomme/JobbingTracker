@@ -6,6 +6,7 @@ import com.delhomme.jobbingtrack.utils.toFieldMap
 
 data class Relance(
     override val id: String,
+    val userId: String,
     val date: Long,
     val contactId: String?,
     val candidatureId: String,

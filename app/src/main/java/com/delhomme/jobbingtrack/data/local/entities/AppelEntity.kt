@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "appels")
 data class AppelEntity(
     @PrimaryKey val id: String,
+    val userId: String,
     val subject: String,
     val companyId: String,
     val contactId: String?,

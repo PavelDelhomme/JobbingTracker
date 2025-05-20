@@ -5,6 +5,7 @@ import com.delhomme.jobbingtrack.data.HasId
 
 data class Contact(
     override val id: String,
+    val userId: String,
     val firstName: String,
     val lastName: String,
     val phone: String?,

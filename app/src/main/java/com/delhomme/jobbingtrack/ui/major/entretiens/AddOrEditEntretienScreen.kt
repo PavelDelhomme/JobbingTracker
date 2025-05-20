@@ -17,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.data.classes.Contact
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
@@ -26,10 +25,10 @@ import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
-import com.delhomme.jobbingtrack.ui.components.ContactSelectorField
-import com.delhomme.jobbingtrack.ui.components.EntitySelectorField
-import com.delhomme.jobbingtrack.ui.components.ModernDateTimePickerField
-import com.delhomme.jobbingtrack.ui.components.ReusableForm
+import com.delhomme.jobbingtrack.ui.components.forms.selectors.ContactSelectorField
+import com.delhomme.jobbingtrack.ui.components.forms.selectors.EntitySelectorField
+import com.delhomme.jobbingtrack.ui.components.forms.ModernDateTimePickerField
+import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
 import com.delhomme.jobbingtrack.utils.toFieldMap
 import java.util.UUID
 

@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.ui.components
+package com.delhomme.jobbingtrack.ui.components.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -6,9 +6,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.main.MainSection
 
 @Composable

@@ -12,12 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-import com.delhomme.jobbingtrack.data.classes.Appel
-import com.delhomme.jobbingtrack.data.classes.Contact
 import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
 import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
-import com.delhomme.jobbingtrack.ui.components.ListScreen
+import com.delhomme.jobbingtrack.ui.components.lists.ListScreen
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @Composable

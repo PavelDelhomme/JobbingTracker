@@ -4,6 +4,7 @@ import com.delhomme.jobbingtrack.data.HasId
 
 data class Entretien(
     override val id: String,
+    val userId: String,
     val candidatureId: String,
     val companyId: String,
     val dateTime: Long,

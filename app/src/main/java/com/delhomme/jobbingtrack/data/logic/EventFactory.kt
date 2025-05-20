@@ -7,6 +7,7 @@ object EventFactory {
 
     fun fromCandidature(c: Candidature): Evenement = Evenement(
         id = UUID.randomUUID().toString(),
+        userId = c.userId,
         relatedObjectId = c.id,
         title = c.title,
         description = c.notes,
@@ -18,6 +19,7 @@ object EventFactory {
 
     fun fromRelance(r: Relance): Evenement = Evenement(
         id = UUID.randomUUID().toString(),
+        userId = r.userId,
         relatedObjectId = r.id,
         title = "Relance ${r.type?.name ?: "Inconnu"} ${r.companyId} ${r.candidatureId}",
         description = r.notes,
@@ -29,6 +31,7 @@ object EventFactory {
 
     fun fromAppel(a: Appel): Evenement = Evenement(
         id = UUID.randomUUID().toString(),
+        userId = a.userId,
         relatedObjectId = a.id,
         title = a.subject,
         description = a.notes,
@@ -40,6 +43,7 @@ object EventFactory {
 
     fun fromEntretien(e: Entretien): Evenement = Evenement(
         id = UUID.randomUUID().toString(),
+        userId = e.userId,
         relatedObjectId = e.id,
         title = "Entretien ${e.type?.name ?: "?"}",
         description = e.preInterviewNotes,

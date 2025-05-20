@@ -5,6 +5,7 @@ import com.delhomme.jobbingtrack.data.HasId
 
 data class Candidature(
     override val id: String,
+    val userId: String,
     var title: String,
     var companyName: String,
     var companyId: String,

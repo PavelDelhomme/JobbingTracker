@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.local.entities.EntrepriseEntity
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
-import com.delhomme.jobbingtrack.ui.components.ListScreen
+import com.delhomme.jobbingtrack.ui.components.lists.ListScreen
 
 
 @Composable

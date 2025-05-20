@@ -7,6 +7,7 @@ import com.delhomme.jobbingtrack.data.HasId
 @Entity(tableName = "contacts")
 data class ContactEntity(
     @PrimaryKey override val id: String,
+    val userId: String,
     val firstName: String?,
     val lastName: String?,
     val phone: String?,

@@ -21,7 +21,7 @@ import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.major.candidatures.SectionTitle
-import com.delhomme.jobbingtrack.ui.components.DetailItemCard
+import com.delhomme.jobbingtrack.ui.components.items.DetailItemCard
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @OptIn(ExperimentalMaterial3Api::class)
