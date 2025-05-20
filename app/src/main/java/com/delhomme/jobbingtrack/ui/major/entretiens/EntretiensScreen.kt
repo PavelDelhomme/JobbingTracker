@@ -14,13 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 import com.delhomme.jobbingtrack.data.classes.Entretien
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
+import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
 import com.delhomme.jobbingtrack.ui.components.ListScreen
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @Composable
 fun EntretiensScreen(
     entretiens: List<EntretienWithContacts>,
+    entretiensVm: EntretienViewModel,
+    onEdit: (ContactEntity) -> Unit,
+    onArchive: (ContactEntity) -> Unit,
+    onDelete: (ContactEntity) -> Unit,
     onItemClick: (EntretienWithContacts) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -35,37 +36,134 @@ fun CandidaturesTabsContent(
 ) {
     val candidatureVm: CandidatureViewModel = viewModel()
     val entreprisesVm: EntrepriseViewModel = viewModel()
-    val relanceVm: RelanceViewModel     = viewModel()
-    val appelVm: AppelViewModel         = viewModel()
-    val contactVm: ContactViewModel     = viewModel()
-    val entretienVm: EntretienViewModel = viewModel()
+    val relancesVm: RelanceViewModel     = viewModel()
+    val appelsVm: AppelViewModel         = viewModel()
+    val contactsVm: ContactViewModel     = viewModel()
+    val entretiensVm: EntretienViewModel = viewModel()
 
     val cands       by candidatureVm.candidatures.observeAsState(emptyList())
     val ents        by entreprisesVm.entreprises .observeAsState(emptyList())
-    val rels        by relanceVm.relances     .observeAsState(emptyList())
-    val appels      by appelVm.appels         .observeAsState(emptyList())
-    val contacts    by contactVm.contacts     .observeAsState(emptyList())
-    val entretiens  by entretienVm.entretiens .observeAsState(emptyList())
+    val rels        by relancesVm.relances     .observeAsState(emptyList())
+    val appels      by appelsVm.appels         .observeAsState(emptyList())
+    val contacts    by contactsVm.contacts     .observeAsState(emptyList())
+    val entretiens  by entretiensVm.entretiens .observeAsState(emptyList())
 
     BackHandler { onTabChange(0) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        ScrollableTabRow(
-            selectedTabIndex = selectedTabIndex,
-            edgePadding = 16.dp
-        ) {
+        ScrollableTabRow(selectedTabIndex = selectedTabIndex, edgePadding = 16.dp) {
             listOf("Candidatures","Entreprises","Relances","Appels","Contacts","Entretiens")
                 .forEachIndexed { i, t ->
                     Tab(i==selectedTabIndex, onClick={onTabChange(i)}){ Text(t) }
                 }
             }
-    }
-    when (selectedTabIndex) {
-        0 -> CandidaturesScreen(candidatures = cands, onItemClick = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
-        1 -> EntreprisesScreen (entreprises = ents, onItemClick = { navController.navigate("${Routes.ENTREPRISE_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
-        2 -> RelancesScreen    (relances = rels, onItemClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
-        3 -> AppelsScreen      (appels = appels, onItemClick = { navController.navigate("${Routes.APPEL_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
-        4 -> ContactsScreen    (contacts = contacts, onItemClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
-        5 -> EntretiensScreen  (entretiens = entretiens, onItemClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.entretien.id}") })
+        Box(modifier = Modifier.weight(1f)) {
+            when (selectedTabIndex) {
+                0 -> CandidaturesScreen(
+                    navController = navController,
+                    candidatures = cands,
+                    entreprises = ents,
+                    onItemClick = {
+                        navController.navigate("${Routes.CANDIDATURE_DETAIL}/${it.id}")
+                    },
+                    onEdit = {
+                        navController.navigate("${Routes.EDIT_CANDIDATURE}/${it.id}")
+                    },
+                    onArchive = {
+                        candidatureVm.archive(it.id)
+                    },
+                    onDelete = {
+                        candidatureVm.delete(it.id)
+                    },
+                    onAddClick = {
+                        /* handled by FAB */
+                    }
+                )
+                1 -> EntreprisesScreen (
+                    entreprises = ents,
+                    entreprisesVm = entreprisesVm,
+                    onItemClick = {
+                        navController.navigate("${Routes.ENTREPRISE_DETAIL}/${it.id}")
+                    },
+                    onEdit = {
+                        navController.navigate("${Routes.EDIT_ENTREPRISE}/${it.id}")
+                    },
+                    onArchive = {
+                        entreprisesVm.archive(it.id)
+                    },
+                    onDelete = {
+                        entreprisesVm.delete(it.id)
+                    },
+                    onAddClick = { /* handled by FAB */ },
+                )
+                2 -> RelancesScreen    (
+                    relances = rels,
+                    relancesVm = relancesVm,
+                    onItemClick = {
+                        navController.navigate("${Routes.RELANCE_DETAIL}/${it.id}")
+                    },
+                    onEdit = {
+                        navController.navigate("${Routes.EDIT_RELANCE}/${it.id}")
+                    },
+                    onArchive = {
+                        relancesVm.archive(it.id)
+                    },
+                    onDelete = {
+                        relancesVm.delete(it.id)
+                    },
+                    onAddClick = { /* handled by FAB */ }
+                )
+                3 -> AppelsScreen      (
+                    appels = appels,
+                    appelsVm = appelsVm,
+                    onItemClick = {
+                        navController.navigate("${Routes.APPEL_DETAIL}/${it.id}")
+                    },
+                    onEdit = {
+                        navController.navigate("${Routes.EDIT_APPEL}/${it.id}")
+                    },
+                    onArchive = {
+                        appelsVm.archive(it.id)
+                    },
+                    onDelete = {
+                        appelsVm.delete(it.id)
+                    },
+                    onAddClick = { /* handled by FAB */ }
+                )
+                4 -> ContactsScreen    (
+                    contacts = contacts,
+                    contactVm = contactsVm,
+                    onItemClick = {
+                        navController.navigate("${Routes.CONTACT_DETAIL}/${it.id}")
+                    },
+                    onEdit = {
+                        navController.navigate("${Routes.EDIT_CONTACT}/${it.id}")
+                    },
+                    onArchive = {
+                        contactsVm.archive(it.id)
+                    },
+                    onDelete = {
+                        contactsVm.delete(it.id)
+                    },
+                    onAddClick = { /* handled by FAB */ }
+                )
+                5 -> EntretiensScreen  (
+                    entretiens = entretiens,
+                    entretiensVm = entretiensVm,
+                    onItemClick = {
+                        navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.entretien.id}")
+                    },
+                    onEdit = {
+                        navController.navigate("${Routes.EDIT_CONTACT}/${it.id}")
+                    },
+                    onArchive = {
+                        contactsVm.archive(it.id)
+                    },
+                    onDelete = {
+                        contactsVm.delete(it.id)
+                    },
+                )
+            }
+        }
     }
 }

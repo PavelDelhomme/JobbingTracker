@@ -11,14 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 import com.delhomme.jobbingtrack.data.classes.Relance
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
+import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.ui.components.ListScreen
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @Composable
 fun RelancesScreen(
     relances: List<RelanceEntity>,
+    relancesVm: RelanceViewModel,
     onItemClick: (RelanceEntity) -> Unit,
+    onEdit: (ContactEntity) -> Unit,
+    onArchive: (ContactEntity) -> Unit,
+    onDelete: (ContactEntity) -> Unit,
     onAddClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {

@@ -101,17 +101,33 @@ fun MainScreen(navController: NavHostController) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(
-                onProfileClick = { /* TODO */ },
-                onSettingsClick = { /* TODO */ },
-                onLogoutClick = { /* TODO */ },
-                onArchiveClick = { navController.navigate(Routes.ARCHIVES)},
-                onTrashClick = { navController.navigate(Routes.TRASH)},
-                filters = if (currentSection == MainSection.CALENDAR) filterStates else null,
-                onFilterChange = if (currentSection == MainSection.CALENDAR)
-                    { name, checked -> filterStates[name] = checked } else null,
-                onViewTypeChange = { viewType -> calendarViewType = viewType },
-                drawerState = drawerState,
+            AppDrawer(
+                onProfile = {
+                    navController.navigate(Routes.PROFILE)
+                    coroutineScope.launch { drawerState.close() }
+                },
+                onSettings = {
+                    navController.navigate(Routes.SETTINGS)
+                    coroutineScope.launch { drawerState.close() }
+                },
+                onArchive = {
+                    navController.navigate(Routes.ARCHIVES)
+                    coroutineScope.launch { drawerState.close() }
+                },
+                onTrash = {
+                    navController.navigate(Routes.TRASH)
+                    coroutineScope.launch { drawerState.close() }
+                },
+                onLogout = {
+                    navController.navigate(Routes.LOGIN)
+                    coroutineScope.launch { drawerState.close() }
+                },
+                filters = filterStates,
+                onFilterChange = { name, checked ->
+                    filterStates[name] = checked
+                },
+                onViewTypeChange = { calendarViewType = it },
+                drawerState = drawerState
             )
         }
     ) {

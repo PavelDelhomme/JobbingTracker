@@ -22,4 +22,6 @@ class CandidatureViewModel(app: Application) : AndroidViewModel(app) {
     fun delete(id: String) = viewModelScope.launch {
         repo.delete(id)
     }
+
+
 }

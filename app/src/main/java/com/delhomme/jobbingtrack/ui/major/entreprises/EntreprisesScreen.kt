@@ -12,13 +12,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.local.entities.EntrepriseEntity
+import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.ui.components.ListScreen
 
 
 @Composable
 fun EntreprisesScreen(
     entreprises: List<EntrepriseEntity>,
+    entreprisesVm: EntrepriseViewModel,
     onItemClick: (EntrepriseEntity) -> Unit,
+    onEdit: (EntrepriseEntity) -> Unit,
+    onArchive: (EntrepriseEntity) -> Unit,
+    onDelete: (EntrepriseEntity) -> Unit,
     onAddClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {

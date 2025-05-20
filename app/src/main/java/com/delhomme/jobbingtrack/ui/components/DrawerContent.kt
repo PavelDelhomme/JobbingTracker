@@ -2,86 +2,113 @@ package com.delhomme.jobbingtrack.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.*
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Archive
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 enum class CalendarViewType {
     DAY, WEEK, TWO_WEEKS, MONTH, PLANNING
 }
-
 @Composable
-fun DrawerContent(
-    onProfileClick: () -> Unit,
-    onSettingsClick: () -> Unit,
-    onLogoutClick: () -> Unit,
-    onArchiveClick: () -> Unit,
-    onTrashClick: () -> Unit,
+fun AppDrawer(
+    modifier: Modifier = Modifier,
+    onProfile: () -> Unit,
+    onSettings: () -> Unit,
+    onArchive: () -> Unit,
+    onTrash: () -> Unit,
+    onLogout: () -> Unit,
     filters: Map<String, Boolean>? = null,
     onFilterChange: ((String, Boolean) -> Unit)? = null,
-    onViewTypeChange: (CalendarViewType) -> Unit,
+    onViewTypeChange: (CalendarViewType)->Unit,
     drawerState: DrawerState
 ) {
-    val scope = rememberCoroutineScope()
-
     Column(
-        modifier = Modifier
+        modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // fond blanc par défaut
-            .padding(16.dp)
+            .background(MaterialTheme.colorScheme.surface)
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        // — Header —
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(160.dp)
+            .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("JobbingTrack", style = MaterialTheme.typography.headlineMedium)
+        }
+        Divider()
 
-        if (filters != null && onFilterChange != null) {
-            Text("Filtres d'événements", style = MaterialTheme.typography.titleMedium)
-            filters.forEach { (filterName, isChecked) ->
+        // — Filtres / Vue (optionnel) —
+        filters?.let { f ->
+            Text("Filtres", Modifier.padding(16.dp), style = MaterialTheme.typography.titleSmall)
+            f.forEach { (name,checked) ->
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable{ onFilterChange?.invoke(name, !checked) }
+                        .padding(horizontal=16.dp, vertical=4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(checked, onCheckedChange = { onFilterChange?.invoke(name, it) })
+                    Spacer(Modifier.width(8.dp))
+                    Text(name)
+                }
+            }
+            Divider(Modifier.padding(vertical=8.dp))
+            Text("Vue", Modifier.padding(16.dp), style = MaterialTheme.typography.titleSmall)
+            CalendarViewType.values().forEach { vt ->
+                val scope = rememberCoroutineScope()
+                ListItem(
+                    headlineContent = { Text(vt.name) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onFilterChange(filterName, !isChecked) }
-                        .padding(vertical = 8.dp)
-                ) {
-                    Checkbox(
-                        checked = isChecked,
-                        onCheckedChange = { onFilterChange(filterName, it) }
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(filterName)
-                }
+                        .clickable{
+                            onViewTypeChange(vt)
+                            scope.launch { drawerState.close() }
+                        }
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                )
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text("Type de vue", style = MaterialTheme.typography.titleMedium)
-            CalendarViewType.values().forEach { viewType ->
-                TextButton(
-                    onClick = {
-                        onViewTypeChange(viewType)
-                        scope.launch { drawerState.close() }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(viewType.name)
-                }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
+            Divider(Modifier.padding(vertical=8.dp))
         }
 
-        // Liens de navigation
-        TextButton(onClick = onProfileClick) { Text("Voir Profil") }
-        Spacer(modifier = Modifier.height(8.dp))
-        TextButton(onClick = onSettingsClick) { Text("Paramètres") }
-        Spacer(modifier = Modifier.height(8.dp))
-        TextButton(onClick = onArchiveClick) { Text("Archives") }
-        Spacer(modifier = Modifier.height(8.dp))
-        TextButton(onClick = onTrashClick) { Text("Corbeille") }
-        Spacer(modifier = Modifier.height(8.dp))
-        TextButton(onClick = onLogoutClick) { Text("Déconnexion") }
+        // — Navigation —
+        DrawerItem(icon = Icons.Default.Person,  label = "Profil",    onClick = onProfile)
+        DrawerItem(icon = Icons.Default.Settings,label = "Paramètres",onClick = onSettings)
+        DrawerItem(icon = Icons.Default.Archive, label = "Archives",   onClick = onArchive)
+        DrawerItem(icon = Icons.Default.Delete,  label = "Corbeille",  onClick = onTrash)
+        Spacer(Modifier.weight(1f))
+        DrawerItem(icon = Icons.Default.Logout,  label = "Déconnexion", onClick = onLogout)
     }
+}
+
+@Composable
+fun DrawerItem(icon: ImageVector, label: String, onClick: () -> Unit) {
+    ListItem(
+        headlineContent = { Text(label) },
+        leadingContent = { Icon(icon,null) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }

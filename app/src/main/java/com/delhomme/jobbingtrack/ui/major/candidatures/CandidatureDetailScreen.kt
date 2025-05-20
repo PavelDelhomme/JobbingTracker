@@ -131,6 +131,8 @@ fun CandidatureDetailScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
+                Text("Titre : ${candidature.title}")
+
                 Text("Entreprise : ${entreprise?.name ?: "—"}",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.clickable {
@@ -145,11 +147,32 @@ fun CandidatureDetailScreen(
                     text = "Statut: ${candidature.applicationStatus}",
                     style = MaterialTheme.typography.bodyMedium
                 )
+                Text(
+                    text = "Type de contrat: ${candidature.applicationType}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                candidature.platform?.let {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Plateforme: $it", style = MaterialTheme.typography.bodySmall)
+                }
+                candidature.contractType?.let {
+                    Text(
+                        text = "Type de contrat: $it",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                candidature.location?.let {
+                    Text(
+                        text = "Lieu du poste: $it",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
                 candidature.notes?.let {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = "Notes: $it", style = MaterialTheme.typography.bodySmall)
                 }
             }
+
 
             item {
                 SectionTitle("Relances liées")

@@ -14,12 +14,17 @@ import androidx.compose.ui.unit.dp
 
 import com.delhomme.jobbingtrack.data.classes.Contact
 import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.ui.components.ListScreen
 
 @Composable
 fun ContactsScreen(
     contacts: List<ContactEntity>,
+    contactVm: ContactViewModel,
     onItemClick: (ContactEntity) -> Unit,
+    onEdit: (ContactEntity) -> Unit,
+    onArchive: (ContactEntity) -> Unit,
+    onDelete: (ContactEntity) -> Unit,
     onAddClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -32,7 +37,10 @@ fun ContactsScreen(
             centerInfoProvider     = { it.position ?: "Pas de fonction" },
             bottomLeftInfoProvider = { it.phone ?: it.email ?: "" },
             items                  = visible,
-            onItemClick            = onItemClick
+            onItemClick            = onItemClick,
+            onEdit                 = { onEdit(it) },
+            onArchive              = { onArchive(it) },
+            onDelete               = { onDelete(it) },
         )
 
         FloatingActionButton(

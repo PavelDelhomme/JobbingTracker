@@ -29,4 +29,7 @@ object Routes {
 
     const val ARCHIVES = "archives"
     const val TRASH = "trash"
+
+    const val PROFILE = "profile"
+    const val SETTINGS = "settings"
 }
