@@ -36,7 +36,8 @@ import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
         UserEntity::class,
         CandidatureContactCrossRef::class,
         EntretienContactCrossRef::class,
-        EntrepriseCandidatureCrossRef::class
+        EntrepriseCandidatureCrossRef::class,
+        EventEntity::class,
     ],
     version = 1,
     exportSchema = true

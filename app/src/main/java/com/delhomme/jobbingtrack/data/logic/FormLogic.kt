@@ -15,7 +15,8 @@ class FormLogic(
     private val contactRepo: ContactRepository,
     private val relanceRepo: RelanceRepository,
     private val appelRepo: AppelRepository,
-    private val entretienRepo: EntretienRepository
+    private val entretienRepo: EntretienRepository,
+    private val eventRepo: EventRepository,
 ) {
 
     suspend fun saveEntrepriseFromForm(data: Map<String, String>) {
