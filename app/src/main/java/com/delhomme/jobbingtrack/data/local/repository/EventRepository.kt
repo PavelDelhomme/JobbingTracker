@@ -1,4 +1,47 @@
 package com.delhomme.jobbingtrack.data.local.repository
 
-class EventRepository {
+import com.delhomme.jobbingtrack.data.local.dao.EventDao
+import com.delhomme.jobbingtrack.data.local.entities.EventEntity
+
+class EventRepository(private val dao: EventDao) {
+    fun getAll() = dao.getAll()
+    fun getAllActive() = dao.getAllActive()
+    fun getAllArchived() = dao.getAllArchived()
+    fun getAllDeleted() = dao.getAllDeleted()
+    fun getById(id: String) = dao.getById(id)
+    suspend fun insert(event: EventEntity) = dao.insert(event)
+    fun getAllByType(type: String) = dao.getAllByType(type)
+    fun getAllByDateRange(startDate: Long, endDate: Long) = dao.getAllByDateRange(startDate, endDate)
+    fun getAllByDate(date: Long) = dao.getAllByDate(date)
+    fun getAllByRelatedObjectId(relatedObjectId: String) = dao.getAllByRelatedObjectId(relatedObjectId)
+    fun getAllByUserId(userId: String) = dao.getAllByUserId(userId)
+    suspend fun archive(id: String) = dao.archive(id)
+    suspend fun delete(id: String) = dao.delete(id)
+    suspend fun restore(id: String) = dao.restore(id)
+    suspend fun deleteForever(id: String) = dao.deleteForever(id)
+    suspend fun restoreForever(id: String) = dao.restoreForever(id)
+    suspend fun archiveForever(id: String) = dao.archiveForever(id)
+    suspend fun update(event: EventEntity) = dao.update(event)
+    suspend fun deleteAll() = dao.deleteAll()
+    suspend fun deleteAllActive() = dao.deleteAllActive()
+    suspend fun deleteAllArchived() = dao.deleteAllArchived()
+    suspend fun deleteAllDeleted() = dao.deleteAllDeleted()
+    suspend fun deleteAllByUserId(userId: String) = dao.deleteAllByUserId(userId)
+    suspend fun deleteAllByRelatedObjectId(relatedObjectId: String) = dao.deleteAllByRelatedObjectId(relatedObjectId)
+    suspend fun deleteAllByType(type: String) = dao.deleteAllByType(type)
+    suspend fun deleteAllByDateRange(startDate: Long, endDate: Long) = dao.deleteAllByDateRange(startDate, endDate)
+    suspend fun deleteAllByDate(date: Long) = dao.deleteAllByDate(date)
+    suspend fun deleteAllByTitle(title: String) = dao.deleteAllByTitle(title)
+    suspend fun deleteAllByDescription(description: String) = dao.deleteAllByDescription(description)
+    suspend fun deleteAllByLocation(location: String) = dao.deleteAllByLocation(location)
+    suspend fun deleteAllByStartDate(startDate: Long) = dao.deleteAllByStartDate(startDate)
+    suspend fun deleteAllByEndDate(endDate: Long) = dao.deleteAllByEndDate(endDate)
+    suspend fun deleteAllBySyncHash(syncHash: String) = dao.deleteAllBySyncHash(syncHash)
+    suspend fun deleteAllByIsArchived(isArchived: Boolean) = dao.deleteAllByIsArchived(isArchived)
+    suspend fun deleteAllByIsDeleted(isDeleted: Boolean) = dao.deleteAllByIsDeleted(isDeleted)
+    suspend fun deleteAllByIsSynced(isSynced: Boolean) = dao.deleteAllByIsSynced(isSynced)
+    suspend fun deleteAllByIsUploaded(isUploaded: Boolean) = dao.deleteAllByIsUploaded(isUploaded)
+    suspend fun deleteAllByIsDownloaded(isDownloaded: Boolean) = dao.deleteAllByIsDownloaded(isDownloaded)
+    suspend fun deleteAllByIsLocal(isLocal: Boolean) = dao.deleteAllByIsLocal(isLocal)
+
 }

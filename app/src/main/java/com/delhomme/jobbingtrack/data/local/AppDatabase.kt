@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import com.delhomme.jobbingtrack.data.local.dao.AppelDao
 import com.delhomme.jobbingtrack.data.local.dao.CandidatureDao
 import com.delhomme.jobbingtrack.data.local.dao.ContactDao
+import com.delhomme.jobbingtrack.data.local.dao.EventDao
 import com.delhomme.jobbingtrack.data.local.dao.EntrepriseDao
 import com.delhomme.jobbingtrack.data.local.dao.EntretienDao
 import com.delhomme.jobbingtrack.data.local.dao.ProfileDao
@@ -21,6 +22,7 @@ import com.delhomme.jobbingtrack.data.local.entities.UserEntity
 import com.delhomme.jobbingtrack.data.local.entities.CandidatureContactCrossRef
 import com.delhomme.jobbingtrack.data.local.entities.EntretienContactCrossRef
 import com.delhomme.jobbingtrack.data.local.entities.EntrepriseCandidatureCrossRef
+import com.delhomme.jobbingtrack.data.local.entities.EventEntity
 import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 
 
@@ -51,5 +53,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun relanceDao(): RelanceDao
     abstract fun profileDao(): ProfileDao
     abstract fun userDao(): UserDao
+    abstract fun eventDao(): EventDao
 
 }
