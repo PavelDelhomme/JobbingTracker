@@ -63,9 +63,9 @@ fun CandidaturesTabsContent(
     when (selectedTabIndex) {
         0 -> CandidaturesScreen(candidatures = cands, onItemClick = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
         1 -> EntreprisesScreen (entreprises = ents, onItemClick = { navController.navigate("${Routes.ENTREPRISE_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
-        2 -> RelancesScreen    (relances = rels, onItemClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${it.id}") })
+        2 -> RelancesScreen    (relances = rels, onItemClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
         3 -> AppelsScreen      (appels = appels, onItemClick = { navController.navigate("${Routes.APPEL_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
         4 -> ContactsScreen    (contacts = contacts, onItemClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${it.id}") }, onAddClick = { /* handled by FAB */ })
-        5 -> EntretiensScreen  (entretiens = entretiens, onItemClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.id}") })
+        5 -> EntretiensScreen  (entretiens = entretiens, onItemClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.entretien.id}") })
     }
 }
