@@ -7,38 +7,60 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Archive
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.classes.Entreprise
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
+import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.major.candidatures.SectionTitle
 import com.delhomme.jobbingtrack.ui.components.DetailItemCard
 import com.delhomme.jobbingtrack.utils.toFormattedDate
+import org.checkerframework.checker.units.qual.cd
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EntrepriseDetailScreen(
     entrepriseId: String,
-    navController: NavController
+    navController: NavController,
+    entrepriseVm: EntrepriseViewModel = viewModel(),
+    contactVm: ContactViewModel = viewModel(),
+    candidatureVm: CandidatureViewModel = viewModel(),
+    entretienVm: EntretienViewModel = viewModel(),
+    appelVm: AppelViewModel = viewModel(),
+    relanceVm: RelanceViewModel = viewModel()
 ) {
-    val contacts = FakeDataProvider.contacts.filter { it.entrepriseId == entreprise.id }
-    val candidatures = FakeDataProvider.candidatures.filter { it.companyId == entreprise.id }
-    val entretiens = FakeDataProvider.entretiens.filter { it.companyId == entreprise.id }
-    val appels = FakeDataProvider.appels.filter { it.companyId == entreprise.id }
-    val relances = FakeDataProvider.relances.filter { it.companyId == entreprise.id }
+    // 1) Charger l'entreprise
+    val allEnts by entrepriseVm.entreprises.observeAsState(emptyList())
+    val entreprise = allEnts.find { it.id == entrepriseId } ?: return
 
+    // 2) Charger toutes les listes
+    val contacts    by contactVm.contacts.observeAsState(emptyList())
+    val candidatures by candidatureVm.candidatures.observeAsState(emptyList())
+    val entretiens  by entretienVm.entretiens.observeAsState(emptyList())
+    val appels      by appelVm.appels.observeAsState(emptyList())
+    val relances    by relanceVm.relances.observeAsState(emptyList())
 
-    BackHandler {
-        navController.popBackStack()
-    }
+    // 3) Filtrer par companyId / entrepriseId
+    val myContacts      = contacts.filter    { it.entrepriseId == entrepriseId }
+    val myCandidatures  = candidatures.filter{ it.companyId     == entrepriseId }
+    val myEntretiens    = entretiens.filter  { it.entretien.companyId == entrepriseId }
+    val myAppels        = appels.filter      { it.companyId     == entrepriseId }
+    val myRelances      = relances.filter    { it.companyId     == entrepriseId }
+
+    BackHandler { navController.popBackStack() }
 
     Scaffold(
         topBar = {
@@ -58,14 +80,14 @@ fun EntrepriseDetailScreen(
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }
                     IconButton(onClick = {
-                        FakeDataProvider.removeEntreprise(entreprise.id)
+                        entrepriseVm.archive(entreprise.id)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
 
                     IconButton(onClick = {
-                        FakeDataProvider.deleteEntreprise(entreprise.id)
+                        entrepriseVm.delete(entreprise.id)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
@@ -92,57 +114,57 @@ fun EntrepriseDetailScreen(
                 Text(text = "Adresse : ${entreprise.address ?: "Non spécifiée"}")
             }
 
-            if (contacts.isNotEmpty()) {
+            if (myContacts.isNotEmpty()) {
                 item { SectionTitle("Contacts liés") }
-                items(contacts) { contact ->
+                items(myContacts) { c ->
                     DetailItemCard(
-                        title = "${contact.firstName} ${contact.lastName}",
-                        subtitle = contact.position ?: "Pas de poste",
-                        onClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${contact.id}") }
+                        title = "${c.firstName} ${c.lastName}",
+                        subtitle = c.position ?: "Pas de poste",
+                        onClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${c.id}") }
                     )
                 }
             }
 
-            if (candidatures.isNotEmpty()) {
+            if (myCandidatures.isNotEmpty()) {
                 item { SectionTitle("Candidatures liées") }
-                items(candidatures) { candidature ->
+                items(myCandidatures) { cd ->
                     DetailItemCard(
-                        title = candidature.title,
-                        subtitle = candidature.applicationStatus.name,
-                        onClick = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${candidature.id}") }
+                        title = cd.title,
+                        subtitle = cd.applicationStatus.toString(),
+                        onClick = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${cd.id}") }
                     )
                 }
             }
 
-            if (entretiens.isNotEmpty()) {
+            if (myEntretiens.isNotEmpty()) {
                 item { SectionTitle("Entretiens liés") }
-                items(entretiens) { entretien ->
+                items(myEntretiens) { e ->
                     DetailItemCard(
-                        title = "${entretien.type?.name ?: "Type inconnu"} - ${entretien.style?.name ?: "Style inconnu"}",
-                        subtitle = entretien.dateTime.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.id}") }
+                        title = "${e.entretien.type ?: "Type inconnu"} - ${e.entretien.style ?: "Style inconnu"}",
+                        subtitle = e.entretien.dateTime.toFormattedDate(),
+                        onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.entretien.id}") }
                     )
                 }
             }
 
-            if (relances.isNotEmpty()) {
+            if (myRelances.isNotEmpty()) {
                 item { SectionTitle("Relances liées") }
-                items(relances) { relance ->
+                items(myRelances) { r ->
                     DetailItemCard(
-                        title = relance.type?.name ?: "Type inconnu",
-                        subtitle = relance.responseStatus?.name ?: "Statut inconnu",
-                        onClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${relance.id}") }
+                        title = r.type?.toString() ?: "Type inconnu",
+                        subtitle = r.responseStatus?.toString() ?: "Statut inconnu",
+                        onClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${r.id}") }
                     )
                 }
             }
 
-            if (appels.isNotEmpty()) {
+            if (myAppels.isNotEmpty()) {
                 item { SectionTitle("Appels liés") }
-                items(appels) { appel ->
+                items(appels) { a ->
                     DetailItemCard(
-                        title = appel.subject,
-                        subtitle = appel.dateTime.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.APPEL_DETAIL}/${appel.id}") }
+                        title = "${a.subject} - ${a.contactId}",
+                        subtitle = a.dateTime.toFormattedDate(),
+                        onClick = { navController.navigate("${Routes.APPEL_DETAIL}/${a.id}") }
                     )
                 }
             }

@@ -7,19 +7,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Archive
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.classes.Contact
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
@@ -60,10 +57,13 @@ fun ContactDetailScreen(
     val linkedCands = allCands.filter { c ->
         allAppels.any { it.contactId == contactId && it.candidatureId == c.id } ||
         allRelances.any { it.contactId == contactId && it.candidatureId == c.id } ||
-        allEntretiens.any { it.contacts.split(",").contains(contactId) && it.candidatureId == c.id }
+        allEntretiens.any   { ewc ->
+            ewc.contacts.any { it.id == contactId } &&
+                    ewc.entretien.candidatureId == c.id
+        }
     }
     val linkedAppels = allAppels.filter { it.contactId == contactId }
-    val linkedEntretiens = allEntretiens.filter { it.contacts.split(",").contains(contactId) }
+    val linkedEntretiens = allEntretiens.filter { ewc -> ewc.contacts.any { it.id == contactId } }
     val linkedRelances = allRelances.filter { it.contactId == contactId }
 
 
@@ -116,7 +116,7 @@ fun ContactDetailScreen(
             item {
                 Text(text = "Informations sur le contact", style = MaterialTheme.typography.headlineSmall)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Entreprise : ${entreprise?.name ?: "-"}", style = MaterialTheme.typography.titleMedium)
+                Text("Entreprise : ${entreprise.name}", style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(8.dp))
                 Text(text = "Téléphone : ${contact.phone ?: "Non spécifié"}")
                 Text(text = "Email : ${contact.email ?: "Non spécifié"}")
@@ -130,7 +130,7 @@ fun ContactDetailScreen(
                 items(linkedCands) { c ->
                     DetailItemCard(
                         title    = c.title,
-                        subtitle = c.applicationStatus.name,
+                        subtitle = c.applicationStatus.toString(),
                         onClick  = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${c.id}") }
                     )
                 }
@@ -152,9 +152,9 @@ fun ContactDetailScreen(
                 item { SectionTitle("Entretiens liés") }
                 items(linkedEntretiens) { e ->
                     DetailItemCard(
-                        title    = "${e.type} — ${e.style}",
-                        subtitle = e.dateTime.toFormattedDate(),
-                        onClick  = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.id}") }
+                        title    = "${e.entretien.type } — ${e.entretien.style} pour ${e.entretien.companyId}",
+                        subtitle = e.entretien.dateTime.toFormattedDate(),
+                        onClick  = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.entretien.id}") }
                     )
                 }
             }

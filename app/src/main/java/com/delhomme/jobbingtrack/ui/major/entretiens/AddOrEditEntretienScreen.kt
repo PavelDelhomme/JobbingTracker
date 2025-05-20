@@ -21,7 +21,7 @@ import com.delhomme.jobbingtrack.data.classes.Contact
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
-import com.delhomme.jobbingtrack.data.local.EntretienEntity
+import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel

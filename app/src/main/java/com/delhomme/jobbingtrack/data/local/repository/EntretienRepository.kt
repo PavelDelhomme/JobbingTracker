@@ -1,9 +1,9 @@
 package com.delhomme.jobbingtrack.data.local.repository
 
 
-import com.delhomme.jobbingtrack.data.local.EntretienEntity
 import com.delhomme.jobbingtrack.data.local.dao.EntretienDao
 import com.delhomme.jobbingtrack.data.local.entities.EntretienContactCrossRef
+import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import kotlinx.coroutines.flow.Flow
 

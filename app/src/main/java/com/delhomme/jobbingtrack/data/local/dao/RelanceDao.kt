@@ -1,7 +1,7 @@
 package com.delhomme.jobbingtrack.data.local.dao
 
 import androidx.room.*
-import com.delhomme.jobbingtrack.data.local.RelanceEntity
+import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

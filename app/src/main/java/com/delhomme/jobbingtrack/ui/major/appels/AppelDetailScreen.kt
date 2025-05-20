@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Archive
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
@@ -15,8 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.classes.Appel
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
+import androidx.compose.runtime.getValue
 import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
@@ -38,19 +36,17 @@ fun AppelDetailScreen(
 ) {
 
     // 1) Charger l’appel
-    val allAppels by appelVm.appels.observeAsState(emptyList())
-    val appel    = allAppels.find { it.id == appelId } ?: return
+    val appels by appelVm.appels.observeAsState(emptyList())
+    val appel  = appels.find { it.id == appelId } ?: return
 
     // 2) Charger la candidature et le contact associés
-    val allCands by candidatureVm.candidatures.observeAsState(emptyList())
-    val allContacts by contactVm.contacts.observeAsState(emptyList())
-    val candi   = allCands.find { it.id == appel.candidatureId }
-    val contact = allContacts.find { it.id == appel.contactId }
+    val cands       by candidatureVm.candidatures.observeAsState(emptyList())
+    val contacts    by contactVm.contacts.observeAsState(emptyList())
+    val entreprises by entrepriseVm.entreprises.observeAsState(emptyList())
 
-
-    // 3) Charger l’entreprise pour le nom
-    val allEnts by entrepriseVm.entreprises.observeAsState(emptyList())
-    val entreprise = allEnts.find { it.id == appel.companyId }
+    val candi      = cands.find       { it.id == appel.candidatureId }
+    val contact    = contacts.find    { it.id == appel.contactId }
+    val entreprise = entreprises.find { it.id == appel.companyId }
 
     BackHandler {
         navController.popBackStack()
@@ -61,21 +57,30 @@ fun AppelDetailScreen(
             TopAppBar(
                 title = { Text("Détail Appel") },
                 navigationIcon = {
-                    IconButton { navController.popBackStack() }
-                    { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Retour") }
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Retour")
+                    }
                 },
                 actions = {
-                    IconButton {
+                    IconButton(onClick = {
                         navController.navigate("${Routes.EDIT_APPEL}/$appelId")
-                    } { Icon(Icons.Default.Edit, "Modifier") }
-                    IconButton {
+                    }) {
+                        Icon(Icons.Default.Edit, contentDescription = "Modifier")
+                    }
+                    IconButton(onClick = {
                         appelVm.archive(appelId)
                         navController.popBackStack()
-                    } { Icon(Icons.Default.Archive, "Archiver") }
-                    IconButton {
+                    }) {
+                        Icon(Icons.Default.Archive, contentDescription = "Archiver")
+                    }
+                    IconButton(onClick = {
                         appelVm.delete(appelId)
                         navController.popBackStack()
-                    } { Icon(Icons.Default.DeleteForever, "Supprimer") }
+                    }) {
+                        Icon(Icons.Default.DeleteForever,
+                            contentDescription = "Supprimer")
+                    }
                 }
             )
         }
@@ -96,7 +101,7 @@ fun AppelDetailScreen(
                 SectionTitle("Candidature liée")
                 DetailItemCard(
                     title    = it.title,
-                    subtitle = it.applicationStatus.name,
+                    subtitle = it.applicationStatus.toString(),
                     onClick  = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${it.id}") }
                 )
             }

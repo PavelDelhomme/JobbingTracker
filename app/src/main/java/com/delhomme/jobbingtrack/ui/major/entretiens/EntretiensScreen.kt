@@ -1,14 +1,14 @@
 package com.delhomme.jobbingtrack.ui.major.entretiens
 
 import androidx.compose.runtime.Composable
-import com.delhomme.jobbingtrack.data.classes.Contact
 import com.delhomme.jobbingtrack.data.classes.Entretien
+import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import com.delhomme.jobbingtrack.ui.components.ListScreen
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @Composable
 fun EntretiensScreen(
-    entretiens: List<Entretien>,
+    entretiens: List<EntretienWithContacts>,
     onItemClick: (Entretien) -> Unit,
 ) {
     val sortedEntretiens = entretiens.sortedByDescending { it.dateTime }

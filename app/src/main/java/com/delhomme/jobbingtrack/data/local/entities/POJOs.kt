@@ -3,7 +3,6 @@ package com.delhomme.jobbingtrack.data.local.entities
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import com.delhomme.jobbingtrack.data.local.EntretienEntity
 
 data class EntretienWithContacts(
     @Embedded val entretien: EntretienEntity,

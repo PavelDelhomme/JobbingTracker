@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.Candidature
-import com.delhomme.jobbingtrack.navigation.Routes
+import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
 import com.delhomme.jobbingtrack.ui.components.ListScreen
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @Composable
 fun CandidaturesScreen(
-    candidatures: List<Candidature>,
+    candidatures: List<CandidatureEntity>,
     onItemClick: (Candidature) -> Unit,
     onAddClick: () -> Unit
 ) {

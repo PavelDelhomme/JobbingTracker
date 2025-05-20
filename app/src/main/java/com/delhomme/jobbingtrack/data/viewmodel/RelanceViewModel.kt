@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.RelanceEntity
+import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 import com.delhomme.jobbingtrack.data.local.repository.RelanceRepository
 import kotlinx.coroutines.launch
 

@@ -11,25 +11,22 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.classes.Candidature
-import com.delhomme.jobbingtrack.data.classes.Relance
-import com.delhomme.jobbingtrack.data.classes.Appel
-import com.delhomme.jobbingtrack.data.classes.Entretien
-import com.delhomme.jobbingtrack.data.classes.Contact
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
@@ -70,12 +67,12 @@ fun CandidatureDetailScreen(
     // 3) Filtrer celles qui concernent notre candidature
     val myRelances   = relances.filter { it.candidatureId == candidatureId }
     val myAppels     = appels.filter { it.candidatureId == candidatureId }
-    val myEntretiens = entretiens.filter { it.candidatureId == candidatureId }
+    val myEntretiens = entretiens.filter { it.entretien.candidatureId == candidatureId }
     // les contacts qu'on a associés via appels / relances / entretiens :
     val myContacts = contacts.filter { c ->
         myRelances.any { it.contactId == c.id } ||
         myAppels.any { it.contactId == c.id } ||
-        myEntretiens.any { it.contacts.split(",").contains(c.id) }
+        myEntretiens.any { it.contacts.contains(c) }
     }
 
 
@@ -181,9 +178,9 @@ fun CandidatureDetailScreen(
             }
             items(myEntretiens) { entretien ->
                 DetailItemCard(
-                    title = "${entretien.type ?: "Type inconnu"} - ${entretien.style ?: "Style inconnu"}",
+                    title = "${entretien.entretien.type ?: "Type inconnu"} - ${entretien.entretien.style ?: "Style inconnu"}",
                     subtitle = "${entretien.contacts}",
-                    onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.id}")}
+                    onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.entretien.id}")}
                 )
             }
 

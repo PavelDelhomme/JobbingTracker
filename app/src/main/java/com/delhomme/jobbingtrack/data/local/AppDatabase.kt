@@ -14,12 +14,14 @@ import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
 import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
 import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntrepriseEntity
+import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
 import com.delhomme.jobbingtrack.data.local.entities.ProfileEntity
 import com.delhomme.jobbingtrack.data.local.entities.UserEntity
 
 import com.delhomme.jobbingtrack.data.local.entities.CandidatureContactCrossRef
 import com.delhomme.jobbingtrack.data.local.entities.EntretienContactCrossRef
 import com.delhomme.jobbingtrack.data.local.entities.EntrepriseCandidatureCrossRef
+import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 
 
 @Database(

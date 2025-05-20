@@ -3,7 +3,7 @@ package com.delhomme.jobbingtrack.data.viewmodel
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.EntretienEntity
+import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
 import com.delhomme.jobbingtrack.data.local.repository.EntretienRepository
 import kotlinx.coroutines.launch
 

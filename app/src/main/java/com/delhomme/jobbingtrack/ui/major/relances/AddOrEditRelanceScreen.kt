@@ -22,7 +22,7 @@ import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.forms.FormSuggestions
-import com.delhomme.jobbingtrack.data.local.RelanceEntity
+import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel

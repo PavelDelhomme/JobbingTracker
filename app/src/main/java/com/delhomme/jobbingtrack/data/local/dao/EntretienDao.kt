@@ -1,8 +1,8 @@
 package com.delhomme.jobbingtrack.data.local.dao
 
 import androidx.room.*
-import com.delhomme.jobbingtrack.data.local.EntretienEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienContactCrossRef
+import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import kotlinx.coroutines.flow.Flow
 

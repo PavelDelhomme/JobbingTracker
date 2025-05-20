@@ -2,11 +2,12 @@ package com.delhomme.jobbingtrack.ui.major.contacts
 
 import androidx.compose.runtime.Composable
 import com.delhomme.jobbingtrack.data.classes.Contact
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.ui.components.ListScreen
 
 @Composable
 fun ContactsScreen(
-    contacts: List<Contact>,
+    contacts: List<ContactEntity>,
     onItemClick: (Contact) -> Unit,
     onAddClick: (Contact) -> Unit
 ) {

@@ -37,7 +37,8 @@ fun AddOrEditCandidatureScreen(
     var selectedCompanyId by remember {
         mutableStateOf(
             existing?.companyId
-                ?: linkedEntrepriseId.orEmpty()
+                ?: linkedEntrepriseId
+                ?: ""
         )
     }
 
