@@ -35,7 +35,7 @@ fun ProfileScreen(
         profile?.let {
             Text("ID : ${it.id}", style = MaterialTheme.typography.titleMedium)
             Text("Sujet : ${it.subject}")
-            Text("Date : ${it.dateTime}")
+            Text("Date : ${it.inscriptionDateTime}")
             Text("Notes : ${it.notes ?: "—"}")
 
             Spacer(Modifier.height(16.dp))

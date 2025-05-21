@@ -11,5 +11,9 @@ data class Evenement(
     val startDate: Long,
     val endDate: Long?,
     val syncHash: String,
-    val type: String // Type d'évènement
+    val type: String, // Type d'évènement
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long,
+    var archivedAt: Long
 ) : HasId

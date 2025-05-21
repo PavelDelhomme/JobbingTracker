@@ -19,6 +19,10 @@ data class Candidature(
     var syncHash: String,
     var isArchived: Boolean = false,
     var isDeleted: Boolean = false,
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long,
+    var archivedAt: Long
 ) : HasId
 
 enum class ApplicationType {

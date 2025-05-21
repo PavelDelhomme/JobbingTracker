@@ -6,39 +6,56 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CandidatureDao {
-    /** 1) Toutes les candidatures (tous statuts) **/
-    @Query("SELECT * FROM candidatures ORDER BY applicationDate DESC")
-    fun getAll(): Flow<List<CandidatureEntity>>
 
-    /** 2) Candidatures actives (ni supprimées, ni archivées) **/
+    @Query("SELECT * FROM candidatures WHERE userId = :userId ORDER BY applicationDate DESC")
+    fun getAllForUser(userId: String): Flow<List<CandidatureEntity>>
+
     @Query("""
-        SELECT * FROM candidatures
-         WHERE isDeleted = 0
-           AND isArchived = 0
-         ORDER BY applicationDate DESC
+      SELECT * FROM candidatures
+       WHERE userId    = :userId
+         AND isDeleted = 0
+         AND isArchived= 0
+      ORDER BY applicationDate DESC
     """)
-    fun getAllActive(): Flow<List<CandidatureEntity>>
+    fun getAllActiveForUser(userId: String): Flow<List<CandidatureEntity>>
 
-    /** 3) Candidatures archivées **/
-    @Query("SELECT * FROM candidatures WHERE isArchived = 1 ORDER BY applicationDate DESC")
-    fun getAllArchived(): Flow<List<CandidatureEntity>>
+    @Query("""
+      SELECT * FROM candidatures
+       WHERE userId    = :userId
+         AND isArchived= 1
+      ORDER BY applicationDate DESC
+    """)
+    fun getArchivedForUser(userId: String): Flow<List<CandidatureEntity>>
 
-    /** 4) Candidatures supprimées (corbeille) **/
-    @Query("SELECT * FROM candidatures WHERE isDeleted = 1 ORDER BY applicationDate DESC")
-    fun getAllDeleted(): Flow<List<CandidatureEntity>>
+    @Query("""
+      SELECT * FROM candidatures
+       WHERE userId    = :userId
+         AND isDeleted = 1
+      ORDER BY applicationDate DESC
+    """)
+    fun getDeletedForUser(userId: String): Flow<List<CandidatureEntity>>
 
-    /** 5) Détail d’une candidature par son ID **/
-    @Query("SELECT * FROM candidatures WHERE id = :id")
-    fun getById(id: String): Flow<CandidatureEntity?>
+    @Query("SELECT * FROM candidatures WHERE id = :id AND userId = :userId")
+    fun getByIdForUser(id: String, userId: String): Flow<CandidatureEntity?>
 
-    /** — Insert ou mise à jour — **/
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(cand: CandidatureEntity)
+    suspend fun upsert(cand: CandidatureEntity)
 
-    /** — Actions d’archivage / suppression douce — **/
-    @Query("UPDATE candidatures SET isArchived = 1 WHERE id = :id")
-    suspend fun archive(id: String)
+    @Update
+    suspend fun update(cand: CandidatureEntity)
 
-    @Query("UPDATE candidatures SET isDeleted = 1 WHERE id = :id")
-    suspend fun delete(id: String)
+    @Query("UPDATE candidatures SET isArchived = 1 WHERE id IN(:ids) AND userId = :userId")
+    suspend fun archive(ids: List<String>, userId: String)
+
+    @Query("UPDATE candidatures SET isDeleted  = 1 WHERE id IN(:ids) AND userId = :userId")
+    suspend fun softDelete(ids: List<String>, userId: String)
+
+    @Query("UPDATE candidatures SET isDeleted  = 0 WHERE id IN(:ids) AND userId = :userId")
+    suspend fun restore(ids: List<String>, userId: String)
+
+    @Query("DELETE FROM candidatures WHERE id IN(:ids) AND userId = :userId")
+    suspend fun deleteForever(ids: List<String>, userId: String)
+
+    @Query("DELETE FROM candidatures WHERE userId = :userId")
+    suspend fun deleteAllForUser(userId: String)
 }

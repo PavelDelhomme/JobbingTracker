@@ -21,12 +21,17 @@ class EventViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /** Archive */
-    fun archive(id: String) = viewModelScope.launch {
-        repo.archive(id)
+    fun archive(id: String, userId: String) = viewModelScope.launch {
+        repo.archive(id, userId)
     }
 
     /** Supprime “logiquement” */
-    fun delete(id: String) = viewModelScope.launch {
-        repo.delete(id)
+    fun delete(id: String, userId: String) = viewModelScope.launch {
+        repo.softDelete(id, userId)
+    }
+
+    /** Supprimer définitivement */
+    fun deleteForever(id: String, userId: String) = viewModelScope.launch {
+        repo.deleteForever(id, userId)
     }
 }

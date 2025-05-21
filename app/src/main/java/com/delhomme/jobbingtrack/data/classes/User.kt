@@ -7,5 +7,9 @@ data class User(
     val email: String,
     val passwordHash: String,
     val token: String?,
-    val syncHash: String
+    val syncHash: String,
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long,
+    var archivedAt: Long
 ) : HasId

@@ -10,7 +10,11 @@ data class Profile(
     val experiences: List<String>,
     val projects: List<String>,
     val languages: List<Language>,
-    val syncHash: String
+    val syncHash: String,
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long,
+    var archivedAt: Long
 ) : HasId
 
 data class Language(

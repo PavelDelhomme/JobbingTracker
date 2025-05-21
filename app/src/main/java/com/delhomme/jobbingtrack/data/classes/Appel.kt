@@ -16,6 +16,10 @@ data class Appel(
     val syncHash: String,
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long,
+    var archivedAt: Long
 ) : HasId
 
 fun Appel.toFormMap(): Map<String, String> {

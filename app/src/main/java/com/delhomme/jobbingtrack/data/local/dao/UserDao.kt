@@ -6,18 +6,21 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM users")
+    @Query("SELECT * FROM users ORDER BY id")
     fun getAll(): Flow<List<UserEntity>>
 
     @Query("SELECT * FROM users WHERE id = :id")
     fun getById(id: String): Flow<UserEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: UserEntity)
+    suspend fun upsert(user: UserEntity)
 
-    @Query("UPDATE users SET isArchived = 1 WHERE id = :id")
-    suspend fun archive(id: String)
+    @Update
+    suspend fun update(user: UserEntity)
 
     @Query("DELETE FROM users WHERE id = :id")
     suspend fun deleteById(id: String)
+
+    @Query("DELETE FROM users")
+    suspend fun deleteAll()
 }

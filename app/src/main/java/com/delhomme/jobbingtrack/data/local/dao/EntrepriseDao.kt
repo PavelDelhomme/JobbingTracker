@@ -1,53 +1,61 @@
 package com.delhomme.jobbingtrack.data.local.dao
 
 import androidx.room.*
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntrepriseEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EntrepriseDao {
-    @Query("SELECT * FROM companies ORDER BY name")
-    fun getAll(): Flow<List<EntrepriseEntity>>
-
-    @Query("""
-    SELECT * FROM companies
-     WHERE isArchived = 0
-    ORDER BY name
-  """)
-    fun getAllActive(): Flow<List<EntrepriseEntity>>
-
-    @Query("SELECT * FROM companies WHERE isArchived = 1 ORDER BY name")
-    fun getAllArchived(): Flow<List<EntrepriseEntity>>
-
-    /** Pas de champ `isDeleted` sur Entreprise ? sinon ajouter getAllDeleted() à la même enseigne */
-
-    @Query("SELECT * FROM companies WHERE id = :id")
-    fun getById(id: String): Flow<EntrepriseEntity?>
-
-    @Query("""
-    SELECT * FROM companies
-     WHERE userId = :userId
-    ORDER BY name
-  """)
+    @Query("SELECT * FROM companies WHERE userId = :userId ORDER BY createdAt DESC")
     fun getAllForUser(userId: String): Flow<List<EntrepriseEntity>>
 
     @Query("""
-    SELECT * FROM companies
-     WHERE userId = :userId
-       AND isArchived = 0
-    ORDER BY name
-  """)
-    fun getActiveForUser(userId: String): Flow<List<EntrepriseEntity>>
+      SELECT * FROM companies
+       WHERE userId    = :userId
+         AND isDeleted = 0
+         AND isArchived= 0
+      ORDER BY name
+    """)
+    fun getAllActiveForUser(userId: String): Flow<List<EntrepriseEntity>>
 
-    @Query("SELECT * FROM companies WHERE userId = :userId AND isArchived = 1 ORDER BY name")
+    @Query("""
+      SELECT * FROM companies
+       WHERE userId    = :userId
+         AND isArchived= 1
+      ORDER BY name
+    """)
     fun getArchivedForUser(userId: String): Flow<List<EntrepriseEntity>>
 
+    @Query("""
+      SELECT * FROM companies
+       WHERE userId    = :userId
+         AND isDeleted = 1
+      ORDER BY name
+    """)
+    fun getDeletedForUser(userId: String): Flow<List<EntrepriseEntity>>
+
+    @Query("SELECT * FROM companies WHERE id = :id AND userId = :userId")
+    fun getByIdForUser(id: String, userId: String): Flow<EntrepriseEntity?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(entreprise: EntrepriseEntity)
+    suspend fun upsert(entreprise: EntrepriseEntity)
 
-    @Query("UPDATE companies SET isArchived = 1 WHERE id = :id")
-    suspend fun archive(id: String)
+    @Update
+    suspend fun update(entreprise: EntrepriseEntity)
 
-    @Query("DELETE FROM companies WHERE id = :id")
-    suspend fun deleteById(id: String)
+    @Query("UPDATE companies SET isArchived = 1 WHERE id IN(:ids) AND userId = :userId")
+    suspend fun archive(ids: List<String>, userId: String)
+
+    @Query("UPDATE companies SET isDeleted  = 1 WHERE id IN(:ids) AND userId = :userId")
+    suspend fun softDelete(ids: List<String>, userId: String)
+
+    @Query("UPDATE companies SET isDeleted  = 0 WHERE id IN(:ids) AND userId = :userId")
+    suspend fun restore(ids: List<String>, userId: String)
+
+    @Query("DELETE FROM companies WHERE id IN(:ids) AND userId = :userId")
+    suspend fun deleteForever(ids: List<String>, userId: String)
+
+    @Query("DELETE FROM companies WHERE userId = :userId")
+    suspend fun deleteAllForUser(userId: String)
 }

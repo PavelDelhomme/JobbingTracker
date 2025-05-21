@@ -17,6 +17,10 @@ data class Contact(
     val notes: String,
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long,
+    var archivedAt: Long
 ) : HasId
 
 fun Contact.toFormMap(): Map<String, String> {

@@ -6,45 +6,99 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RelanceDao {
-    @Query("SELECT * FROM relances ORDER BY date DESC")
-    fun getAll(): Flow<List<RelanceEntity>>
 
-    @Query("SELECT * FROM relances WHERE isDeleted = 0 AND isArchived = 0 ORDER BY date DESC")
-    fun getAllActive(): Flow<List<RelanceEntity>>
-
-    @Query("SELECT * FROM relances WHERE isArchived = 1 ORDER BY date DESC")
-    fun getAllArchived(): Flow<List<RelanceEntity>>
-
-    @Query("SELECT * FROM relances WHERE isDeleted = 1 ORDER BY date DESC")
-    fun getAllDeleted(): Flow<List<RelanceEntity>>
-
-    @Query("SELECT * FROM relances WHERE id = :id")
-    fun getById(id: String): Flow<RelanceEntity?>
-
-    @Query("SELECT * FROM relances WHERE userId = :userId ORDER BY date DESC")
-    fun getAllForUser(userId: String): Flow<List<RelanceEntity>>
-
+    /** 1) Tout pour cet user (actifs + archivés + supprimés) */
     @Query("""
     SELECT * FROM relances
      WHERE userId = :userId
-       AND isDeleted = 0
-       AND isArchived = 0
     ORDER BY date DESC
   """)
-    fun getActiveForUser(userId: String): Flow<List<RelanceEntity>>
+    fun getAllForUser(userId: String): Flow<List<RelanceEntity>>
 
-    @Query("SELECT * FROM relances WHERE userId = :userId AND isArchived = 1 ORDER BY date DESC")
+    /** 2) Actifs (ni supprimés ni archivés) */
+    @Query("""
+    SELECT * FROM relances
+     WHERE userId    = :userId
+       AND isDeleted = 0
+       AND isArchived= 0
+    ORDER BY date DESC
+  """)
+    fun getAllActiveForUser(userId: String): Flow<List<RelanceEntity>>
+
+    /** 3) Archivés */
+    @Query("""
+    SELECT * FROM relances
+     WHERE userId    = :userId
+       AND isArchived = 1
+       AND isDeleted = 0
+    ORDER BY date DESC
+  """)
     fun getArchivedForUser(userId: String): Flow<List<RelanceEntity>>
 
-    @Query("SELECT * FROM relances WHERE userId = :userId AND isDeleted = 1 ORDER BY date DESC")
+    /** 4) Supprimés (corbeille) */
+    @Query("""
+    SELECT * FROM relances
+     WHERE userId    = :userId
+       AND isDeleted = 1
+    ORDER BY date DESC
+  """)
     fun getDeletedForUser(userId: String): Flow<List<RelanceEntity>>
 
+    /** 5) Détail par ID + user */
+    @Query("""
+    SELECT * FROM relances
+     WHERE id     = :id
+       AND userId = :userId
+  """)
+    fun getByIdForUser(id: String, userId: String): Flow<RelanceEntity?>
+
+    /** Insert ou remplace */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(relance: RelanceEntity)
+    suspend fun upsert(relance: RelanceEntity)
 
-    @Query("UPDATE relances SET isArchived = 1 WHERE id = :id")
-    suspend fun archive(id: String)
+    /** Mise à jour (tous champs) */
+    @Update
+    suspend fun update(relance: RelanceEntity)
 
-    @Query("UPDATE relances SET isDeleted = 1 WHERE id = :id")
-    suspend fun delete(id: String)
+    /** Batch archive */
+    @Query("""
+    UPDATE relances
+     SET isArchived = 1
+     WHERE id     IN (:ids)
+       AND userId = :userId
+  """)
+    suspend fun archive(ids: List<String>, userId: String)
+
+    /** Batch suppression douce */
+    @Query("""
+    UPDATE relances
+     SET isDeleted = 1
+     WHERE id     IN (:ids)
+       AND userId = :userId
+  """)
+    suspend fun softDelete(ids: List<String>, userId: String)
+
+    /** Batch restore */
+    @Query("""
+    UPDATE relances
+     SET isDeleted = 0
+     WHERE id     IN (:ids)
+       AND userId = :userId
+  """)
+    suspend fun restore(ids: List<String>, userId: String)
+
+    /** Batch suppression définitive */
+    @Query("""
+    DELETE FROM relances
+     WHERE id     IN (:ids)
+       AND userId = :userId
+  """)
+    suspend fun deleteForever(ids: List<String>, userId: String)
+
+    /** Tout supprimer pour cet user */
+    @Query("""
+    DELETE FROM relances
+     WHERE userId = :userId
+  """)
+    suspend fun deleteAllForUser(userId: String)
 }

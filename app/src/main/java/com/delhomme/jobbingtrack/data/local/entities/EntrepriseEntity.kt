@@ -17,5 +17,9 @@ data class EntrepriseEntity(
     val notes: String?,
     val syncHash: String,
     var isArchived: Boolean = false,
-    val isDeleted: Boolean = false,
+    var isDeleted: Boolean = false,
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long,
+    var archivedAt: Long
 ) : HasId

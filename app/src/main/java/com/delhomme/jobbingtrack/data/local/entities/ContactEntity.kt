@@ -19,5 +19,9 @@ data class ContactEntity(
     val notes: String?,
     val syncHash: String,
     val isArchived: Boolean = false,
-    val isDeleted: Boolean = false
+    val isDeleted: Boolean = false,
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long,
+    var archivedAt: Long,
 ) : HasId
