@@ -2,10 +2,15 @@ package com.delhomme.jobbingtrack.data.local.dao
 
 
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
+import com.delhomme.jobbingtrack.data.interfaces.DateRangeProvider
 import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
 import kotlinx.coroutines.flow.Flow
 @Dao
-interface AppelDao {
+interface AppelDao : DateRangeProvider<AppelEntity> {
+    override val tableName: String get() = "appels"
+    override val dateColumn: String get() = "date"
+
     @Query("SELECT * FROM appels WHERE userId = :userId ORDER BY dateTime DESC")
     fun getAllForUser(userId: String): Flow<List<AppelEntity>>
 
@@ -54,4 +59,8 @@ interface AppelDao {
 
     @Query("DELETE   FROM appels            WHERE userId = :userId")
     suspend fun deleteAllForUser(userId: String)
+
+    @RawQuery(observedEntities = [AppelEntity::class])
+    override fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<AppelEntity>>
+
 }

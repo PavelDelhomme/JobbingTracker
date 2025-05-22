@@ -1,12 +1,12 @@
 package com.delhomme.jobbingtrack.utils
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
-fun <T : HasId> getLabelById(id: String?, items: List<T>, getLabel: (T) -> String): String {
+fun <T : HasIdProvider> getLabelById(id: String?, items: List<T>, getLabel: (T) -> String): String {
     return items.find { it.id == id }?.let { getLabel(it) } ?: ""
 }
 
-fun <T : HasId> getEntityById(id: String?, items: List<T>): T? {
+fun <T : HasIdProvider> getEntityById(id: String?, items: List<T>): T? {
     return items.find { it.id == id }
 }
 

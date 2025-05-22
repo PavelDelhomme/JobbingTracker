@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.data.classes
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
 
 data class Appel(
@@ -20,7 +20,7 @@ data class Appel(
     var updatedAt: Long,
     var deletedAt: Long,
     var archivedAt: Long
-) : HasId
+) : HasIdProvider
 
 fun Appel.toFormMap(): Map<String, String> {
     return mapOf(

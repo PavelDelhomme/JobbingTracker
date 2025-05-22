@@ -13,17 +13,21 @@ import kotlinx.coroutines.launch
 class RelanceViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = RelanceRepository(JobbingTrackApp.database.relanceDao())
 
-    val relances: LiveData<List<RelanceEntity>> = repo.relances.asLiveData()
+    /** Toutes les relances pour cet utilisateur */
+    fun relancesForUser(userId: String): LiveData<List<RelanceEntity>> =
+        repo.allForUser(userId).asLiveData()
 
-    fun save(relance: RelanceEntity) = viewModelScope.launch {
-        repo.save(relance)
-    }
+    /** Détaillé par id */
+    fun relanceById(id: String, userId: String): LiveData<RelanceEntity?> =
+        repo.byId(id, userId).asLiveData()
 
-    fun archive(id: String) = viewModelScope.launch {
-        repo.archive(id)
-    }
+    fun save(relance: RelanceEntity) = viewModelScope.launch { repo.save(relance) }
+    fun update(relance: RelanceEntity) = viewModelScope.launch { repo.update(relance) }
+    fun archive(ids: List<String>, userId: String)      = viewModelScope.launch { repo.archive(ids, userId) }
+    fun delete(ids: List<String>, userId: String)       = viewModelScope.launch { repo.softDelete(ids, userId) }
+    fun restore(ids: List<String>, userId: String)      = viewModelScope.launch { repo.restore(ids, userId) }
+    fun deleteForever(ids: List<String>, userId: String)= viewModelScope.launch { repo.deleteForever(ids, userId) }
+    fun clearAll(userId: String)                        = viewModelScope.launch { repo.deleteAll(userId) }
 
-    fun delete(id: String) = viewModelScope.launch {
-        repo.delete(id)
-    }
+    fun relancesBetween(userId: String, fromTimestamp: Long, toTimestamp: Long): LiveData<List<RelanceEntity>> = repo.getByDateRange(userId, fromTimestamp, toTimestamp).asLiveData()
 }

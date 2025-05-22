@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.data.classes
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
 data class User(
     override val id: String,
@@ -12,4 +12,4 @@ data class User(
     var updatedAt: Long,
     var deletedAt: Long,
     var archivedAt: Long
-) : HasId
+) : HasIdProvider

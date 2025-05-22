@@ -11,27 +11,31 @@ class EventViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = EventRepository(JobbingTrackApp.database.eventDao())
 
     /** LiveData exposant la liste des événements */
-    val events: LiveData<List<EventEntity>> = repo
-        .eventsFlow
-        .asLiveData()
+    fun eventsForUser(userId: String): LiveData<List<EventEntity>> = repo.allForUser(userId).asLiveData()
+
+    /** LiveData exposant un seul événement */
+    fun eventById(id: String, userId: String): LiveData<EventEntity?> = repo.byId(id, userId).asLiveData()
 
     /** Sauvegarde (insert ou update) */
-    fun save(event: EventEntity) = viewModelScope.launch {
-        repo.save(event)
-    }
+    fun save(event: EventEntity) = viewModelScope.launch { repo.save(event) }
+
+    /** Mise à jour */
+    fun update(event: EventEntity) = viewModelScope.launch { repo.update(event) }
 
     /** Archive */
-    fun archive(id: String, userId: String) = viewModelScope.launch {
-        repo.archive(id, userId)
-    }
+    fun archive(ids: List<String>, userId: String) = viewModelScope.launch { repo.archive(ids, userId) }
 
     /** Supprime “logiquement” */
-    fun delete(id: String, userId: String) = viewModelScope.launch {
-        repo.softDelete(id, userId)
-    }
+    fun delete(ids: List<String>, userId: String) = viewModelScope.launch { repo.softDelete(ids, userId) }
 
-    /** Supprimer définitivement */
-    fun deleteForever(id: String, userId: String) = viewModelScope.launch {
-        repo.deleteForever(id, userId)
-    }
+    /** Restaure */
+    fun restore(ids: List<String>, userId: String) = viewModelScope.launch { repo.restore(ids, userId) }
+
+    /** Supprime permanentement */
+    fun deleteForever(ids: List<String>, userId: String) = viewModelScope.launch { repo.deleteForever(ids, userId) }
+
+    /** Efface tout */
+    fun clearAll(userId: String) = viewModelScope.launch { repo.deleteAll(userId) }
+
+    fun eventsBetween(userId: String, fromTimestamp: Long, toTimestamp: Long): LiveData<List<EventEntity>> = repo.getByDateRange(userId, fromTimestamp, toTimestamp).asLiveData()
 }

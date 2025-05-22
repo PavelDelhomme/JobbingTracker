@@ -13,6 +13,8 @@ class CandidatureRepository(private val dao: CandidatureDao) {
     fun deletedForUser(userId: String): Flow<List<CandidatureEntity>>     = dao.getDeletedForUser(userId)
     fun byId(id: String, userId: String): Flow<CandidatureEntity?>        = dao.getByIdForUser(id, userId)
 
+    fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<CandidatureEntity>>      = dao.getByDateRangeForUser(userId, from, to)
+
     suspend fun save(candidature: CandidatureEntity)                = dao.upsert(candidature)
     suspend fun update(candidature: CandidatureEntity)              = dao.upsert(candidature)
     suspend fun archive(ids: List<String>, userId: String)          = dao.archive(ids, userId)

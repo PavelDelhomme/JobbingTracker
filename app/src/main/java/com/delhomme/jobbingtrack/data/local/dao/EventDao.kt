@@ -2,11 +2,16 @@ package com.delhomme.jobbingtrack.data.local.dao
 
 
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
+import com.delhomme.jobbingtrack.data.interfaces.DateRangeProvider
 import com.delhomme.jobbingtrack.data.local.entities.EventEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface EventDao {
+interface EventDao : DateRangeProvider<EventEntity> {
+    override val tableName: String get() = "events"
+    override val dateColumn: String get() = "startDate"
+
     /** 1) Tous les événements pour un user (actifs + archivés + supprimés) */
     @Query("""
     SELECT * FROM events
@@ -102,4 +107,7 @@ interface EventDao {
      WHERE userId = :userId
   """)
     suspend fun deleteAllForUser(userId: String)
+
+    @RawQuery(observedEntities = [EventEntity::class])
+    override fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<EventEntity>>
 }

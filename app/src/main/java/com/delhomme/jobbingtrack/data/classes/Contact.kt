@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.data.classes
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
 
 data class Contact(
@@ -21,7 +21,7 @@ data class Contact(
     var updatedAt: Long,
     var deletedAt: Long,
     var archivedAt: Long
-) : HasId
+) : HasIdProvider
 
 fun Contact.toFormMap(): Map<String, String> {
     return mapOf(

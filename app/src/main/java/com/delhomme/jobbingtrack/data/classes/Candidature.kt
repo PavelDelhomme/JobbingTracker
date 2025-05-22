@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.data.classes
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
 
 data class Candidature(
@@ -23,7 +23,7 @@ data class Candidature(
     var updatedAt: Long,
     var deletedAt: Long,
     var archivedAt: Long
-) : HasId
+) : HasIdProvider
 
 enum class ApplicationType {
     SPONTANEOUS, OFFER

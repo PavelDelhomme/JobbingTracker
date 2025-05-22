@@ -35,10 +35,8 @@ class FormLogic(
                 hrEmail    = data["hrEmail"],
                 address    = data["address"],
                 notes      = data["notes"],
-                isArchived = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
-                isDeleted  = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,
                 userId     = it,
-                syncHash   = "ent-${UUID.randomUUID()}"
+                syncHash   = "entreprise-${UUID.randomUUID()}"
             )
         }
         
@@ -49,36 +47,22 @@ class FormLogic(
     }
     
     suspend fun saveCandidatureFromForm(data: Map<String, String>) {
-        val id = data['id']?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
-        val title = data["title"].orEmpty().trim()
-        // S'assurer que l'entrperise existe
-        val companyName = data['companyName'].orEmpty().trim()
-        var ent = entrepriseRepo.getAllForUser(data['userId']) // S'il faut filtrer par userId
+        val userId = data["userId"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
+        // 1) Cherche l'entreprise existante
+        val companyName = data["companyName"].orEmpty().trim()
+        var ent = entrepriseRepo
+            .allForUser(userId)
             .first()
             .find { it.name.equals(companyName, true) }
-        if (ent == null) {
-            val newEnt = data["userId"]?.let {
-                EntrepriseEntity(
-                    id = UUID.randomUUID().toString(),
-                    name = companyName,
-                    userId = it,
-                    type = null,
-                    phone = null,
-                    email = null,
-                    hrEmail = null,
-                    address = null,
-                    notes = "",
-                    isArchived = false,
-                    isDeleted = false,
-                    syncHash = "ent-${UUID.randomUUID()}"
-                )
-            }
-            if (newEnt != null) {
-                entrepriseRepo.save(newEnt)
-                ent = newEnt
-            }
-        }
-        
+            ?: EntrepriseEntity(
+                id = UUID.randomUUID().toString(),
+                name = companyName,
+                userId = userId,
+                syncHash = "ent-${UUID.randomUUID()}"
+            ).also { entrepriseRepo.save(it) }
+        // 2) Cherche la candidature existante
+        val id = data["id"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
+        val title = data["title"].orEmpty().trim()
         val cand = data["userId"]?.let {
             CandidatureEntity(
                 id = id,
@@ -93,43 +77,30 @@ class FormLogic(
                 platform = data["platform"],
                 contractType = data["contractType"],
                 notes = data["notes"],
-                isArchived = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
-                isDeleted = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,
                 userId = it,
-                syncHash = "cand-${UUID.randomUUID()}"
+                syncHash = "candidature-${UUID.randomUUID()}"
             )
         }
         if (cand != null) {
             candidatureRepo.save(cand)
-
         }
     }
 
     suspend fun saveContactFromForm(data: Map<String, String>) {
         val id    = data["id"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
+        val userId = data["userId"].orEmpty()
         // idem : créer ou retrouver l’entreprise
         val companyName = data["companyName"].orEmpty().trim()
-        val ent = entrepriseRepo.getAllForUser("")
+        var ent = entrepriseRepo
+            .allForUser(userId)
             .first()
-            .find { e.name.equals(companyName, true) }
-            ?: run {
-                val e = EntrepriseEntity(
-                    id         = UUID.randomUUID().toString(),
-                    name       = companyName,
-                    type       = null,
-                    phone      = null,
-                    email      = null,
-                    hrEmail    = null,
-                    address    = null,
-                    notes      = "",
-                    isArchived = false,
-                    isDeleted  = false,
-                    userId     = data["userId"].orEmpty(),
-                    syncHash   = "ent-${UUID.randomUUID()}"
-                )
-                entrepriseRepo.save(e)
-                e
-            }
+            .find { it.name.equals(companyName, true) }
+            ?: EntrepriseEntity(
+                id = UUID.randomUUID().toString(),
+                name = companyName,
+                userId = userId,
+                syncHash = "ent-${UUID.randomUUID()}"
+            ).also { entrepriseRepo.save(it) }
 
         val contact = ContactEntity(
             id           = id,
@@ -165,7 +136,7 @@ class FormLogic(
             isArchived     = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
             isDeleted      = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,
             userId         = data["userId"].orEmpty(),
-            syncHash       = "rel-${UUID.randomUUID()}"
+            syncHash       = "relance-${UUID.randomUUID()}"
         )
         relanceRepo.save(rel)
     }
@@ -210,7 +181,7 @@ class FormLogic(
             isArchived         = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
             isDeleted          = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,
             userId             = data["userId"].orEmpty(),
-            syncHash           = "ent-${UUID.randomUUID()}",
+            syncHash           = "entretien-${UUID.randomUUID()}",
         )
         // enlève d'abord les anciens contacts, puis recrée les crossrefs
         entretienRepo.save(ent, data["contacts"]?.split(",")?.map(String::trim).orEmpty())

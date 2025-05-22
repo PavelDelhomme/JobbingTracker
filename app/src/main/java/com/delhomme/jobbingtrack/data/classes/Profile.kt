@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.data.classes
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
 data class Profile(
     override val id: String,
@@ -15,7 +15,7 @@ data class Profile(
     var updatedAt: Long,
     var deletedAt: Long,
     var archivedAt: Long
-) : HasId
+) : HasIdProvider
 
 data class Language(
     val name: String,

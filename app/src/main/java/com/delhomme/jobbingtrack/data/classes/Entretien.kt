@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.data.classes
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
 data class Entretien(
     override val id: String,
@@ -26,7 +26,7 @@ data class Entretien(
     var updatedAt: Long,
     var deletedAt: Long,
     var archivedAt: Long
-) : HasId
+) : HasIdProvider
 
 enum class EntretienStyle {
     ON_SITE, REMOTE

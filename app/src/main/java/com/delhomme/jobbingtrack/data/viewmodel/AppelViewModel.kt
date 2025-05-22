@@ -11,18 +11,21 @@ import kotlinx.coroutines.launch
 class AppelViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = AppelRepository(JobbingTrackApp.database.appelDao())
 
-    /** Expose un LiveData des entités */
-    val appels: LiveData<List<AppelEntity>> = repo.appels.asLiveData()
+    /** Toutes les relances pour cet utilisateur */
+    fun relancesForUser(userId: String): LiveData<List<AppelEntity>> =
+        repo.allForUser(userId).asLiveData()
 
-    fun save(appel: AppelEntity) = viewModelScope.launch {
-        repo.save(appel)
-    }
+    /** Détaillé par id */
+    fun appelById(id: String, userId: String): LiveData<AppelEntity?> =
+        repo.byId(id, userId).asLiveData()
 
-    fun archive(id: String) = viewModelScope.launch {
-        repo.archive(id)
-    }
+    fun save(appel: AppelEntity) = viewModelScope.launch { repo.save(appel) }
+    fun update(appel: AppelEntity) = viewModelScope.launch { repo.update(appel) }
+    fun archive(ids: List<String>, userId: String) = viewModelScope.launch { repo.archive(ids, userId) }
+    fun delete(ids: List<String>, userId: String) = viewModelScope.launch { repo.softDelete(ids, userId) }
+    fun restore(ids: List<String>, userId: String) = viewModelScope.launch { repo.restore(ids, userId) }
+    fun deleteForever(ids: List<String>, userId: String) = viewModelScope.launch { repo.deleteForever(ids, userId) }
+    fun clearAll(userId: String) = viewModelScope.launch { repo.deleteAll(userId) }
 
-    fun delete(id: String) = viewModelScope.launch {
-        repo.delete(id)
-    }
+    fun appelsBetween(userId: String, fromTimestamp: Long, toTimestamp: Long): LiveData<List<AppelEntity>> = repo.getByDateRange(userId, fromTimestamp, toTimestamp).asLiveData()
 }

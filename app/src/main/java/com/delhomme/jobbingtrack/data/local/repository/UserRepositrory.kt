@@ -10,6 +10,7 @@ class UserRepository(private val dao: UserDao) {
 
     suspend fun save(user: UserEntity)     = dao.upsert(user)
     suspend fun update(user: UserEntity)   = dao.update(user)
+    suspend fun archive(id: String)        = dao.archive(id)
     suspend fun delete(id: String)         = dao.deleteById(id)
     suspend fun deleteAll()                = dao.deleteAll()
 }

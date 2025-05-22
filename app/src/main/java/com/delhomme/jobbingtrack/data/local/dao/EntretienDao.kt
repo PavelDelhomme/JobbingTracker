@@ -1,13 +1,18 @@
 package com.delhomme.jobbingtrack.data.local.dao
 
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
+import com.delhomme.jobbingtrack.data.interfaces.DateRangeProvider
 import com.delhomme.jobbingtrack.data.local.entities.EntretienContactCrossRef
 import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface EntretienDao {
+interface EntretienDao : DateRangeProvider<EntretienEntity> {
+    override val tableName: String get() = "entretiens"
+    override val dateColumn: String get() = "dateTime"
+
     @Transaction
     @Query("SELECT * FROM entretiens ORDER BY dateTime DESC")
     fun getAll(): Flow<List<EntretienEntity>>
@@ -88,4 +93,7 @@ interface EntretienDao {
 
     @Query("DELETE FROM entretiens WHERE userId = :userId")
     suspend fun deleteAllForUser(userId: String)
+
+    @RawQuery(observedEntities = [EntretienEntity::class])
+    override fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<EntretienEntity>>
 }

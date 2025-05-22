@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 import kotlin.collections.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T : HasId> EntitySelectorField(
+fun <T : HasIdProvider> EntitySelectorField(
     label: String,
     selectedEntityId: String?,
     allEntities: List<T>,

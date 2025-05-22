@@ -14,15 +14,14 @@ class ProfileViewModel(app: Application) : AndroidViewModel(app) {
         JobbingTrackApp.database.profileDao()
     )
 
-
-    val profiles = repo.profiles.asLiveData()
+    fun profileForUser(userId: String) = repo.byId(userId).asLiveData()
 
     fun save(profile: ProfileEntity) = viewModelScope.launch {
         repo.save(profile)
     }
 
-    fun archive(id: String) = viewModelScope.launch {
-        repo.archive(id)
+    fun update(profile: ProfileEntity) = viewModelScope.launch {
+        repo.update(profile)
     }
 
     fun delete(id: String) = viewModelScope.launch {

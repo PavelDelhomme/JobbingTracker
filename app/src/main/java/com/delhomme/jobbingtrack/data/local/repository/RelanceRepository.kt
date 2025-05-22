@@ -13,6 +13,8 @@ class RelanceRepository(private val dao: RelanceDao) {
     fun deletedForUser(userId: String): Flow<List<RelanceEntity>>   = dao.getDeletedForUser(userId)
     fun byId(id: String, userId: String): Flow<RelanceEntity?>      = dao.getByIdForUser(id, userId)
 
+    fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<RelanceEntity>> = dao.getByDateRangeForUser(userId, from, to)
+
     /** Insert ou replace */
     suspend fun save(relance: RelanceEntity)                        = dao.upsert(relance)
 

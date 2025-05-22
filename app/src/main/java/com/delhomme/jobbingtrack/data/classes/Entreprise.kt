@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.data.classes
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
 
 data class Entreprise(
@@ -16,7 +16,7 @@ data class Entreprise(
     var notes: String?,
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
-) : HasId
+) : HasIdProvider
 
 
 fun Entreprise.toFormMap(): Map<String, String> {

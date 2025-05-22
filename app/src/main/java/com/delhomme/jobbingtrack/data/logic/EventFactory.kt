@@ -14,7 +14,11 @@ object EventFactory {
         startDate = c.applicationDate,
         endDate = c.applicationDate,
         syncHash = "evt-candidature-${UUID.randomUUID()}",
-        type = "Candidatures"
+        type = "Candidatures",
+        createdAt = c.createdAt,
+        updatedAt = c.updatedAt,
+        deletedAt = c.deletedAt,
+        archivedAt = c.archivedAt,
     )
 
     fun fromRelance(r: Relance): Evenement = Evenement(
@@ -26,7 +30,11 @@ object EventFactory {
         startDate = r.date,
         endDate = r.date,
         syncHash = "evt-relance-${UUID.randomUUID()}",
-        type = "Relances"
+        type = "Relances",
+        createdAt = r.createdAt,
+        updatedAt = r.updatedAt,
+        deletedAt = r.deletedAt,
+        archivedAt = r.archivedAt
     )
 
     fun fromAppel(a: Appel): Evenement = Evenement(
@@ -38,7 +46,11 @@ object EventFactory {
         startDate = a.dateTime,
         endDate = a.dateTime,
         syncHash = "evt-appel-${UUID.randomUUID()}",
-        type = "Appels"
+        type = "Appels",
+        createdAt = a.createdAt,
+        updatedAt = a.updatedAt,
+        deletedAt = a.deletedAt,
+        archivedAt = a.archivedAt
     )
 
     fun fromEntretien(e: Entretien): Evenement = Evenement(
@@ -50,6 +62,10 @@ object EventFactory {
         startDate = e.dateTime,
         endDate = e.dateTime + ((e.durationMinutes ?: 30) * 60 * 1000L),
         syncHash = "evt-entretien-${UUID.randomUUID()}",
-        type = "Entretiens"
+        type = "Entretiens",
+        createdAt = e.createdAt,
+        updatedAt = e.updatedAt,
+        deletedAt = e.deletedAt,
+        archivedAt = e.archivedAt
     )
 }

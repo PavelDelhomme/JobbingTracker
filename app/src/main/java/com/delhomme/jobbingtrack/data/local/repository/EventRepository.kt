@@ -11,6 +11,8 @@ class EventRepository(private val dao: EventDao) {
     fun deletedForUser(userId: String): Flow<List<EventEntity>> = dao.getDeletedForUser(userId)
     fun byId(id: String, userId: String): Flow<EventEntity?>    = dao.getByIdForUser(id, userId)
 
+    fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<EventEntity>> = dao.getByDateRangeForUser(userId, from, to)
+
     /** création ou remplacement */
     suspend fun save(event: EventEntity)                      = dao.upsert(event)
 

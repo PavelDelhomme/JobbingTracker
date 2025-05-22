@@ -11,6 +11,8 @@ class AppelRepository(private val dao: AppelDao) {
     fun deletedForUser(userId: String): Flow<List<AppelEntity>>     = dao.getDeletedForUser(userId)
     fun byId(id: String, userId: String): Flow<AppelEntity?>        = dao.getByIdForUser(id, userId)
 
+    fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<AppelEntity>> = dao.getByDateRangeForUser(userId, from, to)
+
     suspend fun save(appel: AppelEntity) = dao.upsert(appel)
     suspend fun update(appel: AppelEntity) = dao.upsert(appel)
     suspend fun archive(ids: List<String>, userId: String)          = dao.archive(ids, userId)

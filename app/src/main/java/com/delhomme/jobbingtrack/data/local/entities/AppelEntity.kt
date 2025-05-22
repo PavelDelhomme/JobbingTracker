@@ -2,11 +2,12 @@ package com.delhomme.jobbingtrack.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
+import java.util.UUID
 
 @Entity(tableName = "appels")
 data class AppelEntity(
-    @PrimaryKey override val id: String,
+    @PrimaryKey override val id: String = UUID.randomUUID().toString(),
     val userId: String,
     val subject: String,
     val companyId: String,
@@ -18,8 +19,8 @@ data class AppelEntity(
     val syncHash: String,
     var isArchived: Boolean = false,
     val isDeleted: Boolean = false,
-    var createdAt: Long,
-    var updatedAt: Long,
-    var deletedAt: Long,
-    var archivedAt: Long
-) : HasId
+    var createdAt: Long = System.currentTimeMillis(),
+    var updatedAt: Long = System.currentTimeMillis(),
+    var deletedAt: Long? = null,
+    var archivedAt: Long? = null
+) : HasIdProvider

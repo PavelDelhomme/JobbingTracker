@@ -8,13 +8,14 @@ import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import kotlinx.coroutines.flow.Flow
 
 class EntretienRepository(private val dao: EntretienDao) {
-    val entretiens: Flow<List<EntretienEntity>> = dao.getAll()
     fun allForUser(userId: String): Flow<List<EntretienEntity>>     = dao.getAllActiveForUser(userId)
     fun withContactsForUser(userId: String): Flow<List<EntretienWithContacts>> = dao.getAllWithContactsForUser(userId)
     fun archivedForUser(userId: String): Flow<List<EntretienEntity>>            = dao.getArchivedForUser(userId)
     fun deletedForUser(userId: String): Flow<List<EntretienEntity>>             = dao.getDeletedForUser(userId)
     fun byIdWithContacts(id: String, userId: String): Flow<EntretienWithContacts?> =
         dao.getByIdActiveWithContacts(id, userId)
+
+    fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<EntretienEntity>> = dao.getByDateRangeForUser(userId, from, to)
 
     suspend fun save(entretien: EntretienEntity, contactIds: List<String>) {
         dao.upsert(entretien)

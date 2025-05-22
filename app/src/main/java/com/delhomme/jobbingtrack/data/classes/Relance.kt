@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.data.classes
 
-import com.delhomme.jobbingtrack.data.HasId
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 import com.delhomme.jobbingtrack.utils.toFieldMap
 
 
@@ -21,7 +21,7 @@ data class Relance(
     var updatedAt: Long,
     var deletedAt: Long,
     var archivedAt: Long
-) : HasId
+) : HasIdProvider
 
 fun Relance.toSafeFieldMap() : Map<String, String> {
     val map = this.toFieldMap().toMutableMap()
