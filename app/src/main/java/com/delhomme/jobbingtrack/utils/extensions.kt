@@ -93,13 +93,16 @@ fun <T> List<T>.countByDay(
 ): List<Pair<LocalDate, Int>> {
     return this
         .asSequence()
-        .filter {it ->
-            val ts = dateSelector(it).toEpochMilli()
+        .filter { item ->
+            val ts = dateSelector(item).toEpochMilli()
             ts in start.toEpochMilli()..end.toEpochMilli()
         }
-        .groupBy { Instant.ofEpochMilli(dateSelector(it).toEpochMilli())
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate() }
-        .map { it.key to it.value.size }
+        .groupBy { item ->
+            dateSelector(item)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+        }
+        .map { (day, items) -> day to items.size }
         .sortedBy { it.first }
 }
+

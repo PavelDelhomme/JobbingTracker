@@ -32,15 +32,20 @@ fun BottomSheetHost(
     navController: NavHostController,
     visibleContent: BottomSheetContentType,
     linkedCandidatureId: String?,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     if (visibleContent == BottomSheetContentType.NONE) return
 
     // 1) On récupère les données via les ViewModels (pas FakeDataProvider)
     val candVm: CandidatureViewModel = viewModel()
     val entpVm: EntrepriseViewModel = viewModel()
-    val candidatures    by candVm.candidatures.observeAsState(emptyList())
-    val entreprises    by entpVm.entreprises.observeAsState(emptyList())
+
+
+    // 2) On colle les StateFlow ici
+    //    -> StateFlow<List<Candidature>>
+    val candidatures by candVm.candidatures.collectAsState(initial = emptyList())
+    //    -> StateFlow<List<Entreprise>>
+    val entreprises by entpVm.entreprises.collectAsState(initial = emptyList())
 
     // 2) ON déduit l'entreprise depuis la candidature liée
     val entrepriseIdFromCandidature = linkedCandidatureId

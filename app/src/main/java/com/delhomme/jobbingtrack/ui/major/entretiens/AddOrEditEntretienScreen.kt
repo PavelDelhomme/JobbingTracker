@@ -14,6 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,6 +24,7 @@ import com.delhomme.jobbingtrack.data.forms.FormSuggestions
 import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.DashboardViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.ContactSelectorField
@@ -36,7 +38,8 @@ import java.util.UUID
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun AddOrEditEntretienScreen(
-    entretienId: String? = null,
+    viewModel: DashboardViewModel = viewModel(),
+    entretienId: String?,
     linkedCandidatureId: String? = null,
     linkedCompanyId: String? = null,
     onCancel: () -> Unit,
@@ -45,6 +48,19 @@ fun AddOrEditEntretienScreen(
     entpVm: EntrepriseViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
 ) {
+
+    // 1) on collecte les listes brutes
+    val entretiens    by viewModel.entretiensFlow.collectAsState(initial = emptyList())
+    val candidatures  by viewModel.candidaturesFlow.collectAsState(initial = emptyList())
+    val entreprises   by viewModel.entreprisesFlow.collectAsState(initial = emptyList())
+    val contacts      by viewModel.contactsFlow.collectAsState(initial = emptyList())
+
+
+    // 2) on récupère éventuellement l'entretien à éditer
+    val entretien = entretienId
+        ?.let { id -> entretiens.firstOrNull { it.id == id } }
+
+
     // 1) Charger l’entretien + ses contacts
     val allWithContacts by entVm.entretiens.observeAsState(emptyList())
     val existingWith = allWithContacts.find { it.entretien.id == entretienId }
@@ -56,13 +72,8 @@ fun AddOrEditEntretienScreen(
     var selContacts    by remember { mutableStateOf(existingWith?.contacts ?: emptyList()) }
     var dateTime by remember { mutableStateOf(existingEnt?.dateTime ?: System.currentTimeMillis()) }
 
-    // 3) Listes Reactives
-    val candidats  by candVm.candidatures.observeAsState(emptyList())
-    val entreprises by entpVm.entreprises.observeAsState(emptyList())
-    val contacts   by contactVm.contacts.observeAsState(emptyList())
-
     // 4) Calcul du companyId
-    val companyId = candidats
+    val companyId = candidatures
         .firstOrNull { it.id == selCandId }
         ?.companyId
         ?: selEntpId
@@ -97,7 +108,7 @@ fun AddOrEditEntretienScreen(
         EntitySelectorField(
             label = "Candidature",
             selectedEntityId = selCandId,
-            allEntities = candidats,
+            allEntities = candidatures,
             getEntityLabel = { it.title },
             onEntitySelected = { selCandId = it.id },
             allowCreation = false
@@ -141,6 +152,7 @@ fun AddOrEditEntretienScreen(
 
                 val ent = EntretienEntity(
                         id                = id,
+                        userId            = existingEnt?.userId ?: "",
                         candidatureId     = selCandId,
                         companyId         = companyId,
                         dateTime          = dateTime,
@@ -158,7 +170,7 @@ fun AddOrEditEntretienScreen(
                         isArchived        = existingEnt?.isArchived == true,
                         isDeleted         = existingEnt?.isDeleted == true
                     )
-                entVm.save(ent, selContacts.map { it.id })
+                entVm.save(ent, selContacts.map { c -> c.id })
                 onCancel()
             },
             onCancel = onCancel

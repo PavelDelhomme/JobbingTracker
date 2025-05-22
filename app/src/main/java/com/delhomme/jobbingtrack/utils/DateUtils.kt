@@ -1,6 +1,12 @@
 package com.delhomme.jobbingtrack.utils
 
+import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
+import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
+import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
+import com.delhomme.jobbingtrack.data.local.entities.EventEntity
+import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -27,3 +33,10 @@ fun parseDateToMillis(input: String?): Long {
         System.currentTimeMillis()
     }
 }
+
+fun CandidatureEntity.toInstant()   = Instant.ofEpochMilli(applicationDate)
+fun RelanceEntity.toInstant()       = Instant.ofEpochMilli(date)
+fun AppelEntity.toInstant()         = Instant.ofEpochMilli(dateTime)
+fun EntretienEntity.toInstant()     = Instant.ofEpochMilli(dateTime)
+fun EventEntity.toInstant()         = startDate?.let { Instant.ofEpochMilli(it) }
+fun EventEntity.toEndDateInstant()  = endDate?.let { Instant.ofEpochMilli(it) }

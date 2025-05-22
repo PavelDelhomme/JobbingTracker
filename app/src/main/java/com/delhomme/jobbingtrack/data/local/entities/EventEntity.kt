@@ -13,7 +13,7 @@ data class EventEntity(
     val title: String,
     val description: String?,
     val startDate: Long?,
-    val enddate: Long?,
+    val endDate: Long?,
     val syncHash: String,
     val type: String,
     val isArchived: Boolean = false,
