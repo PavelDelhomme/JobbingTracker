@@ -13,6 +13,7 @@ fun LineChart(
         factory = { ctx ->
             com.github.mikephil.charting.charts.LineChart(ctx).apply {
                 description.isEnabled = false
+                // ici tu pourras initialiser ton LineData / LineDataSet
             }
         }
     )

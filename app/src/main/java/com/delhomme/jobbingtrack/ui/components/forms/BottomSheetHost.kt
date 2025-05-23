@@ -3,10 +3,14 @@ package com.delhomme.jobbingtrack.ui.components.forms
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
+
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.delhomme.jobbingtrack.data.classes.Candidature
+import com.delhomme.jobbingtrack.data.classes.Entreprise
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.ui.major.appels.AddOrEditAppelScreen
@@ -31,6 +35,7 @@ enum class BottomSheetContentType {
 fun BottomSheetHost(
     navController: NavHostController,
     visibleContent: BottomSheetContentType,
+    userId: String,
     linkedCandidatureId: String?,
     onDismissRequest: () -> Unit,
 ) {
@@ -43,9 +48,9 @@ fun BottomSheetHost(
 
     // 2) On colle les StateFlow ici
     //    -> StateFlow<List<Candidature>>
-    val candidatures by candVm.candidatures.collectAsState(initial = emptyList())
+    val candidatures by candVm.candidatures.collectAsState(initial = emptyList<Candidature>())
     //    -> StateFlow<List<Entreprise>>
-    val entreprises by entpVm.entreprises.collectAsState(initial = emptyList())
+    val entreprises by entpVm.entreprises.collectAsState(initial = emptyList<Entreprise>())
 
     // 2) ON déduit l'entreprise depuis la candidature liée
     val entrepriseIdFromCandidature = linkedCandidatureId
