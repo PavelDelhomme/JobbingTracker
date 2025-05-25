@@ -22,10 +22,12 @@ import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.EntitySelectorField
+import com.delhomme.jobbingtrack.utils.resolveCompanyId
 import java.util.UUID
 
 @Composable
 fun AddOrEditRelanceScreen(
+    userId: String,
     relanceId: String? = null,
     linkedCandidatureId: String? = null,
     linkedCompanyId: String? = null,
@@ -34,15 +36,22 @@ fun AddOrEditRelanceScreen(
     contactVm: ContactViewModel = viewModel(),
     onCancel: () -> Unit
 ) {
-    val all = vm.relances.observeAsState(emptyList()).value
+    val all = vm.activeForUser(userId = userId).observeAsState(emptyList()).value
     val existing = all.find { it.id == relanceId }
 
-    val candidats = candVm.candidatures.observeAsState(emptyList()).value
-    val contacts  = contactVm.contacts.observeAsState(emptyList()).value
+    val candidats = candVm.activeForUser(userId = userId).observeAsState(emptyList()).value
+    val contacts  = contactVm.activeForUser(userId = userId).observeAsState(emptyList()).value
 
     var selCandId by remember { mutableStateOf(existing?.candidatureId ?: linkedCandidatureId) }
     var selContactId by remember { mutableStateOf(existing?.contactId ?: "") }
-    var selCompanyId by remember { mutableStateOf(existing?.companyId     ?: linkedCompanyId.orEmpty()) }
+    //var selCompanyId by remember { mutableStateOf(existing?.companyId     ?: linkedCompanyId.orEmpty()) }
+    val finalCompanyId = resolveCompanyId(
+        existingRelance = existing,
+        candidatures = candidats,
+        relances = all, // car c’est une relance
+        linkedCandidatureId = selCandId,
+        fallbackCompanyId = linkedCompanyId
+    )
 
 
     val fields = listOf(
@@ -88,6 +97,7 @@ fun AddOrEditRelanceScreen(
             onSubmit = { form ->
                 val relance  = RelanceEntity(
                     id            = existing?.id ?: UUID.randomUUID().toString(),
+                    userId        = userId,
                     date          = form["date"]!!.toLong(),
                     type          = form["type"],
                     responseStatus= form["responseStatus"],

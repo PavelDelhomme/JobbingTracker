@@ -22,6 +22,10 @@ class ContactViewModel(app: Application) : AndroidViewModel(app) {
     fun contactById(id: String, userId: String): LiveData<ContactEntity?> =
         repo.byId(id, userId).asLiveData()
 
+    /** 2) Actives */
+    fun activeForUser(userId: String): LiveData<List<ContactEntity>> =
+        repo.activeForUser(userId).asLiveData()
+
     fun save(contact: ContactEntity) = viewModelScope.launch { repo.save(contact) }
     fun update(contact: ContactEntity) = viewModelScope.launch { repo.update(contact) }
     fun archive(ids: List<String>, userId: String)      = viewModelScope.launch { repo.archive(ids, userId) }

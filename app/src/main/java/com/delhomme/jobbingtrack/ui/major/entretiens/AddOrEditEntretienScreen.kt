@@ -31,6 +31,7 @@ import com.delhomme.jobbingtrack.ui.components.forms.selectors.ContactSelectorFi
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.forms.ModernDateTimePickerField
 import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
+import com.delhomme.jobbingtrack.utils.resolveCompanyId
 import com.delhomme.jobbingtrack.utils.toFieldMap
 import java.util.UUID
 
@@ -78,6 +79,15 @@ fun AddOrEditEntretienScreen(
         ?.companyId
         ?: selEntpId
 
+    val finalCompanyId = resolveCompanyId(
+        existingEntretien = existingEnt,
+        candidatures = candidatures,
+        relances = emptyList(), // pas utilisé ici
+        linkedCandidatureId = selCandId,
+        fallbackCompanyId = selEntpId
+    )
+
+
     // 5) Vos champs de formulaire
     val fields = listOf(
         FormField("location", "Lieu de l'entretien", FieldType.TEXT),
@@ -99,11 +109,10 @@ fun AddOrEditEntretienScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Date & heure
-        ModernDateTimePickerField(
+        Modifier.ModernDateTimePickerField(
             label = "Date & heure",
-            initialMillis = dateTime,
-            onDateTimeSelected = { dateTime = it }
-        )
+            initialMillis = dateTime
+        ) { dateTime = it }
 
         EntitySelectorField(
             label = "Candidature",

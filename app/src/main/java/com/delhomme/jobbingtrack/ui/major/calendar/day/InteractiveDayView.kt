@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.ui.major.calendar.day
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +28,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun InteractiveDayView(
     date: LocalDate,

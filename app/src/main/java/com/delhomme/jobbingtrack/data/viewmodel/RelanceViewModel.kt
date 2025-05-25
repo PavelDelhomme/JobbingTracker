@@ -21,6 +21,10 @@ class RelanceViewModel(app: Application) : AndroidViewModel(app) {
     fun relanceById(id: String, userId: String): LiveData<RelanceEntity?> =
         repo.byId(id, userId).asLiveData()
 
+    /** 2) Actives */
+    fun activeForUser(userId: String): LiveData<List<RelanceEntity>> =
+        repo.activeForUser(userId).asLiveData()
+
     fun save(relance: RelanceEntity) = viewModelScope.launch { repo.save(relance) }
     fun update(relance: RelanceEntity) = viewModelScope.launch { repo.update(relance) }
     fun archive(ids: List<String>, userId: String)      = viewModelScope.launch { repo.archive(ids, userId) }

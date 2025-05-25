@@ -14,6 +14,7 @@ class EntretienRepository(private val dao: EntretienDao) {
     fun deletedForUser(userId: String): Flow<List<EntretienEntity>>             = dao.getDeletedForUser(userId)
     fun byIdWithContacts(id: String, userId: String): Flow<EntretienWithContacts?> =
         dao.getByIdActiveWithContacts(id, userId)
+    fun activeForUser(userId: String): Flow<List<EntretienEntity>>      = dao.getAllActiveForUser(userId)
 
     fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<EntretienEntity>> = dao.getByDateRangeForUser(userId, from, to)
 

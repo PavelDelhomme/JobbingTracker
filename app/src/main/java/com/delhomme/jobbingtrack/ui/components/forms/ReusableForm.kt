@@ -35,11 +35,10 @@ fun rememberFormattedDateTime(millis: Long?): String {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModernDateTimePickerField(
+fun Modifier.ModernDateTimePickerField(
     label: String,
     initialMillis: Long? = null,
-    onDateTimeSelected: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    onDateTimeSelected: (Long) -> Unit
 ) {
     val context = LocalContext.current
     var displayMillis by remember { mutableStateOf(initialMillis ?: System.currentTimeMillis()) }
@@ -53,7 +52,7 @@ fun ModernDateTimePickerField(
         label = { Text(label) },
         trailingIcon = {
             IconButton(onClick = {
-                val calendar = Calendar.getInstance().apply { timeInMillis = displayMillis }
+                val calendar = Calendar.getInstance().apply { this.timeInMillis = displayMillis }
                 DatePickerDialog(
                     context,
                     { _, year, month, dayOfMonth ->
@@ -78,7 +77,7 @@ fun ModernDateTimePickerField(
             }
         },
         //modifier = modifier.fillMaxWidth()
-        modifier = modifier
+        modifier = this
     )
 }
 
@@ -174,12 +173,10 @@ fun ReusableForm(
                 }
 
                 FieldType.DATE, FieldType.TIME -> {
-                    ModernDateTimePickerField(
+                    Modifier.fillMaxWidth().ModernDateTimePickerField(
                         label = field.label,
-                        initialMillis = fieldValues[field.name]?.toLongOrNull(),
-                        onDateTimeSelected = { if (!field.readOnly) fieldValues[field.name] = it.toString() },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                        initialMillis = fieldValues[field.name]?.toLongOrNull()
+                    ) { if (!field.readOnly) fieldValues[field.name] = it.toString() }
                 }
 
                 FieldType.DROPDOWN -> {

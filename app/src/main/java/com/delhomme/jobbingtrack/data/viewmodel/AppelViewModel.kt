@@ -19,6 +19,10 @@ class AppelViewModel(app: Application) : AndroidViewModel(app) {
     fun appelById(id: String, userId: String): LiveData<AppelEntity?> =
         repo.byId(id, userId).asLiveData()
 
+    /** 2) Actives */
+    fun activeForUser(userId: String): LiveData<List<AppelEntity>> =
+        repo.activeForUser(userId).asLiveData()
+
     fun save(appel: AppelEntity) = viewModelScope.launch { repo.save(appel) }
     fun update(appel: AppelEntity) = viewModelScope.launch { repo.update(appel) }
     fun archive(ids: List<String>, userId: String) = viewModelScope.launch { repo.archive(ids, userId) }

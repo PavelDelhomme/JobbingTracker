@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.places)
     implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.annotation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -90,8 +91,9 @@ dependencies {
     implementation(libs.accompanist.pager)
 
     // Room
-    implementation("androidx.room:room-runtime:2.7.1")
+    implementation(libs.androidx.room.runtime)
     kapt("androidx.room:room-compiler:2.7.1")
     implementation("androidx.room:room-ktx:2.7.1")
 
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

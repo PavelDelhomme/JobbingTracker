@@ -32,21 +32,23 @@ import com.delhomme.jobbingtrack.ui.major.relances.RelancesScreen
 fun CandidaturesTabsContent(
     navController: NavHostController,
     selectedTabIndex: Int,
-    onTabChange: (Int) -> Unit
+    onTabChange: (Int) -> Unit,
+    userId: String
 ) {
     val candidatureVm: CandidatureViewModel = viewModel()
     val entreprisesVm: EntrepriseViewModel = viewModel()
     val relancesVm: RelanceViewModel     = viewModel()
     val appelsVm: AppelViewModel         = viewModel()
     val contactsVm: ContactViewModel     = viewModel()
-    val entretiensVm: EntretienViewModel = viewModel()
+    //val entretiensVm: EntretienViewModel = viewModel()
+    val entretiensWithContactsVm: EntretienViewModel = viewModel()
 
-    val cands       by candidatureVm.candidatures.observeAsState(emptyList())
-    val ents        by entreprisesVm.entreprises .observeAsState(emptyList())
-    val rels        by relancesVm.relances     .observeAsState(emptyList())
-    val appels      by appelsVm.appels         .observeAsState(emptyList())
-    val contacts    by contactsVm.contacts     .observeAsState(emptyList())
-    val entretiens  by entretiensVm.entretiens .observeAsState(emptyList())
+    val cands       by candidatureVm.activeForUser(userId = userId).observeAsState(emptyList())
+    val ents        by entreprisesVm.activeForUser(userId = userId).observeAsState(emptyList())
+    val rels        by relancesVm.activeForUser(userId = userId).observeAsState(emptyList())
+    val appels      by appelsVm.activeForUser(userId = userId).observeAsState(emptyList())
+    val contacts    by contactsVm.activeForUser(userId = userId).observeAsState(emptyList())
+    val entretiens  by entretiensVm.activeForUser(userId = userId).observeAsState(emptyList())
 
     BackHandler { onTabChange(0) }
 
@@ -70,10 +72,10 @@ fun CandidaturesTabsContent(
                         navController.navigate("${Routes.EDIT_CANDIDATURE}/${it.id}")
                     },
                     onArchive = {
-                        candidatureVm.archive(it.id)
+                        candidatureVm.archive(it.id, userId = userId)
                     },
                     onDelete = {
-                        candidatureVm.delete(it.id)
+                        candidatureVm.delete(it.id, userId = userId)
                     },
                     onAddClick = {
                         /* handled by FAB */
@@ -89,10 +91,10 @@ fun CandidaturesTabsContent(
                         navController.navigate("${Routes.EDIT_ENTREPRISE}/${it.id}")
                     },
                     onArchive = {
-                        entreprisesVm.archive(it.id)
+                        entreprisesVm.archive(it.id, userId = userId)
                     },
                     onDelete = {
-                        entreprisesVm.delete(it.id)
+                        entreprisesVm.delete(it.id, userId = userId)
                     },
                     onAddClick = { /* handled by FAB */ },
                 )
@@ -106,10 +108,10 @@ fun CandidaturesTabsContent(
                         navController.navigate("${Routes.EDIT_RELANCE}/${it.id}")
                     },
                     onArchive = {
-                        relancesVm.archive(it.id)
+                        relancesVm.archive(it.id, userId = userId)
                     },
                     onDelete = {
-                        relancesVm.delete(it.id)
+                        relancesVm.delete(it.id, userId = userId)
                     },
                     onAddClick = { /* handled by FAB */ }
                 )
@@ -123,10 +125,10 @@ fun CandidaturesTabsContent(
                         navController.navigate("${Routes.EDIT_APPEL}/${it.id}")
                     },
                     onArchive = {
-                        appelsVm.archive(it.id)
+                        appelsVm.archive(it.id, userId = userId)
                     },
                     onDelete = {
-                        appelsVm.delete(it.id)
+                        appelsVm.delete(it.id, userId = userId)
                     },
                     onAddClick = { /* handled by FAB */ }
                 )
@@ -140,10 +142,10 @@ fun CandidaturesTabsContent(
                         navController.navigate("${Routes.EDIT_CONTACT}/${it.id}")
                     },
                     onArchive = {
-                        contactsVm.archive(it.id)
+                        contactsVm.archive(it.id, userId = userId)
                     },
                     onDelete = {
-                        contactsVm.delete(it.id)
+                        contactsVm.delete(it.id, userId = userId)
                     },
                     onAddClick = { /* handled by FAB */ }
                 )
@@ -157,10 +159,10 @@ fun CandidaturesTabsContent(
                         navController.navigate("${Routes.EDIT_CONTACT}/${it.id}")
                     },
                     onArchive = {
-                        contactsVm.archive(it.id)
+                        contactsVm.archive(it.id, userId = userId)
                     },
                     onDelete = {
-                        contactsVm.delete(it.id)
+                        contactsVm.delete(it.id, userId = userId)
                     },
                 )
             }

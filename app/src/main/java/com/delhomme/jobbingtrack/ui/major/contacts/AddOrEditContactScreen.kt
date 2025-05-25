@@ -15,6 +15,7 @@ import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntrepriseEntity
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
+import com.delhomme.jobbingtrack.utils.resolveCompanyId
 import java.util.UUID
 
 @Composable
@@ -38,6 +39,14 @@ fun AddOrEditContactScreen(
     // 3) État local pour l’entreprise liée
     var selCompanyId      by remember { mutableStateOf(existing?.entrepriseId ?: linkedEntrepriseId.orEmpty()) }
     var selCandidatureId  by remember { mutableStateOf(linkedCandidatureId ?: existing?.candidatureId.orEmpty()) }
+
+    val finalCompanyId = resolveCompanyId(
+        existingContact = existing,
+        candidatures = allCandidats,
+        relances = emptyList(),
+        linkedCandidatureId = selCandidatureId,
+        fallbackCompanyId = selCompanyId
+    )
 
 
     // 4) Les champs du formulaire

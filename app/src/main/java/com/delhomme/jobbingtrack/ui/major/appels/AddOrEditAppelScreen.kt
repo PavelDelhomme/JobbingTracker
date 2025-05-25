@@ -16,50 +16,60 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider.entreprises
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.EntitySelectorField
+import com.delhomme.jobbingtrack.utils.resolveCompanyId
 import java.util.UUID
 
 
 @Composable
 fun AddOrEditAppelScreen(
+    userId: String,
     appelId: String? = null,
     linkedCandidatureId: String? = null,
     linkedCompanyId: String? = null,
     linkedContactId: String? = null,
     linkedRelanceId: String? = null,
-    appelVm: AppelViewModel = viewModel(),
+    vm: AppelViewModel = viewModel(),
     candVm: CandidatureViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
     relanceVm: RelanceViewModel = viewModel(),
+    entrepriseVm: EntrepriseViewModel = viewModel(),
     onCancel: () -> Unit
 ) {
+    val appels    = vm.activeForUser(userId).observeAsState(emptyList()).value
+    val candidats = candVm.activeForUser(userId = userId).observeAsState(emptyList()).value
+    val contacts  = contactVm.activeForUser(userId = userId).observeAsState(emptyList()).value
+    val relances  = relanceVm.activeForUser(userId = userId).observeAsState(emptyList()).value
+    val entreprises = entrepriseVm.activeForUser(userId = userId).observeAsState(emptyList()).value
 
-    // 1) Observe les listes depuis tes ViewModels
-    val appels       by appelVm.appels.observeAsState(emptyList())
-    val candidats by candVm.candidatures.observeAsState(emptyList())
-    val contacts     by contactVm.contacts.observeAsState(emptyList())
-    val relances    by relanceVm.relances.observeAsState(emptyList())
-
-    // 2) Si on édite, on récupère l'existant
     val existing = appels.find { it.id == appelId }
 
-    // 3) Etats pour les selecteurs
-    var selCandId by remember { mutableStateOf(existing?.candidatureId ?: linkedCandidatureId) }
-    var selContactId     by remember { mutableStateOf(existing?.contactId  ?: linkedContactId) }
+    val resolvedCandidatureId = existing?.candidatureId ?: linkedCandidatureId
+
+
+    var selCandId by remember { mutableStateOf(existing?.candidatureId ?: linkedCandidatureId )}
+    var selContactId by remember { mutableStateOf(existing?.contactId ?: linkedContactId) }
     var selRelanceId by remember { mutableStateOf(existing?.relanceId ?: linkedRelanceId) }
 
-    // 4) Calcul de l'entreprise
-    val compFromCand = selCandId
-        ?.let { id -> candidats.find { it.id == id }?.companyId }
-    val effectiveCompanyId = compFromCand ?: linkedCompanyId.orEmpty();
+    val finalCompanyId = resolveCompanyId(
+        existingAppel = existing,
+        candidatures = candidats,
+        relances = relances,
+        linkedCandidatureId = selCandId,
+        linkedRelanceId = selRelanceId,
+        fallbackCompanyId = linkedCompanyId
+    )
+
+    val companyName = entreprises.find { it.id == finalCompanyId }?.name.orEmpty()
 
     // 5) Définir les champs du formulaire
     val fields = listOf(
@@ -101,9 +111,9 @@ fun AddOrEditAppelScreen(
 
         // Affichage de l’entreprise (non éditable)
         OutlinedTextField(
-            value    = entreprises.find { it.id == effectiveCompanyId }?.name.orEmpty(),
+            value    = companyName,
             onValueChange = {},
-            label = { Text("Entreprise") },
+            label = { Text("Entreprise liée") },
             readOnly = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -112,13 +122,32 @@ fun AddOrEditAppelScreen(
         EntitySelectorField(
             label = "Contact (optionnel)",
             selectedEntityId = selContactId,
-            allEntities = contacts.filter { it.entrepriseId == effectiveCompanyId },
+            allEntities = contacts.filter { it.entrepriseId == finalCompanyId },
             getEntityLabel = { "${it.firstName} ${it.lastName}" },
             onEntitySelected = { selContactId = it.id },
             allowCreation = true,
             onCreateEntity = { fullName ->
-                // Appeler ContactViewModel pour créer un nouveau contact
-                // contactVm.createContact(...)
+                val parts = fullName.trim().split(" ")
+                val firstName = parts.firstOrNull() ?: ""
+                val lastName = parts.drop(1).joinToString(" ")
+                val newId = UUID.randomUUID().toString()
+
+                val newContact = ContactEntity(
+                    id = newId,
+                    userId = userId,
+                    firstName = firstName,
+                    lastName = lastName,
+                    entrepriseId = finalCompanyId ?: "",
+                    candidatureId = selCandId,
+                    phone = null,
+                    email = null,
+                    position = null,
+                    department = null,
+                    notes = null,
+                    syncHash = "contact-$newId"
+                )
+                contactVm.save(newContact)
+                selContactId = newId
             }
         )
 
@@ -136,7 +165,7 @@ fun AddOrEditAppelScreen(
                 val entity = AppelEntity(
                     id           = id,
                     subject      = form["subject"]!!,
-                    companyId    = effectiveCompanyId,
+                    companyId    = finalCompanyId ?: "",
                     contactId    = selCandId?.ifBlank { null },
                     candidatureId= selCandId,
                     relanceId    = selRelanceId?.ifBlank { null },
@@ -144,9 +173,10 @@ fun AddOrEditAppelScreen(
                     notes        = form["notes"]?.takeIf(String::isNotBlank),
                     syncHash     = existing?.syncHash ?: "app-$id",
                     isArchived   = existing?.isArchived ?: false,
-                    isDeleted    = existing?.isDeleted  ?: false
+                    isDeleted    = existing?.isDeleted  ?: false,
+                    userId       = userId,
                 )
-                appelVm.save(entity)
+                vm.save(entity)
                 onCancel()
             },
             onCancel = onCancel
