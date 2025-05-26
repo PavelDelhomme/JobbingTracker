@@ -6,6 +6,14 @@ import androidx.navigation.navArgument
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.delhomme.jobbingtrack.JobbingTrackApp
+import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
+import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.ui.major.appels.AddOrEditAppelScreen
 import com.delhomme.jobbingtrack.ui.major.appels.AppelDetailScreen
 import com.delhomme.jobbingtrack.ui.major.archive_bin.ArchiveScreen
@@ -25,7 +33,15 @@ import com.delhomme.jobbingtrack.ui.major.relances.AddOrEditRelanceScreen
 import com.delhomme.jobbingtrack.ui.major.relances.RelanceDetailScreen
 
 @Composable
-fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
+fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: String?) {
+    if (userId == null) {
+        // Redirection forcée si pas de user
+        LoginScreen(navController)
+        return
+    }
+
+
+
     NavHost(
         navController = navController,
         startDestination = if (isLoggedIn) Routes.MAIN else Routes.LOGIN
@@ -49,6 +65,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
         ) { backStack ->
             val linkedEntId = backStack.arguments?.getString("linkedEntrepriseId")
             AddOrEditCandidatureScreen(
+                userId = userId,
                 candidatureId = null,
                 linkedEntrepriseId  = linkedEntId,
                 onCancel            = { navController.popBackStack() }
@@ -62,6 +79,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
         ) { backStack ->
             val id = backStack.arguments!!.getString("candidatureId")!!
             AddOrEditCandidatureScreen(
+                userId = userId,
                 candidatureId = id,
                 linkedEntrepriseId = null,
                 onCancel = { navController.popBackStack() }
@@ -74,7 +92,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             })
         ) { backStack ->
             val id = backStack.arguments!!.getString("candidatureId")!!
-            CandidatureDetailScreen(candidatureId = id, navController = navController)
+            CandidatureDetailScreen(userId = userId, candidatureId = id, navController = navController)
         }
 
         // — CONTACTS —
@@ -89,6 +107,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
         ) { bs ->
             AddOrEditContactScreen(
                 contactId            = null,
+                userId               = userId,
                 linkedCandidatureId  = bs.arguments?.getString("linkedCandidatureId"),
                 linkedEntrepriseId   = bs.arguments?.getString("linkedEntrepriseId"),
                 onCancel             = { navController.popBackStack() }
@@ -101,6 +120,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             val id = backStack.arguments!!.getString("contactId")!!
             AddOrEditContactScreen(
                 contactId            = id,
+                userId               = userId,
                 linkedCandidatureId  = null,
                 linkedEntrepriseId   = null,
                 onCancel             = { navController.popBackStack() }
@@ -113,13 +133,14 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             })
         ) { bs ->
             val id = bs.arguments!!.getString("contactId")!!
-            ContactDetailScreen(contactId = id, navController = navController)
+            ContactDetailScreen(contactId = id, userId = userId, navController = navController)
         }
 
         // — ENTREPRISES —
         composable(Routes.ADD_ENTREPRISE) {
             AddOrEditEntrepriseScreen(
                 entrepriseId = null,
+                userId = userId,
                 onCancel = { navController.popBackStack() }
             )
         }
@@ -132,6 +153,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             val id = bs.arguments!!.getString("entrepriseId")!!
             AddOrEditEntrepriseScreen(
                 entrepriseId = id,
+                userId = userId,
                 onCancel = { navController.popBackStack() }
             )
         }
@@ -142,7 +164,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             })
         ) { backStack ->
             val id = backStack.arguments!!.getString("entrepriseId")!!
-            EntrepriseDetailScreen(entrepriseId = id, navController = navController)
+            EntrepriseDetailScreen(entrepriseId = id, userId = userId, navController = navController)
         }
 
 
@@ -158,6 +180,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
         ) { bs ->
             AddOrEditRelanceScreen(
                 relanceId = null,
+                userId = userId,
                 linkedCandidatureId = bs.arguments?.getString("linkedCandidatureId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
                 onCancel = { navController.popBackStack() }
@@ -175,6 +198,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
         ) { bs ->
             AddOrEditRelanceScreen(
                 relanceId           = bs.arguments!!.getString("relanceId"),
+                userId = userId,
                 linkedCandidatureId = bs.arguments?.getString("linkedCandidatureId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
                 onCancel = { navController.popBackStack() }
@@ -187,7 +211,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             })
         ) { backStack ->
             val id = backStack.arguments!!.getString("relanceId")!!
-            RelanceDetailScreen(relanceId = id, navController = navController)
+            RelanceDetailScreen(relanceId = id, userId = userId, navController = navController)
         }
 
 
@@ -207,6 +231,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
         ) { bs ->
             AddOrEditAppelScreen(
                 appelId             = null,
+                userId              = userId,
                 linkedCandidatureId = bs.arguments?.getString("linkedCandidatureId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
                 linkedContactId     = bs.arguments?.getString("linkedContactId"),
@@ -230,6 +255,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
         ) { bs ->
             AddOrEditAppelScreen(
                 appelId             = bs.arguments!!.getString("appelId"),
+                userId              = userId,
                 linkedCandidatureId = bs.arguments?.getString("linkedCandidatureId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
                 linkedContactId     = bs.arguments?.getString("linkedContactId"),
@@ -244,7 +270,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             })
         ) { backStack ->
             val id = backStack.arguments!!.getString("appelId")!!
-            AppelDetailScreen(appelId = id, navController = navController)
+            AppelDetailScreen(appelId = id, navController = navController, userId = userId)
         }
 
         // — ENTRETIENS —
@@ -270,6 +296,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             AddOrEditEntretienScreen(
                 entretienId = null,
                 linkedCandidatureId = linkedCand,
+                userId = userId,
                 linkedCompanyId = linkedComp,
                 onCancel = { navController.popBackStack() }
             )
@@ -300,6 +327,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
 
             AddOrEditEntretienScreen(
                 entretienId = id,
+                userId = userId,
                 linkedCandidatureId = linkedC,
                 linkedCompanyId = linkedP,
                 onCancel = { navController.popBackStack() }
@@ -314,13 +342,32 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
             val id = backStack.arguments!!.getString("entretienId")!!
             EntretienDetailScreen(
                 entretienId = id,
+                userId = userId,
                 navController = navController,
                 onBackClick = { navController.popBackStack() }
             )
         }
 
         // — ARCHIVES / TRASH —
-        composable(Routes.ARCHIVES) { ArchiveScreen(navController) }
-        composable(Routes.TRASH) { TrashScreen(navController) }
+        composable(Routes.ARCHIVES) { ArchiveScreen(navController, userId = userId,
+            candidatureViewModel = CandidatureViewModel(JobbingTrackApp()),
+            entrepriseViewModel = EntrepriseViewModel(JobbingTrackApp()),
+            appelViewModel = AppelViewModel(JobbingTrackApp()),
+            contactViewModel = ContactViewModel(JobbingTrackApp()),
+            entretienViewModel = EntretienViewModel(JobbingTrackApp()),
+            relanceViewModel = RelanceViewModel(JobbingTrackApp()),
+            onDelete = { navController.navigate(Routes.TRASH) },
+            onRestore = { navController.navigate(Routes.MAIN) }
+        ) }
+        composable(Routes.TRASH) { TrashScreen(navController, userId = userId,
+            candidatureViewModel = CandidatureViewModel(JobbingTrackApp()),
+            entrepriseViewModel = EntrepriseViewModel(JobbingTrackApp()),
+            appelViewModel = AppelViewModel(JobbingTrackApp()),
+            contactViewModel = ContactViewModel(JobbingTrackApp()),
+            entretienViewModel = EntretienViewModel(JobbingTrackApp()),
+            relanceViewModel = RelanceViewModel(JobbingTrackApp()),
+            onDelete = { navController.navigate(Routes.TRASH) },
+            onRestore = { navController.navigate(Routes.MAIN) }
+        ) }
     }
 }

@@ -30,6 +30,7 @@ import com.delhomme.jobbingtrack.utils.toFieldMap
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ContactSelectorField(
+    userId: String,
     label: String,
     contactViewModel: ContactViewModel,
     selectedContacts: List<ContactEntity>,
@@ -38,11 +39,11 @@ fun ContactSelectorField(
     var searchText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
-    // on affiche les suggestions seulement quand on tape
-    val filtered by contactViewModel.contactsForUser(userId = "").observeAsState(emptyList())
-        .value
+    val allContacts = contactViewModel.activeForUser(userId).observeAsState(emptyList()).value
+    val filtered = allContacts
         .filter { "${it.firstName} ${it.lastName}".contains(searchText, true) }
         .filter { it !in selectedContacts }
+
 
     Column {
         OutlinedTextField(

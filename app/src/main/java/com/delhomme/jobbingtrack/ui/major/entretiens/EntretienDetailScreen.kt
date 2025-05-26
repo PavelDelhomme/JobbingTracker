@@ -35,16 +35,16 @@ fun EntretienDetailScreen(
     entVm: EntretienViewModel = viewModel(),
     candVms: CandidatureViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
+    userId: String
 ) {
     // 1) On observe la liste des Entretiens+Contacts
-    val allEntsWithContacts by entVm.entretiens.observeAsState(emptyList<EntretienWithContacts>())
-    // 2) On trouve notre entretienWithContacts
-    val ewc = allEntsWithContacts.firstOrNull { it.entretien.id == entretienId } ?: return
-    val entretien = ewc.entretien
-    val participants  = ewc.contacts
+    val entretiens by entVm.activeForUser(userId).observeAsState(emptyList())    // 2) On trouve notre entretienWithContacts
+    val entretien = entretiens.firstOrNull { it.id == entretienId } ?: return
+
+    val participants  = entretien.contacts
 
     // 3) On charge la candidature liée
-    val allCands      by candVms.candidatures.observeAsState(emptyList())
+    val allCands      by candVms.activeForUser(userId = userId).observeAsState(emptyList())
     val candidatureOpt = allCands.firstOrNull { it.id == entretien.candidatureId }
 
     BackHandler { onBackClick() }
@@ -65,12 +65,12 @@ fun EntretienDetailScreen(
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }
                     IconButton(onClick = {
-                        entVm.archive(entretien.id)
+                        entVm.archive(listOf(entretien.id), userId)
                         onBackClick()
                     }) { Icon(Icons.Default.Archive, contentDescription = "Archiver") }
 
                     IconButton(onClick = {
-                        entVm.delete(entretien.id)
+                        entVm.delete(listOf(entretien.id), userId)
                         onBackClick()
                     }) { Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement") }
                 }

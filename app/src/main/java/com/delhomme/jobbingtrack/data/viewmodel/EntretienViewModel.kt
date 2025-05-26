@@ -3,30 +3,34 @@ package com.delhomme.jobbingtrack.data.viewmodel
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
+import com.delhomme.jobbingtrack.data.classes.Entretien
 import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import com.delhomme.jobbingtrack.data.local.repository.EntretienRepository
+import com.delhomme.jobbingtrack.utils.mappers.toDomain as toEntretienDomain
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class EntretienViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = EntretienRepository(JobbingTrackApp.database.entretienDao())
 
-    fun entretiensForUser(userId: String): LiveData<List<EntretienEntity>> = repo.allForUser(userId).asLiveData()
+    fun allForUser(userId: String): LiveData<List<EntretienEntity>> = repo.allForUser(userId).asLiveData()
 
     /** 2) Actives */
-    fun activeForUser(userId: String): LiveData<List<EntretienEntity>> =
-        repo.activeForUser(userId).asLiveData()
+    fun activeForUser(userId: String): LiveData<List<Entretien>> = repo.activeForUser(userId)
 
     fun entretienById(id: String, userId: String): LiveData<EntretienWithContacts?> = repo.byIdWithContacts(id, userId).asLiveData()
 
     fun save(entretien: EntretienEntity, contactsIds: List<String>) = viewModelScope.launch { repo.save(entretien, contactsIds) }
 
-    fun activeForUserWithContacts(userId: String) =
+    fun archivedForUser(userId: String): LiveData<List<EntretienEntity>> =
+        repo.archivedForUser(userId).asLiveData()
+
+    /*fun activeForUserWithContacts(userId: String): LiveData<List<Entretien>> =
         repo.withContactsForUser(userId)
-            .map { list ->
-                list.map { it.toDomain() }
-            }
+            .map { list -> list.map { it.toEntretienDomain() } }
             .asLiveData()
+    */
 
     fun update(entretien: EntretienEntity) = viewModelScope.launch { repo.update(entretien) }
 

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.data.local.repository.AppelRepository
 import com.delhomme.jobbingtrack.JobbingTrackApp
+import com.delhomme.jobbingtrack.utils.mappers.toDomain as toAppelDomain
 import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
 import kotlinx.coroutines.launch
 
@@ -13,6 +14,13 @@ class AppelViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Toutes les relances pour cet utilisateur */
     fun relancesForUser(userId: String): LiveData<List<AppelEntity>> =
+        repo.allForUser(userId).asLiveData()
+
+    fun archivedForUser(userId: String): LiveData<List<AppelEntity>> =
+        repo.archivedForUser(userId).asLiveData()
+
+    /** 1) Toutes les candidatures pour un user */
+    fun allForUser(userId: String): LiveData<List<AppelEntity>> =
         repo.allForUser(userId).asLiveData()
 
     /** Détaillé par id */

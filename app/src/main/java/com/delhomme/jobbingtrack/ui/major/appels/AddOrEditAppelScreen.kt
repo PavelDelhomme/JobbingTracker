@@ -122,7 +122,7 @@ fun AddOrEditAppelScreen(
         EntitySelectorField(
             label = "Contact (optionnel)",
             selectedEntityId = selContactId,
-            allEntities = contacts.filter { it.entrepriseId == finalCompanyId },
+            allEntities = contacts.filter { it.companyId == finalCompanyId },
             getEntityLabel = { "${it.firstName} ${it.lastName}" },
             onEntitySelected = { selContactId = it.id },
             allowCreation = true,
@@ -137,7 +137,7 @@ fun AddOrEditAppelScreen(
                     userId = userId,
                     firstName = firstName,
                     lastName = lastName,
-                    entrepriseId = finalCompanyId ?: "",
+                    companyId = finalCompanyId ?: "",
                     candidatureId = selCandId,
                     phone = null,
                     email = null,

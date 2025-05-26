@@ -17,6 +17,10 @@ class EntrepriseViewModel(app: Application) : AndroidViewModel(app) {
     fun activeForUser(userId: String): LiveData<List<EntrepriseEntity>> =
         repo.activeForUser(userId).asLiveData()
 
+    /** 3) Archivées */
+    fun archivedForUser(userId: String): LiveData<List<EntrepriseEntity>> =
+        repo.archivedForUser(userId).asLiveData()
+
     fun entrepriseById(id: String, userId: String): LiveData<EntrepriseEntity?> = repo.byId(id, userId).asLiveData()
 
     fun save(entreprise: EntrepriseEntity) = viewModelScope.launch { repo.save(entreprise) }

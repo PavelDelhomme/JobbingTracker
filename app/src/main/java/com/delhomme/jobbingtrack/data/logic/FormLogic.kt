@@ -110,7 +110,7 @@ class FormLogic(
             email        = data["email"],
             position     = data["position"],
             department   = data["department"],
-            entrepriseId = ent.id,
+            companyId = ent.id,
             notes        = data["notes"].orEmpty(),
             isArchived   = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
             isDeleted    = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,

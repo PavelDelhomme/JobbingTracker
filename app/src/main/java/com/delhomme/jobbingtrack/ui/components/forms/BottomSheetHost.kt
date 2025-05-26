@@ -71,7 +71,8 @@ fun BottomSheetHost(
                 AddOrEditCandidatureScreen(
                     candidatureId    = null,
                     linkedEntrepriseId  = null,
-                    onCancel         = onDismissRequest
+                    onCancel         = onDismissRequest,
+                    userId           = userId
                 )
             }
             BottomSheetContentType.ADD_CONTACT -> {
@@ -79,13 +80,15 @@ fun BottomSheetHost(
                     contactId             = null,
                     linkedCandidatureId   = linkedCandidatureId,
                     linkedEntrepriseId    = null,
-                    onCancel              = onDismissRequest
+                    onCancel              = onDismissRequest,
+                    userId                = userId
                 )
             }
             BottomSheetContentType.ADD_ENTREPRISE -> {
                 AddOrEditEntrepriseScreen(
                     entrepriseId   = null,
-                    onCancel       = onDismissRequest
+                    onCancel       = onDismissRequest,
+                    userId         = userId
                 )
             }
             BottomSheetContentType.ADD_RELANCE -> {
@@ -93,7 +96,8 @@ fun BottomSheetHost(
                     relanceId               = null,
                     linkedCandidatureId     = linkedCandidatureId,
                     linkedCompanyId         = entrepriseIdFromCandidature,
-                    onCancel                = onDismissRequest
+                    onCancel                = onDismissRequest,
+                    userId                  = userId
                 )
             }
             BottomSheetContentType.ADD_ENTRETIEN -> {
@@ -101,7 +105,8 @@ fun BottomSheetHost(
                     entretienId             = null,
                     linkedCandidatureId     = linkedCandidatureId,
                     linkedCompanyId         = entrepriseIdFromCandidature,
-                    onCancel                = onDismissRequest
+                    onCancel                = onDismissRequest,
+                    userId                  = userId
                 )
             }
             BottomSheetContentType.ADD_APPEL -> {
@@ -109,7 +114,8 @@ fun BottomSheetHost(
                     appelId                 = null,
                     linkedCandidatureId     = linkedCandidatureId,
                     linkedCompanyId         = entrepriseIdFromCandidature,
-                    onCancel                = onDismissRequest
+                    onCancel                = onDismissRequest,
+                    userId                  = userId
                 )
             }
             else -> Unit

@@ -6,16 +6,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.data.classes.Entretien
+import com.delhomme.jobbingtrack.data.classes.EntretienStyle
+import com.delhomme.jobbingtrack.data.classes.EntretienType
+import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import com.delhomme.jobbingtrack.ui.components.items.SwipeToDismissItem
 
 @Composable
 fun <T> ListScreen(
     dateProvider: (T) -> String?,
-    titleProvider: (T) -> String,
-    centerInfoProvider: (T) -> String?,
+    titleProvider: (Entretien) -> EntretienType,
+    centerInfoProvider: (Entretien) -> EntretienStyle,
     bottomLeftInfoProvider: (T) -> String?,
     items: List<T>,
-    onItemClick: (T) -> Unit,
+    onItemClick: (EntretienWithContacts) -> Unit,
     onEdit: ((T) -> Unit)? = null,
     onArchive: ((T) -> Unit)? = null,
     onDelete: ((T) -> Unit)? = null,
@@ -35,8 +39,8 @@ fun <T> ListScreen(
             ) {
                 CustomListItemCard(
                     date = dateProvider(item),
-                    title = titleProvider(item),
-                    centerInfo = centerInfoProvider(item),
+                    title = titleProvider(item).toString(),
+                    centerInfo = centerInfoProvider(item).toString(),
                     bottomLeftInfo = bottomLeftInfoProvider(item),
                     onClick = { onItemClick(item) }
                 )

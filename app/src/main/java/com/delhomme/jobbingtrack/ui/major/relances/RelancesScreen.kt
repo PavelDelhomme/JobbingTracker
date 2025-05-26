@@ -31,12 +31,12 @@ fun RelancesScreen(
         val visible = sorted.filter { !it.isArchived }
 
         ListScreen(
-            dateProvider           = { it.date.toFormattedDate() },
-            titleProvider          = { it.type ?: "Type inconnu" },
-            centerInfoProvider     = { it.responseStatus ?: "Statut inconnu" },
+            dateProvider = { it.date.toFormattedDate() },
+            titleProvider = { it.type ?: "Type inconnu" },
+            centerInfoProvider = { it.responseStatus ?: "Statut inconnu" },
             bottomLeftInfoProvider = { "Entreprise : ${it.companyId}" },
-            items                  = visible,
-            onItemClick            = onItemClick
+            items = visible,
+            onItemClick = onItemClick
         )
 
 

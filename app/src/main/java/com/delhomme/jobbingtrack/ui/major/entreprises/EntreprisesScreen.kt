@@ -31,12 +31,12 @@ fun EntreprisesScreen(
         val visible = sorted.filter { !it.isArchived && !it.isDeleted }
 
         ListScreen(
-            dateProvider           = { null },
-            titleProvider          = { it.name },
-            centerInfoProvider     = { it.type ?: "" },
+            dateProvider = { null },
+            titleProvider = { it.name },
+            centerInfoProvider = { it.type ?: "" },
             bottomLeftInfoProvider = { it.phone ?: it.email ?: "" },
-            items                  = visible,
-            onItemClick            = onItemClick
+            items = visible,
+            onItemClick = onItemClick
         )
 
         FloatingActionButton(

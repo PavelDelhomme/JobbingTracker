@@ -15,7 +15,7 @@ class ContactViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = ContactRepository(JobbingTrackApp.database.contactDao())
 
     /** Toutes les contacts pour cet utilisateur */
-    fun contactsForUser(userId: String): LiveData<List<ContactEntity>> =
+    fun allForUser(userId: String): LiveData<List<ContactEntity>> =
         repo.allForUser(userId).asLiveData()
 
     /** Détaillé par id */
@@ -25,6 +25,9 @@ class ContactViewModel(app: Application) : AndroidViewModel(app) {
     /** 2) Actives */
     fun activeForUser(userId: String): LiveData<List<ContactEntity>> =
         repo.activeForUser(userId).asLiveData()
+
+    fun archivedForUser(userId: String): LiveData<List<ContactEntity>> =
+        repo.archivedForUser(userId).asLiveData()
 
     fun save(contact: ContactEntity) = viewModelScope.launch { repo.save(contact) }
     fun update(contact: ContactEntity) = viewModelScope.launch { repo.update(contact) }

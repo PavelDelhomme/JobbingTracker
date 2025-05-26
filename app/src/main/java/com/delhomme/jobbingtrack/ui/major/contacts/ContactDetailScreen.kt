@@ -33,6 +33,7 @@ import com.delhomme.jobbingtrack.utils.toFormattedDate
 fun ContactDetailScreen(
     contactId: String,
     navController: NavController,
+    userId: String,
     contactVm: ContactViewModel = viewModel(),
     entrepriseVm: EntrepriseViewModel = viewModel(),
     candidatureVm: CandidatureViewModel = viewModel(),

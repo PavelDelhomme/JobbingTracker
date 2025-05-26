@@ -15,6 +15,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val token = TokenManager.getToken(this);
+        val userId = TokenManager.getUserId(this);
         setContent {
             val navController = rememberNavController()
 
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalViewModelStoreOwner provides viewModelStoreOwner
                 ) {
-                    NavGraph(navController = navController, isLoggedIn = token != null)
+                    NavGraph(navController = navController, isLoggedIn = token != null, userId = userId)
                 }
             }
         }

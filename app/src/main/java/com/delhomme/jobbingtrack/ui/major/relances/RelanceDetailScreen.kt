@@ -28,6 +28,7 @@ import com.delhomme.jobbingtrack.utils.toFormattedDate
 fun RelanceDetailScreen(
     relanceId: String,
     navController: NavController,
+    userId: String,
     relVm: RelanceViewModel = viewModel(),
     candVm: CandidatureViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel()

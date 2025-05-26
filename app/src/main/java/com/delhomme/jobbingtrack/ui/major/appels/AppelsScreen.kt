@@ -34,12 +34,12 @@ fun AppelsScreen(
         val visible = sorted.filter { !it.isArchived }
 
         ListScreen(
-            dateProvider           = { it.dateTime.toFormattedDate() },
-            titleProvider          = { it.subject },
-            centerInfoProvider     = { null },
+            dateProvider = { it.dateTime.toFormattedDate() },
+            titleProvider = { it.subject },
+            centerInfoProvider = { null },
             bottomLeftInfoProvider = { "Entreprise : ${it.companyId}" },
-            items                  = visible,
-            onItemClick            = onItemClick
+            items = visible,
+            onItemClick = onItemClick
         )
 
         FloatingActionButton(

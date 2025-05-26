@@ -31,15 +31,15 @@ fun ContactsScreen(
         val visible = sorted.filter { !it.isArchived }
 
         ListScreen(
-            dateProvider           = { null },
-            titleProvider          = { "${it.lastName?.uppercase() ?: ""} ${it.firstName.orEmpty()}" },
-            centerInfoProvider     = { it.position ?: "Pas de fonction" },
+            dateProvider = { null },
+            titleProvider = { "${it.lastName?.uppercase() ?: ""} ${it.firstName.orEmpty()}" },
+            centerInfoProvider = { it.position ?: "Pas de fonction" },
             bottomLeftInfoProvider = { it.phone ?: it.email ?: "" },
-            items                  = visible,
-            onItemClick            = onItemClick,
-            onEdit                 = { onEdit(it) },
-            onArchive              = { onArchive(it) },
-            onDelete               = { onDelete(it) },
+            items = visible,
+            onItemClick = onItemClick,
+            onEdit = { onEdit(it) },
+            onArchive = { onArchive(it) },
+            onDelete = { onDelete(it) },
         )
 
         FloatingActionButton(

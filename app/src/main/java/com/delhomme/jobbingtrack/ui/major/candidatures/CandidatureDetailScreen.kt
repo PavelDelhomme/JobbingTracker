@@ -47,27 +47,28 @@ fun CandidatureDetailScreen(
     appelVm: AppelViewModel = viewModel(),
     entretienVm: EntretienViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
-    entrepriseVm: EntrepriseViewModel = viewModel()
+    entrepriseVm: EntrepriseViewModel = viewModel(),
+    userId: String
 ) {
     // 1) Charger la candidature
-    val allCands by candidatureVm.candidatures.observeAsState(emptyList())
+    val allCands by candidatureVm.allForUser(userId = userId).observeAsState(emptyList())
     val candidature = allCands.find { it.id == candidatureId }
         ?: return // ou u petit loader / message d'erreur
 
     // 2) Charger l’entreprise
-    val allEnts     by entrepriseVm.entreprises.observeAsState(emptyList())
+    val allEnts     by entrepriseVm.allForUser(userId = userId).observeAsState(emptyList())
     val entreprise  = allEnts.find { it.id == candidature.companyId }
 
     // 2) Charger toutess les entités liées
-    val relances    by relanceVm.relances.observeAsState(emptyList())
-    val appels      by appelVm.appels.observeAsState(emptyList())
-    val entretiens  by entretienVm.entretiens.observeAsState(emptyList())
-    val contacts    by contactVm.contacts.observeAsState(emptyList())
+    val relances    by relanceVm.allForUser(userId = userId).observeAsState(emptyList())
+    val appels      by appelVm.allForUser(userId = userId).observeAsState(emptyList())
+    val entretiens  by entretienVm.allForUser(userId = userId).observeAsState(emptyList())
+    val contacts    by contactVm.allForUser(userId = userId).observeAsState(emptyList())
 
     // 3) Filtrer celles qui concernent notre candidature
     val myRelances   = relances.filter { it.candidatureId == candidatureId }
     val myAppels     = appels.filter { it.candidatureId == candidatureId }
-    val myEntretiens = entretiens.filter { it.entretien.candidatureId == candidatureId }
+    val myEntretiens = entretiens.filter { it.candidatureId == candidatureId }
     // les contacts qu'on a associés via appels / relances / entretiens :
     val myContacts = contacts.filter { c ->
         myRelances.any { it.contactId == c.id } ||

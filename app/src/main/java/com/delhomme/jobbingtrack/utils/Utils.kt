@@ -21,3 +21,7 @@ fun createEntreprise(name: String): Entreprise {
     FakeDataProvider.entreprises.add(new)
     return new
 }
+
+inline fun requireUserId(userId: String?, block: (String) -> Unit) {
+    userId?.let { block(it) } ?: error("User ID is required but was null.")
+}

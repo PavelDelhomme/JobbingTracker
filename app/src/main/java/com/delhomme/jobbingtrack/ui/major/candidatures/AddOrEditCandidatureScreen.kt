@@ -23,11 +23,12 @@ fun AddOrEditCandidatureScreen(
     linkedEntrepriseId: String? = null,
     onCancel: () -> Unit,
     candidatureVm: CandidatureViewModel = viewModel(),
-    entrepriseVm: EntrepriseViewModel = viewModel()
+    entrepriseVm: EntrepriseViewModel = viewModel(),
+    userId: String
 ) {
     // 1) Observer la liste
-    val allCands by candidatureVm.candidatures.observeAsState(emptyList())
-    val allEnts by entrepriseVm.entreprises.observeAsState(emptyList())
+    val allCands by candidatureVm.allForUser(userId = userId).observeAsState(emptyList())
+    val allEnts by entrepriseVm.allForUser(userId = userId).observeAsState(emptyList())
 
     // 2) Chercher l’existante si on édite
     val existing = allCands.find { it.id == candidatureId }
@@ -83,7 +84,8 @@ fun AddOrEditCandidatureScreen(
                         notes = null,
                         syncHash = "ent-$newId",
                         isArchived = false,
-                        isDeleted = false
+                        isDeleted = false,
+                        userId = userId,
                     )
                 )
                 selectedCompanyId = newId
@@ -113,7 +115,8 @@ fun AddOrEditCandidatureScreen(
                     isArchived      = form["isArchived"]!!.toBoolean(),
                     notes           = form["notes"]?.takeIf(String::isNotBlank),
                     syncHash        = hash,
-                    isDeleted       = existing?.isDeleted ?: false
+                    isDeleted       = existing?.isDeleted ?: false,
+                    userId = userId
                 )
 
                 // 3) Sauvegarde via le ViewModel

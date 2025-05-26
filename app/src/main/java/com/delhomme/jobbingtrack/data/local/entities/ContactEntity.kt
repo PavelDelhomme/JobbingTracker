@@ -15,7 +15,7 @@ data class ContactEntity(
     val email: String?,
     val position: String?,
     val department: String?,
-    val entrepriseId: String,
+    val companyId: String,
     val candidatureId: String?,
     val notes: String?,
     val syncHash: String,

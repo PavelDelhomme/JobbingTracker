@@ -18,7 +18,7 @@ fun resolveCompanyId(
         existingAppel?.companyId,
         existingEntretien?.companyId,
         existingRelance?.companyId,
-        existingContact?.entrepriseId
+        existingContact?.companyId
     ).firstOrNull()?.takeIf { it.isNotBlank() }?.let { return it }
 
     // 2. Via une candidature liée (manuelle ou déduite via appel / relance)

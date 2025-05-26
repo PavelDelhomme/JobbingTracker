@@ -17,3 +17,12 @@ data class EntretienWithContacts(
     )
     val contacts: List<ContactEntity>
 )
+
+data class AppelWithEntreprises(
+    @Embedded val appel: AppelEntity,
+    @Relation(
+        parentColumn = "companyId",
+        entityColumn = "id"
+    )
+    val entreprise: EntrepriseEntity
+)

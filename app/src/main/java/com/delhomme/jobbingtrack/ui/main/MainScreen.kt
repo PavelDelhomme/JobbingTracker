@@ -208,7 +208,8 @@ fun MainScreen(navController: NavHostController) {
                     MainSection.CANDIDATURES -> CandidaturesTabsContent(
                         navController = navController,
                         selectedTabIndex = selectedTabIndex,
-                        onTabChange = { selectedTabIndex = it }
+                        onTabChange = { selectedTabIndex = it },
+                        userId = userId
                     )
 
                     MainSection.CALENDAR -> CalendarScreenContent(

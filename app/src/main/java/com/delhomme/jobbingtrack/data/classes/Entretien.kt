@@ -29,9 +29,9 @@ data class Entretien(
 ) : HasIdProvider
 
 enum class EntretienStyle {
-    ON_SITE, REMOTE
+    ON_SITE, REMOTE, UNDECIDED
 }
 
 enum class EntretienType {
-    RH, TECHNICAL
+    RH, TECHNICAL, UNKNOWN
 }

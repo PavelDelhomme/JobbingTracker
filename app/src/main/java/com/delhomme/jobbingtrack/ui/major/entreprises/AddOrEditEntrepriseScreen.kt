@@ -19,6 +19,7 @@ import java.util.UUID
 @Composable
 fun AddOrEditEntrepriseScreen(
     entrepriseId: String? = null,
+    userId: String? = null,
     viewModel: EntrepriseViewModel = viewModel(),
     onCancel: () -> Unit
 ) {

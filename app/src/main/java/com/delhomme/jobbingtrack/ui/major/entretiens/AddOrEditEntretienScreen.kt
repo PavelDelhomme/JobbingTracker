@@ -1,40 +1,48 @@
 package com.delhomme.jobbingtrack.ui.major.entretiens
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.collectAsState
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+
+import com.delhomme.jobbingtrack.data.forms.*
+import com.delhomme.jobbingtrack.data.local.entities.*
+
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.data.forms.FieldType
-import com.delhomme.jobbingtrack.data.forms.FormField
-import com.delhomme.jobbingtrack.data.forms.FormSuggestions
-import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
-import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.classes.Contact
+
 import com.delhomme.jobbingtrack.data.viewmodel.DashboardViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+
+import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.ContactSelectorField
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.forms.ModernDateTimePickerField
-import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
-import com.delhomme.jobbingtrack.utils.resolveCompanyId
-import com.delhomme.jobbingtrack.utils.toFieldMap
-import java.util.UUID
 
+import com.delhomme.jobbingtrack.utils.*
+
+import java.util.UUID
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -48,6 +56,7 @@ fun AddOrEditEntretienScreen(
     candVm: CandidatureViewModel = viewModel(),
     entpVm: EntrepriseViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
+    userId: String
 ) {
 
     // 1) on collecte les listes brutes
@@ -63,21 +72,20 @@ fun AddOrEditEntretienScreen(
 
 
     // 1) Charger l’entretien + ses contacts
-    val allWithContacts by entVm.entretiens.observeAsState(emptyList())
-    val existingWith = allWithContacts.find { it.entretien.id == entretienId }
-    val existingEnt = existingWith?.entretien
+    val liveData = entretien?.let { entVm.entretienById(entretienId ?: "", it.userId) }
+    val liveDataState = liveData?.observeAsState(initial = null)
+    val entretienWithContacts = liveDataState?.value
+    val existingEnt = entretienWithContacts?.entretien
+    val existingSelectEntpId = existingEnt?.companyId ?: linkedCompanyId ?: ""
+    val existingSelectCandId = existingEnt?.candidatureId ?: linkedCandidatureId ?: ""
+    val selInitialContacts: List<ContactEntity> = entretienWithContacts?.contacts ?: emptyList()
+    val selDateTime = existingEnt?.dateTime ?: System.currentTimeMillis()
 
     // 2) États locaux
-    var selCandId      by remember { mutableStateOf(existingEnt?.candidatureId ?: linkedCandidatureId ?: "") }
-    var selEntpId      by remember { mutableStateOf(existingEnt?.companyId ?: linkedCompanyId ?: "") }
-    var selContacts    by remember { mutableStateOf(existingWith?.contacts ?: emptyList()) }
-    var dateTime by remember { mutableStateOf(existingEnt?.dateTime ?: System.currentTimeMillis()) }
-
-    // 4) Calcul du companyId
-    val companyId = candidatures
-        .firstOrNull { it.id == selCandId }
-        ?.companyId
-        ?: selEntpId
+    var selCandId      by remember { mutableStateOf(existingSelectCandId) }
+    var selEntpId      by remember { mutableStateOf(existingSelectEntpId) }
+    var selContacts    by remember { mutableStateOf(selInitialContacts) }
+    var dateTime       by remember { mutableLongStateOf(selDateTime) }
 
     val finalCompanyId = resolveCompanyId(
         existingEntretien = existingEnt,
@@ -137,7 +145,7 @@ fun AddOrEditEntretienScreen(
 
         // Affichage non-éditable de l’entreprise
         OutlinedTextField(
-            value    = entreprises.firstOrNull { it.id == companyId }?.name.orEmpty(),
+            value    = entreprises.firstOrNull { it.id == finalCompanyId }?.name.orEmpty(),
             onValueChange = {},
             label = { Text("Entreprise finale") },
             readOnly = true,
@@ -147,10 +155,12 @@ fun AddOrEditEntretienScreen(
         // Multi-sélecteur de contacts
         ContactSelectorField(
             label = "Contacts (optionnel)",
-            allContacts = contacts.filter { it.entrepriseId == companyId },
+            contactViewModel = contactVm,
             selectedContacts = selContacts,
-            onContactsChanged = { selContacts = it }
+            onContactsChanged = { selContacts = it },
+            userId = userId
         )
+        contacts.filter { it.companyId == finalCompanyId }
 
         ReusableForm(
             fields = fields,
@@ -163,7 +173,7 @@ fun AddOrEditEntretienScreen(
                         id                = id,
                         userId            = existingEnt?.userId ?: "",
                         candidatureId     = selCandId,
-                        companyId         = companyId,
+                        companyId         = finalCompanyId ?: selEntpId,
                         dateTime          = dateTime,
                         durationMinutes   = form["durationMinutes"]?.toIntOrNull() ?: existingEnt?.durationMinutes,
                         location          = form["location"],

@@ -33,6 +33,7 @@ fun AppelDetailScreen(
     candidatureVm: CandidatureViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
     entrepriseVm: EntrepriseViewModel = viewModel(),
+    userId: String
 ) {
 
     // 1) Charger l’appel

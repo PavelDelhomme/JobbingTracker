@@ -44,7 +44,7 @@ fun AddOrEditRelanceScreen(
 
     var selCandId by remember { mutableStateOf(existing?.candidatureId ?: linkedCandidatureId) }
     var selContactId by remember { mutableStateOf(existing?.contactId ?: "") }
-    //var selCompanyId by remember { mutableStateOf(existing?.companyId     ?: linkedCompanyId.orEmpty()) }
+
     val finalCompanyId = resolveCompanyId(
         existingRelance = existing,
         candidatures = candidats,
@@ -78,7 +78,7 @@ fun AddOrEditRelanceScreen(
         EntitySelectorField(
             label = "Contact (opt.)",
             selectedEntityId = selContactId,
-            allEntities = contacts.filter { it.entrepriseId == existing?.companyId },
+            allEntities = contacts.filter { it.companyId == existing?.companyId },
             getEntityLabel = { "${it.firstName} ${it.lastName}" },
             onEntitySelected = { selContactId = it.id },
             allowCreation = false
@@ -103,7 +103,7 @@ fun AddOrEditRelanceScreen(
                     responseStatus= form["responseStatus"],
                     notes         = form["notes"],
                     candidatureId = selCandId!!,
-                    companyId     = selCompanyId,
+                    companyId     = finalCompanyId!!,
                     contactId     = selContactId.ifBlank { null },
                     syncHash      = existing?.syncHash ?: "rel-${UUID.randomUUID()}",
                     isArchived    = existing?.isArchived ?: false,

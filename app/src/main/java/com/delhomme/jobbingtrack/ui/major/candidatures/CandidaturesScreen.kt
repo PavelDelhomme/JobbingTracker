@@ -45,18 +45,18 @@ fun CandidaturesScreen(
         val visibleCandidature = sortedCandidatures.filter { !it.isArchived }
 
         ListScreen(
-            dateProvider           = { it.applicationDate.toFormattedDate() },
-            titleProvider          = { it.title },
-            centerInfoProvider     = { it.applicationStatus },
+            dateProvider = { it.applicationDate.toFormattedDate() },
+            titleProvider = { it.title },
+            centerInfoProvider = { it.applicationStatus },
             bottomLeftInfoProvider = { entById[it.companyId]?.name ?: "Entreprise inconnue" },
             items = candidatures.filter { !it.isArchived },
-            onItemClick            = onItemClick,
-            onEdit                  =  { onEdit(it) },
-            onArchive                = {
+            onItemClick = onItemClick,
+            onEdit =  { onEdit(it) },
+            onArchive = {
                 dialogType = DialogType.ARCHIVE
                 dialogState = it
             },
-            onDelete                = {
+            onDelete = {
                 dialogType = DialogType.DELETE
                 dialogState = it
             }
