@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.classes.Evenement
+import com.delhomme.jobbingtrack.data.local.entities.EventEntity
 import com.delhomme.jobbingtrack.ui.major.calendar.day.DayContent
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MonthlyCalendarView(
     selectedDate: LocalDate,
-    events: List<Evenement>,
+    events: List<EventEntity>,
     onDateSelected: (LocalDate) -> Unit
 ) {
     val currentMonth = remember { YearMonth.now() }

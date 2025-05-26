@@ -3,13 +3,13 @@ package com.delhomme.jobbingtrack.ui.major.calendar.weeks
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.delhomme.jobbingtrack.data.classes.Evenement
+import com.delhomme.jobbingtrack.data.local.entities.EventEntity
 import java.time.LocalDate
 
 @Composable
 fun TwoWeekPagerView(
     startDate: LocalDate,
-    events: List<Evenement>,
+    events: List<EventEntity>,
     modifier: Modifier = Modifier
 ) {
     // Placeholder temporaire

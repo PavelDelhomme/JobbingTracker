@@ -49,7 +49,7 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         // — LOGIN / REGISTER / MAIN —
         composable(Routes.LOGIN)    { LoginScreen(navController) }
         composable(Routes.REGISTER) { RegisterScreen(navController) }
-        composable(Routes.MAIN)     { MainScreen(navController) }
+        composable(Routes.MAIN)     { MainScreen(navController, userId) }
 
         // — CANDIDATURES —
         composable(

@@ -3,9 +3,12 @@ package com.delhomme.jobbingtrack.ui.major.calendar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EventViewModel
 import com.delhomme.jobbingtrack.ui.major.calendar.day.DailyPagerView
 import com.delhomme.jobbingtrack.ui.major.calendar.monthly.MonthlyCalendarView
 import com.delhomme.jobbingtrack.ui.major.calendar.weeks.TwoWeekPagerView
@@ -20,12 +23,14 @@ fun CalendarScreenContent(
     filterStates: Map<String, Boolean>,
     onFilterChange: (String, Boolean) -> Unit,
     calendarViewType: CalendarViewType,
-    onDateSelected: (LocalDate, CalendarViewType?) -> Unit
+    onDateSelected: (LocalDate, CalendarViewType?) -> Unit,
+    userId: String,
+    eventViewModel: EventViewModel = viewModel()
 ) {
-    val filteredEvents = remember(filterStates) {
-        FakeDataProvider.evenements.filter { event ->
-            filterStates[event.type] == true
-        }
+    val allEvents by eventViewModel.eventsForUser(userId).observeAsState(emptyList())
+
+    val filteredEvents = remember(allEvents, filterStates) {
+        allEvents.filter { filterStates[it.type] == true}
     }
 
     Column {
@@ -46,7 +51,9 @@ fun CalendarScreenContent(
 
             CalendarViewType.WEEK -> WeeklyPagerView(
                 selectedDate = currentDate,
-                onDateSelected = onDateSelected
+                onDateSelected = onDateSelected,
+                filteredEvents = filteredEvents,
+                userId = userId,
             )
 
             CalendarViewType.TWO_WEEKS -> TwoWeekPagerView(

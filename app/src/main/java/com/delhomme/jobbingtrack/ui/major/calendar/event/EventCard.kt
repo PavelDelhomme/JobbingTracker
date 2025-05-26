@@ -9,14 +9,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.*
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
+import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
+import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun EventCard(event: Evenement, modifier: Modifier = Modifier, compact: Boolean = false) {
-    val start = Instant.ofEpochMilli(event.startDate)
+fun EventCard(
+    events: List<Evenement>,
+    entretiens: List<EntretienViewModel>,
+    userId: String,
+    event: Evenement,
+    entretiens1: List<EntretienWithContacts>,
+    relatedEntretien: Entretien? = null,
+    relatedContacts: List<ContactEntity> = emptyList(),
+    modifier: Modifier = Modifier,
+    compact: Boolean = false
+) {
+    val start = Instant.ofEpochMilli(event.startDate?.toLong() ?: 0)
         .atZone(ZoneId.systemDefault())
         .toLocalTime()
         .format(DateTimeFormatter.ofPattern("HH:mm"))
@@ -55,17 +67,21 @@ fun EventCard(event: Evenement, modifier: Modifier = Modifier, compact: Boolean 
             if (!compact) {
                 when (event.type) {
                     "Entretiens" -> {
-                        val entretien = FakeDataProvider.entretiens.find { it.id == event.relatedObjectId }
-                        entretien?.let {
-                            val contacts = FakeDataProvider.contacts.filter { c -> c.id in it.contacts }
-                            contacts.forEach { contact ->
-                                Text("${contact.firstName} ${contact.lastName}", style = MaterialTheme.typography.bodySmall)
-                                Text(contact.phone ?: contact.email ?: "Pas de contact", style = MaterialTheme.typography.bodySmall)
-                            }
+                        relatedContacts.forEach { contact ->
+                            Text("${contact.firstName} ${contact.lastName}")
+                            Text(contact.phone ?: contact.email ?: "Pas de contact")
                         }
                     }
                     "Appels", "Relances", "Candidatures" -> {
                         Text(event.description ?: "Aucune description", style = MaterialTheme.typography.bodySmall)
+                    }
+                    "Relances" -> {
+                        Text("Relance")
+                        Text(event.description ?: "")
+                    }
+                    "Candidatures" -> {
+                        Text("Candidature")
+                        Text(event.title ?: "")
                     }
                     else -> {
                         event.description?.let {

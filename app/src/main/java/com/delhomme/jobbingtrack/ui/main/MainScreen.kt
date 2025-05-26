@@ -33,7 +33,7 @@ enum class MainSection {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, userId: String) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
     var bottomSheetContent by remember { mutableStateOf(BottomSheetContentType.NONE) }
@@ -216,6 +216,7 @@ fun MainScreen(navController: NavHostController) {
                         currentDate = selectedDate.value,
                         filterStates = filterStates,
                         onFilterChange = { name, checked -> filterStates[name] = checked },
+                        userId = userId,
                         calendarViewType = calendarViewType,
                         onDateSelected = { date, newViewType ->
                             selectedDate.value = date
@@ -230,6 +231,7 @@ fun MainScreen(navController: NavHostController) {
             navController = navController,
             visibleContent = bottomSheetContent,
             linkedCandidatureId = linkedCandidatureId,
+            userId = userId,
             onDismissRequest = {
                 bottomSheetContent = BottomSheetContentType.NONE
                 linkedCandidatureId = null

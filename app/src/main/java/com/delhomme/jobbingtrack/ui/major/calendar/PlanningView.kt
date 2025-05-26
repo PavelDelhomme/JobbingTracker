@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.classes.Evenement
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CardDefaults
@@ -24,6 +23,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import com.delhomme.jobbingtrack.data.local.entities.EventEntity
 import com.delhomme.jobbingtrack.ui.major.calendar.event.getEventColor
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -34,12 +34,12 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun PlanningView(
     date: LocalDate,
-    events: List<Evenement>,
+    events: List<EventEntity>,
     modifier: Modifier = Modifier,
 ) {
     val groupedEvents = remember(events) {
         events.groupBy {
-            Instant.ofEpochMilli(it.startDate).atZone(ZoneId.systemDefault()).toLocalDate()
+            Instant.ofEpochMilli(it.startDate!!.toLong()).atZone(ZoneId.systemDefault()).toLocalDate()
         }.toSortedMap()
     }
 
@@ -113,11 +113,11 @@ fun PlanningView(
 
 
 @Composable
-fun EventPlanningCard(event: Evenement) {
+fun EventPlanningCard(event: EventEntity) {
     val formatter = DateTimeFormatter.ofPattern("HH:mm")
     val zone = ZoneId.systemDefault()
 
-    val start = Instant.ofEpochMilli(event.startDate).atZone(zone).format(formatter)
+    val start = Instant.ofEpochMilli(event.startDate?.toLong() ?: 0).atZone(zone).format(formatter)
     val end = event.endDate?.let {
         Instant.ofEpochMilli(it).atZone(zone).format(formatter)
     } ?: "??:??"

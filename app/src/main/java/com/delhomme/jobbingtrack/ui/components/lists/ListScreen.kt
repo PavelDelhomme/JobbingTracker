@@ -15,11 +15,11 @@ import com.delhomme.jobbingtrack.ui.components.items.SwipeToDismissItem
 @Composable
 fun <T> ListScreen(
     dateProvider: (T) -> String?,
-    titleProvider: (Entretien) -> EntretienType,
-    centerInfoProvider: (Entretien) -> EntretienStyle,
+    titleProvider: (T) -> String,
+    centerInfoProvider: (T) -> String,
     bottomLeftInfoProvider: (T) -> String?,
     items: List<T>,
-    onItemClick: (EntretienWithContacts) -> Unit,
+    onItemClick: (T) -> Unit,
     onEdit: ((T) -> Unit)? = null,
     onArchive: ((T) -> Unit)? = null,
     onDelete: ((T) -> Unit)? = null,

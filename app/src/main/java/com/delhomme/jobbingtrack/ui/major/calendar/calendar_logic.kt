@@ -16,11 +16,11 @@ fun computeOverlappingEvents(events: List<Evenement>): List<PositionedEvent> {
 
     for (event in sorted) {
         val start = event.startDate
-        val end = event.endDate ?: (start + 30 * 60 * 1000) // default 30 min
+        val end = event.endDate ?: (start?.plus(30 * 60 * 1000)) // default 30 min
 
         active.removeIf { (activeEvent, _) ->
-            val aEnd = activeEvent.endDate ?: (activeEvent.startDate + 30 * 60 * 1000)
-            aEnd <= start
+            val aEnd = activeEvent.endDate ?: (activeEvent.startDate?.plus(30 * 60 * 1000))
+            aEnd!! <= start?.toLong()!!
         }
 
         val usedColumns = active.map { it.second }.toSet()

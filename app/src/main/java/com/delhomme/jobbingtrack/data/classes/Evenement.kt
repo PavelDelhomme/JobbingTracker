@@ -8,12 +8,14 @@ data class Evenement(
     val relatedObjectId: String?,
     val title: String,
     val description: String?,
-    val startDate: Long,
+    val startDate: Long?,
     val endDate: Long?,
-    val syncHash: String,
-    val type: String, // Type d'évènement
+    val syncHash: String, // Type d'évènement
+    val type: String,
     var createdAt: Long,
     var updatedAt: Long,
-    var deletedAt: Long,
-    var archivedAt: Long
+    var deletedAt: Any,
+    var archivedAt: Any,
+    var isArchived: Boolean = false,
+    var isDeleted: Boolean = false
 ) : HasIdProvider

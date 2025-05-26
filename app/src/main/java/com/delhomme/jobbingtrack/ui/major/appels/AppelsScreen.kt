@@ -23,9 +23,9 @@ fun AppelsScreen(
     appels: List<AppelEntity>,
     appelsVm: AppelViewModel,
     onItemClick: (AppelEntity) -> Unit,
-    onEdit: (ContactEntity) -> Unit,
-    onArchive: (ContactEntity) -> Unit,
-    onDelete: (ContactEntity) -> Unit,
+    onEdit: (AppelEntity) -> Unit,
+    onArchive: (AppelEntity) -> Unit,
+    onDelete: (AppelEntity) -> Unit,
     onAddClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -36,10 +36,13 @@ fun AppelsScreen(
         ListScreen(
             dateProvider = { it.dateTime.toFormattedDate() },
             titleProvider = { it.subject },
-            centerInfoProvider = { null },
+            centerInfoProvider = { it.contactId ?: it.companyId },
             bottomLeftInfoProvider = { "Entreprise : ${it.companyId}" },
             items = visible,
-            onItemClick = onItemClick
+            onItemClick = onItemClick,
+            onEdit = onEdit,
+            onArchive = onArchive,
+            onDelete = onDelete
         )
 
         FloatingActionButton(

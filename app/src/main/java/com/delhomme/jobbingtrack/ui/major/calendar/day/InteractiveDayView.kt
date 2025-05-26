@@ -19,9 +19,15 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.Evenement
+import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
+import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
+import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
+import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
+import com.delhomme.jobbingtrack.data.local.entities.EventEntity
+import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 import com.delhomme.jobbingtrack.ui.major.calendar.event.EventCard
 import com.delhomme.jobbingtrack.ui.major.calendar.computeOverlappingEvents
-import com.google.common.collect.Multimaps.index
+import com.delhomme.jobbingtrack.utils.mappers.toDomain
 import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.LocalDate
@@ -32,7 +38,13 @@ import java.time.ZoneId
 @Composable
 fun InteractiveDayView(
     date: LocalDate,
-    events: List<Evenement>,
+    eventEntities: List<EventEntity>,
+    userId: String,
+    entretiens: List<EntretienWithContacts> = emptyList(),
+    contacts: List<ContactEntity> = emptyList(),
+    appels: List<AppelEntity> = emptyList(),
+    relances: List<RelanceEntity> = emptyList(),
+    candidatures: List<CandidatureEntity> = emptyList(),
     modifier: Modifier = Modifier
 ) {
     val minScale = 0.5f
@@ -48,6 +60,8 @@ fun InteractiveDayView(
             delay(60000) // update chaque minute suffit
         }
     }
+
+    val events = eventEntities.map { it.toDomain() }
 
     val positionedEvents = remember(events) {
         computeOverlappingEvents(
@@ -132,7 +146,7 @@ fun InteractiveDayView(
                 }
 
                 positionedEvents.forEach { positioned ->
-                    val startInstant = Instant.ofEpochMilli(positioned.event.startDate)
+                    val startInstant = Instant.ofEpochMilli(positioned.event.startDate?.toLong() ?: 0)
                         .atZone(ZoneId.systemDefault()).toLocalTime()
                     val endInstant = positioned.event.endDate?.let {
                         Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalTime()
@@ -171,8 +185,15 @@ fun InteractiveDayView(
                     ) {
                         EventCard(
                             event = positioned.event,
+                            startDate = positioned.event.startDate ?: 0L,
+                            endDate = positioned.event.endDate ?: 0L,
+                            events = events,
+                            entretiens = entretiens, // ou filtered
+                            relatedEntretien = relatedEntretien?.entretien,
+                            relatedContacts = relatedContacts,
+                            userId = userId ?: "",
                             modifier = Modifier.fillMaxSize(),
-                            compact = eventHeight < 50.dp // active le mode compact si la hauteur est trop faible
+                            compact = eventHeight < 50.dp
                         )
                     }
 

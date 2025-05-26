@@ -37,13 +37,13 @@ fun AppelDetailScreen(
 ) {
 
     // 1) Charger l’appel
-    val appels by appelVm.appels.observeAsState(emptyList())
+    val appels by appelVm.allForUser(userId = userId).observeAsState(emptyList())
     val appel  = appels.find { it.id == appelId } ?: return
 
     // 2) Charger la candidature et le contact associés
-    val cands       by candidatureVm.candidatures.observeAsState(emptyList())
-    val contacts    by contactVm.contacts.observeAsState(emptyList())
-    val entreprises by entrepriseVm.entreprises.observeAsState(emptyList())
+    val cands       by candidatureVm.allForUser(userId = userId).observeAsState(emptyList())
+    val contacts    by contactVm.allForUser(userId = userId).observeAsState(emptyList())
+    val entreprises by entrepriseVm.allForUser(userId = userId).observeAsState(emptyList())
 
     val candi      = cands.find       { it.id == appel.candidatureId }
     val contact    = contacts.find    { it.id == appel.contactId }
@@ -70,13 +70,13 @@ fun AppelDetailScreen(
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }
                     IconButton(onClick = {
-                        appelVm.archive(appelId)
+                        appelVm.archive(listOf(appelId), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
                     IconButton(onClick = {
-                        appelVm.delete(appelId)
+                        appelVm.delete(listOf(appelId), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.DeleteForever,
