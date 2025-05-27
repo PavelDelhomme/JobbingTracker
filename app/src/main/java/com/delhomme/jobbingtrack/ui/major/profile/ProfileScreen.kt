@@ -15,7 +15,7 @@ import com.delhomme.jobbingtrack.data.viewmodel.ProfileViewModel
 import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
-
+import androidx.compose.runtime.livedata.observeAsState
 @Composable
 fun ProfileScreen(
     profileId: String? = null,
@@ -36,7 +36,7 @@ fun ProfileScreen(
         profile?.let {
             Text("ID : ${it.id}", style = MaterialTheme.typography.titleMedium)
             Text("Sujet : ${it.subject}", style = MaterialTheme.typography.bodyLarge)
-            Text("Date : ${it.inscriptionDateTime.toFormattedDate()}", style = MaterialTheme.typography.bodyMedium)
+            Text("Date : ${it.createdAt.toFormattedDate()}", style = MaterialTheme.typography.bodyMedium)
             Text("Notes : ${it.notes ?: "—"}", style = MaterialTheme.typography.bodyMedium)
 
             Spacer(modifier = Modifier.height(16.dp))

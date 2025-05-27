@@ -15,7 +15,7 @@ class ProfileViewModel(app: Application) : AndroidViewModel(app) {
         JobbingTrackApp.database.profileDao()
     )
 
-    val allProfiles: LiveData<List<ProfileEntity>> = repo.getAll().asLiveData()
+    val allProfiles: LiveData<List<ProfileEntity>> = repo.all.asLiveData()
 
     fun profileForUser(userId: String): LiveData<ProfileEntity?> =
         repo.byId(userId).asLiveData()
