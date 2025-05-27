@@ -8,7 +8,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EventViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.ui.major.calendar.day.DailyPagerView
 import com.delhomme.jobbingtrack.ui.major.calendar.monthly.MonthlyCalendarView
 import com.delhomme.jobbingtrack.ui.major.calendar.weeks.TwoWeekPagerView
@@ -27,6 +32,20 @@ fun CalendarScreenContent(
     userId: String,
     eventViewModel: EventViewModel = viewModel()
 ) {
+    val entretienViewModel: EntretienViewModel = viewModel()
+    val contactViewModel: ContactViewModel = viewModel()
+    val appelViewModel: AppelViewModel = viewModel()
+    val relanceViewModel: RelanceViewModel = viewModel()
+    val candidatureViewModel: CandidatureViewModel = viewModel()
+
+    val entretiensWithContacts by remember(userId) {
+        entretienViewModel.getAllWithContacts(userId)
+    }.observeAsState(initial = emptyList())
+    val contacts by contactViewModel.allForUser(userId).observeAsState(emptyList())
+    val appels by appelViewModel.allForUser(userId).observeAsState(emptyList())
+    val relances by relanceViewModel.allForUser(userId).observeAsState(emptyList())
+    val candidatures by candidatureViewModel.allForUser(userId).observeAsState(emptyList())
+
     val allEvents by eventViewModel.eventsForUser(userId).observeAsState(emptyList())
 
     val filteredEvents = remember(allEvents, filterStates) {
@@ -44,15 +63,20 @@ fun CalendarScreenContent(
         when (calendarViewType) {
             CalendarViewType.DAY -> DailyPagerView(
                 initialDate = currentDate,
-                events = filteredEvents
-            ) { newDate ->
-                onDateSelected(newDate, null)
-            }
+                events = filteredEvents,
+                onDateChange = { newDate -> onDateSelected(newDate, null) },
+                userId = userId,
+                entretiens = entretiensWithContacts,
+                contacts = contacts,
+                candidatures = candidatures,
+                appels = appels,
+                relances = relances
+            )
+
 
             CalendarViewType.WEEK -> WeeklyPagerView(
                 selectedDate = currentDate,
                 onDateSelected = onDateSelected,
-                filteredEvents = filteredEvents,
                 userId = userId,
             )
 

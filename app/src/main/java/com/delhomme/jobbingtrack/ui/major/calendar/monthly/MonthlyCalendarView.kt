@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.local.entities.EventEntity
 import com.delhomme.jobbingtrack.ui.major.calendar.day.DayContent
+import com.delhomme.jobbingtrack.utils.mappers.toDomain
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.daysOfWeek
@@ -30,10 +31,15 @@ fun MonthlyCalendarView(
     val daysOfWeek = remember { daysOfWeek() }
 
     val groupedEvents = remember(events) {
-        events.groupBy {
-            Instant.ofEpochMilli(it.startDate).atZone(ZoneId.systemDefault()).toLocalDate()
-        }
+        events.map { it.toDomain() } // ← conversion EventEntity → Evenement
+            .groupBy {
+                Instant.ofEpochMilli(it.startDate ?: 0L)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+            }
     }
+
+
 
     val state = rememberCalendarState(
         startMonth = startMonth,

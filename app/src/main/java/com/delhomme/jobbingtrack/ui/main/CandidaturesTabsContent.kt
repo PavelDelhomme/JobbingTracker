@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
@@ -42,7 +41,7 @@ fun CandidaturesTabsContent(
     val appelsVm: AppelViewModel         = viewModel()
     val contactsVm: ContactViewModel     = viewModel()
     val entretiensVm: EntretienViewModel = viewModel()
-    val entretiensWithContactsVm: EntretienWithContacts = viewModel()
+    val entretiensWithContactsVm: EntretienViewModel = viewModel()
 
     val cands       by candidatureVm.activeForUser(userId = userId).observeAsState(emptyList())
     val ents        by entreprisesVm.activeForUser(userId = userId).observeAsState(emptyList())
@@ -50,7 +49,7 @@ fun CandidaturesTabsContent(
     val appels      by appelsVm.activeForUser(userId = userId).observeAsState(emptyList())
     val contacts    by contactsVm.activeForUser(userId = userId).observeAsState(emptyList())
     val entretiens  by entretiensVm.activeForUser(userId = userId).observeAsState(emptyList())
-    //val entretiensWithContacts by entretiensWithContactsVm.activeForUser(userId = userId).observeAsState(emptyList())
+    val entretiensWithContacts by entretiensWithContactsVm.activeWithContactsForUser(userId = userId).observeAsState(emptyList())
 
     BackHandler { onTabChange(0) }
 
@@ -151,9 +150,9 @@ fun CandidaturesTabsContent(
                     },
                     onAddClick = { /* handled by FAB */ }
                 )
-                5 -> EntretiensScreen  (
-                    entretiens = entretiens,
-                    entretiensVm = entretiensVm,
+                5 -> EntretiensScreen(
+                    entretiens = entretiensWithContacts,
+                    entreprises = ents,
                     onItemClick = {
                         navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.entretien.id}")
                     },
@@ -161,11 +160,11 @@ fun CandidaturesTabsContent(
                         navController.navigate("${Routes.EDIT_ENTRETIEN}/${it.entretien.id}")
                     },
                     onArchive = {
-                        entretiensVm.archive(listOf(it.entretien.id), userId = userId)
+                        entretiensWithContactsVm.archive(listOf(it.entretien.id), userId = userId)
                     },
                     onDelete = {
-                        contactsVm.delete(listOf(it.entretien.id), userId = userId)
-                    },
+                        entretiensWithContactsVm.delete(listOf(it.entretien.id), userId = userId)
+                    }
                 )
             }
         }

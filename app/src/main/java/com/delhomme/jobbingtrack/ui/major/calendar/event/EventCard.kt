@@ -8,10 +8,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LiveData
 import com.delhomme.jobbingtrack.data.classes.*
 import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
-import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -19,11 +19,10 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun EventCard(
     events: List<Evenement>,
-    entretiens: List<EntretienViewModel>,
+    entretiens: List<EntretienWithContacts>,
     userId: String,
     event: Evenement,
-    entretiens1: List<EntretienWithContacts>,
-    relatedEntretien: Entretien? = null,
+    relatedEntretien: EntretienWithContacts? = null,
     relatedContacts: List<ContactEntity> = emptyList(),
     modifier: Modifier = Modifier,
     compact: Boolean = false

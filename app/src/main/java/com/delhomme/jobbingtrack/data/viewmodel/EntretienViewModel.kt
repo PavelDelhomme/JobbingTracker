@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 class EntretienViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = EntretienRepository(JobbingTrackApp.database.entretienDao())
 
-    fun allForUser(userId: String): LiveData<List<EntretienEntity>> = repo.allForUser(userId).asLiveData()
+    fun allForUser(userId: String): LiveData<List<EntretienWithContacts>> =
+        repo.withContactsForUser(userId).asLiveData()
 
     /** 2) Actives */
     fun activeForUser(userId: String): LiveData<List<Entretien>> = repo.activeForUser(userId)
@@ -25,6 +26,11 @@ class EntretienViewModel(app: Application) : AndroidViewModel(app) {
 
     fun archivedForUser(userId: String): LiveData<List<EntretienEntity>> =
         repo.archivedForUser(userId).asLiveData()
+
+    fun getAllWithContacts(userId: String): LiveData<List<EntretienWithContacts>> = repo.withContactsForUser(userId).asLiveData()
+    fun activeWithContactsForUser(userId: String): LiveData<List<EntretienWithContacts>> {
+        return repo.getActiveWithContacts(userId)
+    }
 
     /*fun activeForUserWithContacts(userId: String): LiveData<List<Entretien>> =
         repo.withContactsForUser(userId)
@@ -42,6 +48,9 @@ class EntretienViewModel(app: Application) : AndroidViewModel(app) {
 
     fun restore(ids: List<String>, userId: String) = viewModelScope.launch { repo.restore(ids, userId) }
     fun restoreOne(id: String, userId: String) = restore(listOf(id), userId)
+
+    fun isDeletedForUser(userId: String): LiveData<List<EntretienEntity>> =
+        repo.deletedForUser(userId).asLiveData()
 
     fun deleteForever(ids: List<String>, userId: String) = viewModelScope.launch { repo.deleteForever(ids, userId) }
     fun deleteForeverOne(id: String, userId: String) = deleteForever(listOf(id), userId)

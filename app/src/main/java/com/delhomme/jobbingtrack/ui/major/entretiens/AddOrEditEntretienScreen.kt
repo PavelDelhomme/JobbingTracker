@@ -68,11 +68,11 @@ fun AddOrEditEntretienScreen(
 
     // 2) on récupère éventuellement l'entretien à éditer
     val entretien = entretienId
-        ?.let { id -> entretiens.firstOrNull { it.id == id } }
+        ?.let { id -> entretiens.firstOrNull { it.entretien.id == id } }
 
 
     // 1) Charger l’entretien + ses contacts
-    val liveData = entretien?.let { entVm.entretienById(entretienId ?: "", it.userId) }
+    val liveData = entretien?.let { entVm.entretienById(entretienId ?: "", it.entretien.userId) }
     val liveDataState = liveData?.observeAsState(initial = null)
     val entretienWithContacts = liveDataState?.value
     val existingEnt = entretienWithContacts?.entretien

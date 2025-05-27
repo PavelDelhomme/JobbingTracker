@@ -30,18 +30,18 @@ fun AddOrEditContactScreen(
     candidatureVm: CandidatureViewModel       = viewModel()
 ) {
     // 1) Charger les listes
-    val allContacts    by contactVm.contacts.observeAsState(emptyList())
-    val allEntreprises by entrepriseVm.entreprises.observeAsState(emptyList())
-    val allCandidats   by candidatureVm.candidatures.observeAsState(emptyList())
+    val allContacts by contactVm.allForUser(userId).observeAsState(emptyList())
+    val allEntreprises by entrepriseVm.allForUser(userId).observeAsState(emptyList())
+    val allCandidats   by candidatureVm.allForUser(userId).observeAsState(emptyList())
 
     // 2) Chercher l’existant si on édite
     val existing = contactId?.let { id -> allContacts.find { it.id == id } }
 
     // 3) État local pour l’entreprise liée
-    var selCompanyId      by remember { mutableStateOf(existing?.entrepriseId ?: linkedEntrepriseId.orEmpty()) }
+    var selCompanyId      by remember { mutableStateOf(existing?.companyId ?: linkedEntrepriseId.orEmpty()) }
     var selCandidatureId  by remember { mutableStateOf(linkedCandidatureId ?: existing?.candidatureId.orEmpty()) }
 
-    val finalCompanyId = resolveCompanyId(
+    var finalCompanyId = resolveCompanyId(
         existingContact = existing,
         candidatures = allCandidats,
         relances = emptyList(),
@@ -70,10 +70,10 @@ fun AddOrEditContactScreen(
         // Sélecteur d’entreprise
         EntitySelectorField(
             label            = "Entreprise liée",
-            selectedEntityId = selCompanyId,
+            selectedEntityId = finalCompanyId,
             allEntities      = allEntreprises,
             getEntityLabel   = { it.name },
-            onEntitySelected = { selCompanyId = it.id },
+            onEntitySelected = { finalCompanyId = it.id },
             allowCreation    = true,
             onCreateEntity   = { name ->
                 // si vous voulez permettre la création inline
@@ -88,10 +88,11 @@ fun AddOrEditContactScreen(
                         hrEmail   = null,
                         address   = null,
                         notes     = null,
-                        syncHash  = "ent-$newId"
+                        syncHash  = "ent-$newId",
+                        userId    = userId
                     )
                 )
-                selCompanyId = newId
+                finalCompanyId = newId
             }
         )
 
@@ -99,7 +100,7 @@ fun AddOrEditContactScreen(
         EntitySelectorField(
             label            = "Lier à une candidature (opt.)",
             selectedEntityId = selCandidatureId,
-            allEntities      = allCandidats.filter { it.companyId == selCompanyId },
+            allEntities      = allCandidats.filter { it.companyId == finalCompanyId },
             getEntityLabel   = { it.title },
             onEntitySelected = { selCandidatureId = it.id },
             allowCreation    = false
@@ -131,12 +132,13 @@ fun AddOrEditContactScreen(
                     email        = form["email"],
                     position     = form["position"],
                     department   = form["department"],
-                    companyId = selCompanyId,
+                    companyId = finalCompanyId.toString(),
                     candidatureId = selCandidatureId,
                     notes        = form["notes"],
                     syncHash     = hash,
                     isArchived   = existing?.isArchived ?: false,
-                    isDeleted    = existing?.isDeleted ?: false
+                    isDeleted    = existing?.isDeleted ?: false,
+                    userId       = userId,
                 )
 
                 contactVm.save(entity)

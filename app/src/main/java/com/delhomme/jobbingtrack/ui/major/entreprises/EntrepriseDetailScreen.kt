@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -42,24 +43,23 @@ fun EntrepriseDetailScreen(
     appelVm: AppelViewModel = viewModel(),
     relanceVm: RelanceViewModel = viewModel()
 ) {
-    // 1) Charger l'entreprise
-    val allEnts by entrepriseVm.entreprises.observeAsState(emptyList())
-    val entreprise = allEnts.find { it.id == entrepriseId } ?: return
+    // 1) Charger l’entreprise en question
+    val allEntreprises by entrepriseVm.allForUser(userId).observeAsState(emptyList())
+    val entreprise = allEntreprises.find { it.id == entrepriseId } ?: return
 
-    // 2) Charger toutes les listes
-    val contacts    by contactVm.contacts.observeAsState(emptyList())
-    val candidatures by candidatureVm.candidatures.observeAsState(emptyList())
-    val entretiens  by entretienVm.entretiens.observeAsState(emptyList())
-    val appels      by appelVm.appels.observeAsState(emptyList())
-    val relances    by relanceVm.relances.observeAsState(emptyList())
+    // 2) Charger tous les objets liés à l’entreprise
+    val allContacts     by contactVm.allForUser(userId).observeAsState(emptyList())
+    val allCandidatures by candidatureVm.allForUser(userId).observeAsState(emptyList())
+    val allEntretiens   by entretienVm.allForUser(userId).observeAsState(emptyList())
+    val allAppels       by appelVm.allForUser(userId).observeAsState(emptyList())
+    val allRelances     by relanceVm.allForUser(userId).observeAsState(emptyList())
 
-    // 3) Filtrer par companyId / entrepriseId
-    val myContacts      = contacts.filter    { it.entrepriseId == entrepriseId }
-    val myCandidatures  = candidatures.filter{ it.companyId     == entrepriseId }
-    val myEntretiens    = entretiens.filter  { it.entretien.companyId == entrepriseId }
-    val myAppels        = appels.filter      { it.companyId     == entrepriseId }
-    val myRelances      = relances.filter    { it.companyId     == entrepriseId }
-
+    // 3) Filtrer les objets liés à cette entreprise
+    val linkedContacts     = allContacts.filter     { it.companyId == entrepriseId }
+    val linkedCandidatures = allCandidatures.filter { it.companyId == entrepriseId }
+    val linkedEntretiens   = allEntretiens.filter   { it.entretien.companyId == entrepriseId }
+    val linkedAppels       = allAppels.filter       { it.companyId == entrepriseId }
+    val linkedRelances     = allRelances.filter     { it.companyId == entrepriseId }
     BackHandler { navController.popBackStack() }
 
     Scaffold(
@@ -67,9 +67,7 @@ fun EntrepriseDetailScreen(
             TopAppBar(
                 title = { Text(entreprise.name) },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
                 },
@@ -80,19 +78,17 @@ fun EntrepriseDetailScreen(
                         Icon(Icons.Default.Edit, contentDescription = "Modifier")
                     }
                     IconButton(onClick = {
-                        entrepriseVm.archive(entreprise.id)
+                        entrepriseVm.archive(listOf(entreprise.id), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
-
                     IconButton(onClick = {
-                        entrepriseVm.delete(entreprise.id)
+                        entrepriseVm.delete(listOf(entreprise.id), userId)
                         navController.popBackStack()
                     }) {
-                        Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
+                        Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer")
                     }
-
                 }
             )
         }
@@ -104,65 +100,73 @@ fun EntrepriseDetailScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Bloc info entreprise
             item {
-                Text(text = "Informations sur l'entreprise", style = MaterialTheme.typography.headlineSmall)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Type : ${entreprise.type ?: "Non spécifié"}")
-                Text(text = "Téléphone : ${entreprise.phone ?: "Non spécifié"}")
-                Text(text = "Email : ${entreprise.email ?: "Non spécifié"}")
-                Text(text = "Email RH : ${entreprise.hrEmail ?: "Non spécifié"}")
-                Text(text = "Adresse : ${entreprise.address ?: "Non spécifiée"}")
+                Text("Informations sur l'entreprise", style = MaterialTheme.typography.headlineSmall)
+                Spacer(Modifier.height(8.dp))
+                Text("Type : ${entreprise.type ?: "Non spécifié"}")
+                Text("Téléphone : ${entreprise.phone ?: "Non spécifié"}")
+                Text("Email : ${entreprise.email ?: "Non spécifié"}")
+                Text("Email RH : ${entreprise.hrEmail ?: "Non spécifié"}")
+                Text("Adresse : ${entreprise.address ?: "Non spécifiée"}")
             }
 
-            if (myContacts.isNotEmpty()) {
+
+            // Contacts
+            if (linkedContacts.isNotEmpty()) {
                 item { SectionTitle("Contacts liés") }
-                items(myContacts) { c ->
+                items(linkedContacts) { c ->
                     DetailItemCard(
                         title = "${c.firstName} ${c.lastName}",
-                        subtitle = c.position ?: "Pas de poste",
+                        subtitle = c.position ?: "Aucun poste défini",
                         onClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${c.id}") }
                     )
                 }
             }
 
-            if (myCandidatures.isNotEmpty()) {
+            // Candidatures
+            if (linkedCandidatures.isNotEmpty()) {
                 item { SectionTitle("Candidatures liées") }
-                items(myCandidatures) { cd ->
+                items(linkedCandidatures) { c ->
                     DetailItemCard(
-                        title = cd.title,
-                        subtitle = cd.applicationStatus.toString(),
-                        onClick = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${cd.id}") }
+                        title = c.title,
+                        subtitle = c.applicationStatus.toString(),
+                        onClick = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${c.id}") }
                     )
                 }
             }
 
-            if (myEntretiens.isNotEmpty()) {
+            // Entretiens
+            if (linkedEntretiens.isNotEmpty()) {
                 item { SectionTitle("Entretiens liés") }
-                items(myEntretiens) { e ->
+                items(linkedEntretiens) { ewc ->
+                    val e = ewc.entretien
                     DetailItemCard(
-                        title = "${e.entretien.type ?: "Type inconnu"} - ${e.entretien.style ?: "Style inconnu"}",
-                        subtitle = e.entretien.dateTime.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.entretien.id}") }
+                        title = "${e.type ?: "Type inconnu"} - ${e.style ?: "Style inconnu"}",
+                        subtitle = e.dateTime.toFormattedDate(),
+                        onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.id}") }
                     )
                 }
             }
 
-            if (myRelances.isNotEmpty()) {
+            // Relances
+            if (linkedRelances.isNotEmpty()) {
                 item { SectionTitle("Relances liées") }
-                items(myRelances) { r ->
+                items(linkedRelances) { r ->
                     DetailItemCard(
-                        title = r.type?.toString() ?: "Type inconnu",
-                        subtitle = r.responseStatus?.toString() ?: "Statut inconnu",
+                        title = r.type ?: "Type inconnu",
+                        subtitle = r.responseStatus ?: "Statut inconnu",
                         onClick = { navController.navigate("${Routes.RELANCE_DETAIL}/${r.id}") }
                     )
                 }
             }
 
-            if (myAppels.isNotEmpty()) {
+            // Appels
+            if (linkedAppels.isNotEmpty()) {
                 item { SectionTitle("Appels liés") }
-                items(appels) { a ->
+                items(linkedAppels) { a ->
                     DetailItemCard(
-                        title = "${a.subject} - ${a.contactId}",
+                        title = a.subject,
                         subtitle = a.dateTime.toFormattedDate(),
                         onClick = { navController.navigate("${Routes.APPEL_DETAIL}/${a.id}") }
                     )

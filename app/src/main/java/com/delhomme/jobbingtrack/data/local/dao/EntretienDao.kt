@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.data.local.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.delhomme.jobbingtrack.data.interfaces.DateRangeProvider
@@ -25,8 +26,11 @@ interface EntretienDao : DateRangeProvider<EntretienEntity> {
          AND isArchived= 0
       ORDER BY dateTime DESC
     """)
-    fun getAllActiveForUser(userId: String): Flow<List<EntretienEntity>>
+    fun getAllActiveForUser(userId: String): Flow<List<EntretienWithContacts>>
 
+    @Transaction
+    @Query("SELECT * FROM entretiens WHERE userId = :userId AND isArchived = 0")
+    fun getActiveWithContacts(userId: String): LiveData<List<EntretienWithContacts>>
 
     @Transaction
     @Query("""

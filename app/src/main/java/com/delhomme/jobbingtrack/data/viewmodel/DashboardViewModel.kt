@@ -8,6 +8,7 @@ import com.delhomme.jobbingtrack.data.classes.Candidature
 import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
 import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
+import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 import com.delhomme.jobbingtrack.data.local.repository.*
 import com.delhomme.jobbingtrack.utils.countByDay
@@ -71,7 +72,7 @@ class DashboardViewModel(app: Application, private val userId: String): AndroidV
     val candsPerDay = candidaturesFlow.perDay(CandidatureEntity::toInstant)
     val relsPerDay  = relancesFlow.perDay(RelanceEntity::toInstant)
     val appelsPerDay= appelsFlow.perDay(AppelEntity::toInstant)
-    val entretiensPerDay = entretiensFlow.perDay(EntretienEntity::toInstant)
+    val entretiensPerDay = entretiensFlow.perDay { it.entretien.toInstant() }
 
     /** Si vous avez besoin de changer la plage depuis l’UI */
     fun setDateRange(from: Instant, to: Instant) {

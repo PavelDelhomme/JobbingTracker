@@ -14,13 +14,16 @@ import kotlinx.coroutines.flow.map
 
 class EntretienRepository(private val dao: EntretienDao) {
 
-    fun allForUser(userId: String): Flow<List<EntretienEntity>>     = dao.getAllActiveForUser(userId)
+    fun allForUser(userId: String): Flow<List<EntretienWithContacts>>     = dao.getAllActiveForUser(userId)
     fun withContactsForUser(userId: String): Flow<List<EntretienWithContacts>> = dao.getAllWithContactsForUser(userId)
     fun archivedForUser(userId: String): Flow<List<EntretienEntity>>            = dao.getArchivedForUser(userId)
     fun deletedForUser(userId: String): Flow<List<EntretienEntity>>             = dao.getDeletedForUser(userId)
     fun byIdWithContacts(id: String, userId: String): Flow<EntretienWithContacts?> =
         dao.getByIdActiveWithContacts(id, userId)
     //fun activeForUser(userId: String): Flow<List<EntretienEntity>>      = dao.getAllActiveForUser(userId)
+    fun getActiveWithContacts(userId: String): LiveData<List<EntretienWithContacts>> {
+        return dao.getActiveWithContacts(userId)
+    }
 
     fun activeForUser(userId: String): LiveData<List<Entretien>> =
         withContactsForUser(userId)

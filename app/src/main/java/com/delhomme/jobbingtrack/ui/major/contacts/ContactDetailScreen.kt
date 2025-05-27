@@ -42,18 +42,18 @@ fun ContactDetailScreen(
     relanceVm: RelanceViewModel = viewModel()
 ) {
     // 1) Charger le contact
-    val allContacts by contactVm.contacts.observeAsState(emptyList())
+    val allContacts by contactVm.allForUser(userId = userId).observeAsState(emptyList())
     val contact    = allContacts.find { it.id == contactId } ?: return
 
     // 2) Charger l'entreprise associée (pour le nom)
-    val allEnts     by entrepriseVm.entreprises.observeAsState(emptyList())
-    val entreprise = allEnts.find { it.id == contact.entrepriseId } ?: return
+    val allEnts     by entrepriseVm.allForUser(userId = userId).observeAsState(emptyList())
+    val entreprise = allEnts.find { it.id == contact.companyId } ?: return
 
     // 3) Charger tous les oobjets et filtrere ceux qui concernent ce contact
-    val allCands by candidatureVm.candidatures.observeAsState(emptyList())
-    val allRelances by relanceVm.relances.observeAsState(emptyList())
-    val allAppels by appelVm.appels.observeAsState(emptyList())
-    val allEntretiens by entretienVm.entretiens.observeAsState(emptyList())
+    val allCands by candidatureVm.allForUser(userId = userId).observeAsState(emptyList())
+    val allRelances by relanceVm.allForUser(userId = userId).observeAsState(emptyList())
+    val allAppels by appelVm.allForUser(userId = userId).observeAsState(emptyList())
+    val allEntretiens by entretienVm.allForUser(userId = userId).observeAsState(emptyList())
 
     val linkedCands = allCands.filter { c ->
         allAppels.any { it.contactId == contactId && it.candidatureId == c.id } ||
@@ -90,14 +90,14 @@ fun ContactDetailScreen(
                         Icon(Icons.Default.Edit, contentDescription = "Modifier Contact")
                     }
                     IconButton(onClick = {
-                        contactVm.archive(contactId)
+                        contactVm.archive(listOf(contactId), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
 
                     IconButton(onClick = {
-                        contactVm.delete(contactId)
+                        contactVm.delete(listOf(contactId), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
@@ -153,7 +153,7 @@ fun ContactDetailScreen(
                 item { SectionTitle("Entretiens liés") }
                 items(linkedEntretiens) { e ->
                     DetailItemCard(
-                        title    = "${e.entretien.type } — ${e.entretien.style} pour ${e.entretien.companyId}",
+                        title = "${e.entretien.type } — ${e.entretien.style} pour ${e.entretien.companyId}",
                         subtitle = e.entretien.dateTime.toFormattedDate(),
                         onClick  = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.entretien.id}") }
                     )

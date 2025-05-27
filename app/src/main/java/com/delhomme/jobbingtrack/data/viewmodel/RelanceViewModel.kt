@@ -21,6 +21,10 @@ class RelanceViewModel(app: Application) : AndroidViewModel(app) {
     fun allForUser(userId: String): LiveData<List<RelanceEntity>> =
         repo.allForUser(userId).asLiveData()
 
+    fun getAllForUser(userId: String): LiveData<List<RelanceEntity>> {
+        return repo.getAllForUser(userId)
+    }
+
     /** Détaillé par id */
     fun relanceById(id: String, userId: String): LiveData<RelanceEntity?> =
         repo.byId(id, userId).asLiveData()

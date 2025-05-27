@@ -56,7 +56,7 @@ fun TrashScreen(
 
     val entretiens = entretienViewModel
         .allForUser(userId).observeAsState(emptyList()).value
-        .filter { it.isDeleted }
+        .filter { it.entretien.isDeleted }
 
     val relances = relanceViewModel
         .allForUser(userId).observeAsState(emptyList()).value

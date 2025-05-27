@@ -37,7 +37,7 @@ fun TwoWeekCalendarView(
     // Group events by day
     val eventsByDay = remember(events) {
         events.groupBy { event ->
-            Instant.ofEpochMilli(event.startDate).atZone(ZoneId.systemDefault()).toLocalDate()
+            Instant.ofEpochMilli(event.startDate ?: 0L).atZone(ZoneId.systemDefault()).toLocalDate()
         }
     }
 
@@ -82,7 +82,7 @@ fun TwoWeekCalendarView(
                                 .border(0.5.dp, MaterialTheme.colorScheme.outline)
                         ) {
                             val dayEvents = eventsByDay[day]?.filter {
-                                Instant.ofEpochMilli(it.startDate)
+                                Instant.ofEpochMilli(it.startDate ?: 0L)
                                     .atZone(ZoneId.systemDefault()).hour == hour
                             } ?: emptyList()
 

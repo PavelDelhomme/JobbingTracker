@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.data.local.repository
 
+import androidx.lifecycle.LiveData
 import com.delhomme.jobbingtrack.data.local.dao.RelanceDao
 import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 import kotlinx.coroutines.flow.Flow
@@ -12,6 +13,9 @@ class RelanceRepository(private val dao: RelanceDao) {
     fun archivedForUser(userId: String): Flow<List<RelanceEntity>>  = dao.getArchivedForUser(userId)
     fun deletedForUser(userId: String): Flow<List<RelanceEntity>>   = dao.getDeletedForUser(userId)
     fun byId(id: String, userId: String): Flow<RelanceEntity?>      = dao.getByIdForUser(id, userId)
+    fun getAllForUser(userId: String): LiveData<List<RelanceEntity>> {
+        return dao.getAllForUser(userId) as LiveData<List<RelanceEntity>>
+    }
 
     fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<RelanceEntity>> = dao.getByDateRangeForUser(userId, from, to)
 

@@ -56,24 +56,26 @@ fun CandidatureDetailScreen(
         ?: return // ou u petit loader / message d'erreur
 
     // 2) Charger l’entreprise
-    val allEnts     by entrepriseVm.allForUser(userId = userId).observeAsState(emptyList())
-    val entreprise  = allEnts.find { it.id == candidature.companyId }
+    val allEnts by entrepriseVm.allForUser(userId = userId).observeAsState(emptyList())
+    val entreprise = allEnts.find { it.id == candidature.companyId }
 
     // 2) Charger toutess les entités liées
-    val relances    by relanceVm.allForUser(userId = userId).observeAsState(emptyList())
-    val appels      by appelVm.allForUser(userId = userId).observeAsState(emptyList())
-    val entretiens  by entretienVm.allForUser(userId = userId).observeAsState(emptyList())
-    val contacts    by contactVm.allForUser(userId = userId).observeAsState(emptyList())
+    val relances by relanceVm.allForUser(userId = userId).observeAsState(emptyList())
+    val appels by appelVm.allForUser(userId = userId).observeAsState(emptyList())
+    val entretiensWithContacts by entretienVm.getAllWithContacts(userId).observeAsState(emptyList())
+    val contacts by contactVm.allForUser(userId = userId).observeAsState(emptyList())
 
     // 3) Filtrer celles qui concernent notre candidature
     val myRelances   = relances.filter { it.candidatureId == candidatureId }
     val myAppels     = appels.filter { it.candidatureId == candidatureId }
-    val myEntretiens = entretiens.filter { it.candidatureId == candidatureId }
+    val myEntretiens = entretiensWithContacts.filter {
+        it.entretien.candidatureId == candidatureId
+    }
     // les contacts qu'on a associés via appels / relances / entretiens :
-    val myContacts = contacts.filter { c ->
-        myRelances.any { it.contactId == c.id } ||
-        myAppels.any { it.contactId == c.id } ||
-        myEntretiens.any { it.contacts.contains(c) }
+    val myContacts = contacts.filter { contact ->
+        myRelances.any { it.contactId == contact.id } ||
+                myAppels.any { it.contactId == contact.id } ||
+                myEntretiens.any { it.contacts.any { ec -> ec.id == contact.id } }
     }
 
 
@@ -99,14 +101,14 @@ fun CandidatureDetailScreen(
                         Icon(Icons.Default.Edit, contentDescription = "Modifier la candidature")
                     }
                     IconButton(onClick = {
-                        candidatureVm.archive(candidature.id)
+                        candidatureVm.archive(listOf(candidature.id), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
 
                     IconButton(onClick = {
-                        candidatureVm.delete(candidature.id)
+                        candidatureVm.delete(listOf(candidature.id), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
@@ -200,11 +202,14 @@ fun CandidatureDetailScreen(
             item {
                 SectionTitle("Entretiens liés")
             }
-            items(myEntretiens) { entretien ->
+            items(myEntretiens) { entretienWithContacts ->
+                val entretien = entretienWithContacts.entretien
+                val contacts = entretienWithContacts.contacts
+
                 DetailItemCard(
-                    title = "${entretien.entretien.type ?: "Type inconnu"} - ${entretien.entretien.style ?: "Style inconnu"}",
-                    subtitle = "${entretien.contacts}",
-                    onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.entretien.id}")}
+                    title = "${entretien.type ?: "Type inconnu"} - ${entretien.style ?: "Style inconnu"}",
+                    subtitle = contacts.joinToString(", ") { it.firstName + " " + it.lastName },
+                    onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.id}") }
                 )
             }
 

@@ -36,7 +36,7 @@ fun WeeklySliding3DayView(
     val days = (0L..2L).map { currentStartDate.plusDays(it) }
     val eventsByDay = remember(events) {
         events.groupBy {
-            Instant.ofEpochMilli(it.startDate).atZone(ZoneId.systemDefault()).toLocalDate()
+            Instant.ofEpochMilli(it.startDate ?: 0L).atZone(ZoneId.systemDefault()).toLocalDate()
         }
     }
 
@@ -149,7 +149,7 @@ fun WeeklySliding3DayView(
                         val eventWidth = columnWidth * columnSpan
                         val xOffset = columnWidth * index + eventWidth * positioned.column
 
-                        val start = Instant.ofEpochMilli(event.startDate)
+                        val start = Instant.ofEpochMilli(event.startDate ?: 0L)
                             .atZone(ZoneId.systemDefault()).toLocalTime()
                         val end = event.endDate?.let {
                             Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalTime()

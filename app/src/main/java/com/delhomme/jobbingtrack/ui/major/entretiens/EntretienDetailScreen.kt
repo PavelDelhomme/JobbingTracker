@@ -38,10 +38,10 @@ fun EntretienDetailScreen(
     userId: String
 ) {
     // 1) On observe la liste des Entretiens+Contacts
-    val entretiens by entVm.activeForUser(userId).observeAsState(emptyList())    // 2) On trouve notre entretienWithContacts
-    val entretien = entretiens.firstOrNull { it.id == entretienId } ?: return
-
-    val participants  = entretien.contacts
+    val entretiensWithContacts by entVm.getAllWithContacts(userId).observeAsState(emptyList())
+    val entretienWithContacts = entretiensWithContacts.firstOrNull { it.entretien.id == entretienId } ?: return
+    val entretien = entretienWithContacts.entretien
+    val participants = entretienWithContacts.contacts
 
     // 3) On charge la candidature liée
     val allCands      by candVms.activeForUser(userId = userId).observeAsState(emptyList())

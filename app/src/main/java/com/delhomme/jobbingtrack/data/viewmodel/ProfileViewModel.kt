@@ -2,6 +2,7 @@ package com.delhomme.jobbingtrack.data.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
@@ -14,7 +15,10 @@ class ProfileViewModel(app: Application) : AndroidViewModel(app) {
         JobbingTrackApp.database.profileDao()
     )
 
-    fun profileForUser(userId: String) = repo.byId(userId).asLiveData()
+    val allProfiles: LiveData<List<ProfileEntity>> = repo.getAll().asLiveData()
+
+    fun profileForUser(userId: String): LiveData<ProfileEntity?> =
+        repo.byId(userId).asLiveData()
 
     fun save(profile: ProfileEntity) = viewModelScope.launch {
         repo.save(profile)
@@ -22,6 +26,18 @@ class ProfileViewModel(app: Application) : AndroidViewModel(app) {
 
     fun update(profile: ProfileEntity) = viewModelScope.launch {
         repo.update(profile)
+    }
+
+    fun archive(id: String) = viewModelScope.launch {
+        val current = repo.byIdNow(id)
+        current?.let {
+            val updated = it.copy(
+                isArchived = true,
+                archivedAt = System.currentTimeMillis(),
+                updatedAt = System.currentTimeMillis()
+            )
+            repo.update(updated)
+        }
     }
 
     fun delete(id: String) = viewModelScope.launch {

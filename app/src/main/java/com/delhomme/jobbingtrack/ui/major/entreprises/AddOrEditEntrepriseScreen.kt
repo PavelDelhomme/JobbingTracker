@@ -23,7 +23,7 @@ fun AddOrEditEntrepriseScreen(
     viewModel: EntrepriseViewModel = viewModel(),
     onCancel: () -> Unit
 ) {
-    val all = viewModel.entreprises.observeAsState(emptyList()).value
+    val all = viewModel.allForUser(userId = userId.toString()).observeAsState(emptyList()).value
     val existing = all.find { it.id == entrepriseId }
 
     val fields = listOf(
@@ -69,7 +69,8 @@ fun AddOrEditEntrepriseScreen(
                     notes    = form["notes"],
                     syncHash = hash,
                     isArchived = existing?.isArchived ?: false,
-                    isDeleted  = existing?.isDeleted  ?: false
+                    isDeleted  = existing?.isDeleted  ?: false,
+                    userId     = userId.toString()
                 )
                 viewModel.save(ent)
                 onCancel()

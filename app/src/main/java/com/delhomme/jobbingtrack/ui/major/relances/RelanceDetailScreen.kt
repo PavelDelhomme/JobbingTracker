@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
 import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
@@ -34,15 +33,14 @@ fun RelanceDetailScreen(
     contactVm: ContactViewModel = viewModel()
 ) {
     // 1) VM + chargement
-    val allRelances by relVm.relances.observeAsState(emptyList<RelanceEntity>())
+    val allRelances by relVm.getAllForUser(userId).observeAsState(emptyList())
+    val allCands by candVm.activeForUser(userId).observeAsState(emptyList())
+    val allContacts by contactVm.activeForUser(userId).observeAsState(emptyList())
+
     val rel = allRelances.firstOrNull { it.id == relanceId } ?: return
-
-    // 2) idem pour candidature/contact si besoin
-    val allCands by candVm.candidatures.observeAsState(emptyList())
     val candidature = allCands.firstOrNull { it.id == rel.candidatureId }
-
-    val allContacts by contactVm.contacts.observeAsState(emptyList())
     val contact = allContacts.firstOrNull { it.id == rel.contactId }
+
 
     BackHandler { navController.popBackStack() }
 
@@ -62,13 +60,13 @@ fun RelanceDetailScreen(
                         Icon(Icons.Default.Edit, "Modifier")
                     }
                     IconButton(onClick = {
-                        relVm.archive(rel.id)
+                        relVm.archive(listOf(rel.id), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.DeleteForever, "Archiver")
                     }
                     IconButton(onClick = {
-                        relVm.delete(rel.id)
+                        relVm.delete(listOf(rel.id.toString()), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.DeleteForever, "Supprimer définitivement")

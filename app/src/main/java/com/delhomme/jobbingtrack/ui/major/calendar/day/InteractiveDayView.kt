@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.data.classes.Entretien
 import com.delhomme.jobbingtrack.data.classes.Evenement
 import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
 import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
@@ -25,6 +26,8 @@ import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import com.delhomme.jobbingtrack.data.local.entities.EventEntity
 import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
+import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
 import com.delhomme.jobbingtrack.ui.major.calendar.event.EventCard
 import com.delhomme.jobbingtrack.ui.major.calendar.computeOverlappingEvents
 import com.delhomme.jobbingtrack.utils.mappers.toDomain
@@ -46,7 +49,8 @@ fun InteractiveDayView(
     relances: List<RelanceEntity> = emptyList(),
     candidatures: List<CandidatureEntity> = emptyList(),
     modifier: Modifier = Modifier
-) {
+)
+{
     val minScale = 0.5f
     val maxScale = 2.5f
     var scale by remember { mutableStateOf(1f) }
@@ -66,7 +70,7 @@ fun InteractiveDayView(
     val positionedEvents = remember(events) {
         computeOverlappingEvents(
             events.filter {
-                Instant.ofEpochMilli(it.startDate).atZone(ZoneId.systemDefault()).toLocalDate() == date
+                Instant.ofEpochMilli(it.startDate ?: 0L).atZone(ZoneId.systemDefault()).toLocalDate() == date
             }
         )
     }
@@ -183,15 +187,18 @@ fun InteractiveDayView(
                             )
                             .clickable { selectedEvent = positioned.event }
                     ) {
+                        val relatedEntretien = positioned.event.relatedObjectId?.let { id ->
+                            entretiens.find { it.entretien.id == id }
+                        }
+                        val relatedContacts = relatedEntretien?.contacts ?: emptyList()
+
                         EventCard(
                             event = positioned.event,
-                            startDate = positioned.event.startDate ?: 0L,
-                            endDate = positioned.event.endDate ?: 0L,
                             events = events,
-                            entretiens = entretiens, // ou filtered
-                            relatedEntretien = relatedEntretien?.entretien,
+                            userId = userId,
+                            entretiens = entretiens,
+                            relatedEntretien = relatedEntretien,
                             relatedContacts = relatedContacts,
-                            userId = userId ?: "",
                             modifier = Modifier.fillMaxSize(),
                             compact = eventHeight < 50.dp
                         )
