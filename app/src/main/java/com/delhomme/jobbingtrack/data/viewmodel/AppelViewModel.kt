@@ -13,7 +13,7 @@ class AppelViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = AppelRepository(JobbingTrackApp.database.appelDao())
 
     /** Toutes les relances pour cet utilisateur */
-    fun relancesForUser(userId: String): LiveData<List<AppelEntity>> =
+    fun appelsForUser(userId: String): LiveData<List<AppelEntity>> =
         repo.allForUser(userId).asLiveData()
 
     fun archivedForUser(userId: String): LiveData<List<AppelEntity>> =
