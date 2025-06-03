@@ -1,16 +1,12 @@
 package com.delhomme.jobbingtrack.data.service
 
-import kotlinx.coroutines.delay
+import com.delhomme.jobbingtrack.data.models.LoginRequest
+import com.delhomme.jobbingtrack.data.models.LoginResponse
+import com.delhomme.jobbingtrack.data.remote.ApiClient.api
 
 class LoginService {
-    suspend fun login(email: String, password: String): Boolean {
-        /*
-        delay(2000) // Simulation 2 seconde pour faire "chargement..."
-
-        // Simulation simple : succès si email contient "test" et password = "password"
-        return email.contains("test") && password == "password"
-        */
-        // Simulation immédiate de succès pour développement
-        return true
+    suspend fun login(email: String, password: String): LoginResponse? {
+        val response = api.login(LoginRequest(email, password))
+        return if (response.isSuccessful) response.body() else null
     }
 }

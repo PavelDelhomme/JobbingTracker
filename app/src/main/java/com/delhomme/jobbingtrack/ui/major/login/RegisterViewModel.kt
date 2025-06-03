@@ -7,40 +7,31 @@ import androidx.lifecycle.viewModelScope
 
 import kotlinx.coroutines.launch
 import androidx.lifecycle.MutableLiveData
-import com.delhomme.jobbingtrack.data.local.repository.RegisterRepository
+import androidx.lifecycle.ViewModel
 import com.delhomme.jobbingtrack.data.networks.TokenManager
+import com.delhomme.jobbingtrack.data.service.RegisterService
 
 class RegisterViewModel(app: Application) : AndroidViewModel(app) {
-    private val repository = RegisterRepository()
-
-    private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _errorMessage = MutableLiveData<String?>(null)
-    val errorMessage: LiveData<String?> = _errorMessage
-
-    private val _registerSuccess = MutableLiveData(false)
+    private val _registerSuccess = MutableLiveData<Boolean>()
     val registerSuccess: LiveData<Boolean> = _registerSuccess
 
-    /**
-     * Simule un appel d'API d'inscription, sauvegarde un token factice
-     * et notifie la vue.
-     */
-    fun register(email: String, password: String) {
-        _isLoading.value = true
-        _errorMessage.value = null
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
 
+    fun register(email: String, password: String) {
         viewModelScope.launch {
-            val success = repository.register(email, password)
-            _isLoading.value = false
-            if (success) {
-                // Simuler un token : dans la vraie vie il faudra prendre response.access
-                val fakeToken = "fake_jwt_token_${System.currentTimeMillis()}"
-                // Sauvegarde en SharedPreferences chiffrées
-                TokenManager.saveToken(getApplication(), fakeToken)
-                _registerSuccess.value = true
-            } else {
-                _errorMessage.value = "Email ou mot de passe incorrect."
+            try {
+                val result = RegisterService().register(email, password)
+                if (result != null) {
+                    TokenManager.saveTokens(getApplication(), result.access, result.refresh)
+                    _registerSuccess.value = true
+                } else {
+                    _errorMessage.value = "Erreur lors de l'inscription"
+                    _registerSuccess.value = false
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = "Erreur réseau : ${e.message}"
+                _registerSuccess.value = false
             }
         }
     }

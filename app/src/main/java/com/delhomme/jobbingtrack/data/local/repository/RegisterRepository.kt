@@ -1,12 +1,12 @@
 package com.delhomme.jobbingtrack.data.local.repository
 
 import com.delhomme.jobbingtrack.data.service.RegisterService
+import com.delhomme.jobbingtrack.data.models.LoginResponse
 
 class RegisterRepository(
-    private val service: RegisterService = RegisterService()
+    private val registerService: RegisterService = RegisterService()
 ) {
-    suspend fun register(email: String, password: String): Boolean {
-        // simule toujours le succès
-        return service.register(email, password)
+    suspend fun register(email: String, password: String): LoginResponse? {
+        return registerService.register(email, password)
     }
 }

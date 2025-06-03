@@ -13,6 +13,7 @@ import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ProfileViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
 import com.delhomme.jobbingtrack.ui.major.appels.AddOrEditAppelScreen
 import com.delhomme.jobbingtrack.ui.major.appels.AppelDetailScreen
@@ -29,6 +30,7 @@ import com.delhomme.jobbingtrack.ui.major.entretiens.AddOrEditEntretienScreen
 import com.delhomme.jobbingtrack.ui.major.login.LoginScreen
 import com.delhomme.jobbingtrack.ui.main.MainScreen
 import com.delhomme.jobbingtrack.ui.major.login.RegisterScreen
+import com.delhomme.jobbingtrack.ui.major.profile.ProfileScreen
 import com.delhomme.jobbingtrack.ui.major.relances.AddOrEditRelanceScreen
 import com.delhomme.jobbingtrack.ui.major.relances.RelanceDetailScreen
 
@@ -40,8 +42,6 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         return
     }
 
-
-
     NavHost(
         navController = navController,
         startDestination = if (isLoggedIn) Routes.MAIN else Routes.LOGIN
@@ -51,6 +51,12 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         composable(Routes.REGISTER) { RegisterScreen(navController) }
         composable(Routes.MAIN)     { MainScreen(navController, userId) }
 
+        composable(Routes.PROFILE) {
+            ProfileScreen(
+                profileId = userId,
+                viewModel = ProfileViewModel(JobbingTrackApp())
+            )
+        }
         // — CANDIDATURES —
         composable(
             route = Routes.ADD_CANDIDATURE

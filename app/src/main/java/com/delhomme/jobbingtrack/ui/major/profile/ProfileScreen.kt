@@ -22,8 +22,8 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel()
 ) {
     val profiles by viewModel.allProfiles.observeAsState(emptyList())
-    val profile = profiles.firstOrNull { it.id == profileId }
-
+    val remoteProfileState = viewModel.profileForUser(userId = profileId ?: "").observeAsState(null)
+    val profile = remoteProfileState.value
     var dialogType by remember { mutableStateOf<DialogType?>(null) }
     var dialogVisible by remember { mutableStateOf(false) }
 

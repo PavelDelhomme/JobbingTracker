@@ -14,7 +14,7 @@ import com.delhomme.jobbingtrack.data.networks.TokenManager
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val token = TokenManager.getToken(this);
+        val token = TokenManager.getTokens(this);
         val userId = TokenManager.getUserId(this);
         setContent {
             val navController = rememberNavController()

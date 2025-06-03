@@ -8,6 +8,7 @@ object TokenManager {
 
     private const val FILE_NAME = "auth_prefs"
     private const val ACCESS_TOKEN = "access_token"
+    private const val REFRESH_TOKEN = "refresh_token"
     private const val USER_ID = "user_id"
 
     private fun getPrefs(context: Context) =
@@ -19,15 +20,18 @@ object TokenManager {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
 
-    fun saveToken(context: Context, token: String) {
-        getPrefs(context).edit().putString(ACCESS_TOKEN, token).apply()
+    fun saveTokens(context: Context, access: String, refresh: String) {
+        getPrefs(context).edit()
+            .putString(ACCESS_TOKEN, access)
+            .putString(REFRESH_TOKEN, refresh)
+            .apply()
     }
 
-    fun getToken(context: Context): String? {
+    fun getTokens(context: Context): String? {
         return getPrefs(context).getString(ACCESS_TOKEN, null)
     }
 
-    fun clearToken(context: Context) {
+    fun clearTokens(context: Context) {
         getPrefs(context).edit().clear().apply()
     }
 
@@ -36,6 +40,10 @@ object TokenManager {
             .putString(USER_ID, userId)
             .putString(ACCESS_TOKEN, token)
             .apply()
+    }
+
+    fun getRefreshToken(context: Context): String? {
+        return getPrefs(context).getString(REFRESH_TOKEN, null)
     }
 
     fun getUserId(context: Context): String? {

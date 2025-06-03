@@ -28,13 +28,10 @@ class LoginViewModel(app: Application) : AndroidViewModel(app) {
         _errorMessage.value = null
 
         viewModelScope.launch {
-            val success = repository.login(email, password)
+            val response = repository.login(email, password)
             _isLoading.value = false
-            if (success) {
-                // Simuler un token : dans la vraie vie il faudra prendre response.access
-                val fakeToken = "fake_jwt_token_${System.currentTimeMillis()}"
-                // Sauvegarde en SharedPreferences chiffrées
-                TokenManager.saveToken(getApplication(), fakeToken)
+            if (response != null) {
+                TokenManager.saveTokens(getApplication(), response.access, response.refresh)
                 _loginSuccess.value = true
             } else {
                 _errorMessage.value = "Email ou mot de passe incorrect."

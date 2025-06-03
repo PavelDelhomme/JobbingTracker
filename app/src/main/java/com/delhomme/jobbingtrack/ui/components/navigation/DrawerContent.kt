@@ -91,7 +91,15 @@ fun AppDrawer(
         }
 
         // — Navigation —
-        DrawerItem(icon = Icons.Default.Person,  label = "Profil",    onClick = onProfile)
+        DrawerItem(icon = Icons.Default.Person,
+            label = "Profil",
+            onClick = {
+                scope.launch {
+                    drawerState.close()
+                    onProfile()
+                }
+            }
+        )
         DrawerItem(icon = Icons.Default.Settings,label = "Paramètres",onClick = onSettings)
         DrawerItem(icon = Icons.Default.Archive, label = "Archives",   onClick = onArchive)
         DrawerItem(icon = Icons.Default.Delete,  label = "Corbeille",  onClick = onTrash)
