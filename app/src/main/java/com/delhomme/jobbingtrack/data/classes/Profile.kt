@@ -22,7 +22,18 @@ data class Profile(
 
 
 data class CV(val id: String, val file: String, val uploadedAt: Long)
-data class Language(val name: String, val level: String, val certification: String?)
+
+data class Language(
+    val id: String,
+    val profile: String,
+    val name: String,
+    val level: String,
+    val certification: String?,
+    val userId: String,
+    val createdAt: Long,
+    val updatedAt: Long
+)
+
 data class Experience(val title: String, val company: String, val description: String, val startDate: String, val endDate: String?)
 data class Education(val diploma: String, val school: String, val startDate: String, val endDate: String?)
 data class Project(val title: String, val description: String)
