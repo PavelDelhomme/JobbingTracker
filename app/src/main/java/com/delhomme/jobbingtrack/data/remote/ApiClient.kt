@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ApiClient {
-    internal const val BASE_URL = "https://ton-backend.com/api/" // temporairement pour dev
+    internal const val BASE_URL = "http://10.0.2.2:8000/api/"
 
     // A initialiser depuis votre Application ou via DI pour avoir le Context
     private lateinit var appContext: Context

@@ -16,14 +16,22 @@ import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
+import com.delhomme.jobbingtrack.data.networks.TokenManager
+
 @Composable
 fun ProfileScreen(
     profileId: String? = null,
     viewModel: ProfileViewModel = viewModel()
 ) {
-    val profiles by viewModel.allProfiles.observeAsState(emptyList())
-    val remoteProfileState = viewModel.profileForUser(userId = profileId ?: "").observeAsState(null)
-    val profile = remoteProfileState.value
+    val context = LocalContext.current
+    val userId = TokenManager.getUserId(context) ?: ""
+
+    //val profiles by viewModel.allProfiles.observeAsState(emptyList())
+    //val remoteProfileState = viewModel.profileForUser(userId = profileId ?: "").observeAsState(null)
+    val profile by viewModel.profileForUser(userId).observeAsState()
+
+    var subject by remember { mutableStateOf(profile?.subject ?: "") }
     var dialogType by remember { mutableStateOf<DialogType?>(null) }
     var dialogVisible by remember { mutableStateOf(false) }
 
@@ -35,13 +43,29 @@ fun ProfileScreen(
     ) {
         profile?.let {
             Text("ID : ${it.id}", style = MaterialTheme.typography.titleMedium)
-            Text("Sujet : ${it.subject}", style = MaterialTheme.typography.bodyLarge)
+
+            OutlinedTextField(
+                value = subject,
+                onValueChange = { subject = it },
+                label = { Text("Sujet") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
             Text("Date : ${it.createdAt.toFormattedDate()}", style = MaterialTheme.typography.bodyMedium)
             Text("Notes : ${it.notes ?: "—"}", style = MaterialTheme.typography.bodyMedium)
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Button(onClick = {
+                    if (profile != null) {
+                        val updated = profile!!.copy(subject = subject, updatedAt = System.currentTimeMillis())
+                        viewModel.update(updated)
+                    }
+                }) {
+                    Text("Enregistrer les modifications")
+                }
+
                 Button(
                     onClick = {
                         dialogType = DialogType.ARCHIVE
@@ -78,9 +102,9 @@ fun ProfileScreen(
                 "Voulez-vous vraiment supprimer ce profil de façon définitive ?",
             onConfirm = {
                 if (dialogType == DialogType.ARCHIVE) {
-                    viewModel.archive(profile.id)
+                    viewModel.archive(profile!!.id)
                 } else {
-                    viewModel.delete(profile.id)
+                    viewModel.delete(profile!!.id)
                 }
                 dialogVisible = false
             },

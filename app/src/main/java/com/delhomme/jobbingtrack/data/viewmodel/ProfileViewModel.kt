@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.data.local.entities.ProfileEntity
 import com.delhomme.jobbingtrack.data.local.repository.ProfileRepository
+import com.delhomme.jobbingtrack.data.networks.TokenManager
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(app: Application) : AndroidViewModel(app) {
@@ -15,7 +16,8 @@ class ProfileViewModel(app: Application) : AndroidViewModel(app) {
         JobbingTrackApp.database.profileDao()
     )
 
-    val allProfiles: LiveData<List<ProfileEntity>> = repo.all.asLiveData()
+    val profileLive: LiveData<ProfileEntity?> = profileForUser(TokenManager.getUserId(app.applicationContext) ?: "")
+
 
     fun profileForUser(userId: String): LiveData<ProfileEntity?> =
         repo.byId(userId).asLiveData()

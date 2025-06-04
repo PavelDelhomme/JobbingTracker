@@ -24,6 +24,7 @@ class RegisterViewModel(app: Application) : AndroidViewModel(app) {
                 val result = RegisterService().register(email, password)
                 if (result != null) {
                     TokenManager.saveTokens(getApplication(), result.access, result.refresh)
+                    TokenManager.saveUser(getApplication(), result.user.id, result.access)
                     _registerSuccess.value = true
                 } else {
                     _errorMessage.value = "Erreur lors de l'inscription"
