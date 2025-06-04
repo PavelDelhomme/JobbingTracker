@@ -10,12 +10,32 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.compose.rememberNavController
 import com.delhomme.jobbingtrack.navigation.NavGraph
 import com.delhomme.jobbingtrack.data.networks.TokenManager
+import android.Manifest
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+
 
 class MainActivity : ComponentActivity() {
+    private val notificationPermissionLauncher by lazy {
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                // Tu peux logguer, afficher un toast ou une boîte de dialogue
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val token = TokenManager.getTokens(this);
-        val userId = TokenManager.getUserId(this);
+
+        // Demande de permission Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        val token = TokenManager.getTokens(this)
+        val userId = TokenManager.getUserId(this)
+
         setContent {
             val navController = rememberNavController()
 

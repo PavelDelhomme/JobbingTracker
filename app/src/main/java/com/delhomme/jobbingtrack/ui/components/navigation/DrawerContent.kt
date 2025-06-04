@@ -40,6 +40,8 @@ fun AppDrawer(
     onViewTypeChange: (CalendarViewType)->Unit,
     drawerState: DrawerState
 ) {
+    val scope = rememberCoroutineScope();
+
     Column(
         modifier
             .fillMaxSize()

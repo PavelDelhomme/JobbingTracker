@@ -5,6 +5,14 @@ plugins {
     kotlin("kapt")
 }
 
+kapt {
+    arguments {
+        arg("room.schemaLocation", "$projectDir/schemas")
+        //arg("room.incremental", "true")
+        //arg("room.expandProjection", "true")
+    }
+}
+
 android {
     namespace = "com.delhomme.jobbingtrack"
     compileSdk = 35
