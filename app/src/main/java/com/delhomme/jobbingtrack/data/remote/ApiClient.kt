@@ -10,8 +10,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ApiClient {
     internal const val BASE_URL = "http://10.0.2.2:8000/api/"
-
-    // A initialiser depuis votre Application ou via DI pour avoir le Context
     private lateinit var appContext: Context
 
     /** Appel unique, le plus tôt possible (Application#onCreate) */
@@ -19,17 +17,12 @@ object ApiClient {
         appContext = context.applicationContext
     }
 
-    private val okHttp = OkHttpClient.Builder()
-        /*.addInterceptor { chain ->
-            val token = TokenManager.getTokens(appContext)
-            val req = chain.request().newBuilder()
-                .apply { token?.let { header("Authorization", "Bearer $it") } }
-                .build()
-            chain.proceed(req)
-        }*/
-        .authenticator(TokenAuthenticator(appContext)) // 🔁 auto-refresh
-        .addInterceptor(AuthInterceptor(appContext)) // 🛡️ ajoute le token aux requêtes
-        .build()
+    private val okHttp: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .authenticator(TokenAuthenticator(appContext))
+            .addInterceptor(AuthInterceptor(appContext))
+            .build()
+    }
 
     val api: ApiService by lazy {
         Retrofit.Builder()
