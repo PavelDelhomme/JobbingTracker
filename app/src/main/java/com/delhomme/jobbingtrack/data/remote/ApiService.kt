@@ -24,7 +24,7 @@ interface ApiService {
     @POST("auth/login/")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
     @POST("auth/token/refresh/")
-    fun refreshToken(@Body body: RefreshTokenRequest): Call<AccessTokenResponse>
+    fun refreshToken(@Body body: RefreshTokenRequest): Call<RefreshToAccessTokenResponse>
     @POST("auth/register/")
     suspend fun register(@Body body: RegisterRequest): Response<RegisterResponse>
     @Multipart
