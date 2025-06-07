@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ApiClient {
-    internal const val BASE_URL = "http://10.0.2.2:8000/api/"
+    internal const val BASE_URL = "http://192.168.1.134:8000/api/"
     private lateinit var appContext: Context
 
     /** Appel unique, le plus tôt possible (Application#onCreate) */

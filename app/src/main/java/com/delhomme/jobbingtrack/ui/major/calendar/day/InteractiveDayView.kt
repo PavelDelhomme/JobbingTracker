@@ -18,16 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.classes.Entretien
-import com.delhomme.jobbingtrack.data.classes.Evenement
-import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
-import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
+import com.delhomme.jobbingtrack.data.classes.Event
+import com.delhomme.jobbingtrack.data.local.entities.CallEntity
+import com.delhomme.jobbingtrack.data.local.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
-import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
+import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.data.local.entities.EventEntity
-import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
-import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
+import com.delhomme.jobbingtrack.data.local.entities.FollowUpEntity
 import com.delhomme.jobbingtrack.ui.major.calendar.event.EventCard
 import com.delhomme.jobbingtrack.ui.major.calendar.computeOverlappingEvents
 import com.delhomme.jobbingtrack.utils.mappers.toDomain
@@ -43,11 +40,11 @@ fun InteractiveDayView(
     date: LocalDate,
     eventEntities: List<EventEntity>,
     userId: String,
-    entretiens: List<EntretienWithContacts> = emptyList(),
+    interviews: List<InterviewWithContacts> = emptyList(),
     contacts: List<ContactEntity> = emptyList(),
-    appels: List<AppelEntity> = emptyList(),
-    relances: List<RelanceEntity> = emptyList(),
-    candidatures: List<CandidatureEntity> = emptyList(),
+    calls: List<CallEntity> = emptyList(),
+    followsUp: List<FollowUpEntity> = emptyList(),
+    applications: List<ApplicationEntity> = emptyList(),
     modifier: Modifier = Modifier
 )
 {
@@ -75,7 +72,7 @@ fun InteractiveDayView(
         )
     }
 
-    var selectedEvent by remember { mutableStateOf<Evenement?>(null) }
+    var selectedEvent by remember { mutableStateOf<Event?>(null) }
 
     val totalHeightDp = (24 * 60 * scale).dp
     val redLineOffset = ((currentTime.hour * 60 + currentTime.minute) * scale).dp
@@ -187,17 +184,17 @@ fun InteractiveDayView(
                             )
                             .clickable { selectedEvent = positioned.event }
                     ) {
-                        val relatedEntretien = positioned.event.relatedObjectId?.let { id ->
-                            entretiens.find { it.entretien.id == id }
+                        val relatedInterview = positioned.event.relatedObjectId?.let { id ->
+                            interviews.find { it.interview.id == id }
                         }
-                        val relatedContacts = relatedEntretien?.contacts ?: emptyList()
+                        val relatedContacts = relatedInterview?.contacts ?: emptyList()
 
                         EventCard(
                             event = positioned.event,
                             events = events,
                             userId = userId,
-                            entretiens = entretiens,
-                            relatedEntretien = relatedEntretien,
+                            interviews = interviews,
+                            relatedInterview = relatedInterview,
                             relatedContacts = relatedContacts,
                             modifier = Modifier.fillMaxSize(),
                             compact = eventHeight < 50.dp

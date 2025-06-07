@@ -4,12 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.classes.Candidature
-import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
-import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
-import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
-import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
-import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
+import com.delhomme.jobbingtrack.data.local.entities.CallEntity
+import com.delhomme.jobbingtrack.data.local.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.data.local.entities.FollowUpEntity
 import com.delhomme.jobbingtrack.data.local.repository.*
 import com.delhomme.jobbingtrack.utils.countByDay
 import kotlinx.coroutines.flow.*
@@ -22,37 +19,37 @@ class DashboardViewModel(app: Application, private val userId: String): AndroidV
 
     private val db = JobbingTrackApp.database
 
-    private val repoCandidature = CandidatureRepository(db.candidatureDao())
-    private val repoEntreprise = EntrepriseRepository(db.entrepriseDao())
-    private val repoEntretien = EntretienRepository(db.entretienDao())
-    private val repoAppel = AppelRepository(db.appelDao())
-    private val repoRelance = RelanceRepository(db.relanceDao())
+    private val repoApplication = ApplicationRepository(db.applicationDao())
+    private val repoCompany = CompanyRepository(db.companyDao())
+    private val repoInterview = InterviewRepository(db.interviewDao())
+    private val repoCall = CallRepository(db.callDao())
+    private val repoFollowUp = FollowUpRepository(db.followUpDao())
     private val repoContact = ContactRepository(db.contactDao())
     private val repoUser = UserRepository(db.userDao())
-    private val repoProfile = ProfileRepository(db.profileDao())
+    private val repoProfile = ProfilRepository(db.profileDao())
 
     // Plage de dates choisie
     private val _startDate = MutableStateFlow(Instant.now().minus(7, ChronoUnit.DAYS))
     private val _endDate = MutableStateFlow(Instant.now())
 
     /** Flux bruts exposés en StateFlow pour chaque entité */
-    val candidaturesFlow = repoCandidature
+    val applicationsFlow = repoApplication
         .allForUser(userId)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    private val relancesFlow = repoRelance
+    private val followUpFlow = repoFollowUp
         .allForUser(userId)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    private val appelsFlow = repoAppel
+    private val callsFlow = repoCall
         .allForUser(userId)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val entretiensFlow = repoEntretien
+    val interviewsFlow = repoInterview
         .allForUser(userId)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val entreprisesFlow = repoEntreprise
+    val companiesFlow = repoCompany
         .allForUser(userId)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
@@ -69,10 +66,10 @@ class DashboardViewModel(app: Application, private val userId: String): AndroidV
         }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     /** Exposition des datas agrégées */
-    val candsPerDay = candidaturesFlow.perDay(CandidatureEntity::toInstant)
-    val relsPerDay  = relancesFlow.perDay(RelanceEntity::toInstant)
-    val appelsPerDay= appelsFlow.perDay(AppelEntity::toInstant)
-    val entretiensPerDay = entretiensFlow.perDay { it.entretien.toInstant() }
+    val applicationsPerDay = applicationsFlow.perDay(ApplicationEntity::toInstant)
+    val followUpsPerDay  = followUpFlow.perDay(FollowUpEntity::toInstant)
+    val callsPerDay = callsFlow.perDay(CallEntity::toInstant)
+    val interviewsPerDay = interviewsFlow.perDay { it.interview.toInstant() }
 
     /** Si vous avez besoin de changer la plage depuis l’UI */
     fun setDateRange(from: Instant, to: Instant) {

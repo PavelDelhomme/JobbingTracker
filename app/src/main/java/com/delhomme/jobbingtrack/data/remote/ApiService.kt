@@ -4,6 +4,7 @@ import com.delhomme.jobbingtrack.data.classes.CV
 import com.delhomme.jobbingtrack.data.classes.Profile
 import com.delhomme.jobbingtrack.data.models.LoginRequest
 import com.delhomme.jobbingtrack.data.models.LoginResponse
+import com.delhomme.jobbingtrack.data.models.RefreshToAccessTokenResponse
 import com.delhomme.jobbingtrack.data.models.RegisterRequest
 import com.delhomme.jobbingtrack.data.models.RegisterResponse
 import com.delhomme.jobbingtrack.data.models.UserInfo
@@ -17,13 +18,12 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 
 data class RefreshTokenRequest(val refresh: String)
-data class AccessTokenResponse(val access: String)
 
 
 interface ApiService {
     @POST("auth/login/")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
-    @POST("auth/token/refresh/")
+    @POST("auth/refresh/")
     fun refreshToken(@Body body: RefreshTokenRequest): Call<RefreshToAccessTokenResponse>
     @POST("auth/register/")
     suspend fun register(@Body body: RegisterRequest): Response<RegisterResponse>

@@ -17,14 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.FollowUpViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
-import com.delhomme.jobbingtrack.ui.major.candidatures.SectionTitle
+import com.delhomme.jobbingtrack.ui.major.applications.SectionTitle
 import com.delhomme.jobbingtrack.ui.components.items.DetailItemCard
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
@@ -35,11 +35,11 @@ fun ContactDetailScreen(
     navController: NavController,
     userId: String,
     contactVm: ContactViewModel = viewModel(),
-    entrepriseVm: EntrepriseViewModel = viewModel(),
-    candidatureVm: CandidatureViewModel = viewModel(),
-    appelVm: AppelViewModel = viewModel(),
-    entretienVm: EntretienViewModel = viewModel(),
-    relanceVm: RelanceViewModel = viewModel()
+    entrepriseVm: CompanyViewModel = viewModel(),
+    candidatureVm: ApplicationViewModel = viewModel(),
+    appelVm: CallViewModel = viewModel(),
+    entretienVm: InterviewViewModel = viewModel(),
+    relanceVm: FollowUpViewModel = viewModel()
 ) {
     // 1) Charger le contact
     val allContacts by contactVm.allForUser(userId = userId).observeAsState(emptyList())
@@ -56,11 +56,11 @@ fun ContactDetailScreen(
     val allEntretiens by entretienVm.allForUser(userId = userId).observeAsState(emptyList())
 
     val linkedCands = allCands.filter { c ->
-        allAppels.any { it.contactId == contactId && it.candidatureId == c.id } ||
-        allRelances.any { it.contactId == contactId && it.candidatureId == c.id } ||
+        allAppels.any { it.contactId == contactId && it.applicationId == c.id } ||
+        allRelances.any { it.contactId == contactId && it.applicationId == c.id } ||
         allEntretiens.any   { ewc ->
             ewc.contacts.any { it.id == contactId } &&
-                    ewc.entretien.candidatureId == c.id
+                    ewc.entretien.applicationId == c.id
         }
     }
     val linkedAppels = allAppels.filter { it.contactId == contactId }
@@ -85,7 +85,7 @@ fun ContactDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("${Routes.EDIT_CONTACT}/${contactId}")
+                        navController.navigate("${Routes.CONTACT_EDIT}/${contactId}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier Contact")
                     }
@@ -132,7 +132,7 @@ fun ContactDetailScreen(
                     DetailItemCard(
                         title    = c.title,
                         subtitle = c.applicationStatus.toString(),
-                        onClick  = { navController.navigate("${Routes.CANDIDATURE_DETAIL}/${c.id}") }
+                        onClick  = { navController.navigate("${Routes.APPLICATION_DETAIL}/${c.id}") }
                     )
                 }
             }
@@ -144,7 +144,7 @@ fun ContactDetailScreen(
                     DetailItemCard(
                         title    = a.subject,
                         subtitle = a.dateTime.toFormattedDate(),
-                        onClick  = { navController.navigate("${Routes.APPEL_DETAIL}/${a.id}") }
+                        onClick  = { navController.navigate("${Routes.DETAIL_CALL}/${a.id}") }
                     )
                 }
             }
@@ -166,7 +166,7 @@ fun ContactDetailScreen(
                     DetailItemCard(
                         title    = r.type ?: "—",
                         subtitle = r.date.toFormattedDate(),
-                        onClick  = { navController.navigate("${Routes.RELANCE_DETAIL}/${r.id}") }
+                        onClick  = { navController.navigate("${Routes.FOLLOWUP_DETAIL}/${r.id}") }
                     )
                 }
             }

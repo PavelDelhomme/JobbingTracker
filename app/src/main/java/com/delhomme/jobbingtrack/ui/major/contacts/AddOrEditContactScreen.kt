@@ -12,22 +12,22 @@ import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
 import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
-import com.delhomme.jobbingtrack.data.local.entities.EntrepriseEntity
-import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
+import com.delhomme.jobbingtrack.data.local.entities.CompanyEntity
+import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
 import com.delhomme.jobbingtrack.utils.resolveCompanyId
 import java.util.UUID
 
 @Composable
 fun AddOrEditContactScreen(
     contactId: String? = null,
-    linkedCandidatureId: String? = null,
-    linkedEntrepriseId: String? = null,
+    linkedApplicationId: String? = null,
+    linkedCompanyId: String? = null,
     userId: String,
     onCancel: () -> Unit,
     contactVm: ContactViewModel               = viewModel(),
-    entrepriseVm: EntrepriseViewModel         = viewModel(),
-    candidatureVm: CandidatureViewModel       = viewModel()
+    entrepriseVm: CompanyViewModel         = viewModel(),
+    candidatureVm: ApplicationViewModel       = viewModel()
 ) {
     // 1) Charger les listes
     val allContacts by contactVm.allForUser(userId).observeAsState(emptyList())
@@ -38,14 +38,14 @@ fun AddOrEditContactScreen(
     val existing = contactId?.let { id -> allContacts.find { it.id == id } }
 
     // 3) État local pour l’entreprise liée
-    var selCompanyId      by remember { mutableStateOf(existing?.companyId ?: linkedEntrepriseId.orEmpty()) }
-    var selCandidatureId  by remember { mutableStateOf(linkedCandidatureId ?: existing?.candidatureId.orEmpty()) }
+    var selCompanyId      by remember { mutableStateOf(existing?.companyId ?: linkedCompanyId.orEmpty()) }
+    var selCandidatureId  by remember { mutableStateOf(linkedApplicationId ?: existing?.applicationId.orEmpty()) }
 
     var finalCompanyId = resolveCompanyId(
         existingContact = existing,
-        candidatures = allCandidats,
-        relances = emptyList(),
-        linkedCandidatureId = selCandidatureId,
+        applications = allCandidats,
+        followUps = emptyList(),
+        linkedApplicationId = selCandidatureId,
         fallbackCompanyId = selCompanyId
     )
 
@@ -79,7 +79,7 @@ fun AddOrEditContactScreen(
                 // si vous voulez permettre la création inline
                 val newId = UUID.randomUUID().toString()
                 entrepriseVm.save(
-                    EntrepriseEntity(
+                    CompanyEntity(
                         id        = newId,
                         name      = name,
                         type      = null,
@@ -133,7 +133,7 @@ fun AddOrEditContactScreen(
                     position     = form["position"],
                     department   = form["department"],
                     companyId = finalCompanyId.toString(),
-                    candidatureId = selCandidatureId,
+                    applicationId = selCandidatureId,
                     notes        = form["notes"],
                     syncHash     = hash,
                     isArchived   = existing?.isArchived ?: false,

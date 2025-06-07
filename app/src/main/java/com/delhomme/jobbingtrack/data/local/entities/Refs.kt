@@ -2,76 +2,93 @@ package com.delhomme.jobbingtrack.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.Index
-import com.delhomme.jobbingtrack.data.classes.Candidature
-import com.delhomme.jobbingtrack.data.classes.Contact
-import com.delhomme.jobbingtrack.data.classes.Entreprise
 
-// 1) Candidature <-> Contact (n-à-n)
+// 1) Application <-> Contact (n-à-n)
 @Entity(
-    primaryKeys = ["candidatureId", "contactId"],
+    primaryKeys = ["applicationId", "contactId"],
     indices = [ Index("contactId") ]
 )
-data class CandidatureContactCrossRef(
-    val candidatureId: String,
+data class ApplicationContactCrossRef(
+    val applicationId: String,
     val contactId: String
 )
 
-// 2) Entreprise <-> Candidature (n-à-n)
+// 2) Company <-> Application (n-à-n)
 @Entity(
-    primaryKeys = ["entrepriseId", "candidatureId"],
-    indices = [ Index("candidatureId") ]
+    primaryKeys = ["companyId", "applicationId"],
+    indices = [ Index("applicationId") ]
 )
-data class EntrepriseCandidatureCrossRef(
-    val entrepriseId: String,
-    val candidatureId: String
+data class CompanyApplicationCrossRef(
+    val companyId: String,
+    val applicationId: String
 )
 
-// 3) Entretien <-> Contact (n-à-n)
+// 3) Interview <-> Contact (n-à-n)
 @Entity(
-    primaryKeys = ["entretienId", "contactId"],
+    primaryKeys = ["interviewId", "contactId"],
     indices = [ Index("contactId") ]
 )
-data class EntretienContactCrossRef(
-    val entretienId: String,
+data class InterviewContactCrossRef(
+    val interviewId: String,
     val contactId: String
 )
 
-// 4) Entreprise <-> Contact (n-à-n)
+// 4) Company <-> Contact (n-à-n)
 @Entity(
-    primaryKeys = ["entrepriseId", "contactId"],
+    primaryKeys = ["companyId", "contactId"],
     indices = [ Index("contactId") ]
 )
-data class EntrepriseContactCrossRef(
-    val entrepriseId: String,
+data class CompanyContactCrossRef(
+    val companyId: String,
     val contactId: String
 )
 
-// 5) Entreprise <-> Relance (n-à-n)
+// 5) Company <-> FollowUp (n-à-n)
 @Entity(
-    primaryKeys = ["entrepriseId", "relanceId"],
-    indices = [ Index("relanceId") ]
+    primaryKeys = ["companyId", "followUpId"],
+    indices = [ Index("followUpId") ]
 )
-data class EntrepriseRelanceCrossRef(
-    val entrepriseId: String,
-    val relanceId: String
+data class CompanyFollowUpCrossRef(
+    val companyId: String,
+    val followUpId: String
 )
 
-// 6) Entreprise <-> Appel (n-à-n)
+// 6) Company <-> Call (n-à-n)
 @Entity(
-    primaryKeys = ["entrepriseId", "appelId"],
-    indices = [ Index("appelId") ]
+    primaryKeys = ["companyId", "callId"],
+    indices = [ Index("callId") ]
 )
-data class EntrepriseAppelCrossRef(
-    val entrepriseId: String,
-    val appelId: String
+data class CompanyCallCrossRef(
+    val companyId: String,
+    val callId: String
 )
 
-// 7) Entreprise <-> Entretien (n-à-n)
+// 7) Company <-> Interview (n-à-n)
 @Entity(
-    primaryKeys = ["entrepriseId", "entretienId"],
-    indices = [ Index("entretienId") ]
+    primaryKeys = ["companyId", "interviewId"],
+    indices = [ Index("interviewId") ]
 )
-data class EntrepriseEntretienCrossRef(
-    val entrepriseId: String,
-    val entretienId: String
+data class CompanyInterviewCrossRef(
+    val companyId: String,
+    val interviewId: String
+)
+
+// 8) Interview <-> Contact (n-à-n)
+@Entity(
+    primaryKeys = ["interviewId", "contactId"],
+    indices = [ Index("contactId") ]
+)
+data class InterviewWithContactsCrossRef(
+    val interviewId: String,
+    val contactId: String
+)
+
+// 9) Call <-> Contact (n-à-n)
+@Entity(
+    primaryKeys = ["callId", "contactId"],
+    indices = [ Index("contactId") ]
+)
+data class CallWithContactsCrossRef(
+    val callId: String,
+    val contactId: String
 )

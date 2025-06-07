@@ -8,12 +8,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.EventViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.FollowUpViewModel
 import com.delhomme.jobbingtrack.ui.major.calendar.day.DailyPagerView
 import com.delhomme.jobbingtrack.ui.major.calendar.monthly.MonthlyCalendarView
 import com.delhomme.jobbingtrack.ui.major.calendar.weeks.TwoWeekPagerView
@@ -32,19 +32,19 @@ fun CalendarScreenContent(
     userId: String,
     eventViewModel: EventViewModel = viewModel()
 ) {
-    val entretienViewModel: EntretienViewModel = viewModel()
+    val interviewViewModel: InterviewViewModel = viewModel()
     val contactViewModel: ContactViewModel = viewModel()
-    val appelViewModel: AppelViewModel = viewModel()
-    val relanceViewModel: RelanceViewModel = viewModel()
-    val candidatureViewModel: CandidatureViewModel = viewModel()
+    val callViewModel: CallViewModel = viewModel()
+    val followUpViewModel: FollowUpViewModel = viewModel()
+    val applicationViewModel: ApplicationViewModel = viewModel()
 
-    val entretiensWithContacts by remember(userId) {
-        entretienViewModel.getAllWithContacts(userId)
+    val interviewsWithContacts by remember(userId) {
+        interviewViewModel.getAllWithContacts(userId)
     }.observeAsState(initial = emptyList())
     val contacts by contactViewModel.allForUser(userId).observeAsState(emptyList())
-    val appels by appelViewModel.allForUser(userId).observeAsState(emptyList())
-    val relances by relanceViewModel.allForUser(userId).observeAsState(emptyList())
-    val candidatures by candidatureViewModel.allForUser(userId).observeAsState(emptyList())
+    val calls by callViewModel.allForUser(userId).observeAsState(emptyList())
+    val followsUps by followUpViewModel.allForUser(userId).observeAsState(emptyList())
+    val applications by applicationViewModel.allForUser(userId).observeAsState(emptyList())
 
     val allEvents by eventViewModel.eventsForUser(userId).observeAsState(emptyList())
 
@@ -66,11 +66,11 @@ fun CalendarScreenContent(
                 events = filteredEvents,
                 onDateChange = { newDate -> onDateSelected(newDate, null) },
                 userId = userId,
-                entretiens = entretiensWithContacts,
+                interviews = interviewsWithContacts,
                 contacts = contacts,
-                candidatures = candidatures,
-                appels = appels,
-                relances = relances
+                applications = applications,
+                calls = calls,
+                followsUp = followsUps
             )
 
 

@@ -24,8 +24,8 @@ fun BottomNavigationBar(
         )
         NavigationBarItem(
             label = { Text("Candidatures") },
-            selected = selectedSection == MainSection.CANDIDATURES,
-            onClick = { onTabSelected(MainSection.CANDIDATURES) },
+            selected = selectedSection == MainSection.APPLICATIONS,
+            onClick = { onTabSelected(MainSection.APPLICATIONS) },
             icon = { Icon(Icons.Default.List, contentDescription = "Candidatures") }
         )
         NavigationBarItem(

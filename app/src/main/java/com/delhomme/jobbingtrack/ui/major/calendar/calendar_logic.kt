@@ -1,18 +1,18 @@
 package com.delhomme.jobbingtrack.ui.major.calendar
 
-import com.delhomme.jobbingtrack.data.classes.Evenement
+import com.delhomme.jobbingtrack.data.classes.Event
 
 data class PositionedEvent(
-    val event: Evenement,
+    val event: Event,
     val column: Int,
     val totalColumns: Int
 )
 
-fun computeOverlappingEvents(events: List<Evenement>): List<PositionedEvent> {
+fun computeOverlappingEvents(events: List<Event>): List<PositionedEvent> {
     val positionedEvents = mutableListOf<PositionedEvent>()
 
     val sorted = events.sortedBy { it.startDate }
-    val active = mutableListOf<Pair<Evenement, Int>>() // Pair(event, column)
+    val active = mutableListOf<Pair<Event, Int>>() // Pair(event, column)
 
     for (event in sorted) {
         val start = event.startDate

@@ -1,10 +1,10 @@
 package com.delhomme.jobbingtrack.utils.mappers
 
-import com.delhomme.jobbingtrack.data.classes.Evenement
+import com.delhomme.jobbingtrack.data.classes.Event
 import com.delhomme.jobbingtrack.data.local.entities.EventEntity
 
-fun EventEntity.toDomain(): Evenement {
-    return Evenement(
+fun EventEntity.toDomain(): Event {
+    return Event(
         id = id,
         title = title,
         description = description,

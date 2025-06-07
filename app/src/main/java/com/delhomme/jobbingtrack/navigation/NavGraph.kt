@@ -7,49 +7,46 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
-import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ProfileViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
-import com.delhomme.jobbingtrack.ui.major.appels.AddOrEditAppelScreen
-import com.delhomme.jobbingtrack.ui.major.appels.AppelDetailScreen
+import com.delhomme.jobbingtrack.data.viewmodel.FollowUpViewModel
+import com.delhomme.jobbingtrack.ui.major.calls.AddOrEditCallScreen
+import com.delhomme.jobbingtrack.ui.major.calls.CallDetailsScreen
 import com.delhomme.jobbingtrack.ui.major.archive_bin.ArchiveScreen
 import com.delhomme.jobbingtrack.ui.major.archive_bin.TrashScreen
-import com.delhomme.jobbingtrack.ui.major.candidatures.AddOrEditCandidatureScreen
-import com.delhomme.jobbingtrack.ui.major.candidatures.CandidatureDetailScreen
+import com.delhomme.jobbingtrack.ui.major.applications.AddOrEditApplicationScreen
+import com.delhomme.jobbingtrack.ui.major.applications.ApplicationDetailsScreen
 import com.delhomme.jobbingtrack.ui.major.contacts.AddOrEditContactScreen
 import com.delhomme.jobbingtrack.ui.major.contacts.ContactDetailScreen
-import com.delhomme.jobbingtrack.ui.major.entreprises.AddOrEditEntrepriseScreen
-import com.delhomme.jobbingtrack.ui.major.entreprises.EntrepriseDetailScreen
-import com.delhomme.jobbingtrack.ui.major.entretiens.EntretienDetailScreen
-import com.delhomme.jobbingtrack.ui.major.entretiens.AddOrEditEntretienScreen
+import com.delhomme.jobbingtrack.ui.major.companies.AddOrEditCompanyScreen
+import com.delhomme.jobbingtrack.ui.major.companies.CompanyDetailScreen
+import com.delhomme.jobbingtrack.ui.major.interviews.InterviewDetailScreen
+import com.delhomme.jobbingtrack.ui.major.interviews.AddOrEditInterviewScreen
 import com.delhomme.jobbingtrack.ui.major.login.LoginScreen
 import com.delhomme.jobbingtrack.ui.main.MainScreen
 import com.delhomme.jobbingtrack.ui.major.login.RegisterScreen
 import com.delhomme.jobbingtrack.ui.major.profile.ProfileScreen
-import com.delhomme.jobbingtrack.ui.major.relances.AddOrEditRelanceScreen
-import com.delhomme.jobbingtrack.ui.major.relances.RelanceDetailScreen
+import com.delhomme.jobbingtrack.ui.major.followsuo.AddOrEditFollowUpScreen
+import com.delhomme.jobbingtrack.ui.major.followsuo.FollowUpDetailScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: String?) {
-    if (userId == null) {
-        // Redirection forcée si pas de user
-        LoginScreen(navController)
-        return
-    }
-
     NavHost(
         navController = navController,
-        startDestination = if (isLoggedIn) Routes.MAIN else Routes.LOGIN
+        startDestination = when {
+            userId == null -> Routes.LOGIN
+            isLoggedIn -> Routes.MAIN
+            else -> Routes.LOGIN
+        }
     ) {
         // — LOGIN / REGISTER / MAIN —
         composable(Routes.LOGIN)    { LoginScreen(navController) }
         composable(Routes.REGISTER) { RegisterScreen(navController) }
-        composable(Routes.MAIN)     { MainScreen(navController, userId) }
+        composable(Routes.MAIN)     { MainScreen(navController, userId ?: "") }
 
         composable(Routes.PROFILE) {
             ProfileScreen(
@@ -59,76 +56,76 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         }
         // — CANDIDATURES —
         composable(
-            route = Routes.ADD_CANDIDATURE
-                    + "?linkedEntrepriseId={linkedEntrepriseId}",
+            route = Routes.APPLICATION_ADD
+                    + "?linkedCompanyId={linkedCompanyId}",
             arguments = listOf(
-                navArgument("linkedEntrepriseId") {
+                navArgument("linkedCompanyId") {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
                 }
             )
         ) { backStack ->
-            val linkedEntId = backStack.arguments?.getString("linkedEntrepriseId")
-            AddOrEditCandidatureScreen(
-                userId = userId,
-                candidatureId = null,
-                linkedEntrepriseId  = linkedEntId,
+            val linkedCompId = backStack.arguments?.getString("linkedCompanyId")
+            AddOrEditApplicationScreen(
+                userId = userId.toString(),
+                applicationId = null,
+                linkedCompanyId  = linkedCompId,
                 onCancel            = { navController.popBackStack() }
             )
         }
         composable(
-            route = "${Routes.EDIT_CANDIDATURE}/{candidatureId}",
-            arguments = listOf(navArgument("candidatureId") {
+            route = "${Routes.APPLICATION_EDIT}/{applicationId}",
+            arguments = listOf(navArgument("applicationId") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("candidatureId")!!
-            AddOrEditCandidatureScreen(
-                userId = userId,
-                candidatureId = id,
-                linkedEntrepriseId = null,
+            val id = backStack.arguments!!.getString("applicationId")!!
+            AddOrEditApplicationScreen(
+                userId = userId.toString(),
+                applicationId = id,
+                linkedCompanyId = null,
                 onCancel = { navController.popBackStack() }
             )
         }
         composable(
-            "${Routes.CANDIDATURE_DETAIL}/{candidatureId}",
-            arguments = listOf(navArgument("candidatureId") {
+            "${Routes.APPLICATION_DETAIL}/{applicationId}",
+            arguments = listOf(navArgument("applicationId") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("candidatureId")!!
-            CandidatureDetailScreen(userId = userId, candidatureId = id, navController = navController)
+            val id = backStack.arguments!!.getString("applicationId")!!
+            ApplicationDetailsScreen(userId = userId.toString(), applicationId = id, navController = navController)
         }
 
         // — CONTACTS —
         composable(
-            route = Routes.ADD_CONTACT
-                    + "?linkedCandidatureId={linkedCandidatureId}"
-                    + "&linkedEntrepriseId={linkedEntrepriseId}",
+            route = Routes.CONTACT_ADD
+                    + "?linkedApplicationId={linkedApplicationId}"
+                    + "&linkedCompanyId={linkedCompanyId}",
             arguments = listOf(
-                navArgument("linkedCandidatureId"){ type=NavType.StringType; nullable=true; defaultValue=null },
-                navArgument("linkedEntrepriseId"){ type=NavType.StringType; nullable=true; defaultValue=null }
+                navArgument("linkedApplicationId"){ type=NavType.StringType; nullable=true; defaultValue=null },
+                navArgument("linkedCompanyId"){ type=NavType.StringType; nullable=true; defaultValue=null }
             )
         ) { bs ->
             AddOrEditContactScreen(
                 contactId            = null,
-                userId               = userId,
-                linkedCandidatureId  = bs.arguments?.getString("linkedCandidatureId"),
-                linkedEntrepriseId   = bs.arguments?.getString("linkedEntrepriseId"),
+                userId               = userId.toString(),
+                linkedApplicationId  = bs.arguments?.getString("linkedApplicationId"),
+                linkedCompanyId      = bs.arguments?.getString("linkedCompanyId"),
                 onCancel             = { navController.popBackStack() }
             )
         }
         composable(
-            route = "${Routes.EDIT_CONTACT}/{contactId}",
+            route = "${Routes.CONTACT_EDIT}/{contactId}",
             arguments = listOf(navArgument("contactId"){ type=NavType.StringType })
         ) { backStack ->
             val id = backStack.arguments!!.getString("contactId")!!
             AddOrEditContactScreen(
                 contactId            = id,
-                userId               = userId,
-                linkedCandidatureId  = null,
-                linkedEntrepriseId   = null,
+                userId               = userId.toString(),
+                linkedApplicationId  = null,
+                linkedCompanyId   = null,
                 onCancel             = { navController.popBackStack() }
             )
         }
@@ -139,153 +136,153 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             })
         ) { bs ->
             val id = bs.arguments!!.getString("contactId")!!
-            ContactDetailScreen(contactId = id, userId = userId, navController = navController)
+            ContactDetailScreen(contactId = id, userId = userId.toString(), navController = navController)
         }
 
         // — ENTREPRISES —
-        composable(Routes.ADD_ENTREPRISE) {
-            AddOrEditEntrepriseScreen(
-                entrepriseId = null,
+        composable(Routes.COMPANY_ADD) {
+            AddOrEditCompanyScreen(
+                companyId = null,
                 userId = userId,
                 onCancel = { navController.popBackStack() }
             )
         }
         composable(
-            "${Routes.EDIT_ENTREPRISE}/{entrepriseId}",
-            arguments = listOf(navArgument("entrepriseId") {
+            "${Routes.COMPANY_EDIT}/{companyId}",
+            arguments = listOf(navArgument("companyId") {
                 type = NavType.StringType
             })
         ) { bs ->
-            val id = bs.arguments!!.getString("entrepriseId")!!
-            AddOrEditEntrepriseScreen(
-                entrepriseId = id,
+            val id = bs.arguments!!.getString("companyId")!!
+            AddOrEditCompanyScreen(
+                companyId = id,
                 userId = userId,
                 onCancel = { navController.popBackStack() }
             )
         }
         composable(
-            "${Routes.ENTREPRISE_DETAIL}/{entrepriseId}",
-            arguments = listOf(navArgument("entrepriseId") {
+            "${Routes.COMPANY_DETAIL}/{companyId}",
+            arguments = listOf(navArgument("companyId") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("entrepriseId")!!
-            EntrepriseDetailScreen(entrepriseId = id, userId = userId, navController = navController)
+            val id = backStack.arguments!!.getString("companyId")!!
+            CompanyDetailScreen(companyId = id, userId = userId.toString(), navController = navController)
         }
 
 
         // — RELANCES —
         composable(
-            route = Routes.ADD_RELANCE
-                    + "?linkedCandidatureId={linkedCandidatureId}"
+            route = Routes.FOLLOWUP_ADD
+                    + "?linkedApplicationId={linkedApplicationId}"
                     + "&linkedCompanyId={linkedCompanyId}",
             arguments = listOf(
-                navArgument("linkedCandidatureId") { type = NavType.StringType; nullable = true; defaultValue = null },
+                navArgument("linkedApplicationId") { type = NavType.StringType; nullable = true; defaultValue = null },
                 navArgument("linkedCompanyId")       { type = NavType.StringType; nullable = true; defaultValue = null }
             )
         ) { bs ->
-            AddOrEditRelanceScreen(
-                relanceId = null,
-                userId = userId,
-                linkedCandidatureId = bs.arguments?.getString("linkedCandidatureId"),
+            AddOrEditFollowUpScreen(
+                followUpId = null,
+                userId = userId.toString(),
+                linkedApplicationId = bs.arguments?.getString("linkedApplicationId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
                 onCancel = { navController.popBackStack() }
             )
         }
         composable(
-            route = "${Routes.EDIT_RELANCE}/{relanceId}"
-                    + "?linkedCandidatureId={linkedCandidatureId}"
+            route = "${Routes.FOLLOWUP_EDIT}/{followUpId}"
+                    + "?linkedApplicationId={linkedApplicationId}"
                     + "&linkedCompanyId={linkedCompanyId}",
             arguments = listOf(
-                navArgument("relanceId"){ type=NavType.StringType },
-                navArgument("linkedCandidatureId"){ type=NavType.StringType; nullable=true; defaultValue=null },
+                navArgument("followUpId"){ type=NavType.StringType },
+                navArgument("linkedApplicationId"){ type=NavType.StringType; nullable=true; defaultValue=null },
                 navArgument("linkedCompanyId"){ type=NavType.StringType; nullable=true; defaultValue=null }
             )
         ) { bs ->
-            AddOrEditRelanceScreen(
-                relanceId           = bs.arguments!!.getString("relanceId"),
-                userId = userId,
-                linkedCandidatureId = bs.arguments?.getString("linkedCandidatureId"),
+            AddOrEditFollowUpScreen(
+                followUpId           = bs.arguments!!.getString("followUpId"),
+                userId = userId.toString(),
+                linkedApplicationId = bs.arguments?.getString("linkedApplicationId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
                 onCancel = { navController.popBackStack() }
             )
         }
         composable(
-            "${Routes.RELANCE_DETAIL}/{relanceId}",
-            arguments = listOf(navArgument("relanceId") {
+            "${Routes.FOLLOWUP_DETAIL}/{followUpId}",
+            arguments = listOf(navArgument("followUpId") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("relanceId")!!
-            RelanceDetailScreen(relanceId = id, userId = userId, navController = navController)
+            val id = backStack.arguments!!.getString("followUpId")!!
+            FollowUpDetailScreen(followUpId = id, userId = userId.toString(), navController = navController)
         }
 
 
         // — APPELS —
         composable(
-            route = Routes.ADD_APPEL
-                    + "?linkedCandidatureId={linkedCandidatureId}"
+            route = Routes.CALL_ADD
+                    + "?linkedApplicationId={linkedApplicationId}"
                     + "&linkedCompanyId={linkedCompanyId}"
                     + "&linkedContactId={linkedContactId}"
-                    + "&linkedRelanceId={linkedRelanceId}",
+                    + "&linkedFollowUpId={linkedFollowUpId}",
             arguments = listOf(
-                navArgument("linkedCandidatureId"){ type=NavType.StringType; nullable=true; defaultValue=null },
+                navArgument("linkedApplicationId"){ type=NavType.StringType; nullable=true; defaultValue=null },
                 navArgument("linkedCompanyId")     { type=NavType.StringType; nullable=true; defaultValue=null },
                 navArgument("linkedContactId")     { type=NavType.StringType; nullable=true; defaultValue=null },
-                navArgument("linkedRelanceId")     { type=NavType.StringType; nullable=true; defaultValue=null }
+                navArgument("linkedFollowUpId")     { type=NavType.StringType; nullable=true; defaultValue=null }
             )
         ) { bs ->
-            AddOrEditAppelScreen(
-                appelId             = null,
-                userId              = userId,
-                linkedCandidatureId = bs.arguments?.getString("linkedCandidatureId"),
+            AddOrEditCallScreen(
+                callId             = null,
+                userId              = userId.toString(),
+                linkedApplicationId = bs.arguments?.getString("linkedApplicationId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
                 linkedContactId     = bs.arguments?.getString("linkedContactId"),
-                linkedRelanceId     = bs.arguments?.getString("linkedRelanceId"),
+                linkedFollowUpId     = bs.arguments?.getString("linkedFollowUpId"),
                 onCancel = { navController.popBackStack() }
             )
         }
         composable(
-            "${Routes.EDIT_APPEL}/{appelId}"
-                    + "?linkedCandidatureId={linkedCandidatureId}"
+            "${Routes.CALL_EDIT}/{callId}"
+                    + "?linkedApplicationId={linkedApplicationId}"
                     + "&linkedCompanyId={linkedCompanyId}"
                     + "&linkedContactId={linkedContactId}"
-                    + "&linkedRelanceId={linkedRelanceId}",
+                    + "&linkedFollowUpId={linkedFollowUpId}",
             arguments = listOf(
-                navArgument("appelId"){ type=NavType.StringType },
-                navArgument("linkedCandidatureId"){ type=NavType.StringType; nullable=true; defaultValue=null },
+                navArgument("callId"){ type=NavType.StringType },
+                navArgument("linkedApplicationId"){ type=NavType.StringType; nullable=true; defaultValue=null },
                 navArgument("linkedCompanyId")     { type=NavType.StringType; nullable=true; defaultValue=null },
                 navArgument("linkedContactId")     { type=NavType.StringType; nullable=true; defaultValue=null },
-                navArgument("linkedRelanceId")     { type=NavType.StringType; nullable=true; defaultValue=null }
+                navArgument("linkedFollowUpId")     { type=NavType.StringType; nullable=true; defaultValue=null }
             )
         ) { bs ->
-            AddOrEditAppelScreen(
-                appelId             = bs.arguments!!.getString("appelId"),
-                userId              = userId,
-                linkedCandidatureId = bs.arguments?.getString("linkedCandidatureId"),
+            AddOrEditCallScreen(
+                callId             = bs.arguments!!.getString("callId"),
+                userId              = userId.toString(),
+                linkedApplicationId = bs.arguments?.getString("linkedApplicationId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
                 linkedContactId     = bs.arguments?.getString("linkedContactId"),
-                linkedRelanceId     = bs.arguments?.getString("linkedRelanceId"),
+                linkedFollowUpId     = bs.arguments?.getString("linkedFollowUpId"),
                 onCancel            = { navController.popBackStack() }
             )
         }
         composable(
-            "${Routes.APPEL_DETAIL}/{appelId}",
-            arguments = listOf(navArgument("appelId") {
+            "${Routes.DETAIL_CALL}/{callId}",
+            arguments = listOf(navArgument("callId") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("appelId")!!
-            AppelDetailScreen(appelId = id, navController = navController, userId = userId)
+            val id = backStack.arguments!!.getString("callId")!!
+            CallDetailsScreen(callId = id, navController = navController, userId = userId.toString())
         }
 
         // — ENTRETIENS —
         composable(
-            route = Routes.ADD_ENTRETIEN
-                    + "?linkedCandidatureId={linkedCandidatureId}"
+            route = Routes.INTERVIEW_ADD
+                    + "?linkedApplicationId={linkedApplicationId}"
                     + "&linkedCompanyId={linkedCompanyId}",
             arguments = listOf(
-                navArgument("linkedCandidatureId"){
+                navArgument("linkedApplicationId"){
                     type=NavType.StringType
                     nullable=true
                     defaultValue=null
@@ -297,18 +294,18 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
                 }
             )
         ) { backStack ->
-            val linkedCand = backStack.arguments?.getString("linkedCandidatureId")
-            val linkedComp = backStack.arguments?.getString("linkedCompanyId")
-            AddOrEditEntretienScreen(
-                entretienId = null,
-                linkedCandidatureId = linkedCand,
-                userId = userId,
-                linkedCompanyId = linkedComp,
+            val linkedAppId = backStack.arguments?.getString("linkedApplicationId")
+            val linkedCompId = backStack.arguments?.getString("linkedCompanyId")
+            AddOrEditInterviewScreen(
+                interviewId = null,
+                linkedApplicationId = linkedAppId,
+                userId = userId.toString(),
+                linkedCompanyId = linkedCompId,
                 onCancel = { navController.popBackStack() }
             )
         }
         composable(
-            route = "${Routes.EDIT_ENTRETIEN}/{entretienId}"
+            route = "${Routes.INTERVIEW_EDIT}/{entretienId}"
                   + "?linkedCandidatureId={linkedCandidatureId"
                   + "&linkedCompanyId={linkedCompanyId}",
             arguments = listOf(
@@ -331,10 +328,10 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             val linkedC = backStack.arguments?.getString("linkedCandidatureId")
             val linkedP = backStack.arguments?.getString("linkedCompanyId")
 
-            AddOrEditEntretienScreen(
-                entretienId = id,
-                userId = userId,
-                linkedCandidatureId = linkedC,
+            AddOrEditInterviewScreen(
+                interviewId = id,
+                userId = userId.toString(),
+                linkedApplicationId = linkedC,
                 linkedCompanyId = linkedP,
                 onCancel = { navController.popBackStack() }
             )
@@ -346,32 +343,32 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             })
         ) { backStack ->
             val id = backStack.arguments!!.getString("entretienId")!!
-            EntretienDetailScreen(
-                entretienId = id,
-                userId = userId,
+            InterviewDetailScreen(
+                interviewId = id,
+                userId = userId.toString(),
                 navController = navController,
                 onBackClick = { navController.popBackStack() }
             )
         }
 
         // — ARCHIVES / TRASH —
-        composable(Routes.ARCHIVES) { ArchiveScreen(navController, userId = userId,
-            candidatureViewModel = CandidatureViewModel(JobbingTrackApp()),
-            entrepriseViewModel = EntrepriseViewModel(JobbingTrackApp()),
-            appelViewModel = AppelViewModel(JobbingTrackApp()),
+        composable(Routes.ARCHIVES) { ArchiveScreen(navController, userId = userId.toString(),
+            applicationViewModel = ApplicationViewModel(JobbingTrackApp()),
+            companyViewModel = CompanyViewModel(JobbingTrackApp()),
+            callViewModel = CallViewModel(JobbingTrackApp()),
             contactViewModel = ContactViewModel(JobbingTrackApp()),
-            entretienViewModel = EntretienViewModel(JobbingTrackApp()),
-            relanceViewModel = RelanceViewModel(JobbingTrackApp()),
+            interviewViewModel = InterviewViewModel(JobbingTrackApp()),
+            followUpViewModel = FollowUpViewModel(JobbingTrackApp()),
             onDelete = { navController.navigate(Routes.TRASH) },
             onRestore = { navController.navigate(Routes.MAIN) }
         ) }
-        composable(Routes.TRASH) { TrashScreen(navController, userId = userId,
-            candidatureViewModel = CandidatureViewModel(JobbingTrackApp()),
-            entrepriseViewModel = EntrepriseViewModel(JobbingTrackApp()),
-            appelViewModel = AppelViewModel(JobbingTrackApp()),
+        composable(Routes.TRASH) { TrashScreen(navController, userId = userId.toString(),
+            applicationViewModel = ApplicationViewModel(JobbingTrackApp()),
+            companyViewModel = CompanyViewModel(JobbingTrackApp()),
+            callViewModel = CallViewModel(JobbingTrackApp()),
             contactViewModel = ContactViewModel(JobbingTrackApp()),
-            entretienViewModel = EntretienViewModel(JobbingTrackApp()),
-            relanceViewModel = RelanceViewModel(JobbingTrackApp()),
+            interviewViewModel = InterviewViewModel(JobbingTrackApp()),
+            followUpViewModel = FollowUpViewModel(JobbingTrackApp()),
             onDelete = { navController.navigate(Routes.TRASH) },
             onRestore = { navController.navigate(Routes.MAIN) }
         ) }

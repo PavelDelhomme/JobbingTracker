@@ -1,10 +1,10 @@
 package com.delhomme.jobbingtrack.utils
 
-import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
-import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
-import com.delhomme.jobbingtrack.data.local.entities.EntretienEntity
+import com.delhomme.jobbingtrack.data.local.entities.CallEntity
+import com.delhomme.jobbingtrack.data.local.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.data.local.entities.InterviewEntity
 import com.delhomme.jobbingtrack.data.local.entities.EventEntity
-import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
+import com.delhomme.jobbingtrack.data.local.entities.FollowUpEntity
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
@@ -34,9 +34,9 @@ fun parseDateToMillis(input: String?): Long {
     }
 }
 
-fun CandidatureEntity.toInstant()   = Instant.ofEpochMilli(applicationDate)
-fun RelanceEntity.toInstant()       = Instant.ofEpochMilli(date)
-fun AppelEntity.toInstant()         = Instant.ofEpochMilli(dateTime)
-fun EntretienEntity.toInstant()     = Instant.ofEpochMilli(dateTime)
+fun ApplicationEntity.toInstant()   = Instant.ofEpochMilli(applicationDate)
+fun FollowUpEntity.toInstant()       = Instant.ofEpochMilli(date)
+fun CallEntity.toInstant()         = Instant.ofEpochMilli(dateTime)
+fun InterviewEntity.toInstant()     = Instant.ofEpochMilli(dateTime)
 fun EventEntity.toInstant()         = startDate?.let { Instant.ofEpochMilli(it) }
 fun EventEntity.toEndDateInstant()  = endDate?.let { Instant.ofEpochMilli(it) }

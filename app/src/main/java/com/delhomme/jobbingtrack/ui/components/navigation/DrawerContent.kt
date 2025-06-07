@@ -35,6 +35,7 @@ fun AppDrawer(
     onArchive: () -> Unit,
     onTrash: () -> Unit,
     onLogout: () -> Unit,
+    isCalendarScreen: Boolean,
     filters: Map<String, Boolean>? = null,
     onFilterChange: ((String, Boolean) -> Unit)? = null,
     onViewTypeChange: (CalendarViewType)->Unit,
@@ -58,38 +59,40 @@ fun AppDrawer(
         }
         Divider()
 
-        // — Filtres / Vue (optionnel) —
-        filters?.let { f ->
-            Text("Filtres", Modifier.padding(16.dp), style = MaterialTheme.typography.titleSmall)
-            f.forEach { (name,checked) ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable{ onFilterChange?.invoke(name, !checked) }
-                        .padding(horizontal=16.dp, vertical=4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(checked, onCheckedChange = { onFilterChange?.invoke(name, it) })
-                    Spacer(Modifier.width(8.dp))
-                    Text(name)
+        if (isCalendarScreen) {
+            // — Filtres / Vue (optionnel) —
+            filters?.let { f ->
+                Text("Filtres", Modifier.padding(16.dp), style = MaterialTheme.typography.titleSmall)
+                f.forEach { (name,checked) ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable{ onFilterChange?.invoke(name, !checked) }
+                            .padding(horizontal=16.dp, vertical=4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(checked, onCheckedChange = { onFilterChange?.invoke(name, it) })
+                        Spacer(Modifier.width(8.dp))
+                        Text(name)
+                    }
                 }
+                Divider(Modifier.padding(vertical=8.dp))
+                Text("Vue", Modifier.padding(16.dp), style = MaterialTheme.typography.titleSmall)
+                CalendarViewType.values().forEach { vt ->
+                    val scope = rememberCoroutineScope()
+                    ListItem(
+                        headlineContent = { Text(vt.name) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable{
+                                onViewTypeChange(vt)
+                                scope.launch { drawerState.close() }
+                            }
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+                Divider(Modifier.padding(vertical=8.dp))
             }
-            Divider(Modifier.padding(vertical=8.dp))
-            Text("Vue", Modifier.padding(16.dp), style = MaterialTheme.typography.titleSmall)
-            CalendarViewType.values().forEach { vt ->
-                val scope = rememberCoroutineScope()
-                ListItem(
-                    headlineContent = { Text(vt.name) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable{
-                            onViewTypeChange(vt)
-                            scope.launch { drawerState.close() }
-                        }
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
-            Divider(Modifier.padding(vertical=8.dp))
         }
 
         // — Navigation —

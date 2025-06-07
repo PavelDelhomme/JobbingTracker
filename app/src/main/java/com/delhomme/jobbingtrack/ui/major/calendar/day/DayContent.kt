@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.classes.Evenement
+import com.delhomme.jobbingtrack.data.classes.Event
 import com.kizitonwose.calendar.core.CalendarDay
 
 @Composable
 fun DayContent(
     day: CalendarDay,
-    eventsForDay: List<Evenement>,
+    eventsForDay: List<Event>,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {

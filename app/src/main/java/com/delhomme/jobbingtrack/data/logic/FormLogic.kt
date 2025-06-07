@@ -10,23 +10,23 @@ import kotlinx.coroutines.flow.first
 import java.util.*
 
 class FormLogic(
-    private val candidatureRepo: CandidatureRepository,
-    private val entrepriseRepo: EntrepriseRepository,
+    private val applicationRepo: ApplicationRepository,
+    private val companyRepo: CompanyRepository,
     private val contactRepo: ContactRepository,
-    private val relanceRepo: RelanceRepository,
-    private val appelRepo: AppelRepository,
-    private val entretienRepo: EntretienRepository,
+    private val followUpRepo: FollowUpRepository,
+    private val callRepo: CallRepository,
+    private val interviewRepo: InterviewRepository,
     private val eventRepo: EventRepository,
 ) {
 
-    suspend fun saveEntrepriseFromForm(data: Map<String, String>) {
+    suspend fun saveCompanyFromForm(data: Map<String, String>) {
         // 1) id existant ou nouveau
         val id = data["id"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
         val name = data["name"].orEmpty().trim()
         
         // 2) build entity
-        val ent = data["userId"]?.let {
-            EntrepriseEntity(
+        val company = data["userId"]?.let {
+            CompanyEntity(
                 id         = id,
                 name       = name,
                 type       = data["type"],
@@ -36,41 +36,41 @@ class FormLogic(
                 address    = data["address"],
                 notes      = data["notes"],
                 userId     = it,
-                syncHash   = "entreprise-${UUID.randomUUID()}"
+                syncHash   = "company-${UUID.randomUUID()}"
             )
         }
         
         // 3) save
-        if (ent != null) {
-            entrepriseRepo.save(ent)
+        if (company != null) {
+            companyRepo.save(company)
         };
     }
     
-    suspend fun saveCandidatureFromForm(data: Map<String, String>) {
+    suspend fun saveApplicationFromForm(data: Map<String, String>) {
         val userId = data["userId"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
         // 1) Cherche l'entreprise existante
         val companyName = data["companyName"].orEmpty().trim()
-        var ent = entrepriseRepo
+        var company = companyRepo
             .allForUser(userId)
             .first()
             .find { it.name.equals(companyName, true) }
-            ?: EntrepriseEntity(
+            ?: CompanyEntity(
                 id = UUID.randomUUID().toString(),
                 name = companyName,
                 userId = userId,
-                syncHash = "ent-${UUID.randomUUID()}"
-            ).also { entrepriseRepo.save(it) }
+                syncHash = "company-${UUID.randomUUID()}"
+            ).also { companyRepo.save(it) }
         // 2) Cherche la candidature existante
         val id = data["id"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
         val title = data["title"].orEmpty().trim()
-        val cand = data["userId"]?.let {
-            CandidatureEntity(
+        val application = data["userId"]?.let {
+            ApplicationEntity(
                 id = id,
                 title = title,
-                companyId = ent.id,
+                companyId = company.id,
                 applicationDate = parseDateToMillis(data["applicationDate"]),
-                applicationStatus = (safeEnumValueOf<ApplicationStatus>(data["applicationStats"])
-                    ?: ApplicationStatus.WAITING).toString(),
+                applicationStatus = (safeEnumValueOf<ApplicationStatus>(data["applicationStatus"])
+                    ?: ApplicationStatus.OPEN).toString(),
                 applicationType = (safeEnumValueOf<ApplicationType>(data["applicationType"])
                     ?: ApplicationType.OFFER).toString(),
                 location = data["location"],
@@ -78,11 +78,11 @@ class FormLogic(
                 contractType = data["contractType"],
                 notes = data["notes"],
                 userId = it,
-                syncHash = "candidature-${UUID.randomUUID()}"
+                syncHash = "application-${UUID.randomUUID()}"
             )
         }
-        if (cand != null) {
-            candidatureRepo.save(cand)
+        if (application != null) {
+            applicationRepo.save(application)
         }
     }
 
@@ -91,16 +91,16 @@ class FormLogic(
         val userId = data["userId"].orEmpty()
         // idem : créer ou retrouver l’entreprise
         val companyName = data["companyName"].orEmpty().trim()
-        var ent = entrepriseRepo
+        var cmp = companyRepo
             .allForUser(userId)
             .first()
             .find { it.name.equals(companyName, true) }
-            ?: EntrepriseEntity(
+            ?: CompanyEntity(
                 id = UUID.randomUUID().toString(),
                 name = companyName,
                 userId = userId,
-                syncHash = "ent-${UUID.randomUUID()}"
-            ).also { entrepriseRepo.save(it) }
+                syncHash = "company-${UUID.randomUUID()}"
+            ).also { companyRepo.save(it) }
 
         val contact = ContactEntity(
             id           = id,
@@ -110,68 +110,68 @@ class FormLogic(
             email        = data["email"],
             position     = data["position"],
             department   = data["department"],
-            companyId = ent.id,
+            companyId    = cmp.id,
             notes        = data["notes"].orEmpty(),
             isArchived   = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
             isDeleted    = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,
             userId       = data["userId"].orEmpty(),
             syncHash     = "contact-${UUID.randomUUID()}",
-            candidatureId = data["candidatureId"].orEmpty(),
+            applicationIds = listOf(data["applicationIds"].orEmpty()),
         )
         contactRepo.save(contact)
     }
 
 
-    suspend fun saveRelanceFromForm(data: Map<String, String>) {
+    suspend fun saveFollowUpFromForm(data: Map<String, String>) {
         val id = data["id"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
-        val rel = RelanceEntity(
+        val fol = FollowUpEntity(
             id             = id,
             date           = parseDateToMillis(data["date"]),
-            candidatureId  = data["candidatureId"].orEmpty(),
+            applicationId  = data["applicationId"].orEmpty(),
             companyId      = data["companyId"].orEmpty(),
             contactId      = data["contactId"]?.takeIf(String::isNotBlank),
-            type           = safeEnumValueOf<RelanceType>(data["type"]).toString(),
-            responseStatus = safeEnumValueOf<RelanceStatus>(data["responseStatus"]).toString(),
+            type           = safeEnumValueOf<FollowUpType>(data["type"]).toString(),
+            responseStatus = safeEnumValueOf<FollowUpStatus>(data["responseStatus"]).toString(),
             notes          = data["notes"],
             isArchived     = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
             isDeleted      = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,
             userId         = data["userId"].orEmpty(),
-            syncHash       = "relance-${UUID.randomUUID()}"
+            syncHash       = "followup-${UUID.randomUUID()}"
         )
-        relanceRepo.save(rel)
+        followUpRepo.save(fol)
     }
 
 
-    suspend fun saveAppelFromForm(data: Map<String, String>) {
+    suspend fun saveCallFromForm(data: Map<String, String>) {
         val id = data["id"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
-        val appel = AppelEntity(
+        val call = CallEntity(
             id             = id,
             subject        = data["subject"].orEmpty(),
             companyId      = data["companyId"].orEmpty(),
-            candidatureId  = data["candidatureId"]?.takeIf(String::isNotBlank),
+            applicationId  = data["applicationId"]?.takeIf(String::isNotBlank),
             contactId      = data["contactId"]?.takeIf(String::isNotBlank),
-            relanceId      = data["relanceId"]?.takeIf(String::isNotBlank),
+            followUpId      = data["followUpId"]?.takeIf(String::isNotBlank),
             dateTime       = parseDateToMillis(data["dateTime"]),
             notes          = data["notes"],
             isArchived     = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
             isDeleted      = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,
-            syncHash       = "appel-${UUID.randomUUID()}",
+            syncHash       = "call-${UUID.randomUUID()}",
             userId         = data["userId"].orEmpty()
         )
-        appelRepo.save(appel)
+        callRepo.save(call)
     }
 
-    suspend fun saveEntretienFromForm(data: Map<String, String>) {
+    suspend fun saveInterviewFromForm(data: Map<String, String>) {
         val id = data["id"]?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
-        val ent = EntretienEntity(
+        val interview = InterviewEntity(
             id              = id,
-            candidatureId   = data["candidatureId"].orEmpty(),
+            applicationId   = data["applicationId"].orEmpty(),
             companyId       = data["companyId"].orEmpty(),
             dateTime        = parseDateToMillis(data["dateTime"]),
             durationMinutes = data["durationMinutes"]?.toIntOrNull(),
             location        = data["location"],
-            style           = safeEnumValueOf<EntretienStyle>(data["style"]).toString(),
-            type            = safeEnumValueOf<EntretienType>(data["type"]).toString(),
+            style           = safeEnumValueOf<InterviewStyle>(data["style"]).toString(),
+            type            = safeEnumValueOf<InterviewType>(data["type"]).toString(),
             preInterviewNotes   = data["preInterviewNotes"],
             interviewNotes      = data["interviewNotes"],
             postInterviewNotes  = data["postInterviewNotes"],
@@ -181,9 +181,9 @@ class FormLogic(
             isArchived         = data["isArchived"]?.toBooleanStrictOrNull() ?: false,
             isDeleted          = data["isDeleted"]?.toBooleanStrictOrNull() ?: false,
             userId             = data["userId"].orEmpty(),
-            syncHash           = "entretien-${UUID.randomUUID()}",
+            syncHash           = "interview-${UUID.randomUUID()}",
         )
         // enlève d'abord les anciens contacts, puis recrée les crossrefs
-        entretienRepo.save(ent, data["contacts"]?.split(",")?.map(String::trim).orEmpty())
+        interviewRepo.save(interview, data["contacts"]?.split(",")?.map(String::trim).orEmpty())
     }
 }

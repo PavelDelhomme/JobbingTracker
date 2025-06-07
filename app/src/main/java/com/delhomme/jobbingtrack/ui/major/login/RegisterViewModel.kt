@@ -1,6 +1,7 @@
 package com.delhomme.jobbingtrack.ui.major.login
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -33,6 +34,7 @@ class RegisterViewModel(app: Application) : AndroidViewModel(app) {
             } catch (e: Exception) {
                 _errorMessage.value = "Erreur réseau : ${e.message}"
                 _registerSuccess.value = false
+                Log.e("RegisterViewModel", "Error registering user", e)
             }
         }
     }

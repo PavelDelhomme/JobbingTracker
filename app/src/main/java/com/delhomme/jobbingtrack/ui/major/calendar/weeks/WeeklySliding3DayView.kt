@@ -16,7 +16,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.classes.Evenement
+import com.delhomme.jobbingtrack.data.classes.Event
 import com.delhomme.jobbingtrack.ui.major.calendar.computeOverlappingEvents
 import com.delhomme.jobbingtrack.ui.components.navigation.CalendarViewType
 import com.google.accompanist.pager.*
@@ -28,7 +28,7 @@ import java.time.*
 @Composable
 fun WeeklySliding3DayView(
     initialDate: LocalDate,
-    events: List<Evenement>,
+    events: List<Event>,
     onDateSelected: (LocalDate, CalendarViewType?) -> Unit
 ) {
     var currentStartDate by remember { mutableStateOf(initialDate) }
@@ -60,7 +60,7 @@ fun WeeklySliding3DayView(
 
     val redLineOffset = (currentTime.hour * 60 + currentTime.minute) * scaledRowHeightPx / 60
 
-    var selectedEvent by remember { mutableStateOf<Evenement?>(null) }
+    var selectedEvent by remember { mutableStateOf<Event?>(null) }
 
     val totalHeightPx = totalMinutes * scaledRowHeightPx
     val totalHeightDp = with(density) { totalHeightPx.toDp() }

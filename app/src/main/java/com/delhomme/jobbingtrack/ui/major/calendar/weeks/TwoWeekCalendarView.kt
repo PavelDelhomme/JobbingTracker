@@ -19,7 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.classes.Evenement
+import com.delhomme.jobbingtrack.data.classes.Event
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -28,7 +28,7 @@ import java.time.ZoneId
 @Composable
 fun TwoWeekCalendarView(
     startDate: LocalDate,
-    events: List<Evenement>,
+    events: List<Event>,
     modifier: Modifier = Modifier
 ) {
     val days = (0L until 14L).map { startDate.plusDays(it) }

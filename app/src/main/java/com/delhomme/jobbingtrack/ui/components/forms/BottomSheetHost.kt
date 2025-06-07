@@ -9,22 +9,22 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
-import com.delhomme.jobbingtrack.ui.major.appels.AddOrEditAppelScreen
-import com.delhomme.jobbingtrack.ui.major.candidatures.AddOrEditCandidatureScreen
+import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.ui.major.calls.AddOrEditCallScreen
+import com.delhomme.jobbingtrack.ui.major.applications.AddOrEditApplicationScreen
 import com.delhomme.jobbingtrack.ui.major.contacts.AddOrEditContactScreen
-import com.delhomme.jobbingtrack.ui.major.entreprises.AddOrEditEntrepriseScreen
-import com.delhomme.jobbingtrack.ui.major.entretiens.AddOrEditEntretienScreen
-import com.delhomme.jobbingtrack.ui.major.relances.AddOrEditRelanceScreen
+import com.delhomme.jobbingtrack.ui.major.companies.AddOrEditCompanyScreen
+import com.delhomme.jobbingtrack.ui.major.interviews.AddOrEditInterviewScreen
+import com.delhomme.jobbingtrack.ui.major.followsuo.AddOrEditFollowUpScreen
 
 enum class BottomSheetContentType {
-    ADD_CANDIDATURE,
+    ADD_APPLICATION,
     ADD_CONTACT,
-    ADD_ENTREPRISE,
+    ADD_COMPANY,
     ADD_RELANCE,
-    ADD_ENTRETIEN,
-    ADD_APPEL,
+    ADD_INTERVIEW,
+    ADD_CALL,
     NONE
 }
 
@@ -40,8 +40,8 @@ fun BottomSheetHost(
     if (visibleContent == BottomSheetContentType.NONE) return
 
     // 1) On récupère les données via les ViewModels (pas FakeDataProvider)
-    val candVm: CandidatureViewModel = viewModel()
-    val entpVm: EntrepriseViewModel = viewModel()
+    val candVm: ApplicationViewModel = viewModel()
+    val entpVm: CompanyViewModel = viewModel()
 
 
     // 2) On colle les StateFlow ici
@@ -67,10 +67,10 @@ fun BottomSheetHost(
     ) {
 
         when (visibleContent) {
-            BottomSheetContentType.ADD_CANDIDATURE -> {
-                AddOrEditCandidatureScreen(
-                    candidatureId    = null,
-                    linkedEntrepriseId  = null,
+            BottomSheetContentType.ADD_APPLICATION -> {
+                AddOrEditApplicationScreen(
+                    applicationId    = null,
+                    linkedCompanyId  = null,
                     onCancel         = onDismissRequest,
                     userId           = userId
                 )
@@ -78,41 +78,41 @@ fun BottomSheetHost(
             BottomSheetContentType.ADD_CONTACT -> {
                 AddOrEditContactScreen(
                     contactId             = null,
-                    linkedCandidatureId   = linkedCandidatureId,
-                    linkedEntrepriseId    = null,
+                    linkedApplicationId   = linkedCandidatureId,
+                    linkedCompanyId    = null,
                     onCancel              = onDismissRequest,
                     userId                = userId
                 )
             }
-            BottomSheetContentType.ADD_ENTREPRISE -> {
-                AddOrEditEntrepriseScreen(
-                    entrepriseId   = null,
+            BottomSheetContentType.ADD_COMPANY -> {
+                AddOrEditCompanyScreen(
+                    companyId   = null,
                     onCancel       = onDismissRequest,
                     userId         = userId
                 )
             }
             BottomSheetContentType.ADD_RELANCE -> {
-                AddOrEditRelanceScreen(
-                    relanceId               = null,
-                    linkedCandidatureId     = linkedCandidatureId,
+                AddOrEditFollowUpScreen(
+                    followUpId               = null,
+                    linkedApplicationId     = linkedCandidatureId,
                     linkedCompanyId         = entrepriseIdFromCandidature,
                     onCancel                = onDismissRequest,
                     userId                  = userId
                 )
             }
-            BottomSheetContentType.ADD_ENTRETIEN -> {
-                AddOrEditEntretienScreen(
-                    entretienId             = null,
-                    linkedCandidatureId     = linkedCandidatureId,
+            BottomSheetContentType.ADD_INTERVIEW -> {
+                AddOrEditInterviewScreen(
+                    interviewId             = null,
+                    linkedApplicationId     = linkedCandidatureId,
                     linkedCompanyId         = entrepriseIdFromCandidature,
                     onCancel                = onDismissRequest,
                     userId                  = userId
                 )
             }
-            BottomSheetContentType.ADD_APPEL -> {
-                AddOrEditAppelScreen(
-                    appelId                 = null,
-                    linkedCandidatureId     = linkedCandidatureId,
+            BottomSheetContentType.ADD_CALL -> {
+                AddOrEditCallScreen(
+                    callId                 = null,
+                    linkedApplicationId     = linkedCandidatureId,
                     linkedCompanyId         = entrepriseIdFromCandidature,
                     onCancel                = onDismissRequest,
                     userId                  = userId

@@ -6,11 +6,9 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DownloadDone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.data.local.entities.ProfileEntity
 import com.delhomme.jobbingtrack.data.viewmodel.ProfileViewModel
 import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
 import com.delhomme.jobbingtrack.utils.DialogType
@@ -19,6 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import com.delhomme.jobbingtrack.data.networks.TokenManager
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfileScreen(
     profileId: String? = null,
@@ -27,13 +26,42 @@ fun ProfileScreen(
     val context = LocalContext.current
     val userId = TokenManager.getUserId(context) ?: ""
 
-    //val profiles by viewModel.allProfiles.observeAsState(emptyList())
-    //val remoteProfileState = viewModel.profileForUser(userId = profileId ?: "").observeAsState(null)
+    val experienceVm: ExperienceViewModel = viewModel()
+    val experiences by experienceVm.getAllForUser(userId).observeAsState(emptyList())
+
+    experiences.forEach {
+        Text("- ${it.title} chez ${it.company}")
+    }
     val profile by viewModel.profileForUser(userId).observeAsState()
 
     var subject by remember { mutableStateOf(profile?.subject ?: "") }
     var dialogType by remember { mutableStateOf<DialogType?>(null) }
     var dialogVisible by remember { mutableStateOf(false) }
+
+    var skills by remember { mutableStateOf(listOf("Kotlin")) }
+    var newSkill by remember { mutableStateOf("") }
+
+
+    Row {
+        OutlinedTextField(
+            value = newSkill,
+            onValueChange = { newSkill = it },
+            label = { Text("Ajouter une compétence") }
+        )
+        Button(onClick = {
+            if (newSkill.isNotBlank()) {
+                skills = skills + newSkill
+                newSkill = ""
+            }
+        }) {
+            Text("Ajouter")
+        }
+    }
+    FlowRow {
+        skills.forEach { skill ->
+            AssistChip(onClick = {}, label = { Text(skill) })
+        }
+    }
 
     Column(
         modifier = Modifier

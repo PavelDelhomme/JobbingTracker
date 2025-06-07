@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 enum class MainSection {
-    DASHBOARD, CANDIDATURES, CALENDAR
+    DASHBOARD, APPLICATIONS, CALENDAR
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +37,7 @@ fun MainScreen(navController: NavHostController, userId: String) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
     var bottomSheetContent by remember { mutableStateOf(BottomSheetContentType.NONE) }
-    var linkedCandidatureId by remember { mutableStateOf<String?>(null) }
+    var linkedApplicationId by remember { mutableStateOf<String?>(null) }
 
     var currentSection by rememberSaveable { mutableStateOf(MainSection.DASHBOARD) }
 
@@ -76,7 +76,7 @@ fun MainScreen(navController: NavHostController, userId: String) {
     BackHandler(enabled = currentRoute == Routes.MAIN) {
         when (currentSection) {
             MainSection.CALENDAR,
-            MainSection.CANDIDATURES -> {
+            MainSection.APPLICATIONS -> {
                 currentSection = MainSection.DASHBOARD
             }
             MainSection.DASHBOARD -> {
@@ -133,7 +133,8 @@ fun MainScreen(navController: NavHostController, userId: String) {
                     filterStates[name] = checked
                 },
                 onViewTypeChange = { calendarViewType = it },
-                drawerState = drawerState
+                drawerState = drawerState,
+                isCalendarScreen = currentSection == MainSection.CALENDAR
             )
         }
     ) {
@@ -178,12 +179,12 @@ fun MainScreen(navController: NavHostController, userId: String) {
             floatingActionButton = {
                 val fabContentType = when (currentSection) {
                     MainSection.DASHBOARD -> BottomSheetContentType.NONE
-                    MainSection.CANDIDATURES -> when (selectedTabIndex) {
-                        0 -> BottomSheetContentType.ADD_CANDIDATURE
-                        1 -> BottomSheetContentType.ADD_ENTREPRISE
-                        3 -> BottomSheetContentType.ADD_APPEL
+                    MainSection.APPLICATIONS -> when (selectedTabIndex) {
+                        0 -> BottomSheetContentType.ADD_APPLICATION
+                        1 -> BottomSheetContentType.ADD_COMPANY
+                        3 -> BottomSheetContentType.ADD_CALL
                         4 -> BottomSheetContentType.ADD_CONTACT
-                        5 -> BottomSheetContentType.ADD_ENTRETIEN
+                        5 -> BottomSheetContentType.ADD_INTERVIEW
                         else -> BottomSheetContentType.NONE
                     }
                     MainSection.CALENDAR -> BottomSheetContentType.NONE
@@ -205,7 +206,7 @@ fun MainScreen(navController: NavHostController, userId: String) {
                     MainSection.DASHBOARD -> DashboardScreen(
                         navController = navController,
                     )
-                    MainSection.CANDIDATURES -> CandidaturesTabsContent(
+                    MainSection.APPLICATIONS -> ApplicationsTabsContent(
                         navController = navController,
                         selectedTabIndex = selectedTabIndex,
                         onTabChange = { selectedTabIndex = it },
@@ -230,11 +231,11 @@ fun MainScreen(navController: NavHostController, userId: String) {
         BottomSheetHost(
             navController = navController,
             visibleContent = bottomSheetContent,
-            linkedCandidatureId = linkedCandidatureId,
+            linkedCandidatureId = linkedApplicationId,
             userId = userId,
             onDismissRequest = {
                 bottomSheetContent = BottomSheetContentType.NONE
-                linkedCandidatureId = null
+                linkedApplicationId = null
             }
         )
 

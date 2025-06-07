@@ -11,69 +11,67 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
-import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
-import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.FollowUpViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 
 @Composable
 fun ArchiveScreen(navController: NavController,
                   userId: String,
-                  candidatureViewModel: CandidatureViewModel,
-                  entrepriseViewModel: EntrepriseViewModel,
-                  appelViewModel: AppelViewModel,
+                  applicationViewModel: ApplicationViewModel,
+                  companyViewModel: CompanyViewModel,
+                  callViewModel: CallViewModel,
                   contactViewModel: ContactViewModel,
-                  entretienViewModel: EntretienViewModel,
-                  relanceViewModel: RelanceViewModel,
+                  interviewViewModel: InterviewViewModel,
+                  followUpViewModel: FollowUpViewModel,
                   onRestore: () -> Unit,
                   onDelete: () -> Unit
 ) {
-    val candidatureArchived = candidatureViewModel.archivedForUser(userId).observeAsState(listOf()).value
-    val entrepriseArchived = entrepriseViewModel.archivedForUser(userId).observeAsState(listOf()).value
-    val appelArchived = appelViewModel.archivedForUser(userId).observeAsState(listOf()).value
-    val contactArchived = contactViewModel.archivedForUser(userId).observeAsState(listOf()).value
-    val entretienArchived = entretienViewModel.activeForUser(userId).observeAsState(listOf()).value
+    val applicationsArchived = applicationViewModel.archivedForUser(userId).observeAsState(listOf()).value
+    val companiesArchived = companyViewModel.archivedForUser(userId).observeAsState(listOf()).value
+    val callsArchived = callViewModel.archivedForUser(userId).observeAsState(listOf()).value
+    val contactsArchived = contactViewModel.archivedForUser(userId).observeAsState(listOf()).value
+    val interviewsArchived = interviewViewModel.activeForUser(userId).observeAsState(listOf()).value
         .filter { it.isArchived && !it.isDeleted }
-    val relanceArchived = relanceViewModel.archivedForUser(userId).observeAsState(listOf()).value
+    val followUpsArchived = followUpViewModel.archivedForUser(userId).observeAsState(listOf()).value
 
-    val archived = candidatureArchived + entrepriseArchived + appelArchived + contactArchived + entretienArchived + relanceArchived
+    val archived = applicationsArchived + companiesArchived + callsArchived + contactsArchived + interviewsArchived + followUpsArchived
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text("Archives", style = MaterialTheme.typography.headlineMedium)
         Text("Candidatures archivées", style = MaterialTheme.typography.headlineSmall)
-        candidatureArchived.forEach {
+        applicationsArchived.forEach {
             Text(
                 text = "${it.title} (${it.applicationStatus})",
                 modifier = Modifier.clickable {
-                    navController.navigate("${Routes.CANDIDATURE_DETAIL}/${it.id}")
+                    navController.navigate("${Routes.APPLICATION_DETAIL}/${it.id}")
                 }.padding(8.dp)
             )
         }
         Text("Entreprises archivées", style = MaterialTheme.typography.headlineSmall)
-        entrepriseArchived.forEach {
+        companiesArchived.forEach {
             Text(
                 text = "${it.name}",
                 modifier = Modifier.clickable {
-                    navController.navigate("${Routes.ENTREPRISE_DETAIL}/${it.id}")
+                    navController.navigate("${Routes.COMPANY_DETAIL}/${it.id}")
                 }.padding(8.dp)
             )
         }
         Text("Appels archivées", style = MaterialTheme.typography.headlineSmall)
-        appelArchived.forEach {
+        callsArchived.forEach {
             Text(
                 text = "${it.subject}",
                 modifier = Modifier.clickable {
-                    navController.navigate("${Routes.APPEL_DETAIL}/${it.id}")
+                    navController.navigate("${Routes.DETAIL_CALL}/${it.id}")
                 }.padding(8.dp)
             )
         }
         Text("Contacts archivées", style = MaterialTheme.typography.headlineSmall)
-        contactArchived.forEach {
+        contactsArchived.forEach {
             Text(
                 text = "${it.firstName} ${it.lastName}",
                 modifier = Modifier.clickable {
@@ -82,20 +80,20 @@ fun ArchiveScreen(navController: NavController,
             )
         }
         Text("Entretiens archivées", style = MaterialTheme.typography.headlineSmall)
-        entretienArchived.forEach {
+        interviewsArchived.forEach {
             Text(
-                text = "${it.type} ${it.style} ${it.dateTime}${it.candidatureId} ${it.companyId}",
+                text = "${it.type} ${it.style} ${it.dateTime}${it.applicationId} ${it.companyId}",
                 modifier = Modifier.clickable {
                     navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.id}")
                 }.padding(8.dp)
             )
         }
         Text("Relances archivées", style = MaterialTheme.typography.headlineSmall)
-        relanceArchived.forEach {
+        followUpsArchived.forEach {
             Text(
-                text = "${it.archivedAt} ${it.date} ${it.responseStatus} (${it.candidatureId})",
+                text = "${it.archivedAt} ${it.date} ${it.responseStatus} (${it.applicationId})",
                 modifier = Modifier.clickable {
-                    navController.navigate("${Routes.RELANCE_DETAIL}/${it.id}")
+                    navController.navigate("${Routes.FOLLOWUP_DETAIL}/${it.id}")
                 }.padding(8.dp)
             )
         }

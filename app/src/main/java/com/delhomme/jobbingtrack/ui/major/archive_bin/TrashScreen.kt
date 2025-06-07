@@ -1,6 +1,5 @@
 package com.delhomme.jobbingtrack.ui.major.archive_bin
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,38 +14,36 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.fake.FakeDataProvider
-import com.delhomme.jobbingtrack.data.viewmodel.AppelViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CandidatureViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
 import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntrepriseViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EntretienViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.RelanceViewModel
-import com.delhomme.jobbingtrack.navigation.Routes
+import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.FollowUpViewModel
 
 @Composable
 fun TrashScreen(
     navController: NavController,
     userId: String,
-    candidatureViewModel: CandidatureViewModel,
-    entrepriseViewModel: EntrepriseViewModel,
-    appelViewModel: AppelViewModel,
+    applicationViewModel: ApplicationViewModel,
+    companyViewModel: CompanyViewModel,
+    callViewModel: CallViewModel,
     contactViewModel: ContactViewModel,
-    entretienViewModel: EntretienViewModel,
-    relanceViewModel: RelanceViewModel,
+    interviewViewModel: InterviewViewModel,
+    followUpViewModel: FollowUpViewModel,
     onRestore: () -> Unit,
     onDelete: () -> Unit
 ) {
 
-    val candidatures = candidatureViewModel
+    val applications = applicationViewModel
         .allForUser(userId).observeAsState(emptyList()).value
         .filter { it.isDeleted }
 
-    val entreprises = entrepriseViewModel
+    val companies = companyViewModel
         .allForUser(userId).observeAsState(emptyList()).value
         .filter { it.isDeleted }
 
-    val appels = appelViewModel
+    val calls = callViewModel
         .allForUser(userId).observeAsState(emptyList()).value
         .filter { it.isDeleted }
 
@@ -54,28 +51,28 @@ fun TrashScreen(
         .allForUser(userId).observeAsState(emptyList()).value
         .filter { it.isDeleted }
 
-    val entretiens = entretienViewModel
+    val interviews = interviewViewModel
         .allForUser(userId).observeAsState(emptyList()).value
-        .filter { it.entretien.isDeleted }
+        .filter { it.interview.isDeleted }
 
-    val relances = relanceViewModel
+    val followsUps = followUpViewModel
         .allForUser(userId).observeAsState(emptyList()).value
         .filter { it.isDeleted }
 
-    val deleted = candidatures + entreprises + appels + contacts + entretiens + relances
+    val deleteds = applications + companies + calls + contacts + interviews + followsUps
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text("Corbeille", style = MaterialTheme.typography.headlineMedium)
-        candidatures.forEach {
+        applications.forEach {
             Row(Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(it.title)
                 Row {
                     TextButton(onClick = {
-                        candidatureViewModel.restore(listOf(it.id), userId)
+                        applicationViewModel.restore(listOf(it.id), userId)
                         onRestore()
                     }) { Text("Restaurer") }
                     TextButton(onClick = {
-                        candidatureViewModel.deleteForever(listOf(it.id), userId)
+                        applicationViewModel.deleteForever(listOf(it.id), userId)
                         onDelete()
                     }) { Text("Supprimer") }
                 }

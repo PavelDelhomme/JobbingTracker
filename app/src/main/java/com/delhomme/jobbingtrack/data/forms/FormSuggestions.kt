@@ -21,15 +21,15 @@ object FormSuggestions {
         "Manager", "Recruteur", "CTO", "Chargé RH", "CEO"
     )
 
-    val relanceTypes = mutableListOf(
+    val followUpTypes = mutableListOf(
         "Appel", "Email", "Sur place"
     )
 
-    val entretienTypes = mutableListOf(
+    val interviewTypes = mutableListOf(
         "RH", "TECHNICAL"
     )
 
-    val entretienStyles = mutableListOf(
+    val interviewStyles = mutableListOf(
         "ON_SITE", "REMOTE"
     )
 }

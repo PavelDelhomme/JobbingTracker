@@ -6,10 +6,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.classes.Entretien
-import com.delhomme.jobbingtrack.data.classes.EntretienStyle
-import com.delhomme.jobbingtrack.data.classes.EntretienType
-import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
 import com.delhomme.jobbingtrack.ui.components.items.SwipeToDismissItem
 
 @Composable

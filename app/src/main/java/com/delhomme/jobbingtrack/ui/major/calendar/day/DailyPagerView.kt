@@ -3,12 +3,12 @@ package com.delhomme.jobbingtrack.ui.major.calendar.day
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.delhomme.jobbingtrack.data.local.entities.AppelEntity
-import com.delhomme.jobbingtrack.data.local.entities.CandidatureEntity
+import com.delhomme.jobbingtrack.data.local.entities.CallEntity
+import com.delhomme.jobbingtrack.data.local.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
-import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
+import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.data.local.entities.EventEntity
-import com.delhomme.jobbingtrack.data.local.entities.RelanceEntity
+import com.delhomme.jobbingtrack.data.local.entities.FollowUpEntity
 import com.google.accompanist.pager.*
 import java.time.Instant
 import java.time.LocalDate
@@ -21,11 +21,11 @@ fun DailyPagerView(
     events: List<EventEntity>,
     onDateChange: (LocalDate) -> Unit,
     userId: String,
-    entretiens: List<EntretienWithContacts> = emptyList(),
+    interviews: List<InterviewWithContacts> = emptyList(),
     contacts: List<ContactEntity> = emptyList(),
-    candidatures: List<CandidatureEntity> = emptyList(),
-    appels: List<AppelEntity> = emptyList(),
-    relances: List<RelanceEntity> = emptyList(),
+    applications: List<ApplicationEntity> = emptyList(),
+    calls: List<CallEntity> = emptyList(),
+    followsUp: List<FollowUpEntity> = emptyList(),
 ) {
     val pagerState = rememberPagerState(initialPage = 1000) // Centre fictif
     val currentDate by remember {
@@ -50,11 +50,11 @@ fun DailyPagerView(
                     .atZone(ZoneId.systemDefault()).toLocalDate() == pageDate
             },
             userId = userId,
-            entretiens = entretiens,
+            interviews = interviews,
             contacts = contacts,
-            candidatures = candidatures,
-            appels = appels,
-            relances = relances,
+            applications = applications,
+            calls = calls,
+            followsUp = followsUp,
         )
     }
 }

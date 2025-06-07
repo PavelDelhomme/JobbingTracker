@@ -8,21 +8,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
 import com.delhomme.jobbingtrack.data.classes.*
 import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
-import com.delhomme.jobbingtrack.data.local.entities.EntretienWithContacts
+import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun EventCard(
-    events: List<Evenement>,
-    entretiens: List<EntretienWithContacts>,
+    events: List<Event>,
+    interviews: List<InterviewWithContacts>,
     userId: String,
-    event: Evenement,
-    relatedEntretien: EntretienWithContacts? = null,
+    event: Event,
+    relatedInterview: InterviewWithContacts? = null,
     relatedContacts: List<ContactEntity> = emptyList(),
     modifier: Modifier = Modifier,
     compact: Boolean = false
@@ -65,20 +64,20 @@ fun EventCard(
 
             if (!compact) {
                 when (event.type) {
-                    "Entretiens" -> {
+                    "Interviews" -> {
                         relatedContacts.forEach { contact ->
                             Text("${contact.firstName} ${contact.lastName}")
                             Text(contact.phone ?: contact.email ?: "Pas de contact")
                         }
                     }
-                    "Appels", "Relances", "Candidatures" -> {
+                    "Calls" -> {
                         Text(event.description ?: "Aucune description", style = MaterialTheme.typography.bodySmall)
                     }
-                    "Relances" -> {
+                    "FollowUps" -> {
                         Text("Relance")
                         Text(event.description ?: "")
                     }
-                    "Candidatures" -> {
+                    "Applications" -> {
                         Text("Candidature")
                         Text(event.title ?: "")
                     }
