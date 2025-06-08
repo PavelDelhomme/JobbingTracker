@@ -1,8 +1,8 @@
 package com.delhomme.jobbingtrack.applications.repositories
 
 
-import com.delhomme.jobbingtrack.data.local.dao.applications.ApplicationTypeDao
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationTypeEntity
+import com.delhomme.jobbingtrack.applications.dao.ApplicationTypeDao
+import com.delhomme.jobbingtrack.applications.entities.ApplicationTypeEntity
 import kotlinx.coroutines.flow.Flow
 
 class ApplicationTypeRepository(private val dao: ApplicationTypeDao) {

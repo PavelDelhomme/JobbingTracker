@@ -4,9 +4,10 @@ package com.delhomme.jobbingtrack.calls.entities
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
-import com.delhomme.jobbingtrack.data.local.entities.CommonEntityFields
+import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 import java.util.UUID
+
 
 @Entity(tableName = "call_types")
 data class CallTypeEntity(

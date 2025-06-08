@@ -20,8 +20,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
-import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
+import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
+import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

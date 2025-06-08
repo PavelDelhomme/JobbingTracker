@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
+import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
 
-import com.delhomme.jobbingtrack.data.local.entities.call.CallEntity
-import com.delhomme.jobbingtrack.data.viewmodel.Call.CallViewModel
-import com.delhomme.jobbingtrack.ui.components.lists.ListScreen
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @Composable

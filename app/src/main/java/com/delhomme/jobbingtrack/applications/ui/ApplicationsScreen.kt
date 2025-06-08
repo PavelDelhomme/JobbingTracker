@@ -17,11 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.commons.ui.dialogs.ConfirmDialog
+import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
 
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationEntity
-import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
-import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
-import com.delhomme.jobbingtrack.ui.components.lists.ListScreen
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 

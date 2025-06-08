@@ -6,8 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.repository.application.ApplicationPlatformRepository
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationPlatformEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationPlatformEntity
+import com.delhomme.jobbingtrack.applications.repositories.ApplicationPlatformRepository
 import kotlinx.coroutines.launch
 
 class ApplicationPlatformViewModel(app: Application) : AndroidViewModel(app) {

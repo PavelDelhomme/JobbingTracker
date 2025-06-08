@@ -1,7 +1,7 @@
 package com.delhomme.jobbingtrack.calls
 
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
 
 data class Call(
     // Data d'héritage de HasIdProvider

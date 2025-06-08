@@ -2,6 +2,7 @@ package com.delhomme.jobbingtrack.calls.dao
 
 
 import androidx.room.*
+import com.delhomme.jobbingtrack.calls.entities.CallTypeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

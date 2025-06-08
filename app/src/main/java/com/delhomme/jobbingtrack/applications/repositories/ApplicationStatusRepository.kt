@@ -1,8 +1,8 @@
 package com.delhomme.jobbingtrack.applications.repositories
 
 
-import com.delhomme.jobbingtrack.data.local.dao.applications.ApplicationStatusDao
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationStatusEntity
+import com.delhomme.jobbingtrack.applications.dao.ApplicationStatusDao
+import com.delhomme.jobbingtrack.applications.entities.ApplicationStatusEntity
 import kotlinx.coroutines.flow.Flow
 
 class ApplicationStatusRepository(private val dao: ApplicationStatusDao) {

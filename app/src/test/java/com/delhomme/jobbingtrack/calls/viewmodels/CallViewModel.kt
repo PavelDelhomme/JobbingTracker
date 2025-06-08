@@ -2,9 +2,9 @@ package com.delhomme.jobbingtrack.calls.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.delhomme.jobbingtrack.data.local.repository.call.CallRepository
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.call.CallEntity
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.calls.repositories.CallRepository
 import kotlinx.coroutines.launch
 
 

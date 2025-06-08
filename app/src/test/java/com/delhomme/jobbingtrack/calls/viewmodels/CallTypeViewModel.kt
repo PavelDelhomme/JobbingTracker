@@ -4,7 +4,8 @@ package com.delhomme.jobbingtrack.calls.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.repository.call.CallTypeRepository
+import com.delhomme.jobbingtrack.calls.entities.CallTypeEntity
+import com.delhomme.jobbingtrack.calls.repositories.CallTypeRepository
 import kotlinx.coroutines.launch
 
 class CallTypeViewModel(app: Application) : AndroidViewModel(app) {

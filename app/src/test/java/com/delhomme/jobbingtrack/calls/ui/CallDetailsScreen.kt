@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.compose.runtime.getValue
-import com.delhomme.jobbingtrack.data.viewmodel.Call.CallViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
+import com.delhomme.jobbingtrack.applications.ui.SectionTitle
+import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
+import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
+import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
-import com.delhomme.jobbingtrack.ui.major.applications.SectionTitle
-import com.delhomme.jobbingtrack.ui.components.items.DetailItemCard
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @OptIn(ExperimentalMaterial3Api::class)

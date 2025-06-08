@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationStatusEntity
-import com.delhomme.jobbingtrack.data.local.repository.application.ApplicationStatusRepository
+import com.delhomme.jobbingtrack.applications.entities.ApplicationStatusEntity
+import com.delhomme.jobbingtrack.applications.repositories.ApplicationStatusRepository
 import kotlinx.coroutines.launch
 
 class ApplicationStatusViewModel(app: Application) : AndroidViewModel(app) {

@@ -11,6 +11,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.delhomme.jobbingtrack.applications.ui.AddOrEditApplicationScreen
+import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.commons.entities.BottomSheetContentType
+import com.delhomme.jobbingtrack.contacts.ui.AddOrEditContactScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)

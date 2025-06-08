@@ -1,7 +1,7 @@
 package com.delhomme.jobbingtrack.companies.dao
 
 import androidx.room.*
-import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

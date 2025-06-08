@@ -1,6 +1,7 @@
 package com.delhomme.jobbingtrack.commons.logic
 
 import com.delhomme.jobbingtrack.applications.Application
+import com.delhomme.jobbingtrack.events.Event
 import java.util.UUID
 
 

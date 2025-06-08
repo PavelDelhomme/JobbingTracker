@@ -3,8 +3,8 @@ package com.delhomme.jobbingtrack.calls.dao
 
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.delhomme.jobbingtrack.data.interfaces.DateRangeProvider
-import com.delhomme.jobbingtrack.data.local.entities.call.CallEntity
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
 import kotlinx.coroutines.flow.Flow
 @Dao
 interface CallDao : DateRangeProvider<CallEntity> {

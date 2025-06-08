@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
-import com.delhomme.jobbingtrack.data.local.repository.contact.ContactRepository
+import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
+import com.delhomme.jobbingtrack.contacts.repositories.ContactRepository
 import kotlinx.coroutines.launch
 
 class ContactViewModel(app: Application) : AndroidViewModel(app) {

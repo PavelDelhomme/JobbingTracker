@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
-import com.delhomme.jobbingtrack.data.local.repository.company.CompanyRepository
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
+import com.delhomme.jobbingtrack.companies.repositories.CompanyRepository
 import kotlinx.coroutines.launch
 
 class CompanyViewModel(app: Application) : AndroidViewModel(app) {

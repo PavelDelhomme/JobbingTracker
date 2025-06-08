@@ -1,8 +1,8 @@
 package com.delhomme.jobbingtrack.applications.repositories
 
 
-import com.delhomme.jobbingtrack.data.local.dao.applications.ContractTypeDao
-import com.delhomme.jobbingtrack.data.local.entities.application.ContractTypeEntity
+import com.delhomme.jobbingtrack.applications.dao.ContractTypeDao
+import com.delhomme.jobbingtrack.applications.entities.ContractTypeEntity
 import kotlinx.coroutines.flow.Flow
 
 class ContractTypeRepository(private val dao: ContractTypeDao) {

@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.calls.repositories
-import com.delhomme.jobbingtrack.data.local.entities.call.CallEntity
+import com.delhomme.jobbingtrack.calls.dao.CallDao
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
 import kotlinx.coroutines.flow.Flow
 
 class CallRepository(private val dao: CallDao) {

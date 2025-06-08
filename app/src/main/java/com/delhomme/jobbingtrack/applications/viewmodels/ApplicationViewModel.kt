@@ -4,8 +4,8 @@ package com.delhomme.jobbingtrack.applications.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationEntity
-import com.delhomme.jobbingtrack.data.local.repository.application.ApplicationRepository
+import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.repositories.ApplicationRepository
 import kotlinx.coroutines.launch
 
 class ApplicationViewModel(app: Application) : AndroidViewModel(app) {

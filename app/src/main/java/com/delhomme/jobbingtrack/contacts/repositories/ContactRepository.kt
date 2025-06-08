@@ -1,8 +1,8 @@
 package com.delhomme.jobbingtrack.contacts.repositories
 
 
-import com.delhomme.jobbingtrack.data.local.dao.contact.ContactDao
-import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
+import com.delhomme.jobbingtrack.contacts.dao.ContactDao
+import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import kotlinx.coroutines.flow.Flow
 
 class ContactRepository(private val dao: ContactDao) {

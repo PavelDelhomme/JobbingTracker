@@ -2,6 +2,11 @@ package com.delhomme.jobbingtrack.commons.logic
 
 import com.delhomme.jobbingtrack.applications.ApplicationStatus
 import com.delhomme.jobbingtrack.applications.ApplicationType
+import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.repositories.ApplicationRepository
+import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
+import com.delhomme.jobbingtrack.contacts.repositories.ContactRepository
+import com.delhomme.jobbingtrack.events.repositories.EventRepository
 import com.delhomme.jobbingtrack.utils.parseDateToMillis
 import com.delhomme.jobbingtrack.utils.safeEnumValueOf
 import kotlinx.coroutines.flow.first

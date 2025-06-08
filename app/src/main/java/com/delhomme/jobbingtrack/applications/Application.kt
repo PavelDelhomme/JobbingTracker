@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.applications
 
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
 data class Application(
     // Data d'héritage de HasIdProvider
@@ -25,5 +25,4 @@ data class Application(
     var notes: String?,
     var applicationType: String,
     var applicationStatus: String,
-
 ) : HasIdProvider

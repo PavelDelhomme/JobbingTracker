@@ -10,6 +10,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
+import com.delhomme.jobbingtrack.commons.ui.forms.FormField
+import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
+import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
 import java.util.UUID
 
 @Composable

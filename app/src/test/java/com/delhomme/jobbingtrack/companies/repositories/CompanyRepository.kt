@@ -1,8 +1,8 @@
 package com.delhomme.jobbingtrack.companies.repositories
 
 
-import com.delhomme.jobbingtrack.data.local.dao.company.CompanyDao
-import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
+import com.delhomme.jobbingtrack.companies.dao.CompanyDao
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import kotlinx.coroutines.flow.Flow
 
 class CompanyRepository(private val dao: CompanyDao) {

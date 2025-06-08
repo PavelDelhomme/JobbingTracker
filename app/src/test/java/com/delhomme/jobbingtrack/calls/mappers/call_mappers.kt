@@ -1,6 +1,8 @@
 package com.delhomme.jobbingtrack.calls.mappers
 
-import com.delhomme.jobbingtrack.data.local.entities.CallWithCompanies
+import com.delhomme.jobbingtrack.calls.Call
+import com.delhomme.jobbingtrack.commons.entities.CallWithCompanies
+
 
 fun CallWithCompanies.toDomain(): Call {
     return Call(

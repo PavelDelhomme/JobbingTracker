@@ -1,7 +1,7 @@
 package com.delhomme.jobbingtrack.contacts.dao
 
 import androidx.room.*
-import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
+import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

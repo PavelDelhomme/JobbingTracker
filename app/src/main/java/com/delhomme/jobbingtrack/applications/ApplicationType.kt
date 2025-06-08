@@ -1,7 +1,6 @@
 package com.delhomme.jobbingtrack.applications
 
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
-
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
 data class ApplicationType (
     override val id: String,
