@@ -27,12 +27,14 @@ import com.delhomme.jobbingtrack.data.forms.*
 import com.delhomme.jobbingtrack.data.local.entities.*
 
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
+import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewEntity
 
 import com.delhomme.jobbingtrack.data.viewmodel.DashboardViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Interview.InterviewViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
 
 import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.ContactSelectorField
@@ -169,25 +171,26 @@ fun AddOrEditInterviewScreen(
                 val hash = existingInterview?.syncHash ?: "ent-$id"
 
                 val ent = InterviewEntity(
-                        id                = id,
-                        userId            = existingInterview?.userId ?: "",
-                        applicationId     = selectionnedApplicationId,
-                        companyId         = finalCompanyId ?: selectionnedCompanyId,
-                        dateTime          = dateTime,
-                        durationMinutes   = form["durationMinutes"]?.toIntOrNull() ?: existingInterview?.durationMinutes,
-                        location          = form["location"],
-                        style             = form["style"],
-                        type              = form["type"],
-                        preInterviewNotes = form["preInterviewNotes"],
-                        interviewNotes    = form["interviewNotes"],
-                        postInterviewNotes= form["postInterviewNotes"],
-                        returnDate        = form["returnDate"]?.toLongOrNull(),
-                        testsNeeded       = form["testsNeeded"].toBoolean(),
-                        testsDeadline     = form["testsDeadline"]?.toLongOrNull(),
-                        syncHash          = hash,
-                        isArchived        = existingInterview?.isArchived == true,
-                        isDeleted         = existingInterview?.isDeleted == true
-                    )
+                    id = id,
+                    userId = existingInterview?.userId ?: "",
+                    applicationId = selectionnedApplicationId,
+                    companyId = finalCompanyId ?: selectionnedCompanyId,
+                    dateTime = dateTime,
+                    durationMinutes = form["durationMinutes"]?.toIntOrNull()
+                        ?: existingInterview?.durationMinutes,
+                    location = form["location"],
+                    style = form["style"],
+                    type = form["type"],
+                    preInterviewNotes = form["preInterviewNotes"],
+                    interviewNotes = form["interviewNotes"],
+                    postInterviewNotes = form["postInterviewNotes"],
+                    returnDate = form["returnDate"]?.toLongOrNull(),
+                    testsNeeded = form["testsNeeded"].toBoolean(),
+                    testsDeadline = form["testsDeadline"]?.toLongOrNull(),
+                    syncHash = hash,
+                    isArchived = existingInterview?.isArchived == true,
+                    isDeleted = existingInterview?.isDeleted == true
+                )
                 interviewVm.save(ent, selectionnedContacts.map { c -> c.id })
                 onCancel()
             },

@@ -1,7 +1,7 @@
 package com.delhomme.jobbingtrack.utils.mappers
 
 import com.delhomme.jobbingtrack.data.local.entities.CallWithCompanies
-import com.delhomme.jobbingtrack.data.classes.Call
+import com.delhomme.jobbingtrack.data.classes.calls.Call
 
 fun CallWithCompanies.toDomain(): Call {
     return Call(

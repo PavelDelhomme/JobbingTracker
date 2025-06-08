@@ -9,13 +9,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ProfileViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Profil.ProfileViewModel
 import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
-import com.delhomme.jobbingtrack.data.networks.TokenManager
+import com.delhomme.jobbingtrack.data.api.tokens.TokenManager
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

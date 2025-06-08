@@ -1,9 +1,9 @@
 package com.delhomme.jobbingtrack.utils.mappers
 
 import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
-import com.delhomme.jobbingtrack.data.classes.Interview
-import com.delhomme.jobbingtrack.data.classes.InterviewStyle
-import com.delhomme.jobbingtrack.data.classes.InterviewType
+import com.delhomme.jobbingtrack.data.classes.interviews.Interview
+import com.delhomme.jobbingtrack.data.classes.interviews.InterviewStyle
+import com.delhomme.jobbingtrack.data.classes.interviews.InterviewType
 
 fun InterviewWithContacts.toDomain(): Interview {
     val e = this.interview

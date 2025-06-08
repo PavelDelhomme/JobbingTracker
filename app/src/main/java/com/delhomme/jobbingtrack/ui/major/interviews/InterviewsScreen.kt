@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.delhomme.jobbingtrack.data.classes.InterviewStyle
-import com.delhomme.jobbingtrack.data.classes.InterviewType
-import com.delhomme.jobbingtrack.data.local.entities.CompanyEntity
+import com.delhomme.jobbingtrack.data.classes.interviews.InterviewStyle
+import com.delhomme.jobbingtrack.data.classes.interviews.InterviewType
+import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
 import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
 import com.delhomme.jobbingtrack.ui.components.lists.ListScreen

@@ -8,10 +8,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
-import com.delhomme.jobbingtrack.data.local.entities.ApplicationEntity
-import com.delhomme.jobbingtrack.data.local.entities.CompanyEntity
-import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationEntity
+import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
+import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
 import com.delhomme.jobbingtrack.utils.toFieldMap

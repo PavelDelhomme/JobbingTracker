@@ -1,6 +1,11 @@
 package com.delhomme.jobbingtrack.data.logic
 
 import com.delhomme.jobbingtrack.data.classes.*
+import com.delhomme.jobbingtrack.data.classes.applications.Application
+import com.delhomme.jobbingtrack.data.classes.calls.Call
+import com.delhomme.jobbingtrack.data.classes.events.Event
+import com.delhomme.jobbingtrack.data.classes.followups.FollowUp
+import com.delhomme.jobbingtrack.data.classes.interviews.Interview
 import java.util.UUID
 
 object EventFactory {

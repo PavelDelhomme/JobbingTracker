@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.ui.major.calendar
 
-import com.delhomme.jobbingtrack.data.classes.Event
+import com.delhomme.jobbingtrack.data.classes.events.Event
 
 data class PositionedEvent(
     val event: Event,

@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
-import com.delhomme.jobbingtrack.data.local.entities.ApplicationEntity
-import com.delhomme.jobbingtrack.data.local.entities.CompanyEntity
+import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationEntity
+import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
 import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
 import com.delhomme.jobbingtrack.ui.components.lists.ListScreen
 import com.delhomme.jobbingtrack.utils.DialogType

@@ -14,19 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.delhomme.jobbingtrack.data.viewmodel.CallViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.FollowUpViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Call.CallViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Interview.InterviewViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.FollowUp.FollowUpViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.major.calls.CallsScreen
 import com.delhomme.jobbingtrack.ui.major.applications.ApplicationsScreen
 import com.delhomme.jobbingtrack.ui.major.contacts.ContactsScreen
 import com.delhomme.jobbingtrack.ui.major.companies.CompaniesScreen
 import com.delhomme.jobbingtrack.ui.major.interviews.InterviewsScreen
-import com.delhomme.jobbingtrack.ui.major.followsuo.FollowUpsScreen
+import com.delhomme.jobbingtrack.ui.major.followsup.FollowUpsScreen
 
 @Composable
 fun ApplicationsTabsContent(

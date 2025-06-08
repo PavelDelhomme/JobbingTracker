@@ -6,15 +6,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
 import com.delhomme.jobbingtrack.ui.components.forms.selectors.EntitySelectorField
 import com.delhomme.jobbingtrack.ui.components.forms.ReusableForm
 import com.delhomme.jobbingtrack.data.forms.FieldType
 import com.delhomme.jobbingtrack.data.forms.FormField
-import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
-import com.delhomme.jobbingtrack.data.local.entities.CompanyEntity
-import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
+import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
+import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
 import com.delhomme.jobbingtrack.utils.resolveCompanyId
 import java.util.UUID
 

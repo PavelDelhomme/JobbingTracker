@@ -3,12 +3,12 @@ package com.delhomme.jobbingtrack.ui.major.calendar.day
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.delhomme.jobbingtrack.data.local.entities.CallEntity
-import com.delhomme.jobbingtrack.data.local.entities.ApplicationEntity
-import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
+import com.delhomme.jobbingtrack.data.local.entities.call.CallEntity
+import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationEntity
+import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
-import com.delhomme.jobbingtrack.data.local.entities.EventEntity
-import com.delhomme.jobbingtrack.data.local.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.data.local.entities.event.EventEntity
+import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpEntity
 import com.google.accompanist.pager.*
 import java.time.Instant
 import java.time.LocalDate

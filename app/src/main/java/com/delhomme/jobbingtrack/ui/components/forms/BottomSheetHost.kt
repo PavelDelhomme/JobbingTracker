@@ -9,14 +9,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
 import com.delhomme.jobbingtrack.ui.major.calls.AddOrEditCallScreen
 import com.delhomme.jobbingtrack.ui.major.applications.AddOrEditApplicationScreen
 import com.delhomme.jobbingtrack.ui.major.contacts.AddOrEditContactScreen
 import com.delhomme.jobbingtrack.ui.major.companies.AddOrEditCompanyScreen
 import com.delhomme.jobbingtrack.ui.major.interviews.AddOrEditInterviewScreen
-import com.delhomme.jobbingtrack.ui.major.followsuo.AddOrEditFollowUpScreen
+import com.delhomme.jobbingtrack.ui.major.followsup.AddOrEditFollowUpScreen
 
 enum class BottomSheetContentType {
     ADD_APPLICATION,

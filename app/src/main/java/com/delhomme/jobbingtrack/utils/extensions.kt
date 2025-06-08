@@ -1,7 +1,10 @@
 package com.delhomme.jobbingtrack.utils
 
-import com.delhomme.jobbingtrack.data.classes.ApplicationType
-import com.delhomme.jobbingtrack.data.classes.InterviewStyle
+import com.delhomme.jobbingtrack.data.classes.applications.Application
+import com.delhomme.jobbingtrack.data.classes.calls.Call
+import com.delhomme.jobbingtrack.data.classes.contacts.Contact
+import com.delhomme.jobbingtrack.data.classes.followups.FollowUp
+import com.delhomme.jobbingtrack.data.classes.interviews.Interview
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -9,7 +12,7 @@ import java.util.Date
 
 fun Any?.toFieldMap(): Map<String, String> {
     return when (this) {
-        is com.delhomme.jobbingtrack.data.classes.Application -> mapOf(
+        is Application -> mapOf(
             "title" to this.title,
             "companyName" to this.companyName,
             "applicationDate" to this.applicationDate.toString(),
@@ -19,7 +22,7 @@ fun Any?.toFieldMap(): Map<String, String> {
             "isSpontaneous" to (this.applicationType == "SPONTANEOUS").toString(),
             "notes" to (this.notes ?: "")
         )
-        is com.delhomme.jobbingtrack.data.classes.Call -> mapOf(
+        is Call -> mapOf(
             "subject" to (this.subject ?: ""),
             "companyId" to (this.companyId ?: ""),
             "contactId" to (this.contactId ?: ""),
@@ -27,7 +30,7 @@ fun Any?.toFieldMap(): Map<String, String> {
             "notes" to (this.notes ?: ""),
             "dateTime" to this.dateTime.toString()
         )
-        is com.delhomme.jobbingtrack.data.classes.Contact -> mapOf(
+        is Contact -> mapOf(
             "firstName" to (this.firstName ?: ""),
             "lastName" to (this.lastName ?: ""),
             "phone" to (this.phone ?: ""),
@@ -37,7 +40,7 @@ fun Any?.toFieldMap(): Map<String, String> {
             "companyName" to (this.companyId ?: ""),
             "notes" to ""
         )
-        is com.delhomme.jobbingtrack.data.classes.Interview -> mapOf(
+        is Interview -> mapOf(
             "candidatureId" to this.applicationId,
             "companyId" to this.companyId,
             "location" to (this.location ?: ""),
@@ -52,7 +55,7 @@ fun Any?.toFieldMap(): Map<String, String> {
             "testsNeeded" to this.testsNeeded.toString(),
             "testsDeadline" to (this.testsDeadline?.toString() ?: "")
         )
-        is com.delhomme.jobbingtrack.data.classes.FollowUp -> mapOf(
+        is FollowUp -> mapOf(
             "date" to this.date.toString(),
             "candidatureId" to this.applicationId,
             "companyId" to this.companyId,

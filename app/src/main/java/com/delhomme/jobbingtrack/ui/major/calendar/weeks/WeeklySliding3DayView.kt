@@ -16,7 +16,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.data.classes.Event
+import com.delhomme.jobbingtrack.data.classes.events.Event
 import com.delhomme.jobbingtrack.ui.major.calendar.computeOverlappingEvents
 import com.delhomme.jobbingtrack.ui.components.navigation.CalendarViewType
 import com.google.accompanist.pager.*

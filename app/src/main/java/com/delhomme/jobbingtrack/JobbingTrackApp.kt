@@ -3,7 +3,7 @@ package com.delhomme.jobbingtrack
 import android.app.Application
 import androidx.room.Room
 import com.delhomme.jobbingtrack.data.local.AppDatabase
-import com.delhomme.jobbingtrack.data.remote.ApiClient
+import com.delhomme.jobbingtrack.data.api.ApiClient
 
 
 class JobbingTrackApp : Application() {

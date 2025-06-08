@@ -14,12 +14,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.viewmodel.CallViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.FollowUpViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Call.CallViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Interview.InterviewViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.FollowUp.FollowUpViewModel
 
 @Composable
 fun TrashScreen(

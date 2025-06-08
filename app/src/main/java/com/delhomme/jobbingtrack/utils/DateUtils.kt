@@ -1,10 +1,10 @@
 package com.delhomme.jobbingtrack.utils
 
-import com.delhomme.jobbingtrack.data.local.entities.CallEntity
-import com.delhomme.jobbingtrack.data.local.entities.ApplicationEntity
-import com.delhomme.jobbingtrack.data.local.entities.InterviewEntity
-import com.delhomme.jobbingtrack.data.local.entities.EventEntity
-import com.delhomme.jobbingtrack.data.local.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.data.local.entities.call.CallEntity
+import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationEntity
+import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewEntity
+import com.delhomme.jobbingtrack.data.local.entities.event.EventEntity
+import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpEntity
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate

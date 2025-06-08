@@ -9,7 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.data.classes.*
-import com.delhomme.jobbingtrack.data.local.entities.ContactEntity
+import com.delhomme.jobbingtrack.data.classes.events.Event
+import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
 import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
 import java.time.Instant
 import java.time.ZoneId

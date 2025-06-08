@@ -7,13 +7,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.viewmodel.CallViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.CompanyViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.InterviewViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.ProfileViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.FollowUpViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Call.CallViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Interview.InterviewViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Profil.ProfileViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.FollowUp.FollowUpViewModel
 import com.delhomme.jobbingtrack.ui.major.calls.AddOrEditCallScreen
 import com.delhomme.jobbingtrack.ui.major.calls.CallDetailsScreen
 import com.delhomme.jobbingtrack.ui.major.archive_bin.ArchiveScreen
@@ -30,8 +30,8 @@ import com.delhomme.jobbingtrack.ui.major.login.LoginScreen
 import com.delhomme.jobbingtrack.ui.main.MainScreen
 import com.delhomme.jobbingtrack.ui.major.login.RegisterScreen
 import com.delhomme.jobbingtrack.ui.major.profile.ProfileScreen
-import com.delhomme.jobbingtrack.ui.major.followsuo.AddOrEditFollowUpScreen
-import com.delhomme.jobbingtrack.ui.major.followsuo.FollowUpDetailScreen
+import com.delhomme.jobbingtrack.ui.major.followsup.AddOrEditFollowUpScreen
+import com.delhomme.jobbingtrack.ui.major.followsup.FollowUpDetailScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: String?) {

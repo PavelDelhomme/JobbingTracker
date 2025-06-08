@@ -3,6 +3,11 @@ package com.delhomme.jobbingtrack.data.local.entities
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import com.delhomme.jobbingtrack.data.local.entities.call.CallEntity
+import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
+import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
+import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpEntity
+import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewEntity
 
 data class InterviewWithContacts(
     @Embedded val interview: InterviewEntity,

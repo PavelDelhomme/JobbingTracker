@@ -3,7 +3,7 @@ package com.delhomme.jobbingtrack.ui.major.calendar.weeks
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.data.viewmodel.EventViewModel
+import com.delhomme.jobbingtrack.data.viewmodel.Event.EventViewModel
 import com.delhomme.jobbingtrack.ui.components.navigation.CalendarViewType
 import java.time.LocalDate
 import androidx.compose.runtime.getValue
