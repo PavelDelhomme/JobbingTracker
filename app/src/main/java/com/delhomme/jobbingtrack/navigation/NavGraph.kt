@@ -7,31 +7,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.viewmodel.Call.CallViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Interview.InterviewViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Profil.ProfileViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.FollowUp.FollowUpViewModel
-import com.delhomme.jobbingtrack.ui.major.calls.AddOrEditCallScreen
-import com.delhomme.jobbingtrack.ui.major.calls.CallDetailsScreen
-import com.delhomme.jobbingtrack.ui.major.archive_bin.ArchiveScreen
-import com.delhomme.jobbingtrack.ui.major.archive_bin.TrashScreen
-import com.delhomme.jobbingtrack.ui.major.applications.AddOrEditApplicationScreen
-import com.delhomme.jobbingtrack.ui.major.applications.ApplicationDetailsScreen
-import com.delhomme.jobbingtrack.ui.major.contacts.AddOrEditContactScreen
-import com.delhomme.jobbingtrack.ui.major.contacts.ContactDetailScreen
-import com.delhomme.jobbingtrack.ui.major.companies.AddOrEditCompanyScreen
-import com.delhomme.jobbingtrack.ui.major.companies.CompanyDetailScreen
-import com.delhomme.jobbingtrack.ui.major.interviews.InterviewDetailScreen
-import com.delhomme.jobbingtrack.ui.major.interviews.AddOrEditInterviewScreen
-import com.delhomme.jobbingtrack.ui.major.login.LoginScreen
+import com.delhomme.jobbingtrack.applications.ui.AddOrEditApplicationScreen
+import com.delhomme.jobbingtrack.applications.ui.ApplicationDetailsScreen
+import com.delhomme.jobbingtrack.contacts.ui.AddOrEditContactScreen
+import com.delhomme.jobbingtrack.contacts.ui.ContactDetailScreen
+import com.delhomme.jobbingtrack.profiles.ui.ProfileScreen
+import com.delhomme.jobbingtrack.profiles.viewmodels.ProfileViewModel
 import com.delhomme.jobbingtrack.ui.main.MainScreen
-import com.delhomme.jobbingtrack.ui.major.login.RegisterScreen
-import com.delhomme.jobbingtrack.ui.major.profile.ProfileScreen
-import com.delhomme.jobbingtrack.ui.major.followsup.AddOrEditFollowUpScreen
-import com.delhomme.jobbingtrack.ui.major.followsup.FollowUpDetailScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: String?) {

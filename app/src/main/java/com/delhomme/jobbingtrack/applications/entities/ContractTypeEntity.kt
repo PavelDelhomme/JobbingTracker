@@ -1,0 +1,16 @@
+package com.delhomme.jobbingtrack.applications.entities
+
+
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.data.local.entities.CommonEntityFields
+import java.util.UUID
+
+@Entity(tableName = "contract_types")
+data class ContractTypeEntity(
+    @PrimaryKey override val id: String = UUID.randomUUID().toString(),
+    val label: String,
+    @Embedded val base: CommonEntityFields
+) : HasIdProvider
