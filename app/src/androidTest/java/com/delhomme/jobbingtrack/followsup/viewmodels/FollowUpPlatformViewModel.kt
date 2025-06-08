@@ -4,7 +4,7 @@ package com.delhomme.jobbingtrack.followsup.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.repository.followup.FollowUpPlatformRepository
+import com.delhomme.jobbingtrack.followsup.repositories.FollowUpPlatformRepository
 import kotlinx.coroutines.launch
 
 class FollowUpPlatformViewModel(app: Application) : AndroidViewModel(app) {

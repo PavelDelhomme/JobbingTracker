@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.followsup
 
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
 
 data class FollowUpType(

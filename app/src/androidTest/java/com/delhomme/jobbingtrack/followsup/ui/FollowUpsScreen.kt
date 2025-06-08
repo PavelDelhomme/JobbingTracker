@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
 
-import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpEntity
-import com.delhomme.jobbingtrack.data.viewmodel.FollowUp.FollowUpViewModel
-import com.delhomme.jobbingtrack.ui.components.lists.ListScreen
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 @Composable

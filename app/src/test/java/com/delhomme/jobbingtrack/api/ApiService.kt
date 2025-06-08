@@ -7,7 +7,7 @@ import com.delhomme.jobbingtrack.api.authentication.responses.RegisterResponse
 import com.delhomme.jobbingtrack.api.tokens.responses.RefreshToAccessTokenResponse
 import com.delhomme.jobbingtrack.profiles.Profile
 import com.delhomme.jobbingtrack.users.UserInfo
-import com.delhomme.jobbingtrack.cv.CV
+import com.delhomme.jobbingtrack.cvs
 
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -48,5 +48,5 @@ interface ApiService {
 
     @Multipart
     @POST("profiles/upload-cv/")
-    suspend fun uploadCV(@Part file: MultipartBody.Part): CV
+    suspend fun uploadCV(@Part file: MultipartBody.Part): CvData
 }

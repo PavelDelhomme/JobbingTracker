@@ -4,8 +4,8 @@ package com.delhomme.jobbingtrack.followsup.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpStatusEntity
-import com.delhomme.jobbingtrack.data.local.repository.followup.FollowUpStatusRepository
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.followsup.repositories.FollowUpStatusRepository
 import kotlinx.coroutines.launch
 
 class FollowUpStatusViewModel(app: Application) : AndroidViewModel(app) {

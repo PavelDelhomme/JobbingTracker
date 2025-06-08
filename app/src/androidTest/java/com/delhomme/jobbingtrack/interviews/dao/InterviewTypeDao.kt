@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewTypeEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewTypeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

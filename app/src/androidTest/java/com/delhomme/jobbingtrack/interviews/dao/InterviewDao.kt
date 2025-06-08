@@ -4,10 +4,10 @@ package com.delhomme.jobbingtrack.interviews.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.delhomme.jobbingtrack.data.interfaces.DateRangeProvider
-import com.delhomme.jobbingtrack.data.local.entities.InterviewContactCrossRef
-import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewEntity
-import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.commons.entities.InterviewContactCrossRef
+import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

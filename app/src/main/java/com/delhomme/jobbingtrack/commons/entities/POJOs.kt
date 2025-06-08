@@ -3,13 +3,7 @@ package com.delhomme.jobbingtrack.commons.entities
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import com.delhomme.jobbingtrack.data.local.entities.CallWithContactsCrossRef
-import com.delhomme.jobbingtrack.data.local.entities.CompanyCallCrossRef
-import com.delhomme.jobbingtrack.data.local.entities.CompanyContactCrossRef
-import com.delhomme.jobbingtrack.data.local.entities.CompanyFollowUpCrossRef
-import com.delhomme.jobbingtrack.data.local.entities.CompanyInterviewCrossRef
-import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContactsCrossRef
-
+import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 
 data class InterviewWithContacts(
     @Embedded val interview: InterviewEntity,

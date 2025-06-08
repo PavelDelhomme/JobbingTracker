@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.delhomme.jobbingtrack.data.classes.interviews.InterviewStyle
-import com.delhomme.jobbingtrack.data.classes.interviews.InterviewType
-import com.delhomme.jobbingtrack.data.local.entities.company.CompanyEntity
-import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
-import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
-import com.delhomme.jobbingtrack.ui.components.lists.ListScreen
+import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.commons.ui.dialogs.ConfirmDialog
+import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
+import com.delhomme.jobbingtrack.interviews.enumes.InterviewStyle
+import com.delhomme.jobbingtrack.interviews.enumes.InterviewType
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 

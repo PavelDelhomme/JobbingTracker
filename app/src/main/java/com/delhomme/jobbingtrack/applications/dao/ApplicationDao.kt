@@ -3,8 +3,8 @@ package com.delhomme.jobbingtrack.applications.dao
 
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.delhomme.jobbingtrack.data.interfaces.DateRangeProvider
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
 import kotlinx.coroutines.flow.Flow
 
 @Dao

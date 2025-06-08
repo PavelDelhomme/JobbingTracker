@@ -4,8 +4,8 @@ package com.delhomme.jobbingtrack.events.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.event.EventTypeEntity
-import com.delhomme.jobbingtrack.data.local.repository.event.EventTypeRepository
+import com.delhomme.jobbingtrack.events.entities.EventTypeEntity
+import com.delhomme.jobbingtrack.events.repositories.EventTypeRepository
 import kotlinx.coroutines.launch
 
 class EventTypeViewModel(app: Application) : AndroidViewModel(app) {

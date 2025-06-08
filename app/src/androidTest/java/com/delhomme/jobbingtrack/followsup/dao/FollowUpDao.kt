@@ -3,8 +3,8 @@ package com.delhomme.jobbingtrack.followsup.dao
 
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.delhomme.jobbingtrack.data.interfaces.DateRangeProvider
-import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpEntity
+import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

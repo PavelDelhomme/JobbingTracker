@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Interview.InterviewViewModel
+import com.delhomme.jobbingtrack.applications.ui.SectionTitle
+import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
+import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
-import com.delhomme.jobbingtrack.ui.components.items.DetailItemCard
-import com.delhomme.jobbingtrack.ui.major.applications.SectionTitle
 import com.delhomme.jobbingtrack.utils.toFormattedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)

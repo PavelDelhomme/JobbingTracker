@@ -5,8 +5,7 @@ package com.delhomme.jobbingtrack.interviews.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewTypeEntity
-import com.delhomme.jobbingtrack.data.local.repository.InterviewTypeRepository
+import com.delhomme.jobbingtrack.interviews.entities.InterviewTypeEntity
 import kotlinx.coroutines.launch
 
 class InterviewTypeViewModel(app: Application) : AndroidViewModel(app) {

@@ -1,7 +1,6 @@
 package com.delhomme.jobbingtrack.followsup
 
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
-
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
 data class FollowUp(
     // Data d'héritage de HasIdProvider
@@ -24,4 +23,3 @@ data class FollowUp(
     val typeId: String?,
     val notes: String?,
 ) : HasIdProvider
-

@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationTypeEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationTypeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpEntity
-import com.delhomme.jobbingtrack.data.local.repository.followup.FollowUpRepository
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.followsup.repositories.FollowUpRepository
 import kotlinx.coroutines.launch
 
 class FollowUpViewModel(app: Application) : AndroidViewModel(app) {

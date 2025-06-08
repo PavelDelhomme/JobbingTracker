@@ -1,9 +1,8 @@
 package com.delhomme.jobbingtrack.interviews
 
-import com.delhomme.jobbingtrack.data.classes.interviews.InterviewStyle
-import com.delhomme.jobbingtrack.data.classes.interviews.InterviewType
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
-
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.interviews.enumes.InterviewStyle
+import com.delhomme.jobbingtrack.interviews.enumes.InterviewType
 data class Interview(
     // Data d'héritage de HasIdProvider
     override val id: String,

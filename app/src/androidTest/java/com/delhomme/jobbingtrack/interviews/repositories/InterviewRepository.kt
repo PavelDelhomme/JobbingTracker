@@ -3,12 +3,12 @@ package com.delhomme.jobbingtrack.interviews.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.delhomme.jobbingtrack.data.classes.interviews.Interview
-import com.delhomme.jobbingtrack.data.local.dao.interviews.InterviewDao
-import com.delhomme.jobbingtrack.data.local.entities.InterviewContactCrossRef
-import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewEntity
-import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
-import com.delhomme.jobbingtrack.utils.mappers.toDomain
+import com.delhomme.jobbingtrack.commons.entities.InterviewContactCrossRef
+import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.interviews.Interview
+import com.delhomme.jobbingtrack.interviews.dao.InterviewDao
+import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
+import com.delhomme.jobbingtrack.interviews.utils.mappers.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

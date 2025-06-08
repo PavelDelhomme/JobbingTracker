@@ -2,7 +2,7 @@ package com.delhomme.jobbingtrack.interviews.dao
 
 
 import androidx.room.*
-import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewStyleEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewStyleEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

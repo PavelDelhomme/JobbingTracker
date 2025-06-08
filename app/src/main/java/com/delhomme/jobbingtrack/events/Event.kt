@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.events
 
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
 data class Event(
     // Data d'héritage de HasIdProvider

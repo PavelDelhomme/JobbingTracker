@@ -1,7 +1,7 @@
 package com.delhomme.jobbingtrack.followsup.dao
 
 import androidx.room.*
-import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpStatusEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

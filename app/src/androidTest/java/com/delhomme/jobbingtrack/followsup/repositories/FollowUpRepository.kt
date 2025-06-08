@@ -2,8 +2,8 @@ package com.delhomme.jobbingtrack.followsup.repositories
 
 
 import androidx.lifecycle.LiveData
-import com.delhomme.jobbingtrack.data.local.dao.followups.FollowUpDao
-import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpEntity
+import com.delhomme.jobbingtrack.followsup.dao.FollowUpDao
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
 import kotlinx.coroutines.flow.Flow
 
 class FollowUpRepository(private val dao: FollowUpDao) {

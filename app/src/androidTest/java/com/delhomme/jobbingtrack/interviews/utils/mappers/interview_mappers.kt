@@ -1,13 +1,14 @@
 package com.delhomme.jobbingtrack.interviews.utils.mappers
 
+import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.interviews.Interview
+import com.delhomme.jobbingtrack.interviews.enumes.InterviewStyle
+import com.delhomme.jobbingtrack.interviews.enumes.InterviewType
+import kotlin.collections.map
 
-import com.delhomme.jobbingtrack.data.local.entities.InterviewWithContacts
-import com.delhomme.jobbingtrack.data.classes.interviews.Interview
-import com.delhomme.jobbingtrack.data.classes.interviews.InterviewStyle
-import com.delhomme.jobbingtrack.data.classes.interviews.InterviewType
 
 fun InterviewWithContacts.toDomain(): Interview {
-    val e = this.interview
+    val e = this.interview.toDomain()
     return Interview(
         id                  = e.id,
         userId              = e.userId,
@@ -16,7 +17,7 @@ fun InterviewWithContacts.toDomain(): Interview {
         dateTime            = e.dateTime,
         durationMinutes     = e.durationMinutes,
         location            = e.location,
-        contacts_ids        = contacts.map { it.id },
+        contacts_ids        = contacts.map { it.base.id },
         style               = e.style?.let { InterviewStyle.valueOf(it) },
         type                = e.type?.let { InterviewType.valueOf(it) },
         preInterviewNotes   = e.preInterviewNotes,
