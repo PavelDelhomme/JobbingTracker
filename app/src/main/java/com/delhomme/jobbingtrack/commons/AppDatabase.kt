@@ -15,7 +15,10 @@ import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import com.delhomme.jobbingtrack.events.entities.EventEntity
 import com.delhomme.jobbingtrack.profiles.entities.ProfilEntity
 import com.delhomme.jobbingtrack.users.entities.UserEntity
-
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
+import com.delhomme.jobbingtrack.followups.entities.FollowUpEntity
 
 @Database(
     entities = [

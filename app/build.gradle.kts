@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.compose.compiler)  // 🔧 indispensable pour Compose + Kotlin 2.x
     kotlin("kapt")
 }
+
 
 kapt {
     arguments {
@@ -23,7 +24,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,15 +36,24 @@ android {
             )
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
+        languageVersion = "2.0"
     }
+
     buildFeatures {
         compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.13"  // version correcte avec Kotlin 2.x
     }
 }
 
@@ -52,25 +61,14 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.places)
-    implementation(libs.androidx.room.common.jvm)
     implementation(libs.androidx.annotation)
     implementation(libs.common)
-    testImplementation(libs.junit)
-    testImplementation(project(":app"))
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Material
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
 
     // Retrofit & Moshi
@@ -95,15 +93,33 @@ dependencies {
     implementation(libs.material)
     implementation(libs.material3)
 
+    // Compose
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    // UI
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    //implementation(libs.androidx.ui.tooling.preview)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(project(":app"))
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
     // Calendar
     implementation("com.kizitonwose.calendar:compose:2.6.2")
-    // Navigation by swipe
-    implementation(libs.accompanist.pager)
 
     // Room
+    implementation(libs.androidx.room.common.jvm)
     implementation(libs.androidx.room.runtime)
     kapt("androidx.room:room-compiler:2.7.1")
     implementation("androidx.room:room-ktx:2.7.1")
 
+    // Charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
