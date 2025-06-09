@@ -2,7 +2,7 @@ package com.delhomme.jobbingtrack.profiles.dao
 
 
 import androidx.room.*
-import com.delhomme.jobbingtrack.data.local.entities.cv.ProfilEntity
+import com.delhomme.jobbingtrack.profiles.entities.ProfilEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

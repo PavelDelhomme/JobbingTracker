@@ -7,6 +7,8 @@ import com.delhomme.jobbingtrack.applications.dao.ApplicationPlatformDao
 import com.delhomme.jobbingtrack.applications.dao.ApplicationStatusDao
 import com.delhomme.jobbingtrack.applications.dao.ApplicationTypeDao
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.calls.dao.CallDao
+import com.delhomme.jobbingtrack.calls.dao.CallTypeDao
 import com.delhomme.jobbingtrack.commons.entities.ApplicationContactCrossRef
 import com.delhomme.jobbingtrack.commons.entities.CompanyApplicationCrossRef
 import com.delhomme.jobbingtrack.commons.entities.InterviewContactCrossRef
@@ -16,9 +18,29 @@ import com.delhomme.jobbingtrack.events.entities.EventEntity
 import com.delhomme.jobbingtrack.profiles.entities.ProfilEntity
 import com.delhomme.jobbingtrack.users.entities.UserEntity
 import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.companies.dao.CompanyDao
 import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
+import com.delhomme.jobbingtrack.cvs.dao.CVDao
+import com.delhomme.jobbingtrack.cvs.dao.CollaboratorDao
+import com.delhomme.jobbingtrack.cvs.dao.EducationDao
+import com.delhomme.jobbingtrack.cvs.dao.ExperienceDao
+import com.delhomme.jobbingtrack.cvs.dao.LanguageDao
+import com.delhomme.jobbingtrack.cvs.dao.ProjectDao
+import com.delhomme.jobbingtrack.cvs.dao.SkillDao
+import com.delhomme.jobbingtrack.events.dao.EventDao
+import com.delhomme.jobbingtrack.events.dao.EventTypeDao
+import com.delhomme.jobbingtrack.followsup.dao.FollowUpDao
+import com.delhomme.jobbingtrack.followsup.dao.FollowUpPlateformDao
+import com.delhomme.jobbingtrack.followsup.dao.FollowUpStatusDao
+import com.delhomme.jobbingtrack.followsup.dao.FollowUpTypeDao
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.interviews.dao.InterviewDao
+import com.delhomme.jobbingtrack.interviews.dao.InterviewStatusDao
+import com.delhomme.jobbingtrack.interviews.dao.InterviewStyleDao
+import com.delhomme.jobbingtrack.interviews.dao.InterviewTypeDao
 import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
-import com.delhomme.jobbingtrack.followups.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.profiles.dao.ProfileDao
+import com.delhomme.jobbingtrack.users.dao.UserDao
 
 @Database(
     entities = [
