@@ -58,7 +58,7 @@ fun AddOrEditCompanyScreen(
             } ?: emptyMap(),
             onSubmit = { form ->
                 val id   = existing?.id ?: UUID.randomUUID().toString()
-                val hash = existing?.syncHash ?: "ent-$id"
+                val hash = existing?.base?.syncHash ?: "ent-$id"
                 val ent  = CompanyEntity(
                     id       = id,
                     name     = form["name"]!!,
@@ -68,10 +68,7 @@ fun AddOrEditCompanyScreen(
                     hrEmail  = form["hrEmail"],
                     address  = form["address"],
                     notes    = form["notes"],
-                    syncHash = hash,
-                    isArchived = existing?.isArchived ?: false,
-                    isDeleted  = existing?.isDeleted  ?: false,
-                    userId     = userId.toString()
+                    base     = existing?.base,
                 )
                 viewModel.save(ent)
                 onCancel()

@@ -29,7 +29,7 @@ fun CompaniesScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val sorted  = companies.sortedBy { it.name.lowercase() }
-        val visible = sorted.filter { !it.isArchived && !it.isDeleted }
+        val visible = sorted.filter { !it.base.isArchived && !it.base.isDeleted }
 
         ListScreen(
             dateProvider = { null },

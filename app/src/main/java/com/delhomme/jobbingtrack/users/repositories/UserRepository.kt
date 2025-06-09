@@ -3,6 +3,8 @@ package com.delhomme.jobbingtrack.users.repositories
 
 import com.delhomme.jobbingtrack.data.local.dao.user.UserDao
 import com.delhomme.jobbingtrack.data.local.entities.user.UserEntity
+import com.delhomme.jobbingtrack.users.dao.UserDao
+import com.delhomme.jobbingtrack.users.entities.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository(private val dao: UserDao) {

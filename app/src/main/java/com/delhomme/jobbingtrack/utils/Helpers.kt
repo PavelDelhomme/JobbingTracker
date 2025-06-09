@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.utils
 
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
 fun <T : HasIdProvider> getLabelById(id: String?, items: List<T>, getLabel: (T) -> String): String {
     return items.find { it.id == id }?.let { getLabel(it) } ?: ""

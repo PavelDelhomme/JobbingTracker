@@ -1,7 +1,6 @@
 package com.delhomme.jobbingtrack.users
 
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
-
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
 data class User(
     // Data d'héritage de HasIdProvider

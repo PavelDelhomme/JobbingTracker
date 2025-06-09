@@ -2,7 +2,7 @@ package com.delhomme.jobbingtrack.users.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.delhomme.jobbingtrack.data.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 import java.util.UUID
 
 

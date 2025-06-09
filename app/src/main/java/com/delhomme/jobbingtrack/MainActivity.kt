@@ -9,7 +9,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.compose.rememberNavController
 import com.delhomme.jobbingtrack.navigation.NavGraph
-import com.delhomme.jobbingtrack.data.api.tokens.TokenManager
 import android.Manifest
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts

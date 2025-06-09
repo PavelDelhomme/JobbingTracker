@@ -1,10 +1,7 @@
 package com.delhomme.jobbingtrack.utils
 
-import com.delhomme.jobbingtrack.data.local.entities.application.ApplicationEntity
-import com.delhomme.jobbingtrack.data.local.entities.call.CallEntity
-import com.delhomme.jobbingtrack.data.local.entities.contact.ContactEntity
-import com.delhomme.jobbingtrack.data.local.entities.followup.FollowUpEntity
-import com.delhomme.jobbingtrack.data.local.entities.interview.InterviewEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 
 fun resolveCompanyId(
     existingCall: CallEntity? = null,

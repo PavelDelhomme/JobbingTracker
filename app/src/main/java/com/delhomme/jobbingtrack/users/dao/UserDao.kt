@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.delhomme.jobbingtrack.data.local.entities.user.UserEntity
+import com.delhomme.jobbingtrack.users.entities.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 
