@@ -1,14 +1,14 @@
 package com.delhomme.jobbingtrack.cvs.services
 
 import android.util.Log
-import com.delhomme.jobbingtrack.cvs.Cv
+import com.delhomme.jobbingtrack.CV
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.File
 
 class CVService {
-    suspend fun uploadCV(file: File): Cv? {
+    suspend fun uploadCV(file: File): CV? {
         return try {
             val filePart = MultipartBody.Part.createFormData(
                 name = "file",

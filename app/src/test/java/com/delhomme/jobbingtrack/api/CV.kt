@@ -1,8 +1,9 @@
-package com.delhomme.jobbingtrack.cvs
+package com.delhomme.jobbingtrack.api
+
 
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
-data class Cv(
+data class CV(
     // Data d'héritage de HasIdProvider
     override val id: String,
     val userId: String,

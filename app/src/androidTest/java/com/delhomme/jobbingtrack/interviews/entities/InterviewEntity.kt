@@ -24,5 +24,7 @@ data class InterviewEntity(
     val returnDate: Long?,
     val testsNeeded: Boolean,
     val testsDeadline: Long?,
+    val styleId: String?,
+    val typeId: String?,
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider

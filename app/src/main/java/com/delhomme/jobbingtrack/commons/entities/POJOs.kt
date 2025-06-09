@@ -4,6 +4,8 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
+
 
 data class InterviewWithContacts(
     @Embedded val interview: InterviewEntity,
