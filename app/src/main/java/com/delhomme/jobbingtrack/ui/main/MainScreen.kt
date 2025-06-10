@@ -16,6 +16,13 @@ import kotlinx.coroutines.launch
 import androidx.activity.compose.BackHandler
 import androidx.compose.ui.platform.LocalContext
 import com.delhomme.jobbingtrack.MainActivity
+import com.delhomme.jobbingtrack.commons.entities.BottomSheetContentType
+import com.delhomme.jobbingtrack.commons.entities.CalendarViewType
+import com.delhomme.jobbingtrack.commons.ui.forms.BottomSheetHost
+import com.delhomme.jobbingtrack.dashboard.DashboardScreen
+import com.delhomme.jobbingtrack.events.ui.CalendarScreenContent
+import com.delhomme.jobbingtrack.navigation.components.AppDrawer
+import com.delhomme.jobbingtrack.navigation.components.BottomNavigationBar
 import com.delhomme.jobbingtrack.ui.components.forms.BottomSheetContentType
 import com.delhomme.jobbingtrack.ui.components.forms.BottomSheetHost
 import com.delhomme.jobbingtrack.ui.components.navigation.AppDrawer

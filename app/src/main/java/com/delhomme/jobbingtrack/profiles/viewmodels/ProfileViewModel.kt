@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.data.local.entities.cv.ProfilEntity
-import com.delhomme.jobbingtrack.data.local.repository.cv.ProfilRepository
-import com.delhomme.jobbingtrack.data.api.tokens.TokenManager
+import com.delhomme.jobbingtrack.api.tokens.TokenManager
+import com.delhomme.jobbingtrack.profiles.entities.ProfilEntity
+import com.delhomme.jobbingtrack.profiles.repositories.ProfilRepository
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(app: Application) : AndroidViewModel(app) {

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)  // 🔧 indispensable pour Compose + Kotlin 2.x
+    id("com.google.dagger.hilt.android")
     kotlin("kapt")
 }
 
@@ -122,4 +123,11 @@ dependencies {
 
     // Charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    kapt("com.google.dagger:hilt-android-compiler:2.56.2")
+
+    // Pour intégration Compose Navigation (optionnel mais recommandé)
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 }

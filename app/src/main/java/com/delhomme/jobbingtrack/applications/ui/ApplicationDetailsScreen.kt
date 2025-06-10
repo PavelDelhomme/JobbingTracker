@@ -29,8 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
+import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import kotlin.collections.find
@@ -40,40 +44,40 @@ import kotlin.collections.find
 fun ApplicationDetailsScreen(
     applicationId: String,
     navController: NavController,
-    candidatureVm: ApplicationViewModel = viewModel(),
-    relanceVm: FollowUpViewModel = viewModel(),
-    appelVm: CallViewModel = viewModel(),
-    entretienVm: InterviewViewModel = viewModel(),
+    applicationVm: ApplicationViewModel = viewModel(),
+    followUpVm: FollowUpViewModel = viewModel(),
+    callVm: CallViewModel = viewModel(),
+    interviewVm: InterviewViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
-    entrepriseVm: CompanyViewModel = viewModel(),
+    companyVm: CompanyViewModel = viewModel(),
     userId: String
 ) {
     // 1) Charger la candidature
-    val allCands by candidatureVm.allForUser(userId = userId).observeAsState(emptyList())
-    val candidature = allCands.find { it.id == applicationId }
+    val allApplications by applicationVm.allForUser(userId = userId).observeAsState(emptyList())
+    val application = allApplications.find { it.id == applicationId }
         ?: return // ou u petit loader / message d'erreur
 
     // 2) Charger l’entreprise
-    val allEnts by entrepriseVm.allForUser(userId = userId).observeAsState(emptyList())
-    val entreprise = allEnts.find { it.id == candidature.companyId }
+    val allCompanies by companyVm.allForUser(userId = userId).observeAsState(emptyList())
+    val company = allCompanies.find { it.id == application.companyId }
 
     // 2) Charger toutess les entités liées
-    val relances by relanceVm.allForUser(userId = userId).observeAsState(emptyList())
-    val appels by appelVm.allForUser(userId = userId).observeAsState(emptyList())
-    val entretiensWithContacts by entretienVm.getAllWithContacts(userId).observeAsState(emptyList())
+    val followups by followUpVm.allForUser(userId = userId).observeAsState(emptyList())
+    val calls by callVm.allForUser(userId = userId).observeAsState(emptyList())
+    val interviewsWithContacts by interviewVm.getAllWithContacts(userId).observeAsState(emptyList())
     val contacts by contactVm.allForUser(userId = userId).observeAsState(emptyList())
 
     // 3) Filtrer celles qui concernent notre candidature
-    val myRelances   = relances.filter { it.applicationId == applicationId }
-    val myAppels     = appels.filter { it.applicationId == applicationId }
-    val myEntretiens = entretiensWithContacts.filter {
-        it.entretien.applicationId == applicationId
+    val myFollowUps   = followups.filter { it.applicationId == applicationId }
+    val myCalls     = calls.filter { it.applicationId == applicationId }
+    val myInterviews = interviewsWithContacts.filter {
+        it.interview.applicationId == applicationId
     }
     // les contacts qu'on a associés via appels / relances / entretiens :
     val myContacts = contacts.filter { contact ->
-        myRelances.any { it.contactId == contact.id } ||
-                myAppels.any { it.contactId == contact.id } ||
-                myEntretiens.any { it.contacts.any { ec -> ec.id == contact.id } }
+        myFollowUps.any { it.contactId == contact.id } ||
+                myCalls.any { it.contactId == contact.id } ||
+                myInterviews.any { it.contacts.any { ec -> ec.id == contact.id } }
     }
 
 
@@ -84,7 +88,7 @@ fun ApplicationDetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = candidature.title) },
+                title = { Text(text = application.title) },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.popBackStack()
@@ -94,19 +98,19 @@ fun ApplicationDetailsScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("${Routes.APPLICATION_EDIT}/${candidature.id}")
+                        navController.navigate("${Routes.APPLICATION_EDIT}/${application.id}")
                     }) {
                         Icon(Icons.Default.Edit, contentDescription = "Modifier la candidature")
                     }
                     IconButton(onClick = {
-                        candidatureVm.archive(listOf(candidature.id), userId)
+                        applicationVm.archive(listOf(application.id), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.Archive, contentDescription = "Archiver")
                     }
 
                     IconButton(onClick = {
-                        candidatureVm.delete(listOf(candidature.id), userId)
+                        applicationVm.delete(listOf(application.id), userId)
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Default.DeleteForever, contentDescription = "Supprimer définitivement")
@@ -117,10 +121,10 @@ fun ApplicationDetailsScreen(
         },
         floatingActionButton = {
             AddActionButtons(
-                onAddRelance   = { navController.navigate("${Routes.FOLLOWUP_ADD}?linkedCandidatureId=${candidature.id}") },
-                onAddAppel     = { navController.navigate("${Routes.CALL_ADD}?linkedCandidatureId=${candidature.id}") },
-                onAddEntretien = { navController.navigate("${Routes.INTERVIEW_ADD}?linkedCandidatureId=${candidature.id}") },
-                onAddContact   = { navController.navigate("${Routes.CONTACT_ADD}?linkedCandidatureId=${candidature.id}") }
+                onAddFollowUp   = { navController.navigate("${Routes.FOLLOWUP_ADD}?linkedApplicationId=${application.id}") },
+                onAddCall     = { navController.navigate("${Routes.CALL_ADD}?linkedApplicationId=${application.id}") },
+                onAddInterview = { navController.navigate("${Routes.INTERVIEW_ADD}?linkedApplicationId=${application.id}") },
+                onAddContact   = { navController.navigate("${Routes.CONTACT_ADD}?linkedApplicationId=${application.id}") }
             )
         }
     ) { innerPadding ->
@@ -132,43 +136,43 @@ fun ApplicationDetailsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Text("Titre : ${candidature.title}")
+                Text("Titre : ${application.title}")
 
-                Text("Entreprise : ${entreprise?.name ?: "—"}",
+                Text("Entreprise : ${company?.name ?: "—"}",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.clickable {
-                        navController.navigate("${Routes.COMPANY_DETAIL}/${candidature.companyId}")
+                        navController.navigate("${Routes.COMPANY_DETAIL}/${application.companyId}")
                     }
                 )
                 Text(
-                    text = "Date: ${candidature.applicationDate.toFormattedDate()}",
+                    text = "Date: ${application.applicationDate.toFormattedDate()}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = "Statut: ${candidature.applicationStatus}",
+                    text = "Statut: ${application.applicationStatus}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = "Type de contrat: ${candidature.applicationType}",
+                    text = "Type de contrat: ${application.applicationType}",
                     style = MaterialTheme.typography.bodyMedium
                 )
-                candidature.platform?.let {
+                application.platform?.let {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = "Plateforme: $it", style = MaterialTheme.typography.bodySmall)
                 }
-                candidature.contractType?.let {
+                application.contractType?.let {
                     Text(
                         text = "Type de contrat: $it",
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
-                candidature.location?.let {
+                application.location?.let {
                     Text(
                         text = "Lieu du poste: $it",
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
-                candidature.notes?.let {
+                application.notes?.let {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = "Notes: $it", style = MaterialTheme.typography.bodySmall)
                 }
@@ -178,36 +182,36 @@ fun ApplicationDetailsScreen(
             item {
                 SectionTitle("Relances liées")
             }
-            items(myRelances) { relance ->
+            items(myFollowUps) { followup ->
                 DetailItemCard(
-                    title = "${relance.type ?: "Type inconnu"} (${relance.responseStatus ?: "Statut inconnu"})",
-                    subtitle = relance.date.toString(),
-                    onClick = { navController.navigate("${Routes.FOLLOWUP_DETAIL}/${relance.id}")}
+                    title = "${followup.type ?: "Type inconnu"} (${followup.responseStatus ?: "Statut inconnu"})",
+                    subtitle = followup.date.toString(),
+                    onClick = { navController.navigate("${Routes.FOLLOWUP_DETAIL}/${followup.id}")}
                 )
             }
 
             item {
                 SectionTitle("Appels liés")
             }
-            items(myAppels) { appel ->
+            items(myCalls) { call ->
                 DetailItemCard(
-                    title = appel.subject,
-                    subtitle = appel.notes,
-                    onClick = { navController.navigate("${Routes.DETAIL_CALL}/${appel.id}")}
+                    title = call.subject,
+                    subtitle = call.notes,
+                    onClick = { navController.navigate("${Routes.DETAIL_CALL}/${call.id}")}
                 )
             }
 
             item {
                 SectionTitle("Entretiens liés")
             }
-            items(myEntretiens) { entretienWithContacts ->
-                val entretien = entretienWithContacts.entretien
-                val contacts = entretienWithContacts.contacts
+            items(myInterviews) { interviewWithContacts ->
+                val interview = interviewWithContacts.interview
+                val contacts = interviewWithContacts.contacts
 
                 DetailItemCard(
-                    title = "${entretien.type ?: "Type inconnu"} - ${entretien.style ?: "Style inconnu"}",
+                    title = "${interview.type ?: "Type inconnu"} - ${interview.style ?: "Style inconnu"}",
                     subtitle = contacts.joinToString(", ") { it.firstName + " " + it.lastName },
-                    onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${entretien.id}") }
+                    onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${interview.id}") }
                 )
             }
 
@@ -235,9 +239,9 @@ fun SectionTitle(title: String) {
 }
 @Composable
 fun AddActionButtons(
-    onAddRelance: () -> Unit,
-    onAddAppel: () -> Unit,
-    onAddEntretien: () -> Unit,
+    onAddFollowUp: () -> Unit,
+    onAddCall: () -> Unit,
+    onAddInterview: () -> Unit,
     onAddContact: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -250,13 +254,13 @@ fun AddActionButtons(
             horizontalAlignment = Alignment.End
         ) {
             if (expanded) {
-                SmallFloatingActionButton(onClick = { expanded = false; onAddRelance() }) {
+                SmallFloatingActionButton(onClick = { expanded = false; onAddFollowUp() }) {
                     Icon(Icons.Default.Alarm, contentDescription = "Ajouter Relance")
                 }
-                SmallFloatingActionButton(onClick = { expanded = false; onAddAppel() }) {
+                SmallFloatingActionButton(onClick = { expanded = false; onAddCall() }) {
                     Icon(Icons.Default.Phone, contentDescription = "Ajouter Appel")
                 }
-                SmallFloatingActionButton(onClick = { expanded = false; onAddEntretien() }) {
+                SmallFloatingActionButton(onClick = { expanded = false; onAddInterview() }) {
                     Icon(Icons.Default.Chat, contentDescription = "Ajouter Entretien")
                 }
                 SmallFloatingActionButton(onClick = { expanded = false; onAddContact() }) {

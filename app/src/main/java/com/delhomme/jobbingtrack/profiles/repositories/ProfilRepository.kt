@@ -1,8 +1,7 @@
 package com.delhomme.jobbingtrack.profiles.repositories
 
-
-import com.delhomme.jobbingtrack.data.local.dao.cv.ProfileDao
-import com.delhomme.jobbingtrack.data.local.entities.cv.ProfilEntity
+import com.delhomme.jobbingtrack.profiles.dao.ProfileDao
+import com.delhomme.jobbingtrack.profiles.entities.ProfilEntity
 import kotlinx.coroutines.flow.Flow
 
 

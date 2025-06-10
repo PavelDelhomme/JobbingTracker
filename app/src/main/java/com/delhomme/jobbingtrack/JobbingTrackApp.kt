@@ -2,6 +2,7 @@ package com.delhomme.jobbingtrack
 
 import android.app.Application
 import androidx.room.Room
+import com.delhomme.jobbingtrack.api.ApiClient
 import com.delhomme.jobbingtrack.commons.AppDatabase
 
 

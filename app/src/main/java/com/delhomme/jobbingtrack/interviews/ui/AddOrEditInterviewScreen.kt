@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.FormSuggestions
@@ -33,6 +34,7 @@ import com.delhomme.jobbingtrack.commons.ui.forms.ModernDateTimePickerField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.ContactSelectorField
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
+import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
 import com.delhomme.jobbingtrack.dashboard.viewmodels.DashboardViewModel
@@ -171,7 +173,6 @@ fun AddOrEditInterviewScreen(
 
                 val ent = InterviewEntity(
                     id = id,
-                    userId = existingInterview?.userId ?: "",
                     applicationId = selectionnedApplicationId,
                     companyId = finalCompanyId ?: selectionnedCompanyId,
                     dateTime = dateTime,
@@ -186,9 +187,16 @@ fun AddOrEditInterviewScreen(
                     returnDate = form["returnDate"]?.toLongOrNull(),
                     testsNeeded = form["testsNeeded"].toBoolean(),
                     testsDeadline = form["testsDeadline"]?.toLongOrNull(),
-                    syncHash = hash,
-                    isArchived = existingInterview?.isArchived == true,
-                    isDeleted = existingInterview?.isDeleted == true
+                    typeId = existingInterview?.typeId ?: "",
+                    styleId = existingInterview?.styleId ?: "",
+                    base = CommonEntityFields(
+                        userId = userId,
+                        createdAt = existingInterview?.createdAt ?: System.currentTimeMillis(),
+                        updatedAt = System.currentTimeMillis(),
+                        deletedAt = existingInterview?.deletedAt ?: null,
+                        archivedAt = null,
+                        syncHash = hash
+                    )
                 )
                 interviewVm.save(ent, selectionnedContacts.map { c -> c.id })
                 onCancel()

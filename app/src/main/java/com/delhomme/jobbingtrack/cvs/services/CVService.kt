@@ -1,7 +1,8 @@
 package com.delhomme.jobbingtrack.cvs.services
 
 import android.util.Log
-import com.delhomme.jobbingtrack.CV
+import com.delhomme.jobbingtrack.api.ApiClient
+import com.delhomme.jobbingtrack.api.CV
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

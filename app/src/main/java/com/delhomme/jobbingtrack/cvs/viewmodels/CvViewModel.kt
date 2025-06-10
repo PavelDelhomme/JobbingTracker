@@ -6,7 +6,6 @@ import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.cvs.entities.CVEntity
 import com.delhomme.jobbingtrack.cvs.repositories.CvRepository
-import com.delhomme.jobbingtrack.data.local.repository.cv.CvRepository
 import kotlinx.coroutines.launch
 
 class CvViewModel(app: Application) : AndroidViewModel(app) {

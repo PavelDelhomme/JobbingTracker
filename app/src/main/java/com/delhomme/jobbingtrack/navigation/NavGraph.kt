@@ -370,18 +370,183 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             onRestore = { navController.navigate(Routes.MAIN) }
         ) }
 
-        // — CV —
+        // — CVs —
         composable(Routes.CVS) { CvsScreen(navController, userId = userId.toString(),
-            cvViewModel = CvViewModel(JobbingTrackApp()),
+            cvVm = CvViewModel(JobbingTrackApp()),
+            cvs = emptyList(),
+            onItemClick = {},
+            onEdit = {},
+            onArchive = {},
+            onDelete = {},
+            onAddClick = { navController.navigate(Routes.CV_ADD) }
         ) }
-        composable(
-            "${Routes.CV_UPLOAD}",
-            arguments = listOf(navArgument("cvId") {
-                type = NavType.StringType
-            })
+        composable(Routes.CV_ADD) {
+            AddOrEditCvScreen(
+                navController,
+                cvVm = CvViewModel(JobbingTrackApp()),
+                cvs = emptyList(),
+                onItemClick = {},
+                onEdit = {},
+                onArchive = {},
+                onDelete = {},
+                userId = userId.toString(),
+                onAddClick = { navController.navigate(Routes.CV_ADD) },
+            )
+        }
+        composable("${Routes.CV_EDIT}/{cvId}",
+            arguments = listOf(navArgument("cvId") { type = NavType.StringType })
         ) { backStack ->
             val id = backStack.arguments!!.getString("cvId")!!
-            CVUploadScreen(cvId = id, navController = navController)
+            AddOrEditCvScreen(
+                userId = userId.toString(),
+                cvId = id,
+                cvVm = CvViewModel(JobbingTrackApp()),
+                cvs = emptyList(),
+                onItemClick = {},
+                onEdit = {},
+                onArchive = {},
+                onDelete = {},
+                onAddClick = { navController.navigate(Routes.CV_ADD) },
+                navController = navController,
+            )
+        }
+        composable("${Routes.CV_DETAIL}/{cvId}",
+            arguments = listOf(navArgument("cvId") { type = NavType.StringType })
+        ) { backStack ->
+            val id = backStack.arguments!!.getString("cvId")!!
+            CvDetailScreen(
+                cvId = id,
+                userId = userId.toString(),
+                navController = navController
+            )
+        }
+
+
+        composable(Routes.EXPERIENCE_ADD) {
+            AddOrEditExperienceScreen(
+                userId = userId.toString(),
+                experienceId = null,
+                onCancel = { navController.popBackStack() })
+        }
+        composable("${Routes.EXPERIENCE_EDIT}/{experienceId}",
+            arguments = listOf(navArgument("experienceId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("experienceId")!!
+            AddOrEditExperienceScreen(
+                userId = userId.toString(),
+                experienceId = id,
+                onCancel = { navController.popBackStack() }
+            )
+        }
+
+        composable("${Routes.EXPERIENCE_DETAIL}/{experienceId}",
+            arguments = listOf(navArgument("experienceId") { type = NavType.StringType })
+        ) { backStack ->
+            val id = backStack.arguments!!.getString("experienceId")!!
+            ExperienceDetailScreen(
+                experienceId = id,
+                userId = userId.toString(),
+                navController = navController
+            )
+        }
+
+        composable(Routes.SKILL_ADD) {
+            AddOrEditSkillScreen(userId = userId.toString(), skillId = null, onCancel = { navController.popBackStack() })
+        }
+        composable("${Routes.SKILL_EDIT}/{skillId}",
+            arguments = listOf(navArgument("skillId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("skillId")!!
+            AddOrEditSkillScreen(userId = userId.toString(), skillId = id, onCancel = { navController.popBackStack() })
+        }
+
+        // — DÉTAILS SKILL —
+        composable("${Routes.SKILL_DETAIL}/{skillId}",
+            arguments = listOf(navArgument("skillId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("skillId")!!
+            SkillDetailScreen(skillId = id, userId = userId.toString(), navController = navController)
+        }
+
+        composable(Routes.FORMATION_ADD) {
+            AddOrEditFormationScreen(userId = userId.toString(), formationId = null, onCancel = { navController.popBackStack() })
+        }
+        composable("${Routes.FORMATION_EDIT}/{formationId}",
+            arguments = listOf(navArgument("formationId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("formationId")!!
+            AddOrEditFormationScreen(userId = userId.toString(), formationId = id, onCancel = { navController.popBackStack() })
+        }
+
+
+        composable(Routes.PROJECT_ADD) {
+            AddOrEditProjectScreen(userId = userId.toString(), projectId = null, onCancel = { navController.popBackStack() })
+        }
+        composable("${Routes.PROJECT_EDIT}/{projectId}",
+            arguments = listOf(navArgument("projectId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("projectId")!!
+            AddOrEditProjectScreen(userId = userId.toString(), projectId = id, onCancel = { navController.popBackStack() })
+        }
+        // — DÉTAILS PROJECT —
+        composable("${Routes.PROJECT_DETAIL}/{projectId}",
+            arguments = listOf(navArgument("projectId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("projectId")!!
+            ProjectDetailScreen(projectId = id, userId = userId.toString(), navController = navController)
+        }
+
+        composable(Routes.EDUCATION_ADD) {
+            AddOrEditEducationScreen(userId = userId.toString(), educationId = null, onCancel = { navController.popBackStack() })
+        }
+        composable("${Routes.EDUCATION_EDIT}/{educationId}",
+            arguments = listOf(navArgument("educationId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("educationId")!!
+            AddOrEditEducationScreen(userId = userId.toString(), educationId = id, onCancel = { navController.popBackStack() })
+        }
+        // — DÉTAILS EDUCATION —
+        composable("${Routes.EDUCATION_DETAIL}/{educationId}",
+            arguments = listOf(navArgument("educationId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("educationId")!!
+            EducationDetailScreen(educationId = id, userId = userId.toString(), navController = navController)
+        }
+
+
+        composable(Routes.LANGUAGE_ADD) {
+            AddOrEditLanguageScreen(userId = userId.toString(), languageId = null, onCancel = { navController.popBackStack() })
+        }
+        composable("${Routes.LANGUAGE_EDIT}/{languageId}",
+            arguments = listOf(navArgument("languageId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("languageId")!!
+            AddOrEditLanguageScreen(userId = userId.toString(), languageId = id, onCancel = { navController.popBackStack() })
+        }
+        // — DÉTAILS LANGUAGE —
+        composable("${Routes.LANGUAGE_DETAIL}/{languageId}",
+            arguments = listOf(navArgument("languageId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("languageId")!!
+            LanguageDetailScreen(languageId = id, userId = userId.toString(), navController = navController)
+        }
+
+
+        composable(Routes.COLLABORATOR_ADD) {
+            AddOrEditCollaboratorScreen(userId = userId.toString(), collaboratorId = null, onCancel = { navController.popBackStack() })
+        }
+        composable("${Routes.COLLABORATOR_EDIT}/{collaboratorId}",
+            arguments = listOf(navArgument("collaboratorId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("collaboratorId")!!
+            AddOrEditCollaboratorScreen(userId = userId.toString(), collaboratorId = id, onCancel = { navController.popBackStack() })
+        }
+        // — DÉTAILS COLLABORATOR —
+        composable("${Routes.COLLABORATOR_DETAIL}/{collaboratorId}",
+            arguments = listOf(navArgument("collaboratorId") { type = NavType.StringType })
+        ) { bs ->
+            val id = bs.arguments!!.getString("collaboratorId")!!
+            CollaboratorDetailScreen(collaboratorId = id, userId = userId.toString(), navController = navController)
         }
     }
 }

@@ -12,6 +12,8 @@ import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
+import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.utils.toFieldMap
 import java.util.UUID
 import kotlin.collections.find
