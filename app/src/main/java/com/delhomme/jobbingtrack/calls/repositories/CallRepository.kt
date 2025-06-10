@@ -1,9 +1,15 @@
 package com.delhomme.jobbingtrack.calls.repositories
+import androidx.lifecycle.ViewModel
 import com.delhomme.jobbingtrack.calls.dao.CallDao
 import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class CallRepository(private val dao: CallDao) {
+@HiltViewModel
+class CallRepository @Inject constructor(
+    private val dao: CallDao
+) : ViewModel() {
     fun allForUser(userId: String): Flow<List<CallEntity>>         = dao.getAllForUser(userId)
     fun activeForUser(userId: String): Flow<List<CallEntity>>      = dao.getAllActiveForUser(userId)
     fun archivedForUser(userId: String): Flow<List<CallEntity>>    = dao.getArchivedForUser(userId)

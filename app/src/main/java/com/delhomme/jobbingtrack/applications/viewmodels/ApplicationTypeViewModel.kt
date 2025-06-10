@@ -6,10 +6,14 @@ import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.applications.entities.ApplicationTypeEntity
 import com.delhomme.jobbingtrack.applications.repositories.ApplicationTypeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 
-class ApplicationTypeViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo = ApplicationTypeRepository(JobbingTrackApp.database.applicationTypeDao())
+@HiltViewModel
+class ApplicationTypeViewModel @Inject constructor(
+    private val repo: ApplicationTypeRepository
+) : ViewModel() {
 
     val all: LiveData<List<ApplicationTypeEntity>> = repo.all.asLiveData()
 

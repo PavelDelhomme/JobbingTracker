@@ -4,8 +4,9 @@ package com.delhomme.jobbingtrack.applications.repositories
 import com.delhomme.jobbingtrack.applications.dao.ApplicationDao
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ApplicationRepository(private val dao: ApplicationDao) {
+class ApplicationRepository @Inject constructor(private val dao: ApplicationDao) {
     fun allForUser(userId: String): Flow<List<ApplicationEntity>>       = dao.getAllForUser(userId)
     fun activeForUser(userId: String): Flow<List<ApplicationEntity>>      = dao.getAllActiveForUser(userId)
     fun archivedForUser(userId: String): Flow<List<ApplicationEntity>>    = dao.getArchivedForUser(userId)

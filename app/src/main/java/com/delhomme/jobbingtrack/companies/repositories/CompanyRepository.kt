@@ -4,8 +4,11 @@ package com.delhomme.jobbingtrack.companies.repositories
 import com.delhomme.jobbingtrack.companies.dao.CompanyDao
 import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class CompanyRepository(private val dao: CompanyDao) {
+class CompanyRepository @Inject constructor(
+    private val dao: CompanyDao
+) {
     fun allForUser(userId: String): Flow<List<CompanyEntity>> = dao.getAllForUser(userId)
 
     fun activeForUser(userId: String): Flow<List<CompanyEntity>> = dao.getAllActiveForUser(userId)

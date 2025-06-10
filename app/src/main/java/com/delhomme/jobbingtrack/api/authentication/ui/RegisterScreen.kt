@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.api.authentication.viewmodels.RegisterViewModel
@@ -44,7 +45,7 @@ import com.delhomme.jobbingtrack.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(navController: NavController, registerVm: RegisterViewModel = viewModel()) {
+fun RegisterScreen(navController: NavController, registerVm: RegisterViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     var email by remember { mutableStateOf("") }

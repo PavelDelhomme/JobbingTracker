@@ -1,18 +1,18 @@
 package com.delhomme.jobbingtrack.followsup.viewmodels
 
-
-import android.app.Application
 import androidx.lifecycle.*
-import com.delhomme.jobbingtrack.JobbingTrackApp
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpPlateformEntity
 import com.delhomme.jobbingtrack.followsup.repositories.FollowUpPlatformRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FollowUpPlatformViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo = FollowUpPlatformRepository(JobbingTrackApp.database.followUpPlateformDao())
-
+@HiltViewModel
+class FollowUpPlatformViewModel @Inject constructor(
+    private val repo: FollowUpPlatformRepository
+) : ViewModel() {
     val all = repo.all.asLiveData()
     fun byId(id: String) = repo.byId(id).asLiveData()
-
-    fun save(entity: FollowUpPlatformEntity) = viewModelScope.launch { repo.save(entity) }
-    fun delete(entity: FollowUpPlatformEntity) = viewModelScope.launch { repo.delete(entity) }
+    fun save(entity: FollowUpPlateformEntity) = viewModelScope.launch { repo.save(entity) }
+    fun delete(entity: FollowUpPlateformEntity) = viewModelScope.launch { repo.delete(entity) }
 }

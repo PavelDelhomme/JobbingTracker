@@ -19,13 +19,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.delhomme.jobbingtrack.api.authentication.viewmodels.LoginViewModel
 
 
 @Composable
 fun LoginScreen(
     navController: NavController? = null,
-    loginViewModel: LoginViewModel = viewModel()
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

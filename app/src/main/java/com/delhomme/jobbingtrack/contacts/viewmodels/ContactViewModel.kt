@@ -4,15 +4,20 @@ package com.delhomme.jobbingtrack.contacts.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import com.delhomme.jobbingtrack.contacts.repositories.ContactRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 
-class ContactViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo = ContactRepository(JobbingTrackApp.Companion.database.contactDao())
+@HiltViewModel
+class ContactViewModel @Inject constructor(
+    private val repo: ContactRepository
+) : ViewModel() {
 
     /** Toutes les contacts pour cet utilisateur */
     fun allForUser(userId: String): LiveData<List<ContactEntity>> =

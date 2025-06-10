@@ -20,8 +20,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.applications.ui.SectionTitle
 import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
+import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
@@ -57,7 +61,7 @@ fun ContactDetailScreen(
                 allRelances.any { it.contactId == contactId && it.applicationId == c.id } ||
                 allEntretiens.any   { ewc ->
                     ewc.contacts.any { it.id == contactId } &&
-                            ewc.entretien.applicationId == c.id
+                            ewc.interview.applicationId == c.id
                 }
     }
     val linkedAppels = allAppels.filter { it.contactId == contactId }
@@ -150,9 +154,9 @@ fun ContactDetailScreen(
                 item { SectionTitle("Entretiens liés") }
                 items(linkedEntretiens) { e ->
                     DetailItemCard(
-                        title = "${e.entretien.type } — ${e.entretien.style} pour ${e.entretien.companyId}",
-                        subtitle = e.entretien.dateTime.toFormattedDate(),
-                        onClick  = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.entretien.id}") }
+                        title = "${e.interview.type } — ${e.interview.style} pour ${e.interview.companyId}",
+                        subtitle = e.interview.dateTime.toFormattedDate(),
+                        onClick  = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.interview.id}") }
                     )
                 }
             }

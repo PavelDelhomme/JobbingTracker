@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.room.Room
 import com.delhomme.jobbingtrack.api.ApiClient
 import com.delhomme.jobbingtrack.commons.AppDatabase
+import dagger.hilt.android.HiltAndroidApp
 
 
+@HiltAndroidApp
 class JobbingTrackApp : Application() {
     companion object {
         lateinit var database: AppDatabase; private set

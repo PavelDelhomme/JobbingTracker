@@ -3,9 +3,10 @@ package com.delhomme.jobbingtrack.profiles.repositories
 import com.delhomme.jobbingtrack.profiles.dao.ProfileDao
 import com.delhomme.jobbingtrack.profiles.entities.ProfilEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 
-class ProfilRepository(private val dao: ProfileDao) {
+class ProfilRepository @Inject constructor(private val dao: ProfileDao) {
     val all: Flow<List<ProfilEntity>>     = dao.getAll()
     fun byId(id: String): Flow<ProfilEntity?> = dao.getById(id)
 

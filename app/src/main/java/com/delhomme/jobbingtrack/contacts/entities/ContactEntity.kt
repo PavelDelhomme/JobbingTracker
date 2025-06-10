@@ -19,6 +19,8 @@ data class ContactEntity(
     val department: String?,
     val companyId: String,
     val applicationIds: List<String>?,
+    val followUpIds: List<String>?,
+    val callIds: List<String>?,
     val notes: String?,
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider

@@ -4,8 +4,11 @@ package com.delhomme.jobbingtrack.contacts.repositories
 import com.delhomme.jobbingtrack.contacts.dao.ContactDao
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ContactRepository(private val dao: ContactDao) {
+class ContactRepository @Inject constructor(
+    private val dao: ContactDao
+) {
     fun allForUser(userId: String): Flow<List<ContactEntity>> = dao.getAllForUser(userId)
     fun activeForUser(userId: String): Flow<List<ContactEntity>> = dao.getAllActiveForUser(userId)
     fun archivedForUser(userId: String): Flow<List<ContactEntity>> = dao.getArchivedForUser(userId)

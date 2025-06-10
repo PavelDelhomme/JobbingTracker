@@ -1,24 +1,18 @@
 package com.delhomme.jobbingtrack.cvs.viewmodels
-
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.delhomme.jobbingtrack.JobbingTrackApp
+import androidx.lifecycle.*
 import com.delhomme.jobbingtrack.cvs.entities.ExperienceEntity
 import com.delhomme.jobbingtrack.cvs.repositories.ExperienceRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class ExperienceViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo = ExperienceRepository(JobbingTrackApp.database.experienceDao())
-
+@HiltViewModel
+class ExperienceViewModel @Inject constructor(
+    private val repo: ExperienceRepository
+) : ViewModel() {
     val all: LiveData<List<ExperienceEntity>> = repo.all.asLiveData()
-
     fun byId(id: String): LiveData<ExperienceEntity?> = repo.byId(id).asLiveData()
-
     fun save(entity: ExperienceEntity) = viewModelScope.launch { repo.save(entity) }
-
+    fun update(entity: ExperienceEntity) = viewModelScope.launch { repo.update(entity) }
     fun delete(entity: ExperienceEntity) = viewModelScope.launch { repo.delete(entity) }
 }

@@ -1,11 +1,13 @@
 package com.delhomme.jobbingtrack.api.authentication.services
 
 import com.delhomme.jobbingtrack.api.ApiClient.api
+import com.delhomme.jobbingtrack.api.ApiService
 import com.delhomme.jobbingtrack.api.authentication.requests.RegisterRequest
 import com.delhomme.jobbingtrack.api.authentication.responses.RegisterResponse
+import javax.inject.Inject
 
 
-class RegisterService {
+class RegisterService @Inject constructor(private val api: ApiService) {
     suspend fun register(email: String, password: String): RegisterResponse? {
         val response = api.register(RegisterRequest(email, password))
         return if (response.isSuccessful) response.body() else null

@@ -4,13 +4,11 @@ import com.delhomme.jobbingtrack.applications.dao.ApplicationPlatformDao
 import com.delhomme.jobbingtrack.applications.entities.ApplicationPlatformEntity
 import com.delhomme.jobbingtrack.applications.entities.ApplicationStatusEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-
-class ApplicationPlatformRepository(dao: ApplicationPlatformDao) {
+class ApplicationPlatformRepository @Inject constructor(
     private val dao: ApplicationPlatformDao
-    init {
-        this.dao = dao
-    }
+) {
     val all: Flow<List<ApplicationPlatformEntity>> = dao.getAll()
 
     fun byId(id: String) = dao.getById(id)

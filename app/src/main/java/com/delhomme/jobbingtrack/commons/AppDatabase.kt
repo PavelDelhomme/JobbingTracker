@@ -6,6 +6,7 @@ import com.delhomme.jobbingtrack.applications.dao.ApplicationDao
 import com.delhomme.jobbingtrack.applications.dao.ApplicationPlatformDao
 import com.delhomme.jobbingtrack.applications.dao.ApplicationStatusDao
 import com.delhomme.jobbingtrack.applications.dao.ApplicationTypeDao
+import com.delhomme.jobbingtrack.applications.dao.ContractTypeDao
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.calls.dao.CallDao
 import com.delhomme.jobbingtrack.calls.dao.CallTypeDao
@@ -19,6 +20,7 @@ import com.delhomme.jobbingtrack.profiles.entities.ProfilEntity
 import com.delhomme.jobbingtrack.users.entities.UserEntity
 import com.delhomme.jobbingtrack.calls.entities.CallEntity
 import com.delhomme.jobbingtrack.companies.dao.CompanyDao
+import com.delhomme.jobbingtrack.companies.dao.CompanyTypeDao
 import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import com.delhomme.jobbingtrack.cvs.dao.CVDao
 import com.delhomme.jobbingtrack.cvs.dao.CollaboratorDao
@@ -66,6 +68,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun applicationTypeDao(): ApplicationTypeDao
     abstract fun applicationPlateformDao(): ApplicationPlatformDao
 
+    abstract fun contractTypeDao(): ContractTypeDao
+
     abstract fun callDao(): CallDao
 
     abstract fun collaboratorDao(): CollaboratorDao
@@ -100,6 +104,10 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun callTypeDao(): CallTypeDao
 
+    abstract fun companyTypeDao(): CompanyTypeDao
+
     abstract fun userDao(): UserDao
+
+    abstract fun ContractTypeDao(): ContractTypeDao
 
 }

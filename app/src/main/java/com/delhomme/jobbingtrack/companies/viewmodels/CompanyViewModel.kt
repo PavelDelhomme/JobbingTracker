@@ -3,15 +3,20 @@ package com.delhomme.jobbingtrack.companies.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import com.delhomme.jobbingtrack.companies.repositories.CompanyRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CompanyViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo = CompanyRepository(JobbingTrackApp.Companion.database.companyDao())
+@HiltViewModel
+class CompanyViewModel @Inject constructor(
+    private val repo: CompanyRepository
+) : ViewModel() {
 
     fun allForUser(userId: String): LiveData<List<CompanyEntity>> = repo.allForUser(userId).asLiveData()
 

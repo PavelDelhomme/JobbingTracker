@@ -1,15 +1,16 @@
 package com.delhomme.jobbingtrack.applications.viewmodels
 
-
-import android.app.Application
 import androidx.lifecycle.*
-import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.applications.repositories.ApplicationRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ApplicationViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo = ApplicationRepository(JobbingTrackApp.database.applicationDao())
+@HiltViewModel
+class ApplicationViewModel @Inject constructor(
+    private val repo: ApplicationRepository
+) : ViewModel() {
 
     /** 1) Toutes les candidatures pour un user */
     fun allForUser(userId: String): LiveData<List<ApplicationEntity>> =

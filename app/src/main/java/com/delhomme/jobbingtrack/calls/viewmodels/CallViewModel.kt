@@ -1,16 +1,16 @@
 package com.delhomme.jobbingtrack.calls.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.calls.entities.CallEntity
 import com.delhomme.jobbingtrack.calls.repositories.CallRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 
-
-class CallViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo = CallRepository(JobbingTrackApp.database.callDao())
-
+@HiltViewModel
+class CallViewModel @Inject constructor(
+    private val repo: CallRepository
+) : ViewModel() {
     /** Toutes les relances pour cet utilisateur */
     fun callsForUser(userId: String): LiveData<List<CallEntity>> =
         repo.allForUser(userId).asLiveData()

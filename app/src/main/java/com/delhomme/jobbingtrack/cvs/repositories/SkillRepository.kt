@@ -1,7 +1,14 @@
 package com.delhomme.jobbingtrack.cvs.repositories
-
 import com.delhomme.jobbingtrack.cvs.dao.SkillDao
+import com.delhomme.jobbingtrack.cvs.entities.SkillEntity
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-
-class SkillRepository(skillDao: SkillDao) {
+class SkillRepository @Inject constructor(
+    private val dao: SkillDao
+) {
+    val all: Flow<List<SkillEntity>> = dao.getAll()
+    fun byId(id: String): Flow<SkillEntity?> = dao.getById(id)
+    suspend fun save(entity: SkillEntity) = dao.save(entity)
+    suspend fun delete(entity: SkillEntity) = dao.delete(entity)
 }
