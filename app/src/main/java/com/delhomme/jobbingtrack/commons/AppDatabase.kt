@@ -2,6 +2,7 @@ package com.delhomme.jobbingtrack.commons
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
 import com.delhomme.jobbingtrack.applications.dao.ApplicationDao
 import com.delhomme.jobbingtrack.applications.dao.ApplicationPlatformDao
 import com.delhomme.jobbingtrack.applications.dao.ApplicationStatusDao
@@ -44,6 +45,9 @@ import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
 import com.delhomme.jobbingtrack.profiles.dao.ProfileDao
 import com.delhomme.jobbingtrack.users.dao.UserDao
 
+import androidx.room.TypeConverters
+import com.delhomme.jobbingtrack.utils.Converters
+
 @Database(
     entities = [
         CallEntity::class,
@@ -62,6 +66,7 @@ import com.delhomme.jobbingtrack.users.dao.UserDao
     version = 1,
     exportSchema = true
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun applicationDao(): ApplicationDao
     abstract fun applicationStatusDao(): ApplicationStatusDao

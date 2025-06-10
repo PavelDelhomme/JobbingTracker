@@ -1,7 +1,10 @@
 package com.delhomme.jobbingtrack.utils
 
 import com.delhomme.jobbingtrack.applications.Application
+import com.delhomme.jobbingtrack.calls.Call
 import com.delhomme.jobbingtrack.contacts.Contact
+import com.delhomme.jobbingtrack.followsup.FollowUp
+import com.delhomme.jobbingtrack.interviews.Interview
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

@@ -130,4 +130,5 @@ dependencies {
 
     // Pour intégration Compose Navigation (optionnel mais recommandé)
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("com.google.code.gson:gson:2.10")
 }

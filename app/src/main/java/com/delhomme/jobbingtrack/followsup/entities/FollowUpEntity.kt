@@ -17,6 +17,7 @@ data class FollowUpEntity(
     val notes: String?,
     val applicationId: String,
     val companyId: String,
-    val contactId: String?,
+    val contactsIds: List<String?>,
+    val callsIds: List<String?>,
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider

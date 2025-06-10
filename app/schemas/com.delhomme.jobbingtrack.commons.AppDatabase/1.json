@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c4891b3f3d577f856c77555017bd1d7c",
+    "identityHash": "2955081c36faecf4cd850b582ebc93ce",
     "entities": [
       {
         "tableName": "calls",
@@ -222,7 +222,7 @@
       },
       {
         "tableName": "contacts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `firstName` TEXT, `lastName` TEXT, `phone` TEXT, `email` TEXT, `position` TEXT, `department` TEXT, `companyId` TEXT NOT NULL, `applicationIds` TEXT, `notes` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `firstName` TEXT, `lastName` TEXT, `phone` TEXT, `email` TEXT, `position` TEXT, `department` TEXT, `companyId` TEXT NOT NULL, `applicationIds` TEXT, `interviewIds` TEXT, `followUpIds` TEXT, `callIds` TEXT, `notes` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -269,6 +269,21 @@
           {
             "fieldPath": "applicationIds",
             "columnName": "applicationIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "interviewIds",
+            "columnName": "interviewIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "followUpIds",
+            "columnName": "followUpIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "callIds",
+            "columnName": "callIds",
             "affinity": "TEXT"
           },
           {
@@ -677,7 +692,7 @@
       },
       {
         "tableName": "profiles",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `subject` TEXT NOT NULL, `companyIds` TEXT NOT NULL, `contactIds` TEXT, `applicationIds` TEXT, `followUpIds` TEXT, `notes` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `subject` TEXT NOT NULL, `companyIds` TEXT NOT NULL, `contactIds` TEXT, `applicationIds` TEXT, `followUpIds` TEXT, `notes` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -716,6 +731,52 @@
             "fieldPath": "notes",
             "columnName": "notes",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "base.userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "base.syncHash",
+            "columnName": "syncHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "base.isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "base.isDeleted",
+            "columnName": "isDeleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "base.createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "base.updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "base.deletedAt",
+            "columnName": "deletedAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "base.archivedAt",
+            "columnName": "archivedAt",
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -1083,7 +1144,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c4891b3f3d577f856c77555017bd1d7c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2955081c36faecf4cd850b582ebc93ce')"
     ]
   }
 }

@@ -20,5 +20,9 @@ data class ApplicationEntity(
     val applicationType: String,
     val applicationStatus: String,
     val notes: String?,
+    val followUpsIds: List<String> = emptyList(),
+    val contactsIds: List<String> = emptyList(),
+    val callsIds: List<String> = emptyList(),
+    val interviewsIds: List<String> = emptyList(),
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider

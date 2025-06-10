@@ -22,4 +22,9 @@ data class Company(
     var hrEmail: String?,
     var address: String?,
     var notes: String?,
+    val contactsIds: List<String>?,
+    val followUpsIds: List<String>?,
+    val applicationsIds: List<String>?,
+    val interviewsIds: List<String>?,
+    val callsIds: List<String>?,
 ) : HasIdProvider

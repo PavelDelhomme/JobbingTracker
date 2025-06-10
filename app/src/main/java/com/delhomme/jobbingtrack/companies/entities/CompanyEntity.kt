@@ -18,5 +18,10 @@ data class CompanyEntity(
     val hrEmail: String? = null,
     val address: String? = null,
     val notes: String? = null,
+    val contactsIds: List<String>?,
+    val followUpsIds: List<String>?,
+    val applicationsIds: List<String>?,
+    val interviewsIds: List<String>?,
+    val callsIds: List<String>?,
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider

@@ -29,7 +29,6 @@ import com.delhomme.jobbingtrack.cvs.dao.EducationDao
 import com.delhomme.jobbingtrack.cvs.dao.ExperienceDao
 import com.delhomme.jobbingtrack.cvs.dao.LanguageDao
 import com.delhomme.jobbingtrack.cvs.dao.ProjectDao
-import com.delhomme.jobbingtrack.cvs.dao.ProjectDao_Impl
 import com.delhomme.jobbingtrack.cvs.dao.SkillDao
 import com.delhomme.jobbingtrack.cvs.repositories.CollaboratorRepository
 import com.delhomme.jobbingtrack.cvs.repositories.CvRepository

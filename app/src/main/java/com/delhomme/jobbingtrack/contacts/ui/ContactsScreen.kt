@@ -29,7 +29,7 @@ fun ContactsScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val sorted = contacts.sortedBy { it.lastName?.lowercase() ?: "" }
-        val visible = sorted.filter { !it.isArchived }
+        val visible = sorted.filter { !it.base.isArchived }
 
         ListScreen(
             dateProvider = { null },

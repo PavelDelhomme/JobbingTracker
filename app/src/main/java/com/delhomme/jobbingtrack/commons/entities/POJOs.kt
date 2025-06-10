@@ -3,7 +3,10 @@ package com.delhomme.jobbingtrack.commons.entities
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
 import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
 
 

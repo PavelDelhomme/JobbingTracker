@@ -24,4 +24,8 @@ data class Contact(
     val department: String?,
     val companyId: String,
     val notes: String,
+    val applicationIds: List<String>? = null,
+    val interviewIds: List<String>? = null,
+    val followUpIds: List<String>? = null,
+    val callIds: List<String>? = null,
 ) : HasIdProvider
