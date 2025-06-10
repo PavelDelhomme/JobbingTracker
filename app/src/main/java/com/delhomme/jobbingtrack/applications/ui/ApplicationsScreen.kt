@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate

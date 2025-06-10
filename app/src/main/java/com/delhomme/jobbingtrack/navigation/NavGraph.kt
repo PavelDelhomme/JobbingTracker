@@ -7,12 +7,27 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.applications.ui.AddOrEditApplicationScreen
-import com.delhomme.jobbingtrack.applications.ui.ApplicationDetailsScreen
-import com.delhomme.jobbingtrack.contacts.ui.AddOrEditContactScreen
-import com.delhomme.jobbingtrack.contacts.ui.ContactDetailScreen
-import com.delhomme.jobbingtrack.profiles.ui.ProfileScreen
-import com.delhomme.jobbingtrack.profiles.viewmodels.ProfileViewModel
+import com.delhomme.jobbingtrack.api.authentication.ui.*
+import com.delhomme.jobbingtrack.applications.ui.*
+import com.delhomme.jobbingtrack.applications.viewmodels.*
+import com.delhomme.jobbingtrack.companies.ui.*
+import com.delhomme.jobbingtrack.companies.viewmodels.*
+import com.delhomme.jobbingtrack.calls.ui.*
+import com.delhomme.jobbingtrack.calls.viewmodels.*
+import com.delhomme.jobbingtrack.contacts.ui.*
+import com.delhomme.jobbingtrack.contacts.viewmodels.*
+import com.delhomme.jobbingtrack.followsup.ui.*
+import com.delhomme.jobbingtrack.followsup.viewmodels.*
+import com.delhomme.jobbingtrack.interviews.ui.*
+import com.delhomme.jobbingtrack.interviews.viewmodels.*
+import com.delhomme.jobbingtrack.archives.ui.*
+import com.delhomme.jobbingtrack.archives.viewmodels.*
+import com.delhomme.jobbingtrack.trash.ui.*
+import com.delhomme.jobbingtrack.trash.viewmodels.*
+import com.delhomme.jobbingtrack.cvs.ui.*
+import com.delhomme.jobbingtrack.cvs.viewmodels.*
+import com.delhomme.jobbingtrack.profiles.ui.*
+import com.delhomme.jobbingtrack.profiles.viewmodels.*
 import com.delhomme.jobbingtrack.ui.main.MainScreen
 
 @Composable
@@ -354,5 +369,19 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             onDelete = { navController.navigate(Routes.TRASH) },
             onRestore = { navController.navigate(Routes.MAIN) }
         ) }
+
+        // — CV —
+        composable(Routes.CVS) { CvsScreen(navController, userId = userId.toString(),
+            cvViewModel = CvViewModel(JobbingTrackApp()),
+        ) }
+        composable(
+            "${Routes.CV_UPLOAD}",
+            arguments = listOf(navArgument("cvId") {
+                type = NavType.StringType
+            })
+        ) { backStack ->
+            val id = backStack.arguments!!.getString("cvId")!!
+            CVUploadScreen(cvId = id, navController = navController)
+        }
     }
 }

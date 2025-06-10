@@ -30,6 +30,20 @@ object Routes {
     const val ARCHIVES = "archives"
     const val TRASH = "trash"
 
+    const val DASHBOARD = "dashboard"
+    const val CV_UPLOAD = "cv_upload"
+    const val CVS = "cvs"
+
+    const val APPLICATIONS = "applications"
+    const val COMPANIES = "companies"
+    const val CALLS = "calls"
+    const val CONTACTS = "contacts"
+    const val INTERVIEWS = "interviews"
+    const val FOLLOWUPS = "followups"
+    const val CALENDAR = "calendar"
+
+
+
     const val PROFILE = "profile"
     const val SETTINGS = "settings"
 }
