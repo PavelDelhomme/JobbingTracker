@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2955081c36faecf4cd850b582ebc93ce",
+    "identityHash": "41a0a104e1989512a386bb5db1d1c07a",
     "entities": [
       {
         "tableName": "calls",
@@ -108,7 +108,7 @@
       },
       {
         "tableName": "applications",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `companyId` TEXT NOT NULL, `applicationDate` INTEGER NOT NULL, `platform` TEXT, `contractType` TEXT, `location` TEXT, `applicationType` TEXT NOT NULL, `applicationStatus` TEXT NOT NULL, `notes` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `companyId` TEXT NOT NULL, `applicationDate` INTEGER NOT NULL, `platform` TEXT, `contractType` TEXT, `location` TEXT, `applicationType` TEXT NOT NULL, `applicationStatus` TEXT NOT NULL, `notes` TEXT, `followUpsIds` TEXT NOT NULL, `contactsIds` TEXT NOT NULL, `callsIds` TEXT NOT NULL, `interviewsIds` TEXT NOT NULL, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -167,6 +167,30 @@
             "affinity": "TEXT"
           },
           {
+            "fieldPath": "followUpsIds",
+            "columnName": "followUpsIds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contactsIds",
+            "columnName": "contactsIds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "callsIds",
+            "columnName": "callsIds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "interviewsIds",
+            "columnName": "interviewsIds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "base.userId",
             "columnName": "userId",
             "affinity": "TEXT",
@@ -222,7 +246,7 @@
       },
       {
         "tableName": "contacts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `firstName` TEXT, `lastName` TEXT, `phone` TEXT, `email` TEXT, `position` TEXT, `department` TEXT, `companyId` TEXT NOT NULL, `applicationIds` TEXT, `interviewIds` TEXT, `followUpIds` TEXT, `callIds` TEXT, `notes` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `firstName` TEXT, `lastName` TEXT, `phone` TEXT, `email` TEXT, `position` TEXT, `department` TEXT, `companyId` TEXT NOT NULL, `applicationIds` TEXT, `interviewIds` TEXT, `followUpIds` TEXT, `callIds` TEXT NOT NULL, `notes` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -284,7 +308,8 @@
           {
             "fieldPath": "callIds",
             "columnName": "callIds",
-            "affinity": "TEXT"
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "notes",
@@ -347,7 +372,7 @@
       },
       {
         "tableName": "companies",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT, `phone` TEXT, `email` TEXT, `hrEmail` TEXT, `address` TEXT, `notes` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT, `phone` TEXT, `email` TEXT, `hrEmail` TEXT, `address` TEXT, `notes` TEXT, `contactsIds` TEXT, `followUpsIds` TEXT, `applicationsIds` TEXT, `interviewsIds` TEXT, `callsIds` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -389,6 +414,31 @@
           {
             "fieldPath": "notes",
             "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "contactsIds",
+            "columnName": "contactsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "followUpsIds",
+            "columnName": "followUpsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "applicationsIds",
+            "columnName": "applicationsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "interviewsIds",
+            "columnName": "interviewsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "callsIds",
+            "columnName": "callsIds",
             "affinity": "TEXT"
           },
           {
@@ -447,7 +497,7 @@
       },
       {
         "tableName": "interviews",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `applicationId` TEXT NOT NULL, `companyId` TEXT NOT NULL, `dateTime` INTEGER NOT NULL, `durationMinutes` INTEGER, `location` TEXT, `style` TEXT, `type` TEXT, `preInterviewNotes` TEXT, `interviewNotes` TEXT, `postInterviewNotes` TEXT, `returnDate` INTEGER, `testsNeeded` INTEGER NOT NULL, `testsDeadline` INTEGER, `styleId` TEXT, `typeId` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `applicationId` TEXT NOT NULL, `companyId` TEXT NOT NULL, `dateTime` INTEGER NOT NULL, `durationMinutes` INTEGER, `location` TEXT, `style` TEXT, `type` TEXT, `preInterviewNotes` TEXT, `interviewNotes` TEXT, `postInterviewNotes` TEXT, `returnDate` INTEGER, `testsNeeded` INTEGER NOT NULL, `testsDeadline` INTEGER, `styleId` TEXT, `typeId` TEXT, `contactsIds` TEXT NOT NULL, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -535,6 +585,12 @@
             "affinity": "TEXT"
           },
           {
+            "fieldPath": "contactsIds",
+            "columnName": "contactsIds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "base.userId",
             "columnName": "userId",
             "affinity": "TEXT",
@@ -590,7 +646,7 @@
       },
       {
         "tableName": "followups",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `date` INTEGER NOT NULL, `type` TEXT, `responseStatus` TEXT, `notes` TEXT, `applicationId` TEXT NOT NULL, `companyId` TEXT NOT NULL, `contactId` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `date` INTEGER NOT NULL, `type` TEXT, `responseStatus` TEXT, `notes` TEXT, `applicationId` TEXT NOT NULL, `companyId` TEXT NOT NULL, `contactsIds` TEXT NOT NULL, `callsIds` TEXT NOT NULL, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -632,9 +688,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "contactId",
-            "columnName": "contactId",
-            "affinity": "TEXT"
+            "fieldPath": "contactsIds",
+            "columnName": "contactsIds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "callsIds",
+            "columnName": "callsIds",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "base.userId",
@@ -1144,7 +1207,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2955081c36faecf4cd850b582ebc93ce')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '41a0a104e1989512a386bb5db1d1c07a')"
     ]
   }
 }

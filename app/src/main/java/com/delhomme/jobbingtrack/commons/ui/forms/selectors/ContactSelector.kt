@@ -20,8 +20,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
+import java.util.UUID
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -31,7 +33,12 @@ fun ContactSelectorField(
     label: String,
     contactViewModel: ContactViewModel,
     selectedContacts: List<ContactEntity>,
-    onContactsChanged: (List<ContactEntity>) -> Unit
+    onContactsChanged: (List<ContactEntity>) -> Unit,
+    companyId: String,
+    followUpId: String? = null, // pour lié relance si besoin
+    interviewId: String? = null, // pour lié entretien si besoin
+    callId: String? = null, // pour lié appel si besoin
+    applicationId: String? = null // pour lié candidature si besoin
 ) {
     var searchText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
@@ -66,6 +73,43 @@ fun ContactSelectorField(
                     text = { Text("${contact.firstName} ${contact.lastName}") },
                     onClick = {
                         onContactsChanged(selectedContacts + contact)
+                        searchText = ""
+                        expanded   = false
+                    }
+                )
+            }
+
+            // Proposer la création si aucun résultat
+            if (searchText.isNotBlank() && filtered.none { "${it.firstName} ${it.lastName}".equals(searchText, true) }) {
+                DropdownMenuItem(
+                    text = { Text("Ajouter un nouveau contact : $searchText") },
+                    onClick = {
+                        val parts = searchText.trim().split(" ")
+                        val firstName = parts.firstOrNull() ?: ""
+                        val lastName = parts.drop(1).joinToString(" ")
+                        val newId = UUID.randomUUID().toString()
+                        val newContact = ContactEntity(
+                            id = newId,
+                            firstName = firstName,
+                            lastName = lastName,
+                            phone = null,
+                            email = null,
+                            position = null,
+                            department = null,
+                            companyId = companyId,
+                            applicationIds = applicationId?.let { listOf(it) } ?: emptyList(),
+                            interviewIds = interviewId?.let { listOf(it) } ?: emptyList(),
+                            followUpIds = followUpId?.let { listOf(it) } ?: emptyList(),
+                            callIds = callId?.let { listOf(it) } ?: emptyList(),
+                            notes = null,
+                            base = CommonEntityFields(
+                                userId = userId,
+                                syncHash = "contact-$newId"
+                            )
+                        )
+                        contactViewModel.save(newContact)
+                        // Ajoute le contact créé à la selection
+                        onContactsChanged(selectedContacts + newContact)
                         searchText = ""
                         expanded   = false
                     }

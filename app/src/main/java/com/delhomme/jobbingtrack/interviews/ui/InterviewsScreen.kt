@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import com.delhomme.jobbingtrack.interviews.enumes.InterviewStyle
 import com.delhomme.jobbingtrack.interviews.enumes.InterviewType
 import com.delhomme.jobbingtrack.utils.DialogType
@@ -29,7 +30,7 @@ fun InterviewsScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         val sortedInterviews = interviews.sortedByDescending { it.interview.dateTime }
-        val visibleInterviews = sortedInterviews.filter { !it.interview.isArchived }
+        val visibleInterviews = sortedInterviews.filter { !it.interview.base.isArchived }
 
         ListScreen(
             dateProvider = { it.interview.dateTime.toFormattedDate() },

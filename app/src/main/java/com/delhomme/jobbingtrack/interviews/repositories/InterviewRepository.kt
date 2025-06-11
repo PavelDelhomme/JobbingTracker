@@ -5,9 +5,11 @@ import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.interviews.Interview
 import com.delhomme.jobbingtrack.interviews.dao.InterviewDao
 import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewStyleEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewTypeEntity
 import com.delhomme.jobbingtrack.interviews.utils.mappers.toDomain
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class InterviewRepository @Inject constructor(
@@ -19,8 +21,18 @@ class InterviewRepository @Inject constructor(
     fun deletedForUser(userId: String): Flow<List<InterviewEntity>> = dao.getDeletedForUser(userId)
     fun byIdWithContacts(id: String, userId: String): Flow<InterviewWithContacts?> = dao.getByIdActiveWithContacts(id, userId)
     fun getActiveWithContacts(userId: String): Flow<List<InterviewWithContacts>> = dao.getAllWithContactsForUser(userId)
-    fun activeForUser(userId: String): Flow<List<Interview>> =
-        withContactsForUser(userId).map { list -> list.map { it.toDomain() } }
+    fun activeForUser(userId: String, stylesFlow: Flow<List<InterviewStyleEntity>>, typesFlow: Flow<List<InterviewTypeEntity>>): Flow<List<Interview>> =
+        combine(
+            withContactsForUser(userId),
+            stylesFlow,
+            typesFlow
+        ) { interviewsWithContacts, styles, types ->
+            interviewsWithContacts.map { iwc ->
+                val style = styles.find { it.id == iwc.interview.styleId }
+                val type = types.find { it.id == iwc.interview.typeId }
+                iwc.toDomain(style, type)
+            }
+        }
     fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<InterviewEntity>> = dao.getByDateRangeForUser(userId, from, to)
 
     suspend fun save(entretien: InterviewEntity, contactIds: List<String>) {

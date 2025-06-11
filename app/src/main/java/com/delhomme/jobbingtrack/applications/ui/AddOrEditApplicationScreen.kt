@@ -5,15 +5,19 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
+import com.delhomme.jobbingtrack.commons.ui.dialogs.ReusableConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
 import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.utils.handleCompanyChange
 import com.delhomme.jobbingtrack.utils.toFieldMap
 import java.util.UUID
 import kotlin.collections.find
@@ -23,8 +27,8 @@ fun AddOrEditApplicationScreen(
     applicationId: String? = null,
     linkedCompanyId: String? = null,
     onCancel: () -> Unit,
-    applicationVm: ApplicationViewModel = viewModel(),
-    companyVm: CompanyViewModel = viewModel(),
+    applicationVm: ApplicationViewModel = hiltViewModel(),
+    companyVm: CompanyViewModel = hiltViewModel(),
     userId: String
 ) {
     // 1) Observer la liste
@@ -33,15 +37,27 @@ fun AddOrEditApplicationScreen(
 
     // 2) Chercher l’existante si on édite
     val existing = allApplications.find { it.id == applicationId }
+    val applicationId   = existing?.id ?: UUID.randomUUID().toString()
 
     // État pour le sélecteur d’entreprise
-    var selectedCompanyId by remember {
-        mutableStateOf(
-            existing?.companyId
-                ?: linkedCompanyId
-                ?: ""
-        )
-    }
+    var selectedCompanyId by remember { mutableStateOf(existing?.companyId ?: linkedCompanyId ?: "") }
+
+    var showUnlinkDialog by remember { mutableStateOf(false) }
+    var pendingSubmit by remember { mutableStateOf<(() -> Unit)?>(null) }
+
+
+    // Confirmation dialog
+    ReusableConfirmDialog(
+        show = showUnlinkDialog,
+        title = "Changer d'entreprise ?",
+        message = "Cette candidature sera déliée de l'ancienne entreprise et rattachée à la nouvelle. Voulez-vous continuer ?",
+        onConfirm = {
+            showUnlinkDialog = false
+            pendingSubmit?.invoke()
+        },
+        onDismiss = { showUnlinkDialog = false }
+    )
+
 
     // 3) Champs du formulaire
     val fields = listOf(
@@ -83,10 +99,15 @@ fun AddOrEditApplicationScreen(
                         hrEmail = null,
                         address = null,
                         notes = null,
-                        syncHash = "cmp-$newId",
-                        isArchived = false,
-                        isDeleted = false,
-                        userId = userId,
+                        base = CommonEntityFields(
+                            userId = userId,
+                            syncHash = "cmp-$newId",
+                        ),
+                        contactsIds = existing?.contactsIds ?: emptyList(),
+                        followUpsIds = existing?.followUpsIds ?: emptyList(),
+                        applicationsIds = listOf(applicationId),
+                        interviewsIds = existing?.interviewsIds ?: emptyList(),
+                        callsIds = existing?.callsIds ?: emptyList(),
                     )
                 )
                 selectedCompanyId = newId
@@ -99,32 +120,57 @@ fun AddOrEditApplicationScreen(
             initialValues = existing?.toFieldMap() ?: emptyMap(),
             onSubmit = { form ->
                 // 1) Génération de l'ID et du syncHash
-                val id   = existing?.id ?: UUID.randomUUID().toString()
-                val hash = existing?.syncHash ?: "application-$id"
+                val hash = existing?.base?.syncHash ?: "application-$applicationId"
+                val companyChanged = existing?.companyId != selectedCompanyId
 
-                // 2) Construction de l'entité Room
-                val entity = ApplicationEntity(
-                    id              = id,
-                    title           = form["title"]!!,
-                    companyId       = selectedCompanyId,
-                    applicationDate = form["applicationDate"]!!.toLong(),
-                    platform        = form["platform"]?.takeIf(String::isNotBlank),
-                    contractType    = form["contractType"]?.takeIf(String::isNotBlank),
-                    location        = form["location"]?.takeIf(String::isNotBlank),
-                    applicationType = form["applicationType"]!!,
-                    applicationStatus = form["applicationStatus"]!!,
-                    isArchived      = form["isArchived"]!!.toBoolean(),
-                    notes           = form["notes"]?.takeIf(String::isNotBlank),
-                    syncHash        = hash,
-                    isDeleted       = existing?.isDeleted ?: false,
-                    userId = userId
-                )
+                val submitAction = {
+                    val oldCompany = allCompanies.find { it.id == existing?.companyId }
+                    val newCompany = allCompanies.find { it.id == selectedCompanyId }
 
-                // 3) Sauvegarde via le ViewModel
-                applicationVm.save(entity)
+                    handleCompanyChange(
+                        oldCompany = oldCompany,
+                        newCompany = newCompany,
+                        entityId = applicationId,
+                        companyIdField = { it.applicationsIds ?: emptyList() },
+                        copyWithIds = { company, newIds ->
+                            company.copy(applicationsIds = newIds)
+                        },
+                        save = { companyVm.save(it) }
+                    )
+                    // 2) Construction de l'entité Room
 
-                // 4) Fermeture du sheet ou popBackStack
-                onCancel()
+                    val entity = ApplicationEntity(
+                        id = applicationId,
+                        title = form["title"]!!,
+                        companyId = selectedCompanyId,
+                        applicationDate = form["applicationDate"]!!.toLong(),
+                        platform = form["platform"]?.takeIf(String::isNotBlank),
+                        contractType = form["contractType"]?.takeIf(String::isNotBlank),
+                        location = form["location"]?.takeIf(String::isNotBlank),
+                        applicationType = form["applicationType"]!!,
+                        applicationStatus = form["applicationStatus"]!!,
+                        notes = form["notes"]?.takeIf(String::isNotBlank),
+                        base = CommonEntityFields(
+                            userId = userId,
+                            createdAt = existing?.base?.createdAt ?: System.currentTimeMillis(),
+                            updatedAt = System.currentTimeMillis(),
+                            deletedAt = existing?.base?.deletedAt,
+                            isDeleted = existing?.base?.isDeleted ?: false,
+                            isArchived = form["isArchived"]!!.toBoolean(),
+                            archivedAt = null,
+                            syncHash = hash
+                        )
+                    )
+                    applicationVm.save(entity)
+                    onCancel()
+                }
+
+                if (companyChanged) {
+                    pendingSubmit = submitAction
+                    showUnlinkDialog = true
+                } else {
+                    submitAction()
+                }
             },
             onCancel = onCancel
         )

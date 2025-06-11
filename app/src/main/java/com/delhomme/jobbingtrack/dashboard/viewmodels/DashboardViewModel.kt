@@ -6,6 +6,17 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
+import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.repositories.ApplicationRepository
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.calls.repositories.CallRepository
+import com.delhomme.jobbingtrack.companies.repositories.CompanyRepository
+import com.delhomme.jobbingtrack.contacts.repositories.ContactRepository
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.followsup.repositories.FollowUpRepository
+import com.delhomme.jobbingtrack.interviews.repositories.InterviewRepository
+import com.delhomme.jobbingtrack.profiles.repositories.ProfilRepository
+import com.delhomme.jobbingtrack.users.repositories.UserRepository
 import com.delhomme.jobbingtrack.utils.countByDay
 import com.delhomme.jobbingtrack.utils.toInstant
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -23,10 +23,12 @@ import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
+import com.delhomme.jobbingtrack.commons.ui.dialogs.ReusableConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.FormSuggestions
@@ -49,54 +51,45 @@ import java.util.UUID
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun AddOrEditInterviewScreen(
-    viewModel: DashboardViewModel = viewModel(),
     interviewId: String?,
     linkedApplicationId: String? = null,
     linkedCompanyId: String? = null,
     onCancel: () -> Unit,
-    interviewVm: InterviewViewModel = viewModel(),
-    applicationVm: ApplicationViewModel = viewModel(),
-    companyVm: CompanyViewModel = viewModel(),
-    contactVm: ContactViewModel = viewModel(),
+    interviewVm: InterviewViewModel = hiltViewModel(),
+    applicationVm: ApplicationViewModel = hiltViewModel(),
+    companyVm: CompanyViewModel = hiltViewModel(),
+    contactVm: ContactViewModel = hiltViewModel(),
     userId: String
 ) {
 
-    // 1) on collecte les listes brutes
-    val interviews    by viewModel.interviewsFlow.collectAsState(initial = emptyList())
-    val applications  by viewModel.applicationsFlow.collectAsState(initial = emptyList())
-    val companies     by viewModel.companiesFlow.collectAsState(initial = emptyList())
-    val contacts      by viewModel.contactsFlow.collectAsState(initial = emptyList())
+    val interviews by interviewVm.allForUser(userId).observeAsState(emptyList())
+    val applications by applicationVm.allForUser(userId).observeAsState(emptyList())
+    val companies by companyVm.allForUser(userId).observeAsState(emptyList())
+    val contacts by contactVm.allForUser(userId).observeAsState(emptyList())
 
+    val existing = interviews.find { it.interview.id == interviewId }
+    val selInitialContacts = existing?.interview?.contactsIds
+        ?.filterNotNull()
+        ?.mapNotNull { contactId -> contacts.find { it.id == contactId } }
+        ?: emptyList()
 
-    // 2) on récupère éventuellement l'entretien à éditer
-    val interview = interviewId
-        ?.let { id -> interviews.firstOrNull { it.interview.id == id } }
+    val selDateTime = existing?.interview?.dateTime ?: System.currentTimeMillis()
 
-
-    // 1) Charger l’entretien + ses contacts
-    val liveData = interview?.let { interviewVm.interviewById(interviewId ?: "", it.interview.userId) }
-    val liveDataState = liveData?.observeAsState(initial = null)
-    val interviewWithContacts = liveDataState?.value
-    val existingInterview = interviewWithContacts?.interview
-    val existingSelectedCompanyId = existingInterview?.companyId ?: linkedCompanyId ?: ""
-    val existingSelectedApplicationId = existingInterview?.applicationId ?: linkedApplicationId ?: ""
-    val selInitialContacts: List<ContactEntity> = interviewWithContacts?.contacts ?: emptyList()
-    val selDateTime = existingInterview?.dateTime ?: System.currentTimeMillis()
-
-    // 2) États locaux
-    var selectionnedApplicationId      by remember { mutableStateOf(existingSelectedApplicationId) }
-    var selectionnedCompanyId      by remember { mutableStateOf(existingSelectedCompanyId) }
-    var selectionnedContacts    by remember { mutableStateOf(selInitialContacts) }
-    var dateTime       by remember { mutableLongStateOf(selDateTime) }
+    var selectionnedApplicationId by remember { mutableStateOf(existing?.interview?.applicationId ?: linkedApplicationId ?: "") }
+    var selectionnedCompanyId by remember { mutableStateOf(existing?.interview?.companyId ?: linkedCompanyId ?: "") }
+    var selectionnedContacts by remember { mutableStateOf(selInitialContacts) }
+    var dateTime by remember { mutableStateOf(selDateTime) }
 
     val finalCompanyId = resolveCompanyId(
-        existingInterview = existingInterview,
+        existingInterview = existing?.interview,
         applications = applications,
-        followUps = emptyList(), // pas utilisé ici
+        followUps = emptyList(),
         linkedApplicationId = selectionnedApplicationId,
         fallbackCompanyId = selectionnedCompanyId
     )
 
+    var showUnlinkDialog by remember { mutableStateOf(false) }
+    var pendingSubmit by remember { mutableStateOf<(() -> Unit)?>(null) }
 
     // 5) Vos champs de formulaire
     val fields = listOf(
@@ -111,6 +104,18 @@ fun AddOrEditInterviewScreen(
         FormField("testsDeadline", "Date limite pour les tests", FieldType.DATE),
         FormField("durationMinutes", "Durée (min)", FieldType.NUMBER)
     )
+
+    ReusableConfirmDialog(
+        show = showUnlinkDialog,
+        title = "Changer d'entreprise ?",
+        message = "Cet entretien sera délié de l'ancienne entreprise et rattaché à la nouvelle. Voulez-vous continuer ?",
+        onConfirm = {
+            showUnlinkDialog = false
+            pendingSubmit?.invoke()
+        },
+        onDismiss = { showUnlinkDialog = false }
+    )
+
 
     Column(
         modifier = Modifier
@@ -160,46 +165,78 @@ fun AddOrEditInterviewScreen(
             contactViewModel = contactVm,
             selectedContacts = selectionnedContacts,
             onContactsChanged = { selectionnedContacts = it },
-            userId = userId
+            userId = userId,
+            companyId = finalCompanyId.toString(),
+            interviewId = interviewId,
         )
         contacts.filter { it.companyId == finalCompanyId }
 
         ReusableForm(
             fields = fields,
-            initialValues = existingInterview?.toFieldMap() ?: emptyMap(),
-            onSubmit = { form ->
-                val id   = existingInterview?.id ?: UUID.randomUUID().toString()
-                val hash = existingInterview?.syncHash ?: "ent-$id"
-
-                val ent = InterviewEntity(
-                    id = id,
-                    applicationId = selectionnedApplicationId,
-                    companyId = finalCompanyId ?: selectionnedCompanyId,
-                    dateTime = dateTime,
-                    durationMinutes = form["durationMinutes"]?.toIntOrNull()
-                        ?: existingInterview?.durationMinutes,
-                    location = form["location"],
-                    style = form["style"],
-                    type = form["type"],
-                    preInterviewNotes = form["preInterviewNotes"],
-                    interviewNotes = form["interviewNotes"],
-                    postInterviewNotes = form["postInterviewNotes"],
-                    returnDate = form["returnDate"]?.toLongOrNull(),
-                    testsNeeded = form["testsNeeded"].toBoolean(),
-                    testsDeadline = form["testsDeadline"]?.toLongOrNull(),
-                    typeId = existingInterview?.typeId ?: "",
-                    styleId = existingInterview?.styleId ?: "",
-                    base = CommonEntityFields(
-                        userId = userId,
-                        createdAt = existingInterview?.createdAt ?: System.currentTimeMillis(),
-                        updatedAt = System.currentTimeMillis(),
-                        deletedAt = existingInterview?.deletedAt ?: null,
-                        archivedAt = null,
-                        syncHash = hash
-                    )
+            initialValues = existing?.let {
+                mapOf(
+                    "location" to (it.interview.location ?: ""),
+                    "style" to (it.interview.style ?: ""),
+                    "type" to (it.interview.type ?: ""),
+                    "preInterviewNotes" to (it.interview.preInterviewNotes ?: ""),
+                    "interviewNotes" to (it.interview.interviewNotes ?: ""),
+                    "postInterviewNotes" to (it.interview.postInterviewNotes ?: ""),
+                    "returnDate" to (it.interview.returnDate?.toString() ?: ""),
+                    "testsNeeded" to (it.interview.testsNeeded.toString()),
+                    "testsDeadline" to (it.interview.testsDeadline?.toString() ?: ""),
+                    "durationMinutes" to (it.interview.durationMinutes?.toString() ?: "")
                 )
-                interviewVm.save(ent, selectionnedContacts.map { c -> c.id })
-                onCancel()
+            } ?: emptyMap(),
+            onSubmit = { form ->
+                val id = existing?.interview?.id ?: UUID.randomUUID().toString()
+                val hash = existing?.interview?.base?.syncHash ?: "interview-$id"
+                val companyChanged = existing?.interview?.companyId != finalCompanyId
+
+                val submitAction = {
+                    val oldCompany = companies.find { it.id == existing?.interview?.companyId }
+                    val newCompany = companies.find { it.id == finalCompanyId }
+                    handleCompanyChange(
+                        oldCompany = oldCompany,
+                        newCompany = newCompany,
+                        entityId = id,
+                        companyIdField = { it.interviewsIds ?: emptyList() },
+                        copyWithIds = { company, newIds -> company.copy(interviewsIds = newIds) },
+                        save = { companyVm.save(it) }
+                    )
+
+                    val ent = InterviewEntity(
+                        id = id,
+                        applicationId = selectionnedApplicationId,
+                        companyId = finalCompanyId ?: selectionnedCompanyId,
+                        dateTime = dateTime,
+                        durationMinutes = form["durationMinutes"]?.toIntOrNull(),
+                        location = form["location"],
+                        style = form["style"],
+                        type = form["type"],
+                        preInterviewNotes = form["preInterviewNotes"],
+                        interviewNotes = form["interviewNotes"],
+                        postInterviewNotes = form["postInterviewNotes"],
+                        returnDate = form["returnDate"]?.toLongOrNull(),
+                        testsNeeded = form["testsNeeded"].toBoolean(),
+                        testsDeadline = form["testsDeadline"]?.toLongOrNull(),
+                        typeId = existing?.interview?.typeId,
+                        styleId = existing?.interview?.styleId,
+                        contactsIds = selectionnedContacts.map { it.id },
+                        base = existing?.interview?.base ?: CommonEntityFields(
+                            userId = userId,
+                            syncHash = hash
+                        )
+                    )
+                    interviewVm.save(ent, selectionnedContacts.map { it.id })
+                    onCancel()
+                }
+
+                if (companyChanged) {
+                    pendingSubmit = submitAction
+                    showUnlinkDialog = true
+                } else {
+                    submitAction()
+                }
             },
             onCancel = onCancel
         )

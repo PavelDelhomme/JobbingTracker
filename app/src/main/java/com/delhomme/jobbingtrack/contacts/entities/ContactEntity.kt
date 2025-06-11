@@ -4,7 +4,6 @@ package com.delhomme.jobbingtrack.contacts.entities
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
@@ -28,7 +27,7 @@ data class ContactEntity(
     @TypeConverters(Converters::class)
     val followUpIds: List<String>?,
     @TypeConverters(Converters::class)
-    val callIds: List<String>?,
+    val callIds: List<String?>,
     val notes: String?,
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider
