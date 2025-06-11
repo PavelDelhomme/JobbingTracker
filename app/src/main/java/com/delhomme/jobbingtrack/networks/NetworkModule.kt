@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Singleton
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -20,20 +21,35 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthInterceptor(tokenManager: TokenManager): Interceptor {
+        return Interceptor { chain ->
+            val request = chain.request().newBuilder()
+                .header("Authorization", "Bearer ${tokenManager.getAccessToken()}")
+                .build()
+            chain.proceed(request)
+        }
+    }
+
+
+
+    @Provides
+    @Singleton
     fun provideOkHttpClient(
-        tokenManager: TokenManager,
+        loggingInterceptor: HttpLoggingInterceptor,
+        authInterceptor: Interceptor,
         authenticator: TokenAuthenticator
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer ${tokenManager.getAccessToken()}")
-                    .build()
-                chain.proceed(request)
-            }
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)
             .authenticator(authenticator)
             .build()
     }

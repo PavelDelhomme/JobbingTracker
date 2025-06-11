@@ -20,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CvViewModel @Inject constructor(
-    private val repo: CvRepository
+    private val repo: CvRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val all: LiveData<List<CVEntity>> = repo.all.asLiveData()
     fun byId(id: String): LiveData<CVEntity?> = repo.byId(id).asLiveData()
@@ -31,7 +32,8 @@ class CvViewModel @Inject constructor(
 
 @HiltViewModel
 class CollaboratorViewModel @Inject constructor(
-    private val repo: CollaboratorRepository
+    private val repo: CollaboratorRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val all: LiveData<List<CollaboratorEntity>> = repo.all.asLiveData()
     fun byId(id: String): LiveData<CollaboratorEntity?> = repo.byId(id).asLiveData()
@@ -43,7 +45,8 @@ class CollaboratorViewModel @Inject constructor(
 
 @HiltViewModel
 class EducationViewModel @Inject constructor(
-    private val repo: EducationRepository
+    private val repo: EducationRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val all: LiveData<List<EducationEntity>> = repo.all.asLiveData()
     fun byId(id: String): LiveData<EducationEntity?> = repo.byId(id).asLiveData()
@@ -55,7 +58,8 @@ class EducationViewModel @Inject constructor(
 
 @HiltViewModel
 class ExperienceViewModel @Inject constructor(
-    private val repo: ExperienceRepository
+    private val repo: ExperienceRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val all: LiveData<List<ExperienceEntity>> = repo.all.asLiveData()
     fun byId(id: String): LiveData<ExperienceEntity?> = repo.byId(id).asLiveData()
@@ -68,7 +72,8 @@ class ExperienceViewModel @Inject constructor(
 
 @HiltViewModel
 class LanguageViewModel @Inject constructor(
-    private val repo: LanguageRepository
+    private val repo: LanguageRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val all: LiveData<List<LanguageEntity>> = repo.all.asLiveData()
     fun byId(id: String): LiveData<LanguageEntity?> = repo.byId(id).asLiveData()
@@ -80,7 +85,8 @@ class LanguageViewModel @Inject constructor(
 
 @HiltViewModel
 class ProjectViewModel @Inject constructor(
-    private val repo: ProjectRepository
+    private val repo: ProjectRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val all: LiveData<List<ProjectEntity>> = repo.all.asLiveData()
     fun byId(id: String): LiveData<ProjectEntity?> = repo.byId(id).asLiveData()
@@ -92,7 +98,8 @@ class ProjectViewModel @Inject constructor(
 
 @HiltViewModel
 class SkillViewModel @Inject constructor(
-    private val repo: SkillRepository
+    private val repo: SkillRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val all: LiveData<List<SkillEntity>> = repo.all.asLiveData()
     fun byId(id: String): LiveData<SkillEntity?> = repo.byId(id).asLiveData()
