@@ -1,7 +1,5 @@
 package com.delhomme.jobbingtrack.api.tokens
 
-import android.content.Context
-import com.delhomme.jobbingtrack.api.ApiClient
 import com.delhomme.jobbingtrack.api.ApiService
 import com.delhomme.jobbingtrack.api.RefreshTokenRequest
 import com.delhomme.jobbingtrack.api.authentication.LoginResponse
@@ -9,8 +7,6 @@ import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 

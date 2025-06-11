@@ -6,6 +6,7 @@ import com.delhomme.jobbingtrack.api.authentication.LoginRepository
 import com.delhomme.jobbingtrack.api.authentication.RegisterRepository
 import com.delhomme.jobbingtrack.api.authentication.LoginService
 import com.delhomme.jobbingtrack.api.authentication.RegisterService
+import com.delhomme.jobbingtrack.api.tokens.TokenAuthenticator
 import com.delhomme.jobbingtrack.api.tokens.TokenManager
 import dagger.Module
 import dagger.Provides
@@ -42,4 +43,10 @@ object AuthModule {
     @Singleton
     fun provideRegisterRepository(registerService: RegisterService): RegisterRepository =
         RegisterRepository(registerService)
+
+    @Provides
+    @Singleton
+    fun provideTokenAuthenticator(tokenManager: TokenManager, apiService: ApiService): TokenAuthenticator {
+        return TokenAuthenticator(tokenManager, apiService)
+    }
 }
