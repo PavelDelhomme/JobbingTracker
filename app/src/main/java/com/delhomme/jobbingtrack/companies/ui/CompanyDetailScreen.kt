@@ -4,7 +4,6 @@ package com.delhomme.jobbingtrack.companies.ui
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Archive
@@ -24,8 +23,11 @@ import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
 import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
+import androidx.compose.foundation.lazy.items
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +57,7 @@ fun CompanyDetailScreen(
     // 3) Filtrer les objets liés à cette entreprise
     val linkedContacts     = allContacts.filter     { it.companyId == companyId }
     val linkedCandidatures = allCandidatures.filter { it.companyId == companyId }
-    val linkedEntretiens   = allEntretiens.filter   { it.entretien.companyId == companyId }
+    val linkedEntretiens   = allEntretiens.filter   { it.interview.companyId == companyId }
     val linkedAppels       = allAppels.filter       { it.companyId == companyId }
     val linkedRelances     = allRelances.filter     { it.companyId == companyId }
     BackHandler { navController.popBackStack() }
@@ -138,7 +140,7 @@ fun CompanyDetailScreen(
             if (linkedEntretiens.isNotEmpty()) {
                 item { SectionTitle("Entretiens liés") }
                 items(linkedEntretiens) { ewc ->
-                    val e = ewc.entretien
+                    val e = ewc.interview
                     DetailItemCard(
                         title = "${e.type ?: "Type inconnu"} - ${e.style ?: "Style inconnu"}",
                         subtitle = e.dateTime.toFormattedDate(),

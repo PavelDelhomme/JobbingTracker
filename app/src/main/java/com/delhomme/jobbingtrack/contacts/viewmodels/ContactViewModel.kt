@@ -1,18 +1,19 @@
 package com.delhomme.jobbingtrack.contacts.viewmodels
 
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
+import com.delhomme.jobbingtrack.contacts.entities.DepartmentTypeEntity
+import com.delhomme.jobbingtrack.contacts.entities.PositionTypeEntity
 import com.delhomme.jobbingtrack.contacts.repositories.ContactRepository
+import com.delhomme.jobbingtrack.contacts.repositories.DepartmentTypeRepository
+import com.delhomme.jobbingtrack.contacts.repositories.PositionTypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ContactViewModel @Inject constructor(
@@ -42,4 +43,26 @@ class ContactViewModel @Inject constructor(
     fun deleteForever(ids: List<String>, userId: String)= viewModelScope.launch { repo.deleteForever(ids, userId) }
     fun clearAll(userId: String)                        = viewModelScope.launch { repo.deleteAll(userId) }
 
+}
+
+@HiltViewModel
+class DepartmentTypeViewModel @Inject constructor(
+    private val repo: DepartmentTypeRepository
+) : ViewModel() {
+    val all = repo.all.asLiveData()
+    fun byId(id: String) = repo.byId(id).asLiveData()
+    fun save(entity: DepartmentTypeEntity) = viewModelScope.launch { repo.save(entity) }
+    fun delete(entity: DepartmentTypeEntity) = viewModelScope.launch { repo.delete(entity) }
+}
+
+
+
+@HiltViewModel
+class PositionTypeViewModel @Inject constructor(
+    private val repo: PositionTypeRepository
+) : ViewModel() {
+    val all = repo.all.asLiveData()
+    fun byId(id: String) = repo.byId(id).asLiveData()
+    fun save(entity: PositionTypeEntity) = viewModelScope.launch { repo.save(entity) }
+    fun delete(entity: PositionTypeEntity) = viewModelScope.launch { repo.delete(entity) }
 }

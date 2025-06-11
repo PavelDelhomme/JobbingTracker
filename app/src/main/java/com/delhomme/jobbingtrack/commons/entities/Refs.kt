@@ -74,15 +74,6 @@ data class CompanyInterviewCrossRef(
     val interviewId: String
 )
 
-// 8) Interview <-> Contact (n-à-n)
-@Entity(
-    primaryKeys = ["interviewId", "contactId"],
-    indices = [ Index("contactId") ]
-)
-data class InterviewWithContactsCrossRef(
-    val interviewId: String,
-    val contactId: String
-)
 
 // 9) Call <-> Contact (n-à-n)
 @Entity(

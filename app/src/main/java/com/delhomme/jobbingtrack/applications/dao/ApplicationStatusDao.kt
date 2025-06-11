@@ -22,4 +22,7 @@ interface ApplicationStatusDao {
 
     @Delete
     suspend fun delete(status: ApplicationStatusEntity)
+
+    @Query("SELECT * FROM application_statuses WHERE userId = :userId")
+    fun getAllForUser(userId: String): Flow<List<ApplicationStatusEntity>>
 }

@@ -12,9 +12,14 @@ import com.delhomme.jobbingtrack.navigation.NavGraph
 import android.Manifest
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
+import com.delhomme.jobbingtrack.api.tokens.TokenManager
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject lateinit var tokenManager: TokenManager
+
     private val notificationPermissionLauncher by lazy {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
@@ -31,8 +36,8 @@ class MainActivity : ComponentActivity() {
             notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
 
-        val token = TokenManager.getTokens(this)
-        val userId = TokenManager.getUserId(this)
+        val accessToken = tokenManager.getAccessToken()
+        val userId = tokenManager.getUserId()
 
         setContent {
             val navController = rememberNavController()
@@ -45,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalViewModelStoreOwner provides viewModelStoreOwner
                 ) {
-                    NavGraph(navController = navController, isLoggedIn = token != null, userId = userId)
+                    NavGraph(navController = navController, isLoggedIn = accessToken != null, userId = userId)
                 }
             }
         }

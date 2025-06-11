@@ -33,7 +33,7 @@ class TokenManager @Inject constructor(
             .apply()
     }
 
-    fun getTokens(): String? {
+    fun getAccessToken(): String? {
         return getPrefs(this.context).getString(ACCESS_TOKEN, null)
     }
 

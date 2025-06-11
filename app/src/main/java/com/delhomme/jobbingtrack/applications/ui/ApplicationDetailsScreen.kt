@@ -5,7 +5,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -38,6 +37,7 @@ import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import kotlin.collections.find
+import androidx.compose.foundation.lazy.items
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +75,7 @@ fun ApplicationDetailsScreen(
     }
     // les contacts qu'on a associés via appels / relances / entretiens :
     val myContacts = contacts.filter { contact ->
-        myFollowUps.any { it.contactId == contact.id } ||
+        myFollowUps.any { it.contactsIds.any { id -> id == contact.id } } ||
                 myCalls.any { it.contactId == contact.id } ||
                 myInterviews.any { it.contacts.any { ec -> ec.id == contact.id } }
     }
@@ -182,7 +182,7 @@ fun ApplicationDetailsScreen(
             item {
                 SectionTitle("Relances liées")
             }
-            items(myFollowUps) { followup ->
+            items(myFollowUps, key = { it.id }) { followup ->
                 DetailItemCard(
                     title = "${followup.type ?: "Type inconnu"} (${followup.responseStatus ?: "Statut inconnu"})",
                     subtitle = followup.date.toString(),
@@ -193,7 +193,7 @@ fun ApplicationDetailsScreen(
             item {
                 SectionTitle("Appels liés")
             }
-            items(myCalls) { call ->
+            items(myCalls, key = { it.id }) { call ->
                 DetailItemCard(
                     title = call.subject,
                     subtitle = call.notes,
@@ -204,7 +204,7 @@ fun ApplicationDetailsScreen(
             item {
                 SectionTitle("Entretiens liés")
             }
-            items(myInterviews) { interviewWithContacts ->
+            items(myInterviews, key = { it.interview.id }) { interviewWithContacts ->
                 val interview = interviewWithContacts.interview
                 val contacts = interviewWithContacts.contacts
 
@@ -218,7 +218,7 @@ fun ApplicationDetailsScreen(
             item {
                 SectionTitle("Contacts liés")
             }
-            items(myContacts) { contact ->
+            items(myContacts, key = { it.id }) { contact ->
                 DetailItemCard(
                     title = "${contact.firstName} ${contact.lastName}",
                     subtitle = "${contact.phone}",

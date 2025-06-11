@@ -1,12 +1,11 @@
 package com.delhomme.jobbingtrack.di
 
 import android.content.Context
-import com.delhomme.jobbingtrack.api.ApiClient
 import com.delhomme.jobbingtrack.api.ApiService
-import com.delhomme.jobbingtrack.api.authentication.repositories.LoginRepository
-import com.delhomme.jobbingtrack.api.authentication.repositories.RegisterRepository
-import com.delhomme.jobbingtrack.api.authentication.services.LoginService
-import com.delhomme.jobbingtrack.api.authentication.services.RegisterService
+import com.delhomme.jobbingtrack.api.authentication.LoginRepository
+import com.delhomme.jobbingtrack.api.authentication.RegisterRepository
+import com.delhomme.jobbingtrack.api.authentication.LoginService
+import com.delhomme.jobbingtrack.api.authentication.RegisterService
 import com.delhomme.jobbingtrack.api.tokens.TokenManager
 import dagger.Module
 import dagger.Provides
@@ -21,7 +20,8 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun provideApiService(): ApiService = ApiClient.api
+    fun provideTokenManager(@ApplicationContext context: Context): TokenManager =
+        TokenManager(context)
 
     @Provides
     @Singleton
@@ -42,12 +42,4 @@ object AuthModule {
     @Singleton
     fun provideRegisterRepository(registerService: RegisterService): RegisterRepository =
         RegisterRepository(registerService)
-
-    @Provides
-    @Singleton
-    fun provideTokenManager(@ApplicationContext context: Context): TokenManager =
-        TokenManager(context)
-
-    @Provides
-    fun provideContext(@ApplicationContext context: Context): Context = context
 }

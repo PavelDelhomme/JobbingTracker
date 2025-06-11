@@ -13,8 +13,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.delhomme.jobbingtrack.applications.ui.AddOrEditApplicationScreen
 import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.calls.ui.AddOrEditCallScreen
 import com.delhomme.jobbingtrack.commons.entities.BottomSheetContentType
+import com.delhomme.jobbingtrack.companies.ui.AddOrEditCompanyScreen
+import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.contacts.ui.AddOrEditContactScreen
+import com.delhomme.jobbingtrack.followsup.ui.AddOrEditFollowUpScreen
+import com.delhomme.jobbingtrack.interviews.ui.AddOrEditInterviewScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)

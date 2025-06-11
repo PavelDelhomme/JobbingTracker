@@ -1,7 +1,9 @@
 package com.delhomme.jobbingtrack.calls.repositories
 import androidx.lifecycle.ViewModel
 import com.delhomme.jobbingtrack.calls.dao.CallDao
+import com.delhomme.jobbingtrack.calls.dao.CallTypeDao
 import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.calls.entities.CallTypeEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -25,4 +27,14 @@ class CallRepository @Inject constructor(
     suspend fun restore(ids: List<String>, userId: String)          = dao.restore(ids, userId)
     suspend fun deleteForever(ids: List<String>, userId: String)    = dao.deleteForever(ids, userId)
     suspend fun deleteAll(userId: String)                           = dao.deleteAllForUser(userId)
+}
+
+
+class CallTypeRepository @Inject constructor(
+    private val dao: CallTypeDao
+) {
+    val all: Flow<List<CallTypeEntity>> = dao.getAll()
+    fun byId(id: String) = dao.getById(id)
+    suspend fun save(entity: CallTypeEntity) = dao.save(entity)
+    suspend fun delete(entity: CallTypeEntity) = dao.delete(entity)
 }

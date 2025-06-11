@@ -13,14 +13,14 @@ fun CallWithCompanies.toDomain(): Call {
         applicationId = this.call.applicationId,
         dateTime = this.call.dateTime,
         notes = this.call.notes,
-        syncHash = this.call.syncHash,
+        syncHash = this.call.base.syncHash,
         followUpId = this.call.followUpId,
-        userId = this.call.userId,
-        isArchived = this.call.isArchived,
-        isDeleted = this.call.isDeleted,
-        createdAt = this.call.createdAt,
-        updatedAt = this.call.updatedAt,
-        deletedAt = this.call.deletedAt!!,
-        archivedAt = this.call.archivedAt!!
+        userId = this.call.base.userId,
+        isArchived = this.call.base.isArchived,
+        isDeleted = this.call.base.isDeleted,
+        createdAt = this.call.base.createdAt,
+        updatedAt = this.call.base.updatedAt,
+        deletedAt = this.call.base.deletedAt!!,
+        archivedAt = this.call.base.archivedAt!!
     )
 }

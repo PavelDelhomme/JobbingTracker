@@ -38,27 +38,27 @@ fun TrashScreen(
 
     val applications = applicationViewModel
         .allForUser(userId).observeAsState(emptyList()).value
-        .filter { it.isDeleted }
+        .filter { it.base.isDeleted }
 
     val companies = companyViewModel
         .allForUser(userId).observeAsState(emptyList()).value
-        .filter { it.isDeleted }
+        .filter { it.base.isDeleted }
 
     val calls = callViewModel
         .allForUser(userId).observeAsState(emptyList()).value
-        .filter { it.isDeleted }
+        .filter { it.base.isDeleted }
 
     val contacts = contactViewModel
         .allForUser(userId).observeAsState(emptyList()).value
-        .filter { it.isDeleted }
+        .filter { it.base.isDeleted }
 
     val interviews = interviewViewModel
         .allForUser(userId).observeAsState(emptyList()).value
-        .filter { it.interview.isDeleted }
+        .filter { it.interview.base.isDeleted }
 
     val followsUps = followUpViewModel
         .allForUser(userId).observeAsState(emptyList()).value
-        .filter { it.isDeleted }
+        .filter { it.base.isDeleted }
 
     val deleteds = applications + companies + calls + contacts + interviews + followsUps
 

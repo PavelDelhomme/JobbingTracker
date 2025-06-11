@@ -11,15 +11,17 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ApplicationPlatformDao {
-    @Query("SELECT * FROM application_statuses WHERE isDeleted = 0")
+    @Query("SELECT * FROM application_platforms WHERE isDeleted = 0")
     fun getAll(): Flow<List<ApplicationPlatformEntity>>
 
-    @Query("SELECT * FROM application_statuses WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM application_platforms WHERE id = :id LIMIT 1")
     fun getById(id: String): Flow<ApplicationPlatformEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(status: ApplicationPlatformEntity)
 
+    @Query("SELECT * FROM application_platforms WHERE userId = :userId")
+    fun getAllForUser(userId: String): Flow<List<ApplicationPlatformEntity>>
     @Delete
     suspend fun delete(status: ApplicationPlatformEntity)
 }

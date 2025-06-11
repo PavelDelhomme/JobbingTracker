@@ -1,9 +1,9 @@
 package com.delhomme.jobbingtrack.api
 
-import com.delhomme.jobbingtrack.api.authentication.requests.LoginRequest
-import com.delhomme.jobbingtrack.api.authentication.requests.RegisterRequest
-import com.delhomme.jobbingtrack.api.authentication.responses.LoginResponse
-import com.delhomme.jobbingtrack.api.authentication.responses.RegisterResponse
+import com.delhomme.jobbingtrack.api.authentication.LoginRequest
+import com.delhomme.jobbingtrack.api.authentication.RegisterRequest
+import com.delhomme.jobbingtrack.api.authentication.LoginResponse
+import com.delhomme.jobbingtrack.api.authentication.RegisterResponse
 import com.delhomme.jobbingtrack.api.tokens.responses.RefreshToAccessTokenResponse
 import com.delhomme.jobbingtrack.profiles.Profile
 import com.delhomme.jobbingtrack.users.UserInfo

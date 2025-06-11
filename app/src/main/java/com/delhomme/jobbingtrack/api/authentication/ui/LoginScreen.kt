@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.delhomme.jobbingtrack.api.authentication.viewmodels.LoginViewModel
+import com.delhomme.jobbingtrack.api.authentication.LoginViewModel
 
 
 @Composable

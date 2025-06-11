@@ -36,8 +36,8 @@ fun ArchiveScreen(navController: NavController,
     val companiesArchived = companyViewModel.archivedForUser(userId).observeAsState(listOf()).value
     val callsArchived = callViewModel.archivedForUser(userId).observeAsState(listOf()).value
     val contactsArchived = contactViewModel.archivedForUser(userId).observeAsState(listOf()).value
-    val interviewsArchived = interviewViewModel.activeForUser(userId).observeAsState(listOf()).value
-        .filter { it.isArchived && !it.isDeleted }
+    val interviewsArchived = interviewViewModel.allForUser(userId).observeAsState(listOf()).value
+        .filter { it.interview.base.isArchived && !it.interview.base.isDeleted }
     val followUpsArchived = followUpViewModel.archivedForUser(userId).observeAsState(listOf()).value
 
     val archived = applicationsArchived + companiesArchived + callsArchived + contactsArchived + interviewsArchived + followUpsArchived
@@ -83,16 +83,16 @@ fun ArchiveScreen(navController: NavController,
         Text("Entretiens archivées", style = MaterialTheme.typography.headlineSmall)
         interviewsArchived.forEach {
             Text(
-                text = "${it.type} ${it.style} ${it.dateTime}${it.applicationId} ${it.companyId}",
+                text = "${it.interview.type} ${it.interview.style} ${it.interview.dateTime}${it.interview.applicationId} ${it.interview.companyId}",
                 modifier = Modifier.clickable {
-                    navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.id}")
+                    navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.interview.id}")
                 }.padding(8.dp)
             )
         }
         Text("Relances archivées", style = MaterialTheme.typography.headlineSmall)
         followUpsArchived.forEach {
             Text(
-                text = "${it.archivedAt} ${it.date} ${it.responseStatus} (${it.applicationId})",
+                text = "${it.base.archivedAt} ${it.date} ${it.responseStatus} (${it.applicationId})",
                 modifier = Modifier.clickable {
                     navController.navigate("${Routes.FOLLOWUP_DETAIL}/${it.id}")
                 }.padding(8.dp)

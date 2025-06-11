@@ -16,7 +16,7 @@ data class InterviewWithContacts(
         parentColumn = "id",
         entityColumn = "id",
         associateBy = Junction(
-            InterviewWithContactsCrossRef::class,
+            InterviewContactCrossRef::class,
             parentColumn = "interviewId",
             entityColumn = "contactId"
         )

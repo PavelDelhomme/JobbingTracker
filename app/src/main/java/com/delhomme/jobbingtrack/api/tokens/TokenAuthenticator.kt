@@ -4,23 +4,27 @@ import android.content.Context
 import com.delhomme.jobbingtrack.api.ApiClient
 import com.delhomme.jobbingtrack.api.ApiService
 import com.delhomme.jobbingtrack.api.RefreshTokenRequest
-import com.delhomme.jobbingtrack.api.authentication.responses.LoginResponse
+import com.delhomme.jobbingtrack.api.authentication.LoginResponse
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class TokenAuthenticator(private val context: Context) : Authenticator {
-
+@Singleton
+class TokenAuthenticator @Inject constructor(
+    private val tokenManager: TokenManager,
+    private val apiService: ApiService,
+) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        val refreshToken = TokenManager.getRefreshToken(context) ?: return null
+        val refreshToken = tokenManager.getRefreshToken() ?: return null
         val newTokens = getNewTokens(refreshToken) ?: return null
 
-        TokenManager.saveTokens(context, newTokens.access, newTokens.refresh)
+        tokenManager.saveTokens(newTokens.access, newTokens.refresh)
 
         return response.request.newBuilder()
             .header("Authorization", "Bearer ${newTokens.access}")
@@ -29,15 +33,9 @@ class TokenAuthenticator(private val context: Context) : Authenticator {
 
     private fun getNewTokens(refresh: String): LoginResponse? {
         return try {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(ApiClient.BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build()
-            val service = retrofit.create(ApiService::class.java)
-            val call = service.refreshToken(RefreshTokenRequest(refresh))
+            val call = apiService.refreshToken(RefreshTokenRequest(refresh))
             val resp = call.execute()
             if (resp.isSuccessful) {
-                // Retourne un objet LoginResponse avec *refresh* inclus
                 LoginResponse(access = resp.body()?.access ?: "", refresh = refresh)
             } else null
         } catch (e: Exception) {

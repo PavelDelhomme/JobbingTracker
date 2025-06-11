@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
 import com.delhomme.jobbingtrack.commons.entities.CalendarViewType
 import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
 import com.delhomme.jobbingtrack.events.ui.day.DailyPagerView
@@ -17,6 +18,8 @@ import com.delhomme.jobbingtrack.events.ui.monthly.MonthlyCalendarView
 import com.delhomme.jobbingtrack.events.ui.weeks.TwoWeekPagerView
 import com.delhomme.jobbingtrack.events.ui.weeks.WeeklyPagerView
 import com.delhomme.jobbingtrack.events.viewmodels.EventViewModel
+import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import java.time.LocalDate
 import kotlin.collections.filter
 

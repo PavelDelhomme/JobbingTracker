@@ -1,7 +1,11 @@
 package com.delhomme.jobbingtrack.commons.logic
 
 import com.delhomme.jobbingtrack.applications.Application
+import com.delhomme.jobbingtrack.calls.Call
+import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.events.Event
+import com.delhomme.jobbingtrack.followsup.FollowUp
+import com.delhomme.jobbingtrack.interviews.Interview
 import java.util.UUID
 
 
@@ -55,19 +59,19 @@ object EventFactory {
         archivedAt = c.archivedAt
     )
 
-    fun fromInterview(i: Interview): Event = Event(
+    fun fromInterview(i: InterviewWithContacts): Event = Event(
         id = UUID.randomUUID().toString(),
-        userId = i.userId,
-        relatedObjectId = i.id,
-        title = "Entretien ${i.type ?: "?"}",
-        description = i.preInterviewNotes,
-        startDate = i.dateTime,
-        endDate = i.dateTime + ((i.durationMinutes ?: 30) * 60 * 1000L),
+        userId = i.interview.base.userId,
+        relatedObjectId = i.interview.id,
+        title = "Entretien ${i.interview.type ?: "?"}",
+        description = i.interview.preInterviewNotes,
+        startDate = i.interview.dateTime,
+        endDate = i.interview.dateTime + ((i.interview.durationMinutes ?: 30) * 60 * 1000L),
         syncHash = "evt-interview-${UUID.randomUUID()}",
         type = "Entretiens",
-        createdAt = i.createdAt,
-        updatedAt = i.updatedAt,
-        deletedAt = i.deletedAt,
-        archivedAt = i.archivedAt
+        createdAt = i.interview.base.createdAt,
+        updatedAt = i.interview.base.updatedAt,
+        deletedAt = i.interview.base.deletedAt,
+        archivedAt = i.interview.base.archivedAt
     )
 }

@@ -2,10 +2,13 @@ package com.delhomme.jobbingtrack.users.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.utils.Converters
 import java.util.UUID
 
 
+@TypeConverters(Converters::class)
 @Entity(tableName = "users")
 data class UserEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
