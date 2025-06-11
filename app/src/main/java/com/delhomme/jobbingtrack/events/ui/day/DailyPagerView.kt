@@ -16,7 +16,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun DailyPagerView(
     initialDate: LocalDate,
@@ -29,7 +28,7 @@ fun DailyPagerView(
     calls: List<CallEntity> = emptyList(),
     followsUp: List<FollowUpEntity> = emptyList(),
 ) {
-    val pagerState = rememberPagerState(initialPage = 1000) // Centre fictif
+    val pagerState = rememberPagerState(initialPage = 1000, pageCount = 3) // Centre fictif
     val currentDate by remember {
         derivedStateOf { initialDate.plusDays((pagerState.currentPage - 1000).toLong()) }
     }
@@ -39,7 +38,6 @@ fun DailyPagerView(
     }
 
     HorizontalPager(
-        count = Int.MAX_VALUE,
         state = pagerState,
         modifier = Modifier.fillMaxSize()
     ) { page ->

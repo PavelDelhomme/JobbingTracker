@@ -24,7 +24,6 @@ import kotlinx.coroutines.delay
 import java.time.*
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun WeeklySliding3DayView(
     initialDate: LocalDate,

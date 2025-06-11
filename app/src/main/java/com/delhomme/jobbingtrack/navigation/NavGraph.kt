@@ -50,8 +50,8 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             ProfileScreen(
                 profileId = userId,
                 viewModel = ProfileViewModel(
-                    profileRepository = (JobbingTrackApp.instance.profileRepository),
-                    cvRepository = (JobbingTrackApp.instance.cvRepository)
+                    context = androidx.compose.ui.platform.LocalContext.current,
+                    repo = hiltViewModel<ProfileViewModel>(),
                 )
             )
         }

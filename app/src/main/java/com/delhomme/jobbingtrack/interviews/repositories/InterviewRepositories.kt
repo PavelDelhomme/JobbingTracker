@@ -11,6 +11,8 @@ import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
 import com.delhomme.jobbingtrack.interviews.entities.InterviewStatusEntity
 import com.delhomme.jobbingtrack.interviews.entities.InterviewStyleEntity
 import com.delhomme.jobbingtrack.interviews.entities.InterviewTypeEntity
+import com.delhomme.jobbingtrack.interviews.enumes.InterviewStyle
+import com.delhomme.jobbingtrack.interviews.enumes.InterviewType
 import com.delhomme.jobbingtrack.interviews.utils.mappers.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -25,18 +27,25 @@ class InterviewRepository @Inject constructor(
     fun deletedForUser(userId: String): Flow<List<InterviewEntity>> = dao.getDeletedForUser(userId)
     fun byIdWithContacts(id: String, userId: String): Flow<InterviewWithContacts?> = dao.getByIdActiveWithContacts(id, userId)
     fun getActiveWithContacts(userId: String): Flow<List<InterviewWithContacts>> = dao.getAllWithContactsForUser(userId)
-    fun activeForUser(userId: String, stylesFlow: Flow<List<InterviewStyleEntity>>, typesFlow: Flow<List<InterviewTypeEntity>>): Flow<List<Interview>> =
+    fun activeForUser(
+        userId: String,
+        stylesFlow: Flow<List<InterviewStyleEntity>>,
+        typesFlow: Flow<List<InterviewTypeEntity>>
+    ): Flow<List<Interview>> =
         combine(
             withContactsForUser(userId),
             stylesFlow,
             typesFlow
-        ) { interviewsWithContacts, styles, types ->
+        ) { interviewsWithContacts, styleEntities, typeEntities ->
+            val styles = styleEntities.map { it.toDomain() }
+            val types = typeEntities.map { it.toDomain() }
             interviewsWithContacts.map { iwc ->
                 val style = styles.find { it.id == iwc.interview.styleId }
                 val type = types.find { it.id == iwc.interview.typeId }
                 iwc.toDomain(style, type)
             }
         }
+
     fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<InterviewEntity>> = dao.getByDateRangeForUser(userId, from, to)
 
     suspend fun save(entretien: InterviewEntity, contactIds: List<String>) {
