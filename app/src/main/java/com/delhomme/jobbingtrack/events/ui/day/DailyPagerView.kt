@@ -2,13 +2,16 @@ package com.delhomme.jobbingtrack.events.ui.day
 
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
 import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import com.delhomme.jobbingtrack.events.entities.EventEntity
-import com.google.accompanist.pager.*
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

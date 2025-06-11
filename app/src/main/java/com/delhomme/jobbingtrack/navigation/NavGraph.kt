@@ -21,7 +21,6 @@ import com.delhomme.jobbingtrack.followsup.viewmodels.*
 import com.delhomme.jobbingtrack.interviews.ui.*
 import com.delhomme.jobbingtrack.interviews.viewmodels.*
 import com.delhomme.jobbingtrack.archives.ui.*
-import com.delhomme.jobbingtrack.archives.viewmodels.*
 import com.delhomme.jobbingtrack.trash.ui.*
 import com.delhomme.jobbingtrack.trash.viewmodels.*
 import com.delhomme.jobbingtrack.cvs.ui.*
@@ -48,7 +47,10 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         composable(Routes.PROFILE) {
             ProfileScreen(
                 profileId = userId,
-                viewModel = ProfileViewModel(JobbingTrackApp())
+                viewModel = ProfileViewModel(
+                    profileRepository = (JobbingTrackApp.instance.profileRepository),
+                    cvRepository = (JobbingTrackApp.instance.cvRepository)
+                )
             )
         }
         // — CANDIDATURES —

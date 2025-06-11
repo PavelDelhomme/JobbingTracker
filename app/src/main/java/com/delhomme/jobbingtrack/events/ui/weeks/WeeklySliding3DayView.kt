@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.commons.entities.CalendarViewType
 import com.delhomme.jobbingtrack.events.Event
 import com.delhomme.jobbingtrack.events.ui.computeOverlappingEvents
-import com.google.accompanist.pager.*
 import kotlinx.coroutines.delay
 import java.time.*
 

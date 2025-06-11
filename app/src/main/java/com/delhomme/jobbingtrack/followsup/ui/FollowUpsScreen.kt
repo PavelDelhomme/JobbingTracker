@@ -28,7 +28,7 @@ fun FollowUpsScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val sorted = followUps.sortedByDescending { it.date }
-        val visible = sorted.filter { !it.isArchived }
+        val visible = sorted.filter { !it.base.isArchived }
 
         ListScreen(
             dateProvider = { it.date.toFormattedDate() },

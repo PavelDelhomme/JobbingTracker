@@ -27,6 +27,7 @@ import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
 import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
+import androidx.compose.foundation.lazy.items
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +58,7 @@ fun ContactDetailScreen(
 
     val linkedCands = allCands.filter { c ->
         allAppels.any { it.contactId == contactId && it.applicationId == c.id } ||
-                allRelances.any { it.contactId == contactId && it.applicationId == c.id } ||
+                allRelances.any { it.contactsIds.contains(contactId) && it.applicationId == c.id } ||
                 allEntretiens.any   { ewc ->
                     ewc.contacts.any { it.id == contactId } &&
                             ewc.interview.applicationId == c.id
@@ -65,7 +66,7 @@ fun ContactDetailScreen(
     }
     val linkedAppels = allAppels.filter { it.contactId == contactId }
     val linkedEntretiens = allEntretiens.filter { ewc -> ewc.contacts.any { it.id == contactId } }
-    val linkedRelances = allRelances.filter { it.contactId == contactId }
+    val linkedRelances = allRelances.filter { it.contactsIds.contains(contactId) }
 
 
     BackHandler {

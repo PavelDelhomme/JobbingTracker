@@ -25,8 +25,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import com.delhomme.jobbingtrack.data.local.entities.event.EventEntity
-import com.delhomme.jobbingtrack.ui.major.calendar.event.getEventColor
+import com.delhomme.jobbingtrack.events.entities.EventEntity
+import com.delhomme.jobbingtrack.events.ui.event.getEventColor
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate

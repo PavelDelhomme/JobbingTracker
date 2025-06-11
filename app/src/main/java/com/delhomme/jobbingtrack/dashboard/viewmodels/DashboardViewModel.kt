@@ -80,7 +80,7 @@ class DashboardViewModel(app: Application, private val userId: String): AndroidV
         }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     /** Exposition des datas agrégées */
-    val applicationsPerDay = applicationsFlow.perDay(ApplicationEntity::toInstant)
+    val applicationsPerDay = applicationsFlow.perDay((ApplicationEntity::toInstant))
     val followUpsPerDay  = followUpFlow.perDay(FollowUpEntity::toInstant)
     val callsPerDay = callsFlow.perDay(CallEntity::toInstant)
     val interviewsPerDay = interviewsFlow.perDay { it.interview.toInstant() }
