@@ -5,7 +5,6 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
-import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 import java.util.UUID
 
 @Entity(tableName = "department_types")
@@ -13,5 +12,5 @@ data class DepartmentTypeEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
     val name: String,
     @Embedded
-    val company: CompanyEntity
+    val companyId: String
 ) : HasIdProvider

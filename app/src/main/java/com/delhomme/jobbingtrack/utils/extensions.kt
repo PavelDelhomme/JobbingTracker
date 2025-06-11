@@ -4,7 +4,12 @@ import com.delhomme.jobbingtrack.applications.Application
 import com.delhomme.jobbingtrack.calls.Call
 import com.delhomme.jobbingtrack.contacts.Contact
 import com.delhomme.jobbingtrack.followsup.FollowUp
+import com.delhomme.jobbingtrack.followsup.FollowUpStatus
+import com.delhomme.jobbingtrack.followsup.FollowUpType
 import com.delhomme.jobbingtrack.interviews.Interview
+import com.delhomme.jobbingtrack.interviews.entities.InterviewStatusEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewStyleEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewTypeEntity
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -63,6 +68,35 @@ fun Any?.toFieldMap(): Map<String, String> {
             "type" to (this.typeId ?: ""),
             "responseStatus" to (this.responseStatusId ?: ""),
             "notes" to (this.notes ?: "")
+        )
+        is Map<*, *> -> this.entries.associate { (key, value) ->
+            key.toString() to when (value) {
+                is Long, is Int, is Double, is Date -> value.toString()
+                is Enum<*> -> value.name
+                is String -> value
+                null -> ""
+                else -> value.toString()
+            }
+        }
+        is FollowUpStatus -> mapOf(
+            "id" to this.id,
+            "label" to this.label,
+        )
+        is FollowUpType -> mapOf(
+            "id" to this.id,
+            "label" to this.label,
+        )
+        is InterviewStatusEntity -> mapOf(
+            "id" to this.id,
+            "label" to this.label,
+        )
+        is InterviewTypeEntity -> mapOf(
+            "id" to this.id,
+            "label" to this.label,
+        )
+        is InterviewStyleEntity -> mapOf(
+            "id" to this.id,
+            "label" to this.label,
         )
         else -> emptyMap()
     }

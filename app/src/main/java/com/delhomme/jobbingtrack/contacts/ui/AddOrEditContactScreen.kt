@@ -177,7 +177,7 @@ fun AddOrEditContactScreen(
                     DepartmentTypeEntity(
                         id = newId,
                         name = name,
-                        company = allCompanies.find { it.id == finalCompanyId }!!
+                        companyId = allCompanies.find { it.id == finalCompanyId }!!
                     )
                 )
                 selectedDepartment = name

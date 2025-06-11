@@ -1,3 +1,8 @@
 package com.delhomme.jobbingtrack.calls
 
-data class CallType()
+import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
+
+data class CallType(
+    override val id: String,
+    val name: String
+) : HasIdProvider

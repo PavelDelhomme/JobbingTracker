@@ -46,13 +46,47 @@ import com.delhomme.jobbingtrack.profiles.dao.ProfileDao
 import com.delhomme.jobbingtrack.users.dao.UserDao
 
 import androidx.room.TypeConverters
+import com.delhomme.jobbingtrack.applications.entities.ApplicationPlatformEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationStatusEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationTypeEntity
+import com.delhomme.jobbingtrack.applications.entities.ContractTypeEntity
+import com.delhomme.jobbingtrack.calls.entities.CallTypeEntity
+import com.delhomme.jobbingtrack.companies.entities.CompanyTypeEntity
+import com.delhomme.jobbingtrack.contacts.dao.DepartmentTypeDao
+import com.delhomme.jobbingtrack.contacts.dao.PositionTypeDao
+import com.delhomme.jobbingtrack.contacts.entities.DepartmentTypeEntity
+import com.delhomme.jobbingtrack.contacts.entities.PositionTypeEntity
+import com.delhomme.jobbingtrack.cvs.entities.CVEntity
+import com.delhomme.jobbingtrack.cvs.entities.CollaboratorEntity
+import com.delhomme.jobbingtrack.cvs.entities.EducationEntity
+import com.delhomme.jobbingtrack.cvs.entities.ExperienceEntity
+import com.delhomme.jobbingtrack.cvs.entities.LanguageEntity
+import com.delhomme.jobbingtrack.cvs.entities.ProjectEntity
+import com.delhomme.jobbingtrack.cvs.entities.SkillEntity
+import com.delhomme.jobbingtrack.events.entities.EventTypeEntity
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpPlateformEntity
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpTypeEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewStatusEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewStyleEntity
+import com.delhomme.jobbingtrack.interviews.entities.InterviewTypeEntity
 import com.delhomme.jobbingtrack.utils.Converters
 
 @Database(
     entities = [
         CallEntity::class,
         ApplicationEntity::class,
+        ApplicationStatusEntity::class,
+        ApplicationTypeEntity::class,
+        ApplicationPlatformEntity::class,
+        ContractTypeEntity::class,
+        CallTypeEntity::class,
         ContactEntity::class,
+        DepartmentTypeEntity::class,
+        PositionTypeEntity::class,
+        CVEntity::class,
+        CollaboratorEntity::class,
+        EducationEntity::class,
         CompanyEntity::class,
         InterviewEntity::class,
         FollowUpEntity::class,
@@ -62,6 +96,18 @@ import com.delhomme.jobbingtrack.utils.Converters
         InterviewContactCrossRef::class,
         CompanyApplicationCrossRef::class,
         EventEntity::class,
+        ExperienceEntity::class,
+        LanguageEntity::class,
+        ProjectEntity::class,
+        SkillEntity::class,
+        EventTypeEntity::class,
+        FollowUpPlateformEntity::class,
+        FollowUpStatusEntity::class,
+        FollowUpTypeEntity::class,
+        InterviewStatusEntity::class,
+        InterviewStyleEntity::class,
+        InterviewTypeEntity::class,
+        CompanyTypeEntity::class,
     ],
     version = 1,
     exportSchema = true
@@ -80,7 +126,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun collaboratorDao(): CollaboratorDao
 
     abstract fun companyDao(): CompanyDao
-
+    abstract fun departmentTypeDao(): DepartmentTypeDao
+    abstract fun positionTypeDao(): PositionTypeDao
     abstract fun contactDao(): ContactDao
 
     abstract fun cvDao(): CVDao
@@ -112,7 +159,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun companyTypeDao(): CompanyTypeDao
 
     abstract fun userDao(): UserDao
-
-    abstract fun ContractTypeDao(): ContractTypeDao
 
 }
