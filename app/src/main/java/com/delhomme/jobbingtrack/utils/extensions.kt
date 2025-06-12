@@ -64,7 +64,7 @@ fun Any?.toFieldMap(): Map<String, String> {
             "date" to this.date.toString(),
             "candidatureId" to this.applicationId,
             "companyId" to this.companyId,
-            "contactId" to (this.contactId ?: ""),
+            "contactId" to (this.contactsIds ?: ""),
             "type" to (this.typeId ?: ""),
             "responseStatus" to (this.responseStatusId ?: ""),
             "notes" to (this.notes ?: "")

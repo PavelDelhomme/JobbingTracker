@@ -4,11 +4,14 @@ package com.delhomme.jobbingtrack.followsup.entities
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.utils.Converters
 import java.util.UUID
 
 @Entity(tableName = "followups")
+@TypeConverters(Converters::class)
 data class FollowUpEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
     val date: Long,

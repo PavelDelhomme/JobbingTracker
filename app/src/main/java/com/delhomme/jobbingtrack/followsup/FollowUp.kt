@@ -16,7 +16,7 @@ data class FollowUp(
 
     // Data propre
     val date: Long,
-    val contactId: String?,
+    val contactsIds: List<String>?,
     val applicationId: String,
     val companyId: String,
     val responseStatusId: String?,
