@@ -13,19 +13,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ReusableConfirmDialog
@@ -37,9 +34,7 @@ import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.ContactSelectorField
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
 import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
-import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.dashboard.viewmodels.DashboardViewModel
 import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
 import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 

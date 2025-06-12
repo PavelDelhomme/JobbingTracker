@@ -76,10 +76,14 @@ object AppModule {
     // Room Database
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
-        Room.databaseBuilder(context, AppDatabase::class.java, "jobbingtrack_db")
-            .fallbackToDestructiveMigration()
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "jobbingtrack_db"
+        ).fallbackToDestructiveMigration()
             .build()
+    }
 
     // DAOs
     @Provides

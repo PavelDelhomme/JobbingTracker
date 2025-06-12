@@ -31,7 +31,7 @@ fun CallsScreen(
     Box(modifier = Modifier.fillMaxSize()) {
 
         val sorted = calls.sortedByDescending { it.dateTime }
-        val visible = sorted.filter { !it.isArchived }
+        val visible = sorted.filter { !it.base.isArchived }
 
         ListScreen(
             dateProvider = { it.dateTime.toFormattedDate() },

@@ -1,8 +1,12 @@
 package com.delhomme.jobbingtrack.calls.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.*
+import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.calls.entities.CallEntity
+import com.delhomme.jobbingtrack.calls.entities.CallTypeEntity
 import com.delhomme.jobbingtrack.calls.repositories.CallRepository
+import com.delhomme.jobbingtrack.calls.repositories.CallTypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -39,4 +43,15 @@ class CallViewModel @Inject constructor(
     fun clearAll(userId: String) = viewModelScope.launch { repo.deleteAll(userId) }
 
     fun callsBetween(userId: String, fromTimestamp: Long, toTimestamp: Long): LiveData<List<CallEntity>> = repo.getByDateRange(userId, fromTimestamp, toTimestamp).asLiveData()
+}
+
+
+class CallTypeViewModel(app: Application) : AndroidViewModel(app) {
+    private val repo = CallTypeRepository(JobbingTrackApp.database.callTypeDao())
+
+    val all = repo.all.asLiveData()
+    fun byId(id: String) = repo.byId(id).asLiveData()
+
+    fun save(entity: CallTypeEntity) = viewModelScope.launch { repo.save(entity) }
+    fun delete(entity: CallTypeEntity) = viewModelScope.launch { repo.delete(entity) }
 }

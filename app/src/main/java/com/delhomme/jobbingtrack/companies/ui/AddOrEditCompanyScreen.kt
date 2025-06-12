@@ -69,7 +69,12 @@ fun AddOrEditCompanyScreen(
                     hrEmail  = form["hrEmail"],
                     address  = form["address"],
                     notes    = form["notes"],
-                    base     = existing?.base,
+                    base     = existing?.base!!,
+                    applicationsIds = existing.applicationsIds,
+                    callsIds = existing.callsIds,
+                    contactsIds = existing.contactsIds,
+                    followUpsIds = existing.followUpsIds,
+                    interviewsIds = existing.interviewsIds,
                 )
                 viewModel.save(ent)
                 onCancel()

@@ -14,19 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.delhomme.jobbingtrack.data.viewmodel.Call.CallViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Application.ApplicationViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Contact.ContactViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Company.CompanyViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.Interview.InterviewViewModel
-import com.delhomme.jobbingtrack.data.viewmodel.FollowUp.FollowUpViewModel
+import com.delhomme.jobbingtrack.applications.ui.ApplicationsScreen
+import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.calls.ui.CallsScreen
+import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
+import com.delhomme.jobbingtrack.companies.ui.CompaniesScreen
+import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.contacts.ui.ContactsScreen
+import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
+import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.followsup.ui.FollowUpsScreen
+import com.delhomme.jobbingtrack.interviews.ui.InterviewsScreen
 import com.delhomme.jobbingtrack.navigation.Routes
-import com.delhomme.jobbingtrack.ui.major.calls.CallsScreen
-import com.delhomme.jobbingtrack.ui.major.applications.ApplicationsScreen
-import com.delhomme.jobbingtrack.ui.major.contacts.ContactsScreen
-import com.delhomme.jobbingtrack.ui.major.companies.CompaniesScreen
-import com.delhomme.jobbingtrack.ui.major.interviews.InterviewsScreen
-import com.delhomme.jobbingtrack.ui.major.followsup.FollowUpsScreen
 
 @Composable
 fun ApplicationsTabsContent(
@@ -64,7 +64,7 @@ fun ApplicationsTabsContent(
             when (selectedTabIndex) {
                 0 -> ApplicationsScreen(
                     navController = navController,
-                    applications = applications,
+                    applicationVm = applicationsVm,
                     companies = companies,
                     onItemClick = {
                         navController.navigate("${Routes.APPLICATION_DETAIL}/${it.id}")
@@ -80,7 +80,8 @@ fun ApplicationsTabsContent(
                     },
                     onAddClick = {
                         /* handled by FAB */
-                    }
+                    },
+                    userId = userId
                 )
                 1 -> CompaniesScreen (
                     companies = companies,

@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.api.authentication.viewmodels.RegisterViewModel
+import com.delhomme.jobbingtrack.api.authentication.RegisterViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 
 

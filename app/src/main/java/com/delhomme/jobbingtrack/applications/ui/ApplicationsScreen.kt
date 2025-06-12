@@ -26,6 +26,9 @@ import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.livedata.observeAsState
+
 
 @Composable
 fun ApplicationsScreen(
@@ -44,18 +47,18 @@ fun ApplicationsScreen(
 
     val entById = remember(companies) { companies.associateBy { it.id } }
 
-    val applications = applicationVm.allForUser(userId = userId)
+    val applications = applicationVm.allForUser(userId).observeAsState(emptyList()).value
 
     Box(modifier = Modifier.fillMaxSize()) {
         val sortedCandidatures = applications.sortedByDescending { it.applicationDate }
-        val visibleCandidature = sortedCandidatures.filter { !it.isArchived }
+        val visibleCandidature = sortedCandidatures.filter { !it.base.isArchived }
 
         ListScreen(
             dateProvider = { it.applicationDate.toFormattedDate() },
             titleProvider = { it.title },
             centerInfoProvider = { it.applicationStatus },
             bottomLeftInfoProvider = { entById[it.companyId]?.name ?: "Entreprise inconnue" },
-            items = applications.filter { !it.isArchived },
+            items = applications.filter { !it.base.isArchived },
             onItemClick = onItemClick,
             onEdit =  { onEdit(it) },
             onArchive = {

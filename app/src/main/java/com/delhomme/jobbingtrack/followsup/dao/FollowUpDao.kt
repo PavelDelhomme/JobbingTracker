@@ -80,10 +80,6 @@ interface FollowUpDao : DateRangeProvider<FollowUpEntity> {
     @Query("DELETE FROM followups WHERE applicationId=:applicationId")
     suspend fun deleteAllForApplication(applicationId: String)
 
-    /** Tout vider pour ce contact **/
-    @Query("DELETE FROM followups WHERE contactId=:contactId")
-    suspend fun deleteAllForContact(contactId: String)
-
     @RawQuery(observedEntities = [FollowUpEntity::class])
     override fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<FollowUpEntity>>
 }

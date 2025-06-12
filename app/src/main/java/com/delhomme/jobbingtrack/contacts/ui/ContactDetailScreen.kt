@@ -4,7 +4,6 @@ package com.delhomme.jobbingtrack.contacts.ui
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Archive
@@ -28,6 +27,7 @@ import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
 import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
+import androidx.compose.foundation.lazy.items
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,7 +58,7 @@ fun ContactDetailScreen(
 
     val linkedCands = allCands.filter { c ->
         allAppels.any { it.contactId == contactId && it.applicationId == c.id } ||
-                allRelances.any { it.contactId == contactId && it.applicationId == c.id } ||
+                allRelances.any { it.contactsIds.contains(contactId) && it.applicationId == c.id } ||
                 allEntretiens.any   { ewc ->
                     ewc.contacts.any { it.id == contactId } &&
                             ewc.interview.applicationId == c.id
@@ -66,7 +66,7 @@ fun ContactDetailScreen(
     }
     val linkedAppels = allAppels.filter { it.contactId == contactId }
     val linkedEntretiens = allEntretiens.filter { ewc -> ewc.contacts.any { it.id == contactId } }
-    val linkedRelances = allRelances.filter { it.contactId == contactId }
+    val linkedRelances = allRelances.filter { it.contactsIds.contains(contactId) }
 
 
     BackHandler {

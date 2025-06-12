@@ -2,9 +2,19 @@ package com.delhomme.jobbingtrack.applications.repositories
 
 
 import com.delhomme.jobbingtrack.applications.dao.ApplicationDao
+import com.delhomme.jobbingtrack.applications.dao.ApplicationPlatformDao
+import com.delhomme.jobbingtrack.applications.dao.ApplicationStatusDao
+import com.delhomme.jobbingtrack.applications.dao.ApplicationTypeDao
+import com.delhomme.jobbingtrack.applications.dao.ContractTypeDao
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationPlatformEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationStatusEntity
+import com.delhomme.jobbingtrack.applications.entities.ApplicationTypeEntity
+import com.delhomme.jobbingtrack.applications.entities.ContractTypeEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import androidx.compose.runtime.livedata.observeAsState
+
 
 class ApplicationRepository @Inject constructor(private val dao: ApplicationDao) {
     fun allForUser(userId: String): Flow<List<ApplicationEntity>>       = dao.getAllForUser(userId)
@@ -22,4 +32,51 @@ class ApplicationRepository @Inject constructor(private val dao: ApplicationDao)
     suspend fun restore(ids: List<String>, userId: String)          = dao.restore(ids, userId)
     suspend fun deleteForever(ids: List<String>, userId: String)    = dao.deleteForever(ids, userId)
     suspend fun deleteAll(userId: String)                           = dao.deleteAllForUser(userId)
+}
+
+
+class ApplicationStatusRepository @Inject constructor(
+    private val dao: ApplicationStatusDao
+) {
+    val all: Flow<List<ApplicationStatusEntity>> = dao.getAll()
+    fun byId(id: String) = dao.getById(id)
+    suspend fun save(status: ApplicationStatusEntity) = dao.save(status)
+    suspend fun delete(status: ApplicationStatusEntity) = dao.delete(status)
+    fun allForUser(userId: String) = dao.getAllForUser(userId)
+}
+
+
+class ApplicationTypeRepository @Inject constructor(
+    private val dao: ApplicationTypeDao
+) {
+    val all: Flow<List<ApplicationTypeEntity>> = dao.getAll()
+    fun byId(id: String): Flow<ApplicationTypeEntity?> = dao.getById(id)
+    suspend fun save(entity: ApplicationTypeEntity) = dao.save(entity)
+    suspend fun delete(entity: ApplicationTypeEntity) = dao.delete(entity)
+}
+
+
+
+class ContractTypeRepository @Inject constructor(
+    private val dao: ContractTypeDao
+)  {
+    val all: Flow<List<ContractTypeEntity>> = dao.getAll()
+    fun byId(id: String): Flow<ContractTypeEntity?> = dao.getById(id)
+    suspend fun save(entity: ContractTypeEntity) = dao.save(entity)
+    suspend fun delete(entity: ContractTypeEntity) = dao.delete(entity)
+}
+
+
+class ApplicationPlatformRepository @Inject constructor(
+    private val dao: ApplicationPlatformDao
+) {
+    val all: Flow<List<ApplicationPlatformEntity>> = dao.getAll()
+
+    fun byId(id: String) = dao.getById(id)
+
+    fun allForUser(userId: String) = dao.getAllForUser(userId)
+
+    suspend fun save(status: ApplicationPlatformEntity) = dao.save(status)
+
+    suspend fun delete(status: ApplicationPlatformEntity) = dao.delete(status)
 }

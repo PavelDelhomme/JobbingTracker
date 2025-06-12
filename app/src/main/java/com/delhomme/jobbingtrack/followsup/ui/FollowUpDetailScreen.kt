@@ -34,13 +34,13 @@ fun FollowUpDetailScreen(
     contactVm: ContactViewModel = viewModel()
 ) {
     // 1) VM + chargement
-    val allFollowUps by followUpVm.getAllForUser(userId).observeAsState(emptyList())
+    val allFollowUps by followUpVm.allForUser(userId).observeAsState(emptyList())
     val allApplications by applicationVm.activeForUser(userId).observeAsState(emptyList())
     val allContacts by contactVm.activeForUser(userId).observeAsState(emptyList())
 
     val followUp = allFollowUps.firstOrNull { it.id == followUpId } ?: return
     val application = allApplications.firstOrNull { it.id == followUp.applicationId }
-    val contact = allContacts.firstOrNull { it.id == followUp.contactId }
+    val contact = allContacts.firstOrNull { it.id == followUp.contactsIds.contains(it.id) }
 
 
     BackHandler { navController.popBackStack() }

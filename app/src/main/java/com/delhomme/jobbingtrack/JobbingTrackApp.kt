@@ -2,7 +2,6 @@ package com.delhomme.jobbingtrack
 
 import android.app.Application
 import androidx.room.Room
-import com.delhomme.jobbingtrack.api.ApiClient
 import com.delhomme.jobbingtrack.commons.AppDatabase
 import dagger.hilt.android.HiltAndroidApp
 
@@ -24,8 +23,5 @@ class JobbingTrackApp : Application() {
             // pour une table rase de migration auto
             .fallbackToDestructiveMigration()
             .build()
-
-        // 2) Initialisation de l'API client (pour interceptor JWT)
-        ApiClient.init(this)
     }
 }

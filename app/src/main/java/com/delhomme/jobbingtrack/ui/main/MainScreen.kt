@@ -23,12 +23,6 @@ import com.delhomme.jobbingtrack.dashboard.DashboardScreen
 import com.delhomme.jobbingtrack.events.ui.CalendarScreenContent
 import com.delhomme.jobbingtrack.navigation.components.AppDrawer
 import com.delhomme.jobbingtrack.navigation.components.BottomNavigationBar
-import com.delhomme.jobbingtrack.ui.components.forms.BottomSheetContentType
-import com.delhomme.jobbingtrack.ui.components.forms.BottomSheetHost
-import com.delhomme.jobbingtrack.ui.components.navigation.AppDrawer
-import com.delhomme.jobbingtrack.ui.components.navigation.BottomNavigationBar
-import com.delhomme.jobbingtrack.ui.components.navigation.CalendarViewType
-import com.delhomme.jobbingtrack.ui.major.calendar.CalendarScreenContent
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

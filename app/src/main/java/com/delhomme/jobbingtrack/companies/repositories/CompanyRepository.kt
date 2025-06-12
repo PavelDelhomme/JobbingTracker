@@ -2,7 +2,9 @@ package com.delhomme.jobbingtrack.companies.repositories
 
 
 import com.delhomme.jobbingtrack.companies.dao.CompanyDao
+import com.delhomme.jobbingtrack.companies.dao.CompanyTypeDao
 import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
+import com.delhomme.jobbingtrack.companies.entities.CompanyTypeEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -23,4 +25,14 @@ class CompanyRepository @Inject constructor(
     suspend fun restore(ids: List<String>, userId: String)          = dao.restore(ids, userId)
     suspend fun deleteForever(ids: List<String>, userId: String)    = dao.deleteForever(ids, userId)
     suspend fun deleteAll(userId: String)                           = dao.deleteAllForUser(userId)
+}
+
+
+class CompanyTypeRepository @Inject constructor(
+    private val dao: CompanyTypeDao
+) {
+    val all: Flow<List<CompanyTypeEntity>> = dao.getAll()
+    fun byId(id: String): Flow<CompanyTypeEntity?> = dao.getById(id)
+    suspend fun save(entity: CompanyTypeEntity) = dao.save(entity)
+    suspend fun delete(entity: CompanyTypeEntity) = dao.delete(entity)
 }

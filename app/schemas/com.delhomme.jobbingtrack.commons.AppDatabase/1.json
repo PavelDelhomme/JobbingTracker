@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "644a724bc4243ac73c7a25d72ee0ace7",
+    "identityHash": "36729a4ea279092d39e429930931c578",
     "entities": [
       {
         "tableName": "calls",
@@ -722,7 +722,7 @@
       },
       {
         "tableName": "department_types",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `value` BLOB, `coder` INTEGER NOT NULL, `hash` INTEGER NOT NULL, `hashIsZero` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `id` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT, `phone` TEXT, `email` TEXT, `hrEmail` TEXT, `address` TEXT, `notes` TEXT, `contactsIds` TEXT, `followUpsIds` TEXT, `applicationsIds` TEXT, `interviewsIds` TEXT, `callsIds` TEXT, `userId` TEXT NOT NULL, `syncHash` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `archivedAt` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -737,27 +737,117 @@
             "notNull": true
           },
           {
-            "fieldPath": "companyId.value",
-            "columnName": "value",
-            "affinity": "BLOB"
+            "fieldPath": "company.id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
-            "fieldPath": "companyId.coder",
-            "columnName": "coder",
+            "fieldPath": "company.name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "company.type",
+            "columnName": "type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.phone",
+            "columnName": "phone",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.email",
+            "columnName": "email",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.hrEmail",
+            "columnName": "hrEmail",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.address",
+            "columnName": "address",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.contactsIds",
+            "columnName": "contactsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.followUpsIds",
+            "columnName": "followUpsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.applicationsIds",
+            "columnName": "applicationsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.interviewsIds",
+            "columnName": "interviewsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.callsIds",
+            "columnName": "callsIds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "company.base.userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "company.base.syncHash",
+            "columnName": "syncHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "company.base.isArchived",
+            "columnName": "isArchived",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "companyId.hash",
-            "columnName": "hash",
+            "fieldPath": "company.base.isDeleted",
+            "columnName": "isDeleted",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "companyId.hashIsZero",
-            "columnName": "hashIsZero",
+            "fieldPath": "company.base.createdAt",
+            "columnName": "createdAt",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "company.base.updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "company.base.deletedAt",
+            "columnName": "deletedAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "company.base.archivedAt",
+            "columnName": "archivedAt",
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -2757,7 +2847,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '644a724bc4243ac73c7a25d72ee0ace7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '36729a4ea279092d39e429930931c578')"
     ]
   }
 }

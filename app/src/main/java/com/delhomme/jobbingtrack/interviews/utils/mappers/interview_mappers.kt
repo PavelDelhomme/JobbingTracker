@@ -2,6 +2,7 @@ package com.delhomme.jobbingtrack.interviews.utils.mappers
 
 import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.interviews.Interview
+import com.delhomme.jobbingtrack.interviews.entities.InterviewStyleEntity
 import com.delhomme.jobbingtrack.interviews.enumes.InterviewStyle
 import com.delhomme.jobbingtrack.interviews.enumes.InterviewType
 import kotlin.collections.map
@@ -39,3 +40,11 @@ fun InterviewWithContacts.toDomain(
         testsDeadline = e.testsDeadline
     )
 }
+
+fun InterviewStyleEntity.toDomain(): InterviewStyle {
+    InterviewStyle(
+        id = this.id,
+        label = this.label,
+        userId = this.userId,
+
+    )

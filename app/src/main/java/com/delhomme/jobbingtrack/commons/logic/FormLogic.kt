@@ -4,15 +4,21 @@ import com.delhomme.jobbingtrack.applications.ApplicationStatus
 import com.delhomme.jobbingtrack.applications.ApplicationType
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.applications.repositories.ApplicationRepository
+import com.delhomme.jobbingtrack.calls.repositories.CallRepository
+import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
+import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
+import com.delhomme.jobbingtrack.companies.repositories.CompanyRepository
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import com.delhomme.jobbingtrack.contacts.repositories.ContactRepository
 import com.delhomme.jobbingtrack.events.repositories.EventRepository
+import com.delhomme.jobbingtrack.followsup.repositories.FollowUpRepository
+import com.delhomme.jobbingtrack.interviews.repositories.InterviewRepository
 import com.delhomme.jobbingtrack.utils.parseDateToMillis
 import com.delhomme.jobbingtrack.utils.safeEnumValueOf
 import kotlinx.coroutines.flow.first
 import java.util.UUID
 
-
+/**
 class FormLogic(
     private val applicationRepo: ApplicationRepository,
     private val companyRepo: CompanyRepository,
@@ -39,8 +45,19 @@ class FormLogic(
                 hrEmail = data["hrEmail"],
                 address = data["address"],
                 notes = data["notes"],
-                userId = it,
-                syncHash = "company-${UUID.randomUUID()}"
+                applicationsIds = ,
+                contactsIds = ,
+                followUpsIds = ,
+                interviewsIds = ,
+                callsIds = ,
+                base = CommonEntityFields(
+                    userId = it.toString(),
+                    createdAt = System.currentTimeMillis(),
+                    updatedAt = System.currentTimeMillis(),
+                    deletedAt = null,
+                    archivedAt = null,
+                    syncHash = "company-${UUID.randomUUID()}",
+                ),
             )
         }
 
@@ -191,3 +208,4 @@ class FormLogic(
         interviewRepo.save(interview, data["contacts"]?.split(",")?.map(String::trim).orEmpty())
     }
 }
+**/

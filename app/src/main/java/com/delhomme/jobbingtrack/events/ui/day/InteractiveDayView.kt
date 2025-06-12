@@ -20,6 +20,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.calls.entities.CallEntity
 import com.delhomme.jobbingtrack.commons.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
 import com.delhomme.jobbingtrack.events.Event
@@ -27,6 +28,7 @@ import com.delhomme.jobbingtrack.events.entities.EventEntity
 import com.delhomme.jobbingtrack.events.ui.computeOverlappingEvents
 import com.delhomme.jobbingtrack.events.ui.event.EventCard
 import com.delhomme.jobbingtrack.events.utils.mappers.toDomain
+import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
 import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.LocalDate

@@ -24,3 +24,9 @@ data class Call(
     val dateTime: Long,
     val notes: String?,
 ) : HasIdProvider
+
+
+data class CallType(
+    override val id: String,
+    val name: String
+) : HasIdProvider

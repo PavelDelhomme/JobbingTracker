@@ -1,6 +1,7 @@
 package com.delhomme.jobbingtrack.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.NavHostController
@@ -21,7 +22,7 @@ import com.delhomme.jobbingtrack.followsup.viewmodels.*
 import com.delhomme.jobbingtrack.interviews.ui.*
 import com.delhomme.jobbingtrack.interviews.viewmodels.*
 import com.delhomme.jobbingtrack.archives.ui.*
-import com.delhomme.jobbingtrack.archives.viewmodels.*
+import com.delhomme.jobbingtrack.cvs.repositories.CvRepository
 import com.delhomme.jobbingtrack.trash.ui.*
 import com.delhomme.jobbingtrack.trash.viewmodels.*
 import com.delhomme.jobbingtrack.cvs.ui.*
@@ -48,7 +49,10 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         composable(Routes.PROFILE) {
             ProfileScreen(
                 profileId = userId,
-                viewModel = ProfileViewModel(JobbingTrackApp())
+                viewModel = ProfileViewModel(
+                    context = androidx.compose.ui.platform.LocalContext.current,
+                    repo = hiltViewModel<ProfileViewModel>(),
+                )
             )
         }
         // — CANDIDATURES —
@@ -349,30 +353,46 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         }
 
         // — ARCHIVES / TRASH —
-        composable(Routes.ARCHIVES) { ArchiveScreen(navController, userId = userId.toString(),
-            applicationViewModel = ApplicationViewModel(JobbingTrackApp()),
-            companyViewModel = CompanyViewModel(JobbingTrackApp()),
-            callViewModel = CallViewModel(JobbingTrackApp()),
-            contactViewModel = ContactViewModel(JobbingTrackApp()),
-            interviewViewModel = InterviewViewModel(JobbingTrackApp()),
-            followUpViewModel = FollowUpViewModel(JobbingTrackApp()),
-            onDelete = { navController.navigate(Routes.TRASH) },
-            onRestore = { navController.navigate(Routes.MAIN) }
-        ) }
-        composable(Routes.TRASH) { TrashScreen(navController, userId = userId.toString(),
-            applicationViewModel = ApplicationViewModel(JobbingTrackApp()),
-            companyViewModel = CompanyViewModel(JobbingTrackApp()),
-            callViewModel = CallViewModel(JobbingTrackApp()),
-            contactViewModel = ContactViewModel(JobbingTrackApp()),
-            interviewViewModel = InterviewViewModel(JobbingTrackApp()),
-            followUpViewModel = FollowUpViewModel(JobbingTrackApp()),
-            onDelete = { navController.navigate(Routes.TRASH) },
-            onRestore = { navController.navigate(Routes.MAIN) }
-        ) }
+        composable(Routes.ARCHIVES) {
+            val applicationVm: ApplicationViewModel = hiltViewModel()
+            val companyVm: CompanyViewModel = hiltViewModel()
+            val callVm: CallViewModel = hiltViewModel()
+            val contactVm: ContactViewModel = hiltViewModel()
+            val interviewVm: InterviewViewModel = hiltViewModel()
+            val followUpVm: FollowUpViewModel = hiltViewModel()
+            ArchiveScreen(navController, userId = userId.toString(),
+                applicationViewModel = applicationVm,
+                companyViewModel = companyVm,
+                callViewModel = callVm,
+                contactViewModel = contactVm,
+                interviewViewModel = interviewVm,
+                followUpViewModel = followUpVm,
+                onDelete = { navController.navigate(Routes.TRASH) },
+                onRestore = { navController.navigate(Routes.MAIN) }
+            )
+        }
+        composable(Routes.TRASH) {
+            val applicationVm: ApplicationViewModel = hiltViewModel()
+            val companyVm: CompanyViewModel = hiltViewModel()
+            val callVm: CallViewModel = hiltViewModel()
+            val contactVm: ContactViewModel = hiltViewModel()
+            val interviewVm: InterviewViewModel = hiltViewModel()
+            val followUpVm: FollowUpViewModel = hiltViewModel()
+            TrashScreen(navController, userId = userId.toString(),
+                applicationViewModel = applicationVm,
+                companyViewModel = companyVm,
+                callViewModel = callVm,
+                contactViewModel = contactVm,
+                interviewViewModel = interviewVm,
+                followUpViewModel = followUpVm,
+                onDelete = { navController.navigate(Routes.TRASH) },
+                onRestore = { navController.navigate(Routes.MAIN) }
+            )
+        }
 
         // — CVs —
         composable(Routes.CVS) { CvsScreen(navController, userId = userId.toString(),
-            cvVm = CvViewModel(JobbingTrackApp()),
+            cvVm = CvViewModel(CvRepository(JobbingTrackApp().cvDao)),
             cvs = emptyList(),
             onItemClick = {},
             onEdit = {},
