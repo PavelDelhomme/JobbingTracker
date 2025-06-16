@@ -3,103 +3,11 @@ package com.delhomme.jobbingtrack.commons.entities
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import com.delhomme.jobbingtrack.calls.entities.CallEntity
-import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
-import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
-import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
-import com.delhomme.jobbingtrack.interviews.entities.InterviewEntity
-
-
-data class InterviewWithContacts(
-    @Embedded val interview: InterviewEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            InterviewContactCrossRef::class,
-            parentColumn = "interviewId",
-            entityColumn = "contactId"
-        )
-    )
-    val contacts: List<ContactEntity>
-)
-
-data class CallWithCompanies(
-    @Embedded val call: CallEntity,
-    @Relation(
-        parentColumn = "companyId",
-        entityColumn = "id"
-    )
-    val company: CompanyEntity
-)
-
-data class CallWithContacts(
-    @Embedded val call: CallEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            CallWithContactsCrossRef::class,
-            parentColumn = "callId",
-            entityColumn = "contactId"
-        )
-    )
-    val contacts: List<ContactEntity>
-)
-
-data class CompanyWithContacts(
-    @Embedded val company: CompanyEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            CompanyContactCrossRef::class,
-            parentColumn = "companyId",
-            entityColumn = "contactId"
-        )
-    )
-    val contacts: List<ContactEntity>
-)
-
-data class CompanyWithFollowUps(
-    @Embedded val company: CompanyEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            CompanyFollowUpCrossRef::class,
-            parentColumn = "companyId",
-            entityColumn = "followUpId"
-        )
-    )
-    val followUps: List<FollowUpEntity>
-)
-
-
-data class CompanyWithCalls(
-    @Embedded val company: CompanyEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            CompanyCallCrossRef::class,
-            parentColumn = "companyId",
-            entityColumn = "callId"
-        )
-    )
-    val calls: List<CallEntity>
-)
-
-data class CompanyWithInterviews(
-    @Embedded val company: CompanyEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            CompanyInterviewCrossRef::class,
-            parentColumn = "companyId",
-            entityColumn = "interviewId"
-        )
-    )
-    val interviews: List<InterviewEntity>
-)
+import com.delhomme.jobbingtrack.datas.entities.applications.*
+import com.delhomme.jobbingtrack.datas.entities.calls.*
+import com.delhomme.jobbingtrack.datas.entities.companies.*
+import com.delhomme.jobbingtrack.datas.entities.contacts.*
+import com.delhomme.jobbingtrack.datas.entities.cvs.*
+import com.delhomme.jobbingtrack.datas.entities.events.*
+import com.delhomme.jobbingtrack.datas.entities.followsups.*
+import com.delhomme.jobbingtrack.datas.entities.interviews.*

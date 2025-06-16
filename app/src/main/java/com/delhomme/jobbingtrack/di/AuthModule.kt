@@ -2,12 +2,12 @@ package com.delhomme.jobbingtrack.di
 
 import android.content.Context
 import com.delhomme.jobbingtrack.api.ApiService
-import com.delhomme.jobbingtrack.api.authentication.LoginRepository
-import com.delhomme.jobbingtrack.api.authentication.RegisterRepository
-import com.delhomme.jobbingtrack.api.authentication.LoginService
-import com.delhomme.jobbingtrack.api.authentication.RegisterService
 import com.delhomme.jobbingtrack.api.tokens.TokenAuthenticator
 import com.delhomme.jobbingtrack.api.tokens.TokenManager
+import com.delhomme.jobbingtrack.datas.repositories.LoginRepository
+import com.delhomme.jobbingtrack.datas.repositories.RegisterRepository
+import com.delhomme.jobbingtrack.services.LoginService
+import com.delhomme.jobbingtrack.services.RegisterService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

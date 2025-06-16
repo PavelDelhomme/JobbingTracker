@@ -1,11 +1,11 @@
 package com.delhomme.jobbingtrack.api
 
-import android.content.Context
 import com.delhomme.jobbingtrack.api.tokens.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class AuthInterceptor @Inject constructor(

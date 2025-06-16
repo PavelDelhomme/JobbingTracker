@@ -8,27 +8,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.api.authentication.ui.*
-import com.delhomme.jobbingtrack.applications.ui.*
-import com.delhomme.jobbingtrack.applications.viewmodels.*
-import com.delhomme.jobbingtrack.companies.ui.*
-import com.delhomme.jobbingtrack.companies.viewmodels.*
-import com.delhomme.jobbingtrack.calls.ui.*
-import com.delhomme.jobbingtrack.calls.viewmodels.*
-import com.delhomme.jobbingtrack.contacts.ui.*
-import com.delhomme.jobbingtrack.contacts.viewmodels.*
-import com.delhomme.jobbingtrack.followsup.ui.*
-import com.delhomme.jobbingtrack.followsup.viewmodels.*
-import com.delhomme.jobbingtrack.interviews.ui.*
-import com.delhomme.jobbingtrack.interviews.viewmodels.*
-import com.delhomme.jobbingtrack.archives.ui.*
-import com.delhomme.jobbingtrack.cvs.repositories.CvRepository
-import com.delhomme.jobbingtrack.trash.ui.*
-import com.delhomme.jobbingtrack.trash.viewmodels.*
-import com.delhomme.jobbingtrack.cvs.ui.*
-import com.delhomme.jobbingtrack.cvs.viewmodels.*
-import com.delhomme.jobbingtrack.profiles.ui.*
-import com.delhomme.jobbingtrack.profiles.viewmodels.*
+import com.delhomme.jobbingtrack.ui.applications.*
+import com.delhomme.jobbingtrack.datas.repositories.CvRepository
+import com.delhomme.jobbingtrack.datas.viewmodels.*
+import com.delhomme.jobbingtrack.ui.archive.*
+import com.delhomme.jobbingtrack.ui.trash.*
+import com.delhomme.jobbingtrack.ui.authentication.*
+import com.delhomme.jobbingtrack.ui.contacts.*
+import com.delhomme.jobbingtrack.ui.calls.*
+import com.delhomme.jobbingtrack.ui.companies.*
+import com.delhomme.jobbingtrack.ui.cvs.*
+import com.delhomme.jobbingtrack.ui.followsups.*
+import com.delhomme.jobbingtrack.ui.interviews.*
+import com.delhomme.jobbingtrack.ui.main.*
+import com.delhomme.jobbingtrack.ui.profiles.*
+
 import com.delhomme.jobbingtrack.ui.main.MainScreen
 
 @Composable
@@ -392,8 +386,8 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
 
         // — CVs —
         composable(Routes.CVS) { CvsScreen(navController, userId = userId.toString(),
-            cvVm = CvViewModel(CvRepository(JobbingTrackApp().cvDao)),
-            cvs = emptyList(),
+            cvVm = CvViewModel(CvRepository(JobbingTrackApp.database.cvDao())),
+            cvs = CvRepository(JobbingTrackApp.database.cvDao()).getByUserId(userId.toString()),
             onItemClick = {},
             onEdit = {},
             onArchive = {},

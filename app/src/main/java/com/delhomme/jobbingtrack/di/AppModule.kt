@@ -2,66 +2,65 @@ package com.delhomme.jobbingtrack.di
 
 import android.content.Context
 import androidx.room.Room
-import com.delhomme.jobbingtrack.applications.dao.ApplicationDao
-import com.delhomme.jobbingtrack.applications.dao.ApplicationPlatformDao
-import com.delhomme.jobbingtrack.applications.dao.ApplicationStatusDao
-import com.delhomme.jobbingtrack.applications.dao.ApplicationTypeDao
-import com.delhomme.jobbingtrack.applications.dao.ContractTypeDao
-import com.delhomme.jobbingtrack.applications.repositories.ApplicationPlatformRepository
-import com.delhomme.jobbingtrack.applications.repositories.ApplicationRepository
-import com.delhomme.jobbingtrack.applications.repositories.ApplicationStatusRepository
-import com.delhomme.jobbingtrack.applications.repositories.ApplicationTypeRepository
-import com.delhomme.jobbingtrack.applications.repositories.ContractTypeRepository
-import com.delhomme.jobbingtrack.calls.dao.CallDao
-import com.delhomme.jobbingtrack.calls.dao.CallTypeDao
-import com.delhomme.jobbingtrack.calls.repositories.CallRepository
-import com.delhomme.jobbingtrack.calls.repositories.CallTypeRepository
 import com.delhomme.jobbingtrack.commons.AppDatabase
-import com.delhomme.jobbingtrack.companies.dao.CompanyDao
-import com.delhomme.jobbingtrack.companies.dao.CompanyTypeDao
-import com.delhomme.jobbingtrack.companies.repositories.CompanyRepository
-import com.delhomme.jobbingtrack.companies.repositories.CompanyTypeRepository
-import com.delhomme.jobbingtrack.contacts.dao.ContactDao
-import com.delhomme.jobbingtrack.contacts.repositories.ContactRepository
-import com.delhomme.jobbingtrack.cvs.dao.CVDao
-import com.delhomme.jobbingtrack.cvs.dao.CollaboratorDao
-import com.delhomme.jobbingtrack.cvs.dao.EducationDao
-import com.delhomme.jobbingtrack.cvs.dao.ExperienceDao
-import com.delhomme.jobbingtrack.cvs.dao.LanguageDao
-import com.delhomme.jobbingtrack.cvs.dao.ProjectDao
-import com.delhomme.jobbingtrack.cvs.dao.SkillDao
-import com.delhomme.jobbingtrack.cvs.repositories.CollaboratorRepository
-import com.delhomme.jobbingtrack.cvs.repositories.CvRepository
-import com.delhomme.jobbingtrack.cvs.repositories.EducationRepository
-import com.delhomme.jobbingtrack.cvs.repositories.ExperienceRepository
-import com.delhomme.jobbingtrack.cvs.repositories.LanguageRepository
-import com.delhomme.jobbingtrack.cvs.repositories.ProjectRepository
-import com.delhomme.jobbingtrack.cvs.repositories.SkillRepository
-import com.delhomme.jobbingtrack.events.dao.EventDao
-import com.delhomme.jobbingtrack.events.dao.EventTypeDao
-import com.delhomme.jobbingtrack.events.repositories.EventRepository
-import com.delhomme.jobbingtrack.events.repositories.EventTypeRepository
-import com.delhomme.jobbingtrack.followsup.dao.FollowUpDao
-import com.delhomme.jobbingtrack.followsup.dao.FollowUpPlateformDao
-import com.delhomme.jobbingtrack.followsup.dao.FollowUpStatusDao
-import com.delhomme.jobbingtrack.followsup.dao.FollowUpTypeDao
-import com.delhomme.jobbingtrack.followsup.repositories.FollowUpPlatformRepository
-import com.delhomme.jobbingtrack.followsup.repositories.FollowUpRepository
-import com.delhomme.jobbingtrack.followsup.repositories.FollowUpStatusRepository
-import com.delhomme.jobbingtrack.followsup.repositories.FollowUpTypeRepository
-import com.delhomme.jobbingtrack.interviews.dao.InterviewDao
-import com.delhomme.jobbingtrack.interviews.dao.InterviewStatusDao
-import com.delhomme.jobbingtrack.interviews.dao.InterviewStyleDao
-import com.delhomme.jobbingtrack.interviews.dao.InterviewTypeDao
-import com.delhomme.jobbingtrack.interviews.enumes.InterviewStyle
-import com.delhomme.jobbingtrack.interviews.repositories.InterviewRepository
-import com.delhomme.jobbingtrack.interviews.repositories.InterviewStatusRepository
-import com.delhomme.jobbingtrack.interviews.repositories.InterviewStyleRepository
-import com.delhomme.jobbingtrack.interviews.repositories.InterviewTypeRepository
-import com.delhomme.jobbingtrack.profiles.dao.ProfileDao
-import com.delhomme.jobbingtrack.profiles.repositories.ProfilRepository
-import com.delhomme.jobbingtrack.users.dao.UserDao
-import com.delhomme.jobbingtrack.users.repositories.UserRepository
+import com.delhomme.jobbingtrack.datas.daos.applications.ApplicationDao
+import com.delhomme.jobbingtrack.datas.daos.applications.ApplicationPlatformDao
+import com.delhomme.jobbingtrack.datas.daos.applications.ApplicationStatusDao
+import com.delhomme.jobbingtrack.datas.daos.applications.ApplicationTypeDao
+import com.delhomme.jobbingtrack.datas.daos.applications.ContractTypeDao
+import com.delhomme.jobbingtrack.datas.daos.calls.CallDao
+import com.delhomme.jobbingtrack.datas.daos.calls.CallTypeDao
+import com.delhomme.jobbingtrack.datas.daos.companies.CompanyDao
+import com.delhomme.jobbingtrack.datas.daos.companies.CompanyTypeDao
+import com.delhomme.jobbingtrack.datas.daos.contacts.ContactDao
+import com.delhomme.jobbingtrack.datas.daos.cvs.CVDao
+import com.delhomme.jobbingtrack.datas.daos.cvs.CollaboratorDao
+import com.delhomme.jobbingtrack.datas.daos.cvs.EducationDao
+import com.delhomme.jobbingtrack.datas.daos.cvs.ExperienceDao
+import com.delhomme.jobbingtrack.datas.daos.cvs.LanguageDao
+import com.delhomme.jobbingtrack.datas.daos.cvs.ProjectDao
+import com.delhomme.jobbingtrack.datas.daos.cvs.SkillDao
+import com.delhomme.jobbingtrack.datas.daos.events.EventDao
+import com.delhomme.jobbingtrack.datas.daos.events.EventTypeDao
+import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpDao
+import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpPlatformDao
+import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpStatusDao
+import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpTypeDao
+import com.delhomme.jobbingtrack.datas.daos.interviews.InterviewDao
+import com.delhomme.jobbingtrack.datas.daos.interviews.InterviewStatusDao
+import com.delhomme.jobbingtrack.datas.daos.interviews.InterviewStyleDao
+import com.delhomme.jobbingtrack.datas.daos.interviews.InterviewTypeDao
+import com.delhomme.jobbingtrack.datas.daos.profiles.ProfileDao
+import com.delhomme.jobbingtrack.datas.daos.users.UserDao
+import com.delhomme.jobbingtrack.datas.repositories.ApplicationPlatformRepository
+import com.delhomme.jobbingtrack.datas.repositories.ApplicationRepository
+import com.delhomme.jobbingtrack.datas.repositories.ApplicationStatusRepository
+import com.delhomme.jobbingtrack.datas.repositories.ApplicationTypeRepository
+import com.delhomme.jobbingtrack.datas.repositories.CallRepository
+import com.delhomme.jobbingtrack.datas.repositories.CallTypeRepository
+import com.delhomme.jobbingtrack.datas.repositories.CollaboratorRepository
+import com.delhomme.jobbingtrack.datas.repositories.CompanyRepository
+import com.delhomme.jobbingtrack.datas.repositories.CompanyTypeRepository
+import com.delhomme.jobbingtrack.datas.repositories.ContactRepository
+import com.delhomme.jobbingtrack.datas.repositories.ContractTypeRepository
+import com.delhomme.jobbingtrack.datas.repositories.CvRepository
+import com.delhomme.jobbingtrack.datas.repositories.EducationRepository
+import com.delhomme.jobbingtrack.datas.repositories.EventRepository
+import com.delhomme.jobbingtrack.datas.repositories.EventTypeRepository
+import com.delhomme.jobbingtrack.datas.repositories.ExperienceRepository
+import com.delhomme.jobbingtrack.datas.repositories.FollowUpPlatformRepository
+import com.delhomme.jobbingtrack.datas.repositories.FollowUpRepository
+import com.delhomme.jobbingtrack.datas.repositories.FollowUpStatusRepository
+import com.delhomme.jobbingtrack.datas.repositories.FollowUpTypeRepository
+import com.delhomme.jobbingtrack.datas.repositories.InterviewRepository
+import com.delhomme.jobbingtrack.datas.repositories.InterviewStatusRepository
+import com.delhomme.jobbingtrack.datas.repositories.InterviewStyleRepository
+import com.delhomme.jobbingtrack.datas.repositories.InterviewTypeRepository
+import com.delhomme.jobbingtrack.datas.repositories.LanguageRepository
+import com.delhomme.jobbingtrack.datas.repositories.ProfilRepository
+import com.delhomme.jobbingtrack.datas.repositories.ProjectRepository
+import com.delhomme.jobbingtrack.datas.repositories.SkillRepository
+import com.delhomme.jobbingtrack.datas.repositories.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -133,7 +132,7 @@ object AppModule {
     @Provides
     fun provideFollowUpDao(db: AppDatabase): FollowUpDao = db.followUpDao()
     @Provides
-    fun provideFollowUpPlatformDao(db: AppDatabase): FollowUpPlateformDao = db.followUpPlateformDao()
+    fun provideFollowUpPlatformDao(db: AppDatabase): FollowUpPlatformDao = db.followUpPlateformDao()
     @Provides
     fun provideFollowUpStatusDao(db: AppDatabase): FollowUpStatusDao = db.followUpStatusdao()
     @Provides
@@ -181,7 +180,7 @@ object AppModule {
     fun provideEventRepository(dao: EventDao): EventRepository = EventRepository(dao)
     fun provideEventTypeRepository(dao: EventTypeDao): EventTypeRepository = EventTypeRepository(dao)
     fun provideFollowUpRepository(dao: FollowUpDao): FollowUpRepository = FollowUpRepository(dao)
-    fun provideFollowUpPlateformRepository(dao: FollowUpPlateformDao): FollowUpPlatformRepository = FollowUpPlatformRepository(dao)
+    fun provideFollowUpPlateformRepository(dao: FollowUpPlatformDao): FollowUpPlatformRepository = FollowUpPlatformRepository(dao)
     fun provideFollowUpStatusRepository(dao: FollowUpStatusDao): FollowUpStatusRepository = FollowUpStatusRepository(dao)
     fun provideFollowUpTypeRepository(dao: FollowUpTypeDao): FollowUpTypeRepository = FollowUpTypeRepository(dao)
     fun provideInterviewRepository(dao: InterviewDao): InterviewRepository = InterviewRepository(dao)
