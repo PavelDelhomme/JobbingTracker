@@ -21,11 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
-import com.delhomme.jobbingtrack.cvs.entities.ExperienceEntity
 import com.delhomme.jobbingtrack.cvs.models.Collaborator
 import com.delhomme.jobbingtrack.cvs.models.Experience
-import com.delhomme.jobbingtrack.cvs.viewmodels.CollaboratorViewModel
-import com.delhomme.jobbingtrack.cvs.viewmodels.ExperienceViewModel
+import com.delhomme.jobbingtrack.datas.entities.cvs.ExperienceEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.ExperienceViewModel
 import java.util.UUID
 
 

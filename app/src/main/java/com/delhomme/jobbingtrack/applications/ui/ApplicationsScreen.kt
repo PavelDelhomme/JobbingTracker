@@ -18,22 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
-import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
-import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
 
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.livedata.observeAsState
+import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationEntity
+import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationStatusViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
 
 
 @Composable
 fun ApplicationsScreen(
     navController: NavController,
     applicationVm: ApplicationViewModel = hiltViewModel(),
+    applicationStatusVm: ApplicationStatusViewModel = hiltViewModel(),
     companies: List<CompanyEntity>,
     onItemClick: (ApplicationEntity) -> Unit,
     onEdit: (ApplicationEntity) -> Unit,
@@ -48,6 +50,7 @@ fun ApplicationsScreen(
     val entById = remember(companies) { companies.associateBy { it.id } }
 
     val applications = applicationVm.allForUser(userId).observeAsState(emptyList()).value
+    val applicationStatuses = applicationStatusVm.all.observeAsState(emptyList()).value
 
     Box(modifier = Modifier.fillMaxSize()) {
         val sortedCandidatures = applications.sortedByDescending { it.applicationDate }

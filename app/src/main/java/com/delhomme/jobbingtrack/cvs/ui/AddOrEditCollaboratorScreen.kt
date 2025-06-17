@@ -21,11 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
-import com.delhomme.jobbingtrack.cvs.entities.CVEntity
-import com.delhomme.jobbingtrack.cvs.entities.CollaboratorEntity
 import com.delhomme.jobbingtrack.cvs.models.Collaborator
-import com.delhomme.jobbingtrack.cvs.viewmodels.CollaboratorViewModel
-import com.delhomme.jobbingtrack.cvs.viewmodels.CvViewModel
+import com.delhomme.jobbingtrack.datas.entities.cvs.CollaboratorEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.CollaboratorViewModel
 import java.util.UUID
 
 @SuppressLint("UnrememberedMutableState")

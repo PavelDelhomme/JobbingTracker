@@ -67,18 +67,3 @@ data class FollowUpContactCrossRef(
     val followUpId: String,
     val contactId: String
 )
-
-
-data class FollowUpWithContacts(
-    @Embedded val followUp: FollowUpEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            FollowUpContactCrossRef::class,
-            parentColumn = "followUpId",
-            entityColumn = "contactId"
-        )
-    )
-    val contacts: List<ContactEntity>
-)

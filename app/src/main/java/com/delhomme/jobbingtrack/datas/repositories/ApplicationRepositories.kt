@@ -78,3 +78,13 @@ class ApplicationPlatformRepository @Inject constructor(
 
     suspend fun delete(status: ApplicationPlatformEntity) = dao.delete(status)
 }
+
+
+class ApplicationContractTypeRepository @Inject constructor(
+    private val dao: ApplicationTypeDao
+) {
+    val all: Flow<List<ContractTypeEntity>> = dao.getAll()
+    fun byId(id: String): Flow<ContractTypeEntity?> = dao.getById(id)
+    suspend fun save(entity: ContractTypeEntity) = dao.save(entity)
+    suspend fun delete(entity: ContractTypeEntity) = dao.delete(entity)
+}

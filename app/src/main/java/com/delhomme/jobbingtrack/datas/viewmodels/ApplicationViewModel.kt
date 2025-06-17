@@ -8,6 +8,8 @@ import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationEntity
 import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationPlatformEntity
 import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationStatusEntity
 import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationTypeEntity
+import com.delhomme.jobbingtrack.datas.entities.applications.ContractTypeEntity
+import com.delhomme.jobbingtrack.datas.repositories.ApplicationContractTypeRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationPlatformRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationStatusRepository
@@ -99,4 +101,15 @@ class ApplicationPlatformViewModel @Inject constructor(
     fun byId(id: String): LiveData<ApplicationPlatformEntity?> = repo.byId(id).asLiveData()
     fun save(entity: ApplicationPlatformEntity) = viewModelScope.launch { repo.save(entity) }
     fun delete(entity: ApplicationPlatformEntity) = viewModelScope.launch { repo.delete(entity) }
+}
+
+
+@HiltViewModel
+class ContractTypeViewModel @Inject constructor(
+    private val repo: ApplicationContractTypeRepository
+) : ViewModel() {
+    val all: LiveData<List<ContractTypeEntity>> = repo.all.asLiveData()
+    fun byId(id: String): LiveData<ContractTypeEntity?> = repo.byId(id).asLiveData()
+    fun save(entity: ContractTypeEntity) = viewModelScope.launch { repo.save(entity) }
+    fun delete(entity: ContractTypeEntity) = viewModelScope.launch { repo.delete(entity) }
 }

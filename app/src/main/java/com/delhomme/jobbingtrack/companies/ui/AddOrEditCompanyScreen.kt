@@ -14,8 +14,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
-import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
-import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
 import java.util.UUID
 
 @Composable

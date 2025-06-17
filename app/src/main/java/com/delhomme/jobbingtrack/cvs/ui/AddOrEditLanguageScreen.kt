@@ -2,11 +2,10 @@ package com.delhomme.jobbingtrack.cvs.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.cvs.entities.LanguageEntity
 import com.delhomme.jobbingtrack.cvs.models.Collaborator
 import com.delhomme.jobbingtrack.cvs.models.Language
-import com.delhomme.jobbingtrack.cvs.viewmodels.CollaboratorViewModel
-import com.delhomme.jobbingtrack.cvs.viewmodels.LanguageViewModel
+import com.delhomme.jobbingtrack.datas.entities.cvs.LanguageEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.LanguageViewModel
 
 
 @Composable

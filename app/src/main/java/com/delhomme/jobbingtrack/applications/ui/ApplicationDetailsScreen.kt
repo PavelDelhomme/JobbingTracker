@@ -27,17 +27,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
-import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
-import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
-import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
-import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import kotlin.collections.find
 import androidx.compose.foundation.lazy.items
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationPlatformViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationStatusViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationTypeViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ContractTypeViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpStatusViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpTypeViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewStyleViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewTypeViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +58,14 @@ fun ApplicationDetailsScreen(
     interviewVm: InterviewViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
     companyVm: CompanyViewModel = viewModel(),
+    applicationStatusVm: ApplicationStatusViewModel = viewModel(),
+    applicationTypeVm: ApplicationTypeViewModel = viewModel(),
+    applicationPlatformVm: ApplicationPlatformViewModel = viewModel(),
+    contractTypeVm: ContractTypeViewModel = viewModel(),
+    interviewTypeVm: InterviewTypeViewModel = viewModel(),
+    interviewStyleVm: InterviewStyleViewModel = viewModel(),
+    followUpTypeVm: FollowUpTypeViewModel = viewModel(),
+    followUpStatusVm: FollowUpStatusViewModel = viewModel(),
     userId: String
 ) {
     // 1) Charger la candidature
@@ -67,20 +83,33 @@ fun ApplicationDetailsScreen(
     val interviewsWithContacts by interviewVm.getAllWithContacts(userId).observeAsState(emptyList())
     val contacts by contactVm.allForUser(userId = userId).observeAsState(emptyList())
 
-    // 3) Filtrer celles qui concernent notre candidature
-    val myFollowUps   = followups.filter { it.applicationId == applicationId }
-    val myCalls     = calls.filter { it.applicationId == applicationId }
-    val myInterviews = interviewsWithContacts.filter {
-        it.interview.applicationId == applicationId
-    }
-    // les contacts qu'on a associés via appels / relances / entretiens :
+    // 4) Charger les types/labels pour affichage
+    val allStatus by applicationStatusVm.all.observeAsState(emptyList())
+    val allTypes by applicationTypeVm.all.observeAsState(emptyList())
+    val allPlatforms by applicationPlatformVm.all.observeAsState(emptyList())
+    val allContracts by contractTypeVm.all.observeAsState(emptyList())
+    val allInterviewTypes by interviewTypeVm.all.observeAsState(emptyList())
+    val allInterviewStyles by interviewStyleVm.all.observeAsState(emptyList())
+    val allFollowUpTypes by followUpTypeVm.all.observeAsState(emptyList())
+    val allFollowUpStatus by followUpStatusVm.all.observeAsState(emptyList())
+
+
+    // 5) Filtrer entités liées à cette application
+    val myFollowUps = followups.filter { it.applicationId == applicationId }
+    val myCalls = calls.filter { it.applicationId == applicationId }
+    val myInterviews = interviewsWithContacts.filter { it.interview.applicationId == applicationId }
+
+    // 6) Contacts liés via interviews/calls (et optionnellement via POJO FollowUpWithContacts)
     val myContacts = contacts.filter { contact ->
-        myFollowUps.any { it.contactsIds.any { id -> id == contact.id } } ||
-                myCalls.any { it.contactId == contact.id } ||
+        myCalls.any { it.contactId == contact.id } ||
                 myInterviews.any { it.contacts.any { ec -> ec.id == contact.id } }
+        // Pour les relances, il faudrait charger les FollowUpWithContacts si besoin
     }
 
-
+    val statusLabel = allStatus.find { it.id == application.applicationStatusId }?.label ?: "—"
+    val typeLabel = allTypes.find { it.id == application.applicationTypeId }?.label ?: "—"
+    val platformLabel = allPlatforms.find { it.id == application.platformId }?.label ?: "—"
+    val contractLabel = allContracts.find { it.id == application.contractTypeId }?.label ?: "—"
     BackHandler {
         navController.popBackStack()
     }
@@ -149,22 +178,18 @@ fun ApplicationDetailsScreen(
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = "Statut: ${application.applicationStatus}",
+                    text = "Statut: $statusLabel",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = "Type de contrat: ${application.applicationType}",
+                    text = "Type de candidature: $typeLabel",
                     style = MaterialTheme.typography.bodyMedium
                 )
-                application.platform?.let {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = "Plateforme: $it", style = MaterialTheme.typography.bodySmall)
+                if (platformLabel != "—") {
+                    Text(text = "Plateforme: $platformLabel", style = MaterialTheme.typography.bodySmall)
                 }
-                application.contractType?.let {
-                    Text(
-                        text = "Type de contrat: $it",
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                if (contractLabel != "—") {
+                    Text(text = "Type de contrat: $contractLabel", style = MaterialTheme.typography.bodySmall)
                 }
                 application.location?.let {
                     Text(
@@ -179,45 +204,40 @@ fun ApplicationDetailsScreen(
             }
 
 
-            item {
-                SectionTitle("Relances liées")
-            }
+            item { SectionTitle("Relances liées") }
             items(myFollowUps, key = { it.id }) { followup ->
+                val typeLabel = allFollowUpTypes.find { t -> t.id == followup.typeId }?.label ?: "Type inconnu"
+                val statusLabel = allFollowUpStatus.find { s -> s.id == followup.responseId }?.label ?: "Statut inconnu"
                 DetailItemCard(
-                    title = "${followup.type ?: "Type inconnu"} (${followup.responseStatus ?: "Statut inconnu"})",
-                    subtitle = followup.date.toString(),
-                    onClick = { navController.navigate("${Routes.FOLLOWUP_DETAIL}/${followup.id}")}
+                    title = "$typeLabel ($statusLabel)",
+                    subtitle = followup.date.toFormattedDate(),
+                    onClick = { navController.navigate("${Routes.FOLLOWUP_DETAIL}/${followup.id}") }
                 )
             }
 
-            item {
-                SectionTitle("Appels liés")
-            }
+            item { SectionTitle("Appels liés") }
             items(myCalls, key = { it.id }) { call ->
                 DetailItemCard(
                     title = call.subject,
                     subtitle = call.notes,
-                    onClick = { navController.navigate("${Routes.DETAIL_CALL}/${call.id}")}
+                    onClick = { navController.navigate("${Routes.DETAIL_CALL}/${call.id}") }
                 )
             }
 
-            item {
-                SectionTitle("Entretiens liés")
-            }
+            item { SectionTitle("Entretiens liés") }
             items(myInterviews, key = { it.interview.id }) { interviewWithContacts ->
                 val interview = interviewWithContacts.interview
                 val contacts = interviewWithContacts.contacts
-
+                val interviewTypeLabel = allInterviewTypes.find { t -> t.id == interview.typeId }?.label ?: "Type inconnu"
+                val interviewStyleLabel = allInterviewStyles.find { s -> s.id == interview.styleId }?.label ?: "Style inconnu"
                 DetailItemCard(
-                    title = "${interview.type ?: "Type inconnu"} - ${interview.style ?: "Style inconnu"}",
+                    title = "$interviewTypeLabel - $interviewStyleLabel",
                     subtitle = contacts.joinToString(", ") { it.firstName + " " + it.lastName },
                     onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${interview.id}") }
                 )
             }
 
-            item {
-                SectionTitle("Contacts liés")
-            }
+            item { SectionTitle("Contacts liés") }
             items(myContacts, key = { it.id }) { contact ->
                 DetailItemCard(
                     title = "${contact.firstName} ${contact.lastName}",
@@ -225,6 +245,7 @@ fun ApplicationDetailsScreen(
                     onClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${contact.id}") }
                 )
             }
+
         }
     }
 }

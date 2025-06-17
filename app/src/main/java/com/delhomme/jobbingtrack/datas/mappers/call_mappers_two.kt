@@ -1,6 +1,5 @@
 package com.delhomme.jobbingtrack.datas.mappers
 
-import com.delhomme.jobbingtrack.commons.entities.CallWithCompanies
 import com.delhomme.jobbingtrack.datas.models.Call
 
 

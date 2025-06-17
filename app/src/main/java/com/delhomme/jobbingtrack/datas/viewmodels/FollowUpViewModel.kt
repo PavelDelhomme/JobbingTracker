@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpPlateformEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpTypeEntity
 import com.delhomme.jobbingtrack.datas.repositories.FollowUpPlatformRepository
 import com.delhomme.jobbingtrack.datas.repositories.FollowUpRepository
 import com.delhomme.jobbingtrack.datas.repositories.FollowUpStatusRepository
+import com.delhomme.jobbingtrack.datas.repositories.FollowUpTypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,6 +48,15 @@ class FollowUpStatusViewModel @Inject constructor(
     fun delete(entity: FollowUpStatusEntity) = viewModelScope.launch { repo.delete(entity) }
 }
 
+@HiltViewModel
+class FollowUpTypeViewModel @Inject constructor(
+    private val repo: FollowUpTypeRepository
+) : ViewModel() {
+    val all = repo.all.asLiveData()
+    fun byId(id: String) = repo.byId(id).asLiveData()
+    fun save(entity: FollowUpTypeEntity) = viewModelScope.launch { repo.save(entity) }
+    fun delete(entity: FollowUpTypeEntity) = viewModelScope.launch { repo.delete(entity) }
+}
 
 @HiltViewModel
 class FollowUpPlatformViewModel @Inject constructor(

@@ -27,7 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
+import com.delhomme.jobbingtrack.ui.SectionTitle
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
 

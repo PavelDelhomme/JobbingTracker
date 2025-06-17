@@ -2,20 +2,37 @@ package com.delhomme.jobbingtrack.datas.daos.followsups
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Embedded
 import androidx.room.Insert
+import androidx.room.Junction
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RawQuery
+import androidx.room.Relation
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.delhomme.jobbingtrack.commons.entities.FollowUpCallCrossRef
-import com.delhomme.jobbingtrack.commons.entities.FollowUpFull
 import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpContactCrossRef
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
-import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpWithContacts
 import kotlinx.coroutines.flow.Flow
+
+
+data class FollowUpWithContacts(
+    @Embedded val followUp: FollowUpEntity,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+        associateBy = Junction(
+            FollowUpContactCrossRef::class,
+            parentColumn = "followUpId",
+            entityColumn = "contactId"
+        )
+    )
+    val contacts: List<ContactEntity>
+)
 
 
 @Dao
@@ -101,7 +118,7 @@ interface FollowUpDao : DateRangeProvider<FollowUpEntity> {
 
     @Transaction
     @Query("SELECT * FROM followups WHERE id = :id AND userId = :userId")
-    fun getFollowUpFull(id: String, userId: String): Flow<FollowUpFull?>
+    fun getFollowUpFull(id: String, userId: String): Flow<FollowUpEntity?>
 
     @Transaction
     @Query("""

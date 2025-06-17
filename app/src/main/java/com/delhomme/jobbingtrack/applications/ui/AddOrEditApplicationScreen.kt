@@ -7,16 +7,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.applications.entities.ApplicationEntity
-import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ReusableConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
-import com.delhomme.jobbingtrack.companies.entities.CompanyEntity
-import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationEntity
+import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.utils.handleCompanyChange
 import com.delhomme.jobbingtrack.utils.toFieldMap
 import java.util.UUID
@@ -102,12 +102,7 @@ fun AddOrEditApplicationScreen(
                         base = CommonEntityFields(
                             userId = userId,
                             syncHash = "cmp-$newId",
-                        ),
-                        contactsIds = existing?.contactsIds ?: emptyList(),
-                        followUpsIds = existing?.followUpsIds ?: emptyList(),
-                        applicationsIds = listOf(applicationId),
-                        interviewsIds = existing?.interviewsIds ?: emptyList(),
-                        callsIds = existing?.callsIds ?: emptyList(),
+                        )
                     )
                 )
                 selectedCompanyId = newId
@@ -127,28 +122,16 @@ fun AddOrEditApplicationScreen(
                     val oldCompany = allCompanies.find { it.id == existing?.companyId }
                     val newCompany = allCompanies.find { it.id == selectedCompanyId }
 
-                    handleCompanyChange(
-                        oldCompany = oldCompany,
-                        newCompany = newCompany,
-                        entityId = applicationId,
-                        companyIdField = { it.applicationsIds ?: emptyList() },
-                        copyWithIds = { company, newIds ->
-                            company.copy(applicationsIds = newIds)
-                        },
-                        save = { companyVm.save(it) }
-                    )
-                    // 2) Construction de l'entité Room
-
                     val entity = ApplicationEntity(
                         id = applicationId,
                         title = form["title"]!!,
                         companyId = selectedCompanyId,
                         applicationDate = form["applicationDate"]!!.toLong(),
-                        platform = form["platform"]?.takeIf(String::isNotBlank),
-                        contractType = form["contractType"]?.takeIf(String::isNotBlank),
+                        platformId = form["platformId"]?.takeIf(String::isNotBlank),
+                        contractTypeId = form["contractTypeId"]?.takeIf(String::isNotBlank),
                         location = form["location"]?.takeIf(String::isNotBlank),
-                        applicationType = form["applicationType"]!!,
-                        applicationStatus = form["applicationStatus"]!!,
+                        applicationTypeId = form["applicationTypeId"]!!,
+                        applicationStatusId = form["applicationStatusId"]!!,
                         notes = form["notes"]?.takeIf(String::isNotBlank),
                         base = CommonEntityFields(
                             userId = userId,

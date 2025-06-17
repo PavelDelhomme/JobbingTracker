@@ -1,12 +1,7 @@
 package com.delhomme.jobbingtrack.cvs.ui
 
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
-import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
-import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
-import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
-import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.*
 
 class CVUploadScreen(
     navController: NavController,

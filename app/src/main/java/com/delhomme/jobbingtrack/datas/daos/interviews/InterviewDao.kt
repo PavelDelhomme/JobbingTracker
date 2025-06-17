@@ -107,4 +107,18 @@ interface InterviewDao : DateRangeProvider<InterviewEntity> {
 
     @RawQuery(observedEntities = [InterviewEntity::class])
     override fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<InterviewEntity>>
+
+
+    @Transaction
+    @Query("SELECT * FROM interviews WHERE id = :id AND userId = :userId")
+    fun getInterviewWithContacts(id: String, userId: String): Flow<InterviewWithContacts?>
+    @Transaction
+    @Query("""
+      SELECT * FROM interviews
+       WHERE userId    = :userId
+         AND isDeleted = 0
+         AND isArchived= 0
+      ORDER BY dateTime DESC
+    """)
+    fun getAllActiveWithContacts(userId: String): Flow<List<InterviewWithContacts>>
 }

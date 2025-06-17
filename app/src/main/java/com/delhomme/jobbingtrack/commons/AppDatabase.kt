@@ -17,10 +17,13 @@ import com.delhomme.jobbingtrack.commons.entities.CVLanguageCrossRef
 import com.delhomme.jobbingtrack.commons.entities.CVProjectCrossRef
 import com.delhomme.jobbingtrack.commons.entities.CVSkillCrossRef
 import com.delhomme.jobbingtrack.commons.entities.CallContactCrossRef
+import com.delhomme.jobbingtrack.commons.entities.CompanyCallCrossRef
+import com.delhomme.jobbingtrack.commons.entities.CompanyContactCrossRef
+import com.delhomme.jobbingtrack.commons.entities.CompanyFollowUpCrossRef
+import com.delhomme.jobbingtrack.commons.entities.CompanyInterviewCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ContactCallCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ContactFollowUpCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ContactInterviewCrossRef
-import com.delhomme.jobbingtrack.commons.entities.CrossRefDao
 import com.delhomme.jobbingtrack.commons.entities.FollowUpCallCrossRef
 import com.delhomme.jobbingtrack.datas.daos.applications.ApplicationDao
 import com.delhomme.jobbingtrack.datas.daos.applications.ApplicationPlatformDao
@@ -60,11 +63,7 @@ import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationTypeEnti
 import com.delhomme.jobbingtrack.datas.entities.applications.ContractTypeEntity
 import com.delhomme.jobbingtrack.datas.entities.calls.CallEntity
 import com.delhomme.jobbingtrack.datas.entities.calls.CallTypeEntity
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyCallCrossRef
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyContactCrossRef
 import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyFollowUpCrossRef
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyInterviewCrossRef
 import com.delhomme.jobbingtrack.datas.entities.companies.CompanyTypeEntity
 import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
 import com.delhomme.jobbingtrack.datas.entities.contacts.DepartmentTypeEntity
@@ -109,8 +108,6 @@ import com.delhomme.jobbingtrack.utils.Converters
         LanguageEntity::class,
         ProjectEntity::class,
         SkillEntity::class,
-
-
         ApplicationStatusEntity::class,
         ApplicationTypeEntity::class,
         ApplicationPlatformEntity::class,
@@ -127,18 +124,16 @@ import com.delhomme.jobbingtrack.utils.Converters
         InterviewTypeEntity::class,
         CompanyTypeEntity::class,
 
-        // CrossRefs entities
+        // CrossRefs uniquement
         ApplicationContactCrossRef::class,
         ApplicationCallCrossRef::class,
         ApplicationFollowUpCrossRef::class,
         ApplicationInterviewCrossRef::class,
-
         CompanyContactCrossRef::class,
         CompanyApplicationCrossRef::class,
         CompanyCallCrossRef::class,
         CompanyFollowUpCrossRef::class,
         CompanyInterviewCrossRef::class,
-
         ContactCallCrossRef::class,
         ContactFollowUpCrossRef::class,
         ContactInterviewCrossRef::class,
@@ -146,14 +141,13 @@ import com.delhomme.jobbingtrack.utils.Converters
         CallContactCrossRef::class,
         FollowUpContactCrossRef::class,
         FollowUpCallCrossRef::class,
-
-        // CV CrossRefs
         CVSkillCrossRef::class,
         CVProjectCrossRef::class,
         CVLanguageCrossRef::class,
         CVExperienceCrossRef::class,
         CVEducationCrossRef::class,
     ],
+
     version = 2,
     exportSchema = true
 )
@@ -197,6 +191,11 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun languageDao(): LanguageDao
     abstract fun profileDao(): ProfileDao
     abstract fun projectDao(): ProjectDao
+/* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */
+    /**
+     * @return a Dao for [SkillEntity]
+     */
+/* <<<<<<<<<<  07b67ddf-6fea-4051-8616-38efb9462649  >>>>>>>>>>> */
     abstract fun skillDao(): SkillDao
 
     abstract fun callTypeDao(): CallTypeDao
@@ -204,7 +203,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun companyTypeDao(): CompanyTypeDao
 
     abstract fun userDao(): UserDao
-
-    abstract fun crossRefDao(): CrossRefDao
-
 }

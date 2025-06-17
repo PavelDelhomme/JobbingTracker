@@ -7,6 +7,7 @@ import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpTypeDao
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpPlateformEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpTypeEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -53,5 +54,11 @@ class FollowUpStatusRepository @Inject constructor(
 
 
 
-class FollowUpTypeRepository(followUpTypeDao: FollowUpTypeDao) {
+class FollowUpTypeRepository@Inject constructor(
+    private val dao: FollowUpTypeDao
+) {
+    val all: Flow<List<FollowUpTypeEntity>> = dao.getAll()
+    fun byId(id: String): Flow<FollowUpTypeEntity?> = dao.getById(id)
+    suspend fun save(entity: FollowUpTypeEntity) = dao.save(entity)
+    suspend fun delete(entity: FollowUpTypeEntity) = dao.delete(entity)
 }

@@ -2,8 +2,8 @@ package com.delhomme.jobbingtrack.cvs.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.cvs.entities.CVEntity
-import com.delhomme.jobbingtrack.cvs.viewmodels.CvViewModel
+import com.delhomme.jobbingtrack.datas.entities.cvs.CVEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.*
 
 
 @Composable

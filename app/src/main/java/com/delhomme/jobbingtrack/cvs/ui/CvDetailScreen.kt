@@ -8,7 +8,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.cvs.viewmodels.*
+import com.delhomme.jobbingtrack.datas.viewmodels.*
 import com.delhomme.jobbingtrack.navigation.Routes
 import androidx.compose.runtime.getValue
 

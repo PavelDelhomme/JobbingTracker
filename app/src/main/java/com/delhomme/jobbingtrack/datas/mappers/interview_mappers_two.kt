@@ -42,9 +42,16 @@ fun InterviewWithContacts.toDomain(
 }
 
 fun InterviewStyleEntity.toDomain(): InterviewStyle {
-    InterviewStyle(
+    return InterviewStyle(
         id = this.id,
         label = this.label,
-        userId = this.userId,
-
-        )
+        userId = this.base.userId,
+        syncHash = this.base.syncHash,
+        isArchived = this.base.isArchived,
+        isDeleted = this.base.isDeleted,
+        createdAt = this.base.createdAt,
+        updatedAt = this.base.updatedAt,
+        deletedAt = this.base.deletedAt,
+        archivedAt = this.base.archivedAt
+    )
+}

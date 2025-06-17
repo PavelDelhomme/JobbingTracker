@@ -13,9 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
-import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
-import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
-
+import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
 
 @Composable
 fun ContactsScreen(

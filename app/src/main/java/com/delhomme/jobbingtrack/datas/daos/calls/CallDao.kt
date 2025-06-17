@@ -1,18 +1,36 @@
 package com.delhomme.jobbingtrack.datas.daos.calls
 
 import androidx.room.Dao
+import androidx.room.Embedded
 import androidx.room.Insert
+import androidx.room.Junction
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RawQuery
+import androidx.room.Relation
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.delhomme.jobbingtrack.calls.Call
+import com.delhomme.jobbingtrack.commons.entities.ApplicationContactCrossRef
 import com.delhomme.jobbingtrack.commons.entities.CallContactCrossRef
-import com.delhomme.jobbingtrack.commons.entities.CallFull
-import com.delhomme.jobbingtrack.commons.entities.CallWithContacts
 import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
 import com.delhomme.jobbingtrack.datas.entities.calls.CallEntity
+import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
 import kotlinx.coroutines.flow.Flow
+
+data class CallWithContacts(
+    @Embedded val call: CallEntity,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+        associateBy = Junction(
+            CallContactCrossRef::class,
+            parentColumn = "callId",
+            entityColumn = "contactId"
+        )
+    )
+    val contacts: List<ContactEntity>
+)
 
 
 @Dao
@@ -76,9 +94,10 @@ interface CallDao : DateRangeProvider<CallEntity> {
     @Query("SELECT * FROM calls WHERE id = :id AND userId = :userId")
     fun getCallWithContacts(id: String, userId: String): Flow<CallWithContacts?>
 
+
     @Transaction
     @Query("SELECT * FROM calls WHERE id = :id AND userId = :userId")
-    fun getCallFull(id: String, userId: String): Flow<CallFull?>
+    fun getCallFull(id: String, userId: String): Flow<Call?>
 
     @Transaction
     @Query("""

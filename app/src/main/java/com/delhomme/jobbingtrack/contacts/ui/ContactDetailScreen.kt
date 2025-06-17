@@ -18,16 +18,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.applications.ui.SectionTitle
-import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
-import com.delhomme.jobbingtrack.calls.viewmodels.CallViewModel
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
-import com.delhomme.jobbingtrack.companies.viewmodels.CompanyViewModel
-import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
-import com.delhomme.jobbingtrack.interviews.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import androidx.compose.foundation.lazy.items
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

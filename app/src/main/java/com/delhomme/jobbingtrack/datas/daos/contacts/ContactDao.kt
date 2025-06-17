@@ -1,15 +1,25 @@
 package com.delhomme.jobbingtrack.datas.daos.contacts
 
 import androidx.room.Dao
+import androidx.room.Embedded
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Relation
 import androidx.room.Transaction
 import androidx.room.Update
-import com.delhomme.jobbingtrack.commons.entities.ContactFull
-import com.delhomme.jobbingtrack.commons.entities.ContactWithCompany
+import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
 import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
 import kotlinx.coroutines.flow.Flow
+
+data class ContactWithCompany(
+    @Embedded val contact: ContactEntity,
+    @Relation(
+        parentColumn = "companyId",
+        entityColumn = "id"
+    )
+    val company: CompanyEntity
+)
 
 
 @Dao
@@ -70,10 +80,6 @@ interface ContactDao {
     @Transaction
     @Query("SELECT * FROM contacts WHERE id = :id AND userId = :userId")
     fun getContactWithCompany(id: String, userId: String): Flow<ContactWithCompany?>
-
-    @Transaction
-    @Query("SELECT * FROM contacts WHERE id = :id AND userId = :userId")
-    fun getContactFull(id: String, userId: String): Flow<ContactFull?>
 
     @Transaction
     @Query("""
