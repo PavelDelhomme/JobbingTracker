@@ -146,21 +146,15 @@ fun AddOrEditCallScreen(
                 val firstName = parts.firstOrNull() ?: ""
                 val lastName = parts.drop(1).joinToString(" ")
                 val newId = UUID.randomUUID().toString()
-
-
                 val newContact = ContactEntity(
                     id = newId,
                     firstName = firstName,
                     lastName = lastName,
                     phone = null,
                     email = null,
-                    position = null,
-                    department = null,
+                    positionId = null,      // ou une valeur si tu veux lier à un type de poste
+                    departmentId = null,    // ou une valeur si tu veux lier à un département
                     companyId = finalCompanyId ?: "",
-                    applicationIds = selectedApplicationId?.let { listOf(it) } ?: emptyList(),
-                    interviewIds = emptyList(),
-                    followUpIds = selectedFollowUpId?.let { listOf(it) } ?: emptyList(),
-                    callIds = listOf(callId),
                     notes = null,
                     base = CommonEntityFields(
                         userId = userId,
@@ -180,43 +174,21 @@ fun AddOrEditCallScreen(
                     "subject"  to it.subject,
                     "notes" to (it.notes         ?: "")
                 )
-            } ?: emptyMap(),
-            onSubmit = { form ->
+            } ?: emptyMap(),onSubmit = { form ->
                 val id = existing?.id ?: UUID.randomUUID().toString()
-                val companyChanged = existing?.companyId != finalCompanyId
-
-                val submitAction = {
-                    val oldCompany = companies.find { it.id == existing?.companyId }
-                    val newCompany = companies.find { it.id == finalCompanyId }
-                    handleCompanyChange(
-                        oldCompany = oldCompany,
-                        newCompany = newCompany,
-                        entityId = id,
-                        companyIdField = { it.callsIds ?: emptyList() },
-                        copyWithIds = { company, newIds -> company.copy(callsIds = newIds) },
-                        save = { companyVm.save(it) }
-                    )
-                    val entity = CallEntity(
-                        id = id,
-                        subject = form["subject"]!!,
-                        companyId = finalCompanyId ?: "",
-                        contactId = selectedContactId?.ifBlank { null },
-                        applicationId = selectedApplicationId,
-                        followUpId = selectedFollowUpId?.ifBlank { null },
-                        dateTime = form["dateTime"]!!.toLong(),
-                        notes = form["notes"]?.takeIf(String::isNotBlank),
-                        base = existing?.base ?: CommonEntityFields(userId = userId, syncHash = "call-$id")
-                    )
-                    vm.save(entity)
-                    onCancel()
-                }
-
-                if (companyChanged) {
-                    pendingSubmit = submitAction
-                    showUnlinkDialog = true
-                } else {
-                    submitAction()
-                }
+                val entity = CallEntity(
+                    id = id,
+                    subject = form["subject"]!!,
+                    companyId = finalCompanyId ?: "",
+                    contactId = selectedContactId?.ifBlank { null },
+                    applicationId = selectedApplicationId,
+                    followUpId = selectedFollowUpId?.ifBlank { null },
+                    dateTime = form["dateTime"]!!.toLong(),
+                    notes = form["notes"]?.takeIf(String::isNotBlank),
+                    base = existing?.base ?: CommonEntityFields(userId = userId, syncHash = "call-$id")
+                )
+                vm.save(entity)
+                onCancel()
             },
             onCancel = onCancel
         )

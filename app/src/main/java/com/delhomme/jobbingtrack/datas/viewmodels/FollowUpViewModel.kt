@@ -4,27 +4,39 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpDao
+import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpWithContacts
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpPlateformEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpStatusEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpTypeEntity
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewWithContacts
 import com.delhomme.jobbingtrack.datas.repositories.FollowUpPlatformRepository
 import com.delhomme.jobbingtrack.datas.repositories.FollowUpRepository
 import com.delhomme.jobbingtrack.datas.repositories.FollowUpStatusRepository
 import com.delhomme.jobbingtrack.datas.repositories.FollowUpTypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class FollowUpViewModel @Inject constructor(
-    private val repo: FollowUpRepository
+    private val repo: FollowUpRepository,
+    private val typeRepository: FollowUpTypeRepository,
+    private val statusRepository: FollowUpStatusRepository,
+    private val platformRepository: FollowUpPlatformRepository,
+    private val dao: FollowUpDao
 ) : ViewModel() {
     fun allForUser(userId: String): LiveData<List<FollowUpEntity>> = repo.allForUser(userId).asLiveData()
     fun relanceById(id: String, userId: String): LiveData<FollowUpEntity?> = repo.byId(id, userId).asLiveData()
     fun activeForUser(userId: String): LiveData<List<FollowUpEntity>> = repo.activeForUser(userId).asLiveData()
     fun archivedForUser(userId: String): LiveData<List<FollowUpEntity>> = repo.archivedForUser(userId).asLiveData()
+
+    fun getAllActiveWithContacts(userId: String): LiveData<List<FollowUpWithContacts>> =
+        repo.getAllActiveWithContacts(userId).asLiveData()
+
     fun save(entity: FollowUpEntity) = viewModelScope.launch { repo.save(entity) }
     fun update(entity: FollowUpEntity) = viewModelScope.launch { repo.update(entity) }
     fun archive(ids: List<String>, userId: String) = viewModelScope.launch { repo.archive(ids, userId) }

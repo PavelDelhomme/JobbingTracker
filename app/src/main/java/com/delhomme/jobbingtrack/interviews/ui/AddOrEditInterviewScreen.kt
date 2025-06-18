@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.ui.interviews
+package com.delhomme.jobbingtrack.interviews.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement

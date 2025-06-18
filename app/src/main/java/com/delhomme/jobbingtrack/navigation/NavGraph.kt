@@ -8,6 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.delhomme.jobbingtrack.JobbingTrackApp
+import com.delhomme.jobbingtrack.companies.ui.AddOrEditCompanyScreen
+import com.delhomme.jobbingtrack.companies.ui.CompanyDetailScreen
+import com.delhomme.jobbingtrack.contacts.ui.AddOrEditContactScreen
+import com.delhomme.jobbingtrack.contacts.ui.ContactDetailScreen
 import com.delhomme.jobbingtrack.ui.applications.*
 import com.delhomme.jobbingtrack.datas.repositories.CvRepository
 import com.delhomme.jobbingtrack.datas.viewmodels.*
@@ -104,11 +108,11 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         ) { bs ->
             AddOrEditContactScreen(
-                contactId            = null,
-                userId               = userId.toString(),
-                linkedApplicationId  = bs.arguments?.getString("linkedApplicationId"),
-                linkedCompanyId      = bs.arguments?.getString("linkedCompanyId"),
-                onCancel             = { navController.popBackStack() }
+                contactId = null,
+                userId = userId.toString(),
+                linkedApplicationId = bs.arguments?.getString("linkedApplicationId"),
+                linkedCompanyId = bs.arguments?.getString("linkedCompanyId"),
+                onCancel = { navController.popBackStack() }
             )
         }
         composable(
@@ -117,11 +121,11 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         ) { backStack ->
             val id = backStack.arguments!!.getString("contactId")!!
             AddOrEditContactScreen(
-                contactId            = id,
-                userId               = userId.toString(),
-                linkedApplicationId  = null,
-                linkedCompanyId   = null,
-                onCancel             = { navController.popBackStack() }
+                contactId = id,
+                userId = userId.toString(),
+                linkedApplicationId = null,
+                linkedCompanyId = null,
+                onCancel = { navController.popBackStack() }
             )
         }
         composable(
@@ -131,7 +135,11 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             })
         ) { bs ->
             val id = bs.arguments!!.getString("contactId")!!
-            ContactDetailScreen(contactId = id, userId = userId.toString(), navController = navController)
+            ContactDetailScreen(
+                contactId = id,
+                userId = userId.toString(),
+                navController = navController
+            )
         }
 
         // — ENTREPRISES —
@@ -162,7 +170,11 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             })
         ) { backStack ->
             val id = backStack.arguments!!.getString("companyId")!!
-            CompanyDetailScreen(companyId = id, userId = userId.toString(), navController = navController)
+            CompanyDetailScreen(
+                companyId = id,
+                userId = userId.toString(),
+                navController = navController
+            )
         }
 
 

@@ -1,17 +1,26 @@
 package com.delhomme.jobbingtrack.contacts.ui
 
-
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.*
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -19,15 +28,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.applications.ui.SectionTitle
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
-import com.delhomme.jobbingtrack.navigation.Routes
-import com.delhomme.jobbingtrack.utils.toFormattedDate
-import androidx.compose.foundation.lazy.items
+import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpWithContacts
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewWithContacts
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationStatusViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.DepartmentTypeViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpStatusViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpTypeViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewStyleViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewTypeViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.PositionTypeViewModel
+import com.delhomme.jobbingtrack.navigation.Routes
+import com.delhomme.jobbingtrack.utils.toFormattedDate
+import androidx.compose.foundation.lazy.items
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,42 +56,66 @@ fun ContactDetailScreen(
     navController: NavController,
     userId: String,
     contactVm: ContactViewModel = viewModel(),
-    entrepriseVm: CompanyViewModel = viewModel(),
-    candidatureVm: ApplicationViewModel = viewModel(),
-    appelVm: CallViewModel = viewModel(),
-    entretienVm: InterviewViewModel = viewModel(),
-    relanceVm: FollowUpViewModel = viewModel()
-) {
-    // 1) Charger le contact
-    val allContacts by contactVm.allForUser(userId = userId).observeAsState(emptyList())
-    val contact    = allContacts.find { it.id == contactId } ?: return
+    companyVm: CompanyViewModel = viewModel(),
+    applicationVm: ApplicationViewModel = viewModel(),
+    callVm: CallViewModel = viewModel(),
+    interviewVm: InterviewViewModel = viewModel(),
+    followUpVm: FollowUpViewModel = viewModel(),
+    positionTypeVm: PositionTypeViewModel = viewModel(),
+    departmentTypeVm: DepartmentTypeViewModel = viewModel(),
+    applicationStatusVm: ApplicationStatusViewModel = viewModel(),
+    interviewTypeVm: InterviewTypeViewModel = viewModel(),
+    interviewStyleVm: InterviewStyleViewModel = viewModel(),
+    followUpTypeVm: FollowUpTypeViewModel = viewModel(),
+    followUpStatusVm: FollowUpStatusViewModel = viewModel()
+) {// 1) Charger le contact
+    val contacts by contactVm.allForUser(userId).observeAsState(emptyList())
+    val contact = contacts.find { it.id == contactId } ?: return
 
-    // 2) Charger l'entreprise associée (pour le nom)
-    val allEnts     by entrepriseVm.allForUser(userId = userId).observeAsState(emptyList())
-    val entreprise = allEnts.find { it.id == contact.companyId } ?: return
+    // 2) Charger les données de base
+    val companies by companyVm.allForUser(userId).observeAsState(emptyList())
+    val applications by applicationVm.allForUser(userId).observeAsState(emptyList())
+    val calls by callVm.allForUser(userId).observeAsState(emptyList())
 
-    // 3) Charger tous les oobjets et filtrere ceux qui concernent ce contact
-    val allCands by candidatureVm.allForUser(userId = userId).observeAsState(emptyList())
-    val allRelances by relanceVm.allForUser(userId = userId).observeAsState(emptyList())
-    val allAppels by appelVm.allForUser(userId = userId).observeAsState(emptyList())
-    val allEntretiens by entretienVm.allForUser(userId = userId).observeAsState(emptyList())
+    // 3) Charger les données avec relations Room
+    //val interviewsWithContacts by interviewVm.getAllActiveWithContacts(userId).observeAsState(emptyList())
+    //val followUpsWithContacts by followUpVm.getAllActiveWithContacts(userId).observeAsState(emptyList())
 
-    val linkedCands = allCands.filter { c ->
-        allAppels.any { it.contactId == contactId && it.applicationId == c.id } ||
-                allRelances.any { it.contactsIds.contains(contactId) && it.applicationId == c.id } ||
-                allEntretiens.any   { ewc ->
-                    ewc.contacts.any { it.id == contactId } &&
-                            ewc.interview.applicationId == c.id
-                }
+    val interviewsWithContacts: List<InterviewWithContacts> by interviewVm.getAllActiveWithContacts(userId).observeAsState(emptyList())
+    val followUpsWithContacts: List<FollowUpWithContacts> by followUpVm.getAllActiveWithContacts(userId).observeAsState(emptyList())
+    // 4) Charger les listes pour résolution des IDs
+    val positions by positionTypeVm.all.observeAsState(emptyList())
+    val departments by departmentTypeVm.all.observeAsState(emptyList())
+    val appStatuses by applicationStatusVm.all.observeAsState(emptyList())
+    val interviewTypes by interviewTypeVm.all.observeAsState(emptyList())
+    val interviewStyles by interviewStyleVm.all.observeAsState(emptyList())
+    val followUpTypes by followUpTypeVm.all.observeAsState(emptyList())
+    val followUpStatuses by followUpStatusVm.all.observeAsState(emptyList())
+
+    // 5) Résolution des labels pour le contact
+    val positionLabel = positions.find { it.id == contact.positionId }?.label ?: "Non spécifié"
+    val departmentLabel = departments.find { it.id == contact.departmentId }?.name ?: "Non spécifié"
+    val company = companies.find { it.id == contact.companyId }
+
+    // 6) Filtrer les entités liées au contact
+    val linkedCalls = calls.filter { it.contactId == contactId }
+
+    val linkedInterviews = interviewsWithContacts.filter { interviewWithContacts ->
+        interviewWithContacts.contacts.any { it.id == contactId }
     }
-    val linkedAppels = allAppels.filter { it.contactId == contactId }
-    val linkedEntretiens = allEntretiens.filter { ewc -> ewc.contacts.any { it.id == contactId } }
-    val linkedRelances = allRelances.filter { it.contactsIds.contains(contactId) }
 
-
-    BackHandler {
-        navController.popBackStack()
+    val linkedFollowUps = followUpsWithContacts.filter { followUpWithContacts ->
+        followUpWithContacts.contacts.any { it.id == contactId }
     }
+
+    // Candidatures liées via les appels, entretiens ou relances
+    val linkedApplications = applications.filter { app ->
+        linkedCalls.any { it.applicationId == app.id } ||
+                linkedInterviews.any { it.interview.applicationId == app.id } ||
+                linkedFollowUps.any { it.followUp.applicationId == app.id }
+    }
+
+    BackHandler { navController.popBackStack() }
 
     Scaffold(
         topBar = {
@@ -115,59 +159,68 @@ fun ContactDetailScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+
             item {
-                Text(text = "Informations sur le contact", style = MaterialTheme.typography.headlineSmall)
+                Text("Informations sur le contact", style = MaterialTheme.typography.headlineSmall)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Entreprise : ${entreprise.name}", style = MaterialTheme.typography.titleMedium)
+                Text("Entreprise : ${company?.name ?: "—"}", style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(8.dp))
-                Text(text = "Téléphone : ${contact.phone ?: "Non spécifié"}")
-                Text(text = "Email : ${contact.email ?: "Non spécifié"}")
-                Text(text = "Poste : ${contact.position ?: "Non spécifié"}")
-                Text(text = "Service : ${contact.department ?: "Non spécifié"}")
+                Text("Téléphone : ${contact.phone ?: "Non spécifié"}")
+                Text("Email : ${contact.email ?: "Non spécifié"}")
+                Text("Poste : $positionLabel")
+                Text("Service : $departmentLabel")
             }
 
 
-            if (linkedCands.isNotEmpty()) {
+            if (linkedApplications.isNotEmpty()) {
                 item { SectionTitle("Candidatures liées") }
-                items(linkedCands) { c ->
+                items(linkedApplications) { app ->
+                    val status = appStatuses.find { it.id == app.applicationStatusId }?.label ?: "—"
                     DetailItemCard(
-                        title    = c.title,
-                        subtitle = c.applicationStatus.toString(),
-                        onClick  = { navController.navigate("${Routes.APPLICATION_DETAIL}/${c.id}") }
+                        title = app.title,
+                        subtitle = status,
+                        onClick = { navController.navigate("${Routes.APPLICATION_DETAIL}/${app.id}") }
                     )
                 }
             }
 
-
-            if (linkedAppels.isNotEmpty()) {
+            if (linkedCalls.isNotEmpty()) {
                 item { SectionTitle("Appels liés") }
-                items(linkedAppels) { a ->
+                items(linkedCalls) { call ->
                     DetailItemCard(
-                        title    = a.subject,
-                        subtitle = a.dateTime.toFormattedDate(),
-                        onClick  = { navController.navigate("${Routes.DETAIL_CALL}/${a.id}") }
+                        title = call.subject,
+                        subtitle = call.dateTime.toFormattedDate(),
+                        onClick = { navController.navigate("${Routes.DETAIL_CALL}/${call.id}") }
                     )
                 }
             }
 
-            if (linkedEntretiens.isNotEmpty()) {
+            // Entretiens liés
+            if (linkedInterviews.isNotEmpty()) {
                 item { SectionTitle("Entretiens liés") }
-                items(linkedEntretiens) { e ->
+                items(linkedInterviews) { interviewWithContacts ->
+                    val interview = interviewWithContacts.interview
+                    val typeLabel = interviewTypes.find { it.id == interview.typeId }?.label ?: "Type inconnu"
+                    val styleLabel = interviewStyles.find { it.id == interview.styleId }?.label ?: "Style inconnu"
                     DetailItemCard(
-                        title = "${e.interview.type } — ${e.interview.style} pour ${e.interview.companyId}",
-                        subtitle = e.interview.dateTime.toFormattedDate(),
-                        onClick  = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.interview.id}") }
+                        title = "$typeLabel — $styleLabel",
+                        subtitle = interview.dateTime.toFormattedDate(),
+                        onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${interview.id}") }
                     )
                 }
             }
 
-            if (linkedRelances.isNotEmpty()) {
+            // Relances liées
+            if (linkedFollowUps.isNotEmpty()) {
                 item { SectionTitle("Relances liées") }
-                items(linkedRelances) { r ->
+                items(linkedFollowUps) { followUpWithContacts ->
+                    val followUp = followUpWithContacts.followUp
+                    val typeLabel = followUpTypes.find { it.id == followUp.typeId }?.label ?: "Type inconnu"
+                    val statusLabel = followUpStatuses.find { it.id == followUp.statusId }?.label ?: "Statut inconnu"
                     DetailItemCard(
-                        title    = r.type ?: "—",
-                        subtitle = r.date.toFormattedDate(),
-                        onClick  = { navController.navigate("${Routes.FOLLOWUP_DETAIL}/${r.id}") }
+                        title = typeLabel,
+                        subtitle = statusLabel,
+                        onClick = { navController.navigate("${Routes.FOLLOWUP_DETAIL}/${followUp.id}") }
                     )
                 }
             }

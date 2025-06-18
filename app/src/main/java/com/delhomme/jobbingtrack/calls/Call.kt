@@ -1,6 +1,10 @@
 package com.delhomme.jobbingtrack.calls
 
+import androidx.room.Embedded
+import androidx.room.Relation
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.datas.entities.calls.CallEntity
+import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
 
 
 data class Call(
@@ -30,3 +34,12 @@ data class CallType(
     override val id: String,
     val name: String
 ) : HasIdProvider
+
+data class CallWithCompany(
+    @Embedded val call: CallEntity,
+    @Relation(
+        parentColumn = "companyId",
+        entityColumn = "id"
+    )
+    val company: CompanyEntity?
+)

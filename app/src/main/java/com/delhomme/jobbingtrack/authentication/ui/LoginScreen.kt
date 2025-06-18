@@ -1,4 +1,5 @@
-package com.delhomme.jobbingtrack.ui.authentication
+package com.delhomme.jobbingtrack.authentication.ui
+
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

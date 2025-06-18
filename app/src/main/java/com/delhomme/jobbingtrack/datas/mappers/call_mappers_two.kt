@@ -3,7 +3,7 @@ package com.delhomme.jobbingtrack.datas.mappers
 import com.delhomme.jobbingtrack.datas.models.Call
 
 
-fun CallWithCompanies.toDomain(): Call {
+fun CallWithCompany.toDomain(): Call {
     return Call(
         id = this.call.id,
         subject = this.call.subject,

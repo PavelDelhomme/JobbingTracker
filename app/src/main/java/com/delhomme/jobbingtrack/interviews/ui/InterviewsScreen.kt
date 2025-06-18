@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.ui.interviews
+package com.delhomme.jobbingtrack.interviews.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

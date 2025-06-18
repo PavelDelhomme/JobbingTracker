@@ -32,8 +32,8 @@ class InterviewViewModel @Inject constructor(
     private val typeRepository: InterviewTypeRepository,
     private val userId: String
 ) : ViewModel() {
-    val stylesFlow = styleRepository.all
-    val typesFlow = typeRepository.all
+    val stylesFlow: Flow<List<InterviewStyleEntity>> = styleRepository.all
+    val typesFlow: Flow<List<InterviewTypeEntity>> = typeRepository.all
 
     val activeInterviews: LiveData<List<Interview>> =
         repo.activeForUser(userId, stylesFlow, typesFlow).asLiveData()
@@ -68,6 +68,8 @@ class InterviewViewModel @Inject constructor(
 
     fun getAllWithContacts(userId: String): LiveData<List<InterviewWithContacts>> =
         repo.withContactsForUser(userId).asLiveData()
+    fun getAllActiveWithContacts(userId: String): LiveData<List<InterviewWithContacts>> =
+        repo.getAllActiveWithContacts(userId).asLiveData()
 
     fun update(interview: InterviewEntity) = viewModelScope.launch { repo.update(interview) }
     fun archive(ids: List<String>, userId: String) = viewModelScope.launch { repo.archive(ids, userId) }

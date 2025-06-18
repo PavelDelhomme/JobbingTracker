@@ -1,6 +1,5 @@
 package com.delhomme.jobbingtrack.companies.ui
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,13 +9,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
 import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
 import java.util.UUID
+
 
 @Composable
 fun AddOrEditCompanyScreen(
@@ -69,12 +69,10 @@ fun AddOrEditCompanyScreen(
                     hrEmail  = form["hrEmail"],
                     address  = form["address"],
                     notes    = form["notes"],
-                    base     = existing?.base!!,
-                    applicationsIds = existing.applicationsIds,
-                    callsIds = existing.callsIds,
-                    contactsIds = existing.contactsIds,
-                    followUpsIds = existing.followUpsIds,
-                    interviewsIds = existing.interviewsIds,
+                    base     = existing?.base ?: CommonEntityFields(
+                        userId = userId ?: "",
+                        syncHash = hash
+                    )
                 )
                 viewModel.save(ent)
                 onCancel()

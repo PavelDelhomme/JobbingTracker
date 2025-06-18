@@ -18,10 +18,12 @@ import androidx.navigation.NavController
 import androidx.compose.runtime.getValue
 import com.delhomme.jobbingtrack.applications.ui.SectionTitle
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationStatusViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.PositionTypeViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
@@ -34,6 +36,8 @@ fun CallDetailsScreen(
     applicationVm: ApplicationViewModel = viewModel(),
     contactVm: ContactViewModel = viewModel(),
     companyVm: CompanyViewModel = viewModel(),
+    applicationStatusVm: ApplicationStatusViewModel = viewModel(),
+    positionTypeVm: PositionTypeViewModel = viewModel(),
     userId: String
 ) {
 
@@ -47,8 +51,13 @@ fun CallDetailsScreen(
     val companies by companyVm.allForUser(userId = userId).observeAsState(emptyList())
 
     val application      = applications.find       { it.id == call.applicationId }
+    val positionTypes = positionTypeVm.all.observeAsState(emptyList()).value
+    val applicationStatuses = applicationStatusVm.all.observeAsState(emptyList()).value
     val contact    = contacts.find    { it.id == call.contactId }
     val company = companies.find { it.id == call.companyId }
+
+    val statusLabel = applicationStatuses.find { it.id == application?.applicationStatusId }?.label ?: "—"
+    val positionLabel = positionTypes.find { it.id == contact?.positionId }?.label ?: "—"
 
     BackHandler {
         navController.popBackStack()
@@ -98,21 +107,21 @@ fun CallDetailsScreen(
             Text("Date  : ${call.dateTime.toFormattedDate()}")
             Text("Entreprise : ${company?.name ?: "—"}")
             call.notes?.let { Text("Notes  : $it") }
-
+            
             application?.let {
                 SectionTitle("Candidature liée")
                 DetailItemCard(
-                    title    = it.title,
-                    subtitle = it.applicationStatus.toString(),
-                    onClick  = { navController.navigate("${Routes.APPLICATION_DETAIL}/${it.id}") }
+                    title = it.title,
+                    subtitle = statusLabel,
+                    onClick = { navController.navigate("${Routes.APPLICATION_DETAIL}/${it.id}") }
                 )
             }
             contact?.let {
                 SectionTitle("Contact lié")
                 DetailItemCard(
-                    title    = "${it.firstName} ${it.lastName}",
-                    subtitle = it.position ?: "—",
-                    onClick  = { navController.navigate("${Routes.CONTACT_DETAIL}/${it.id}") }
+                    title = "${it.firstName} ${it.lastName}",
+                    subtitle = positionLabel,
+                    onClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${it.id}") }
                 )
             }
         }

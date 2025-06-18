@@ -26,7 +26,6 @@ import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
 import java.util.UUID
 import kotlin.collections.filter
 
-
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ContactSelectorField(
@@ -35,11 +34,7 @@ fun ContactSelectorField(
     contactViewModel: ContactViewModel,
     selectedContacts: List<ContactEntity>,
     onContactsChanged: (List<ContactEntity>) -> Unit,
-    companyId: String,
-    followUpId: String? = null, // pour lié relance si besoin
-    interviewId: String? = null, // pour lié entretien si besoin
-    callId: String? = null, // pour lié appel si besoin
-    applicationId: String? = null // pour lié candidature si besoin
+    companyId: String
 ) {
     var searchText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
@@ -48,7 +43,6 @@ fun ContactSelectorField(
     val filtered = allContacts
         .filter { "${it.firstName} ${it.lastName}".contains(searchText, true) }
         .filter { it !in selectedContacts }
-
 
     Column {
         OutlinedTextField(
@@ -66,7 +60,7 @@ fun ContactSelectorField(
             expanded = expanded,
             onDismissRequest = {
                 expanded   = false
-                searchText = ""    // ou seulement `expanded = false`
+                searchText = ""
             }
         ) {
             filtered.take(5).forEach { contact ->
@@ -95,13 +89,9 @@ fun ContactSelectorField(
                             lastName = lastName,
                             phone = null,
                             email = null,
-                            position = null,
-                            department = null,
+                            positionId = null,
+                            departmentId = null,
                             companyId = companyId,
-                            applicationIds = applicationId?.let { listOf(it) } ?: emptyList(),
-                            interviewIds = interviewId?.let { listOf(it) } ?: emptyList(),
-                            followUpIds = followUpId?.let { listOf(it) } ?: emptyList(),
-                            callIds = callId?.let { listOf(it) } ?: emptyList(),
                             notes = null,
                             base = CommonEntityFields(
                                 userId = userId,
@@ -109,7 +99,6 @@ fun ContactSelectorField(
                             )
                         )
                         contactViewModel.save(newContact)
-                        // Ajoute le contact créé à la selection
                         onContactsChanged(selectedContacts + newContact)
                         searchText = ""
                         expanded   = false

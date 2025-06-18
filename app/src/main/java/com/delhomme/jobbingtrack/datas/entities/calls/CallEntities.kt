@@ -2,11 +2,11 @@ package com.delhomme.jobbingtrack.datas.entities.calls
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import androidx.room.TypeConverters
-import com.delhomme.jobbingtrack.commons.entities.CallWithContactsCrossRef
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
@@ -37,16 +37,28 @@ data class CallTypeEntity(
 ) : HasIdProvider
 
 
-data class CallVithContact(
+
+data class CallWithContacts(
     @Embedded val call: CallEntity,
     @Relation(
-        parentColumn = "contactId",
-        entityColumn = "id",
+        parentColumn = "id", // clé primaire de CallEntity
+        entityColumn = "id", // clé primaire de ContactEntity
         associateBy = Junction(
             CallWithContactsCrossRef::class,
-            parentColumn = "callId",
-            entityColumn = "contactId"
+            parentColumn = "callId",    // champ dans la CrossRef
+            entityColumn = "contactId"  // champ dans la CrossRef
         )
     )
     val contacts: List<ContactEntity>
+)
+
+
+
+@Entity(
+    primaryKeys = ["callId", "contactId"],
+    indices = [Index("contactId")]
+)
+data class CallWithContactsCrossRef(
+    val callId: String,
+    val contactId: String
 )

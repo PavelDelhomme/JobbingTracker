@@ -4,6 +4,7 @@ import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpDao
 import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpPlatformDao
 import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpStatusDao
 import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpTypeDao
+import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpWithContacts
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpPlateformEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpStatusEntity
@@ -32,6 +33,8 @@ class FollowUpRepository @Inject constructor(
     fun byId(id: String, userId: String): Flow<FollowUpEntity?> = dao.getByIdForUser(id, userId)
     fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<FollowUpEntity>> = dao.getByDateRangeForUser(userId, from, to)
 
+    fun getAllActiveWithContacts(userId: String): Flow<List<FollowUpWithContacts>> =
+        dao.getAllActiveWithContacts(userId)
     suspend fun save(entity: FollowUpEntity) = dao.upsert(entity)
     suspend fun update(entity: FollowUpEntity) = dao.update(entity)
     suspend fun archive(ids: List<String>, userId: String) = dao.archive(ids, userId)

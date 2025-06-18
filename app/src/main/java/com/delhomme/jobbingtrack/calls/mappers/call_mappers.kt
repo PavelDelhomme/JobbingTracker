@@ -1,9 +1,8 @@
 package com.delhomme.jobbingtrack.calls.mappers
+import com.delhomme.jobbingtrack.calls.CallWithCompany
+import com.delhomme.jobbingtrack.datas.models.Call
 
-import com.delhomme.jobbingtrack.calls.Call
-
-
-fun CallWithCompanies.toDomain(): Call {
+fun CallWithCompany.toDomain(): Call {
     return Call(
         id = this.call.id,
         subject = this.call.subject,
@@ -19,7 +18,7 @@ fun CallWithCompanies.toDomain(): Call {
         isDeleted = this.call.base.isDeleted,
         createdAt = this.call.base.createdAt,
         updatedAt = this.call.base.updatedAt,
-        deletedAt = this.call.base.deletedAt!!,
-        archivedAt = this.call.base.archivedAt!!
+        deletedAt = this.call.base.deletedAt,
+        archivedAt = this.call.base.archivedAt
     )
 }

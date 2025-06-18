@@ -25,23 +25,23 @@ class InterviewRepository @Inject constructor(
     fun archivedForUser(userId: String): Flow<List<InterviewEntity>> = dao.getArchivedForUser(userId)
     fun deletedForUser(userId: String): Flow<List<InterviewEntity>> = dao.getDeletedForUser(userId)
     fun byIdWithContacts(id: String, userId: String): Flow<InterviewWithContacts?> = dao.getByIdActiveWithContacts(id, userId)
-    fun getActiveWithContacts(userId: String): Flow<List<InterviewWithContacts>> = dao.getAllWithContactsForUser(userId)
+    fun getAllActiveWithContacts(userId: String): Flow<List<InterviewWithContacts>> = dao.getAllWithContactsForUser(userId)
     fun activeForUser(
         userId: String,
-        stylesFlow: Flow<List<InterviewStyleEntity>>,
-        typesFlow: Flow<List<InterviewTypeEntity>>
+        stylesFlow: Flow<List<InterviewStyleEntity>>, // ✅ Entity
+        typesFlow: Flow<List<InterviewTypeEntity>> // ✅ Entity
     ): Flow<List<Interview>> =
         combine(
             withContactsForUser(userId),
             stylesFlow,
             typesFlow
         ) { interviewsWithContacts, styleEntities, typeEntities ->
-            val styles = styleEntities.map { it.toDomain() }
-            val types = typeEntities.map { it.toDomain() }
+            val styles = styleEntities.map { it.toDomain() } // Conversion en modèle
+            val types = typeEntities.map { it.toDomain() } // Conversion en modèle
             interviewsWithContacts.map { iwc ->
                 val style = styles.find { it.id == iwc.interview.styleId }
                 val type = types.find { it.id == iwc.interview.typeId }
-                iwc.toDomain(style, type)
+                iwc.toDomain(style, type) // ✅ Assurez-vous que cette méthode existe
             }
         }
 

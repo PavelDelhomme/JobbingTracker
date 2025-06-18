@@ -11,15 +11,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.delhomme.jobbingtrack.applications.ui.AddOrEditApplicationScreen
+import com.delhomme.jobbingtrack.calls.ui.AddOrEditCallScreen
 import com.delhomme.jobbingtrack.commons.entities.BottomSheetContentType
 import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
-import com.delhomme.jobbingtrack.ui.applications.AddOrEditApplicationScreen
-import com.delhomme.jobbingtrack.ui.calls.AddOrEditCallScreen
-import com.delhomme.jobbingtrack.ui.companies.AddOrEditCompanyScreen
-import com.delhomme.jobbingtrack.ui.contacts.AddOrEditContactScreen
-import com.delhomme.jobbingtrack.ui.followsups.AddOrEditFollowUpScreen
-import com.delhomme.jobbingtrack.ui.interviews.AddOrEditInterviewScreen
+import com.delhomme.jobbingtrack.companies.ui.AddOrEditCompanyScreen
+import com.delhomme.jobbingtrack.contacts.ui.AddOrEditContactScreen
+import com.delhomme.jobbingtrack.followsup.ui.AddOrEditFollowUpScreen
+import com.delhomme.jobbingtrack.interviews.ui.AddOrEditInterviewScreen
 import kotlin.collections.find
 
 

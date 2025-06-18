@@ -59,7 +59,9 @@ fun ApplicationsScreen(
         ListScreen(
             dateProvider = { it.applicationDate.toFormattedDate() },
             titleProvider = { it.title },
-            centerInfoProvider = { it.applicationStatus },
+            centerInfoProvider = { app ->
+                applicationStatuses.find { status -> status.id == app.applicationStatusId }?.label ?: "—"
+            },
             bottomLeftInfoProvider = { entById[it.companyId]?.name ?: "Entreprise inconnue" },
             items = applications.filter { !it.base.isArchived },
             onItemClick = onItemClick,

@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.ui.authentication
+package com.delhomme.jobbingtrack.authentication.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
