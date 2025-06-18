@@ -12,6 +12,9 @@ import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewTypeEntity
 import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewWithContacts
 import com.delhomme.jobbingtrack.datas.mappers.toDomain
 import com.delhomme.jobbingtrack.datas.models.Interview
+import com.delhomme.jobbingtrack.utils.mappers.mapToInterview
+import com.delhomme.jobbingtrack.utils.mappers.mapToInterviewStyle
+import com.delhomme.jobbingtrack.utils.mappers.mapToInterviewType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -28,20 +31,21 @@ class InterviewRepository @Inject constructor(
     fun getAllActiveWithContacts(userId: String): Flow<List<InterviewWithContacts>> = dao.getAllWithContactsForUser(userId)
     fun activeForUser(
         userId: String,
-        stylesFlow: Flow<List<InterviewStyleEntity>>, // ✅ Entity
-        typesFlow: Flow<List<InterviewTypeEntity>> // ✅ Entity
+        stylesFlow: Flow<List<InterviewStyleEntity>>,
+        typesFlow: Flow<List<InterviewTypeEntity>>
     ): Flow<List<Interview>> =
         combine(
             withContactsForUser(userId),
             stylesFlow,
             typesFlow
         ) { interviewsWithContacts, styleEntities, typeEntities ->
-            val styles = styleEntities.map { it.toDomain() } // Conversion en modèle
-            val types = typeEntities.map { it.toDomain() } // Conversion en modèle
+            val styles = styleEntities.map { mapToInterviewStyle(it) }
+            val types = typeEntities.map { mapToInterviewType(it) }
+
             interviewsWithContacts.map { iwc ->
                 val style = styles.find { it.id == iwc.interview.styleId }
                 val type = types.find { it.id == iwc.interview.typeId }
-                iwc.toDomain(style, type) // ✅ Assurez-vous que cette méthode existe
+                mapToInterview(iwc, style, type)
             }
         }
 

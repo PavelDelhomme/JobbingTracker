@@ -9,11 +9,11 @@ import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationPlatform
 import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationStatusEntity
 import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationTypeEntity
 import com.delhomme.jobbingtrack.datas.entities.applications.ContractTypeEntity
-import com.delhomme.jobbingtrack.datas.repositories.ApplicationContractTypeRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationPlatformRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationStatusRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationTypeRepository
+import com.delhomme.jobbingtrack.datas.repositories.ContractTypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -106,7 +106,7 @@ class ApplicationPlatformViewModel @Inject constructor(
 
 @HiltViewModel
 class ContractTypeViewModel @Inject constructor(
-    private val repo: ApplicationContractTypeRepository
+    private val repo: ContractTypeRepository
 ) : ViewModel() {
     val all: LiveData<List<ContractTypeEntity>> = repo.all.asLiveData()
     fun byId(id: String): LiveData<ContractTypeEntity?> = repo.byId(id).asLiveData()
