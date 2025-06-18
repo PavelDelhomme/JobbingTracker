@@ -1,6 +1,10 @@
 package com.delhomme.jobbingtrack.services
 
 import com.delhomme.jobbingtrack.api.ApiService
+import com.delhomme.jobbingtrack.datas.requests.LoginRequest
+import com.delhomme.jobbingtrack.datas.requests.RegisterRequest
+import com.delhomme.jobbingtrack.datas.responses.LoginResponse
+import com.delhomme.jobbingtrack.datas.responses.RegisterResponse
 import javax.inject.Inject
 
 

@@ -14,6 +14,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
 
 
 @Composable

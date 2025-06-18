@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: com.delhomme.jobbingtrack.api.authentication.LoginRepository,
+    private val repository: LoginRepository,
     private val tokenManager: TokenManager,
     @ApplicationContext context: Context,
 ) : AndroidViewModel(context.applicationContext as Application) {
@@ -53,7 +53,7 @@ class LoginViewModel @Inject constructor(
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val repository: com.delhomme.jobbingtrack.api.authentication.RegisterService,
+    private val repository: RegisterService,
     private val tokenManager: TokenManager,
     @ApplicationContext context: Context
 ) : AndroidViewModel(context.applicationContext as Application) {

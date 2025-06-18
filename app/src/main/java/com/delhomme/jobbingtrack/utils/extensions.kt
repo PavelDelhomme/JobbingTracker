@@ -3,13 +3,13 @@ package com.delhomme.jobbingtrack.utils
 import com.delhomme.jobbingtrack.applications.Application
 import com.delhomme.jobbingtrack.calls.Call
 import com.delhomme.jobbingtrack.contacts.Contact
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewStatusEntity
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewStyleEntity
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewTypeEntity
+import com.delhomme.jobbingtrack.datas.models.Interview
 import com.delhomme.jobbingtrack.followsup.FollowUp
 import com.delhomme.jobbingtrack.followsup.FollowUpStatus
 import com.delhomme.jobbingtrack.followsup.FollowUpType
-import com.delhomme.jobbingtrack.interviews.Interview
-import com.delhomme.jobbingtrack.interviews.entities.InterviewStatusEntity
-import com.delhomme.jobbingtrack.interviews.entities.InterviewStyleEntity
-import com.delhomme.jobbingtrack.interviews.entities.InterviewTypeEntity
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -99,7 +99,7 @@ fun Any?.toFieldMap(): Map<String, String> {
             "label" to this.label,
         )
         else -> emptyMap()
-    }
+    } as Map<String, String>
 }
 
 /**

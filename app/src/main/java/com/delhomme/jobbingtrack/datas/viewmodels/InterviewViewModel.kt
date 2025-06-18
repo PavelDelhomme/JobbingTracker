@@ -40,22 +40,6 @@ class InterviewViewModel @Inject constructor(
 
     fun allForUser(userId: String): LiveData<List<InterviewWithContacts>> =
         repo.withContactsForUser(userId).asLiveData()
-    fun activeForUser(
-        userId: String,
-        stylesFlow: Flow<List<InterviewStyle>>,
-        typesFlow: Flow<List<InterviewType>>
-    ): Flow<List<Interview>> =
-        combine(
-            repo.withContactsForUser(userId),
-            stylesFlow,
-            typesFlow
-        ) { interviewsWithContacts, styles, types ->
-            interviewsWithContacts.map { iwc ->
-                val style = styles.find { it.id == iwc.interview.styleId }
-                val type = types.find { it.id == iwc.interview.typeId }
-                iwc.toDomain(style, type)
-            }
-        }
 
     fun interviewById(id: String, userId: String): LiveData<InterviewWithContacts?> =
         repo.byIdWithContacts(id, userId).asLiveData()

@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.api.tokens.TokenManager
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ConfirmDialog
+import com.delhomme.jobbingtrack.datas.viewmodels.ExperienceViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ProfileViewModel
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 

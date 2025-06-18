@@ -12,6 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewWithContacts
+import com.delhomme.jobbingtrack.datas.models.Event
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
