@@ -13,6 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.datas.viewmodels.CollaboratorViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CvViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.EducationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ExperienceViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.LanguageViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ProjectViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.SkillViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 
 
