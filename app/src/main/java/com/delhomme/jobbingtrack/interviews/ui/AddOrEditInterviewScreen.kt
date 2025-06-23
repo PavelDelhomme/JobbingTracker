@@ -26,6 +26,12 @@ import com.delhomme.jobbingtrack.commons.ui.forms.ModernDateTimePickerField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.ContactSelectorField
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewStyleViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewTypeViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.utils.handleCompanyChange
 import com.delhomme.jobbingtrack.utils.resolveCompanyId
 import java.util.UUID
@@ -42,6 +48,8 @@ fun AddOrEditInterviewScreen(
     linkedCompanyId: String? = null,
     onCancel: () -> Unit,
     interviewVm: InterviewViewModel = hiltViewModel(),
+    interviewTypeVm: InterviewTypeViewModel = hiltViewModel(),
+    interviewStyleVm: InterviewStyleViewModel = hiltViewModel(),
     applicationVm: ApplicationViewModel = hiltViewModel(),
     companyVm: CompanyViewModel = hiltViewModel(),
     contactVm: ContactViewModel = hiltViewModel(),
@@ -52,7 +60,8 @@ fun AddOrEditInterviewScreen(
     val applications by applicationVm.allForUser(userId).observeAsState(emptyList())
     val companies by companyVm.allForUser(userId).observeAsState(emptyList())
     val contacts by contactVm.allForUser(userId).observeAsState(emptyList())
-
+    val allTypes by interviewTypeVm.all.observeAsState(emptyList())
+    val allStyles by interviewStyleVm.all.observeAsState(emptyList())
     val existing = interviews.find { it.interview.id == interviewId }
     val selInitialContacts = existing?.interview?.contactsIds
         ?.filterNotNull()
