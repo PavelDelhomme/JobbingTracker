@@ -9,6 +9,7 @@ import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationPlatform
 import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationStatusEntity
 import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationTypeEntity
 import com.delhomme.jobbingtrack.datas.entities.applications.ContractTypeEntity
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewStyleEntity
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationPlatformRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationRepository
 import com.delhomme.jobbingtrack.datas.repositories.ApplicationStatusRepository
@@ -21,8 +22,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ApplicationViewModel @Inject constructor(
-    private val repo: ApplicationRepository
+    private val repo: ApplicationRepository,
+    private val typeRepository: ApplicationTypeRepository,
+    private val platformRepository: ApplicationPlatformRepository,
+    private val statusRepository: ApplicationStatusRepository,
+    private val contractTypeRepository: ContractTypeRepository,
 ) : ViewModel() {
+
+    val allTypes: LiveData<List<ApplicationTypeEntity>> = typeRepository.all.asLiveData()
+    val allPlatforms: LiveData<List<ApplicationPlatformEntity>> = platformRepository.all.asLiveData()
+    val allStatuses: LiveData<List<ApplicationStatusEntity>> = statusRepository.all.asLiveData()
+    val allContractTypes: LiveData<List<ContractTypeEntity>> = contractTypeRepository.all.asLiveData()
 
     /** 1) Toutes les candidatures pour un user */
     fun allForUser(userId: String): LiveData<List<ApplicationEntity>> =

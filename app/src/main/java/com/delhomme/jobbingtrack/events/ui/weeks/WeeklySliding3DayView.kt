@@ -17,7 +17,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.commons.entities.CalendarViewType
+import com.delhomme.jobbingtrack.events.CalendarViewType
 import com.delhomme.jobbingtrack.events.Event
 import com.delhomme.jobbingtrack.events.ui.computeOverlappingEvents
 import kotlinx.coroutines.delay

@@ -10,6 +10,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
+import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewWithContacts
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 

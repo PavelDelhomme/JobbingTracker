@@ -16,8 +16,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import com.delhomme.jobbingtrack.api.tokens.TokenManager
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ConfirmDialog
-import com.delhomme.jobbingtrack.cvs.viewmodels.ExperienceViewModel
-import com.delhomme.jobbingtrack.profiles.viewmodels.ProfileViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ExperienceViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ProfileViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

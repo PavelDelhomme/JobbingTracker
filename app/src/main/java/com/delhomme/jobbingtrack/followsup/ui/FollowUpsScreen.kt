@@ -11,8 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
-import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
-import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpTypeEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
 
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 
@@ -24,7 +26,9 @@ fun FollowUpsScreen(
     onEdit: (FollowUpEntity) -> Unit,
     onArchive: (FollowUpEntity) -> Unit,
     onDelete: (FollowUpEntity) -> Unit,
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit,
+    types: List<FollowUpTypeEntity>,
+    statuses: List<FollowUpStatusEntity>,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val sorted = followUps.sortedByDescending { it.date }
@@ -32,14 +36,19 @@ fun FollowUpsScreen(
 
         ListScreen(
             dateProvider = { it.date.toFormattedDate() },
-            titleProvider = { it.type ?: "Type inconnu" },
-            centerInfoProvider = { it.responseStatus ?: "Statut inconnu" },
-            bottomLeftInfoProvider = { "Entreprise : ${it.companyId}" },
+            titleProvider = { fu ->
+                types.find { t -> t.id == fu.typeId }?.label ?: "Type inconnu"
+            },
+            centerInfoProvider = { fu ->
+                statuses.find { s -> s.id == fu.statusId }?.label ?: "Statut inconnu"
+            },
+            bottomLeftInfoProvider = { fu -> "Entreprise : ${fu.companyId}" },
             items = visible,
-            onItemClick = onItemClick
+            onItemClick = onItemClick,
+            onEdit = onEdit,
+            onArchive = onArchive,
+            onDelete = onDelete,
         )
-
-
 
         FloatingActionButton(
             onClick = onAddClick,

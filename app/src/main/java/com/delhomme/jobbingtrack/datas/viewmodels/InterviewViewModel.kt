@@ -1,5 +1,8 @@
 package com.delhomme.jobbingtrack.datas.viewmodels
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -34,6 +37,8 @@ class InterviewViewModel @Inject constructor(
 ) : ViewModel() {
     val stylesFlow: Flow<List<InterviewStyleEntity>> = styleRepository.all
     val typesFlow: Flow<List<InterviewTypeEntity>> = typeRepository.all
+    val allTypes: LiveData<List<InterviewTypeEntity>> = typeRepository.all.asLiveData()
+    val allStyles: LiveData<List<InterviewStyleEntity>> = styleRepository.all.asLiveData()
 
     val activeInterviews: LiveData<List<Interview>> =
         repo.activeForUser(userId, stylesFlow, typesFlow).asLiveData()

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
@@ -22,10 +22,11 @@ import com.delhomme.jobbingtrack.commons.ui.forms.FormSuggestions
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.ContactSelectorField
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
-import com.delhomme.jobbingtrack.contacts.entities.ContactEntity
-import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.followsup.entities.FollowUpEntity
-import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
 import com.delhomme.jobbingtrack.utils.resolveCompanyId
 import java.util.UUID
 
@@ -46,17 +47,24 @@ fun AddOrEditFollowUpScreen(
     val applications = applicationVm.activeForUser(userId = userId).observeAsState(emptyList()).value
     val contacts  = contactVm.activeForUser(userId = userId).observeAsState(emptyList()).value
 
+    // Variables d'état pour les sélections
     var selApplicationId by remember { mutableStateOf(existing?.applicationId ?: linkedApplicationId) }
+    var selectedPlatformId by remember { mutableStateOf(existing?.platformId) }
+    var selectedTypeId by remember { mutableStateOf(existing?.typeId) }
+    var selectedResponseId by remember { mutableStateOf(existing?.responseId) }
+    var selectedStatusId by remember { mutableStateOf(existing?.statusId) }
 
-    var selectedContacts by remember {
-        mutableStateOf<List<ContactEntity>>(
-            existing?.contactsIds
-                ?.filterNotNull()
-                ?.mapNotNull { contactId -> contacts.find { it.id == contactId } }
-                ?: emptyList()
-        )
+    var selectedContacts by remember { mutableStateOf<List<ContactEntity>>(emptyList()) }
+    val selectedContactIds = remember { mutableStateOf<List<String>>(emptyList()) }
+
+    LaunchedEffect(existing) {
+        existing?.let {
+            vm.getContactIdsForFollowUp(it.id).let { ids ->
+                selectedContactIds.value = ids
+                selectedContacts = contacts.filter { c -> ids.contains(c.id) }
+            }
+        }
     }
-
 
     val finalCompanyId = resolveCompanyId(
         existingFollowUp = existing,
@@ -69,8 +77,6 @@ fun AddOrEditFollowUpScreen(
 
     val fields = listOf(
         FormField("date", "Date de relance", FieldType.DATE, isRequired = true),
-        FormField("type",           "Type",           FieldType.DROPDOWN,      isRequired = true, options = FormSuggestions.followUpTypes), // Permettre l'ajout ou la suppression de type de relance en live dans le formulaire
-        FormField("responseStatus", "Statut réponse (En attente, Positif, Négatif, Aucun retour)", FieldType.TEXT),
         FormField("notes", "Notes", FieldType.MULTILINE_TEXT)
     )
 
@@ -89,14 +95,34 @@ fun AddOrEditFollowUpScreen(
         )
 
         // Multi-sélecteur avec création à la volée
+
         ContactSelectorField(
             userId = userId,
             label = "Contacts",
             contactViewModel = contactVm,
             selectedContacts = selectedContacts,
-            onContactsChanged = { selectedContacts = it },
+            onContactsChanged = {
+                selectedContacts = it
+                selectedContactIds.value = it.map { c -> c.id }
+            },
             companyId = finalCompanyId,
-            followUpId = followUpId
+        )
+
+        EntitySelectorField(
+            label = "Type de relance",
+            selectedEntityId = existing?.typeId,
+            allEntities = vm.getAllFollowUpTypes().observeAsState(emptyList()).value,
+            getEntityLabel = { it.label },
+            onEntitySelected = { selectedTypeId = it.id }
+        )
+
+        // Sélecteur pour le statut de réponse (FK vers FollowUpResponseEntity)
+        EntitySelectorField(
+            label = "Statut de suivi",
+            selectedEntityId = existing?.responseId,
+            allEntities = vm.getAllFollowUpResponses().observeAsState(emptyList()).value,
+            getEntityLabel = { it.label },
+            onEntitySelected = { selectedResponseId = it.id }
         )
 
         ReusableForm(
@@ -104,30 +130,29 @@ fun AddOrEditFollowUpScreen(
             initialValues = existing?.let {
                 mapOf(
                     "date"           to it.date.toString(),
-                    "type"           to (it.type ?: ""),
-                    "responseStatus" to (it.responseStatus ?: ""),
                     "notes"          to (it.notes ?: "")
                 )
             } ?: emptyMap(),
             onSubmit = { form ->
                 val id = existing?.id ?: UUID.randomUUID().toString()
                 val hash = existing?.base?.syncHash ?: "followup-$id"
-                val followUp  = FollowUpEntity(
-                    id            = id,
-                    date          = form["date"]!!.toLong(),
-                    type          = form["type"],
-                    responseStatus= form["responseStatus"],
-                    notes         = form["notes"],
+                val followUp = FollowUpEntity(
+                    id = id,
+                    date = form["date"]!!.toLong(),
+                    notes = form["notes"],
                     applicationId = selApplicationId ?: "",
                     companyId = finalCompanyId,
-                    contactsIds = selectedContacts.map { it.id },
-                    callsIds = existing?.callsIds ?: emptyList(),
+                    platformId = selectedPlatformId ?: "",
+                    typeId = selectedTypeId ?: existing?.typeId ?: "Inconnu",
+                    responseId = selectedResponseId ?: existing?.responseId,
+                    statusId = selectedStatusId ?: existing?.statusId,
                     base = existing?.base ?: CommonEntityFields(
                         userId = userId,
                         syncHash = hash
                     )
                 )
-                vm.save(followUp)
+
+                vm.save(followUp, selectedContactIds.value)
                 onCancel()
             },
             onCancel = onCancel

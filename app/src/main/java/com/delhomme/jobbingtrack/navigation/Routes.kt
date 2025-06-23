@@ -62,6 +62,10 @@ object Routes {
     const val COLLABORATOR_EDIT = "collaborator/edit"
     const val COLLABORATOR_DETAIL = "collaborator/detail"
 
+    const val FORMATION_ADD = "formation/add"
+    const val FORMATION_EDIT = "formation/edit"
+    const val FORMATION_DETAIL = "formation/detail"
+
     const val APPLICATIONS = "applications"
     const val COMPANIES = "companies"
     const val CALLS = "calls"

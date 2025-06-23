@@ -17,6 +17,8 @@ import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
 import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpContactCrossRef
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpTypeEntity
 import kotlinx.coroutines.flow.Flow
 
 
@@ -143,4 +145,17 @@ interface FollowUpDao : DateRangeProvider<FollowUpEntity> {
 
     @Query("DELETE FROM FollowUpCallCrossRef WHERE followUpId = :followUpId")
     suspend fun clearCallsForFollowUp(followUpId: String)
+
+
+    // Récupérer les IDs des contacts pour un suivi spécifique
+    @Query("SELECT contactId FROM FollowUpContactCrossRef WHERE followUpId = :followUpId")
+    suspend fun getContactIdsForFollowUp(followUpId: String): List<String>
+
+    // Récupérer tous les types de suivi
+    @Query("SELECT * FROM follow_up_types WHERE isDeleted = 0")
+    fun getAllFollowUpTypes(): Flow<List<FollowUpTypeEntity>>
+
+    // Récupérer tous les statuts de suivi
+    @Query("SELECT * FROM follow_up_status WHERE isDeleted = 0")
+    fun getAllFollowUpStatuses(): Flow<List<FollowUpStatusEntity>>
 }

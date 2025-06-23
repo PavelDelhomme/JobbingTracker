@@ -2,7 +2,6 @@ package com.delhomme.jobbingtrack.commons
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
 import com.delhomme.jobbingtrack.commons.entities.ApplicationContactCrossRef
 import com.delhomme.jobbingtrack.commons.entities.CompanyApplicationCrossRef
 import com.delhomme.jobbingtrack.commons.entities.InterviewContactCrossRef
@@ -179,7 +178,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun experienceDao(): ExperienceDao
 
     abstract fun followUpPlateformDao(): FollowUpPlatformDao
-    abstract fun followUpStatusdao(): FollowUpStatusDao
+    abstract fun followUpStatusDao(): FollowUpStatusDao
     abstract fun followUpTypeDao(): FollowUpTypeDao
     abstract fun followUpDao(): FollowUpDao
 
@@ -191,11 +190,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun languageDao(): LanguageDao
     abstract fun profileDao(): ProfileDao
     abstract fun projectDao(): ProjectDao
-/* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */
-    /**
-     * @return a Dao for [SkillEntity]
-     */
-/* <<<<<<<<<<  07b67ddf-6fea-4051-8616-38efb9462649  >>>>>>>>>>> */
     abstract fun skillDao(): SkillDao
 
     abstract fun callTypeDao(): CallTypeDao

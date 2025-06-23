@@ -32,6 +32,7 @@ import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
+import com.delhomme.jobbingtrack.utils.getLabelById
 import com.delhomme.jobbingtrack.utils.toFormattedDateTime
 
 
@@ -52,9 +53,29 @@ fun InterviewDetailScreen(
     val interview = interviewWithContacts.interview
     val contactsOfInterview = interviewWithContacts.contacts
 
+
+    // 2) On charge les données de base
+    val allTypes by interviewViewModel.allTypes.observeAsState(emptyList())
+    val allStyles by interviewViewModel.allStyles.observeAsState(emptyList())
+
+    // Type et style
+    //val typeLabel = allTypes.find { it.id == interview.typeId }?.label ?: "Non spécifié"
+    val typeLabel = getLabelById(interview.typeId, allTypes) { it.label }
+    //val styleLabel = allStyles.find { it.id == interview.styleId }?.label ?: "Non spécifié"
+    val styleLabel = getLabelById(interview.styleId, allStyles) { it.label }
+
     // 3) On charge la candidature liée
     val allApplications      by applicationViewModel.activeForUser(userId = userId).observeAsState(emptyList())
-    val applicationOpt = allApplications.firstOrNull { it.id == interview.applicationId }
+    val application = allApplications.firstOrNull { it.id == interview.applicationId }
+    val allApplicationStatuses by applicationViewModel.allStatuses.observeAsState(emptyList())
+
+    /*val applicationStatusLabel = application?.let { app ->
+        allApplicationStatuses.find { it.id == app.applicationStatusId }?.label ?: "Non spécifié"
+    }*/
+
+    val applicationStatusLabel = application?.let { app ->
+        getLabelById(app.applicationStatusId, allApplicationStatuses) { it.label }
+    }
 
     BackHandler { onBackClick() }
 
@@ -96,8 +117,8 @@ fun InterviewDetailScreen(
             item {
                 Text(text = "Informations sur l'entreprise", style = MaterialTheme.typography.headlineSmall)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Type : ${interview.type ?: "Non spécifié"}")
-                Text(text = "Style  : ${interview.style ?: "Non spécifié"}")
+                Text(text = "Type : $typeLabel")
+                Text(text = "Style  : $styleLabel")
                 Text(text = "Date et heure  : ${interview.dateTime.toFormattedDateTime()}")
                 Text(text = "Adresse : ${interview.location ?: "Non spécifiée"}")
                 Text(text = "Tests requis  : ${interview.testsNeeded}")
@@ -109,14 +130,14 @@ fun InterviewDetailScreen(
                 Text(text = "Date de retour : ${interview.returnDate ?: "Non spécifiée"}")
             }
 
-            applicationOpt?.let { application ->
+            application?.let { app ->
                 item {
                     SectionTitle("Candidature liée")
                     DetailItemCard(
-                        title = application.title,
-                        subtitle = application.applicationStatus,
+                        title = app.title,
+                        subtitle = applicationStatusLabel,
                         onClick = {
-                            navController.navigate("${Routes.APPLICATION_DETAIL}/${application.id}")
+                            navController.navigate("${Routes.APPLICATION_DETAIL}/${app.id}")
                         }
                     )
                 }

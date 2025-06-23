@@ -19,6 +19,7 @@ import com.delhomme.jobbingtrack.MainActivity
 import com.delhomme.jobbingtrack.commons.entities.BottomSheetContentType
 import com.delhomme.jobbingtrack.commons.ui.forms.BottomSheetHost
 import com.delhomme.jobbingtrack.dashboard.DashboardScreen
+import com.delhomme.jobbingtrack.events.CalendarViewType
 import com.delhomme.jobbingtrack.ui.events.CalendarScreenContent
 import com.delhomme.jobbingtrack.navigation.components.AppDrawer
 import com.delhomme.jobbingtrack.navigation.components.BottomNavigationBar

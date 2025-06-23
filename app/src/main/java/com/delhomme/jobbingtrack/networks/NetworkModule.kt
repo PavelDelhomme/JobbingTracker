@@ -1,6 +1,5 @@
 package com.delhomme.jobbingtrack.networks
 
-import android.R.attr.level
 import com.delhomme.jobbingtrack.api.ApiService
 import com.delhomme.jobbingtrack.api.tokens.TokenAuthenticator
 import com.delhomme.jobbingtrack.api.tokens.TokenManager

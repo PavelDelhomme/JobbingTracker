@@ -18,6 +18,7 @@ import com.delhomme.jobbingtrack.datas.repositories.FollowUpTypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 
@@ -37,7 +38,26 @@ class FollowUpViewModel @Inject constructor(
     fun getAllActiveWithContacts(userId: String): LiveData<List<FollowUpWithContacts>> =
         repo.getAllActiveWithContacts(userId).asLiveData()
 
-    fun save(entity: FollowUpEntity) = viewModelScope.launch { repo.save(entity) }
+    // Récupérer les IDs des contacts pour un suivi
+    suspend fun getContactIdsForFollowUp(followUpId: String): List<String> {
+        return repo.getContactIdsForFollowUp(followUpId)
+    }
+
+    // Récupérer tous les types de suivi
+    fun getAllFollowUpTypes(): LiveData<List<FollowUpTypeEntity>> =
+        repo.getAllFollowUpTypes().asLiveData()
+
+    // Récupérer tous les statuts de suivi (qui remplacent les "responses")
+    fun getAllFollowUpResponses(): LiveData<List<FollowUpStatusEntity>> {
+        return repo.getAllFollowUpResponses().asLiveData()
+    }
+
+    // Sauvegarder un suivi avec ses contacts associés
+    fun save(followUp: FollowUpEntity, contactIds: List<String>) {
+        viewModelScope.launch {
+            repo.save(followUp, contactIds)
+        }
+    }
     fun update(entity: FollowUpEntity) = viewModelScope.launch { repo.update(entity) }
     fun archive(ids: List<String>, userId: String) = viewModelScope.launch { repo.archive(ids, userId) }
     fun delete(ids: List<String>, userId: String) = viewModelScope.launch { repo.softDelete(ids, userId) }

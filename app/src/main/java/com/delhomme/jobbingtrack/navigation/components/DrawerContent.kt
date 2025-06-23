@@ -23,7 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.commons.entities.CalendarViewType
+import com.delhomme.jobbingtrack.events.CalendarViewType
 import kotlinx.coroutines.launch
 
 @Composable

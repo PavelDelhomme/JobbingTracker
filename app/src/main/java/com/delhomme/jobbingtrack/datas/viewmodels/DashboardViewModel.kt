@@ -11,6 +11,7 @@ import com.delhomme.jobbingtrack.datas.repositories.ApplicationRepository
 import com.delhomme.jobbingtrack.datas.repositories.CallRepository
 import com.delhomme.jobbingtrack.datas.repositories.CompanyRepository
 import com.delhomme.jobbingtrack.datas.repositories.ContactRepository
+import com.delhomme.jobbingtrack.datas.repositories.EventRepository
 import com.delhomme.jobbingtrack.datas.repositories.FollowUpRepository
 import com.delhomme.jobbingtrack.datas.repositories.InterviewRepository
 import com.delhomme.jobbingtrack.datas.repositories.ProfilRepository
@@ -35,7 +36,12 @@ class DashboardViewModel(app: Application, private val userId: String): AndroidV
     private val repoCompany = CompanyRepository(db.companyDao())
     private val repoInterview = InterviewRepository(db.interviewDao())
     private val repoCall = CallRepository(db.callDao())
-    private val repoFollowUp = FollowUpRepository(db.followUpDao())
+    private val repoEvent = EventRepository(db.eventDao())
+    private val repoFollowUp = FollowUpRepository(
+        db.followUpDao(),
+        db.followUpTypeDao(),
+        db.followUpStatusDao()
+    )
     private val repoContact = ContactRepository(db.contactDao())
     private val repoUser = UserRepository(db.userDao())
     private val repoProfile = ProfilRepository(db.profileDao())

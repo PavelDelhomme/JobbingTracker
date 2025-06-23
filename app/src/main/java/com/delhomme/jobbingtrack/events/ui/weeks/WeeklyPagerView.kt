@@ -7,9 +7,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import java.time.LocalDate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import com.delhomme.jobbingtrack.commons.entities.CalendarViewType
+import com.delhomme.jobbingtrack.datas.viewmodels.EventViewModel
+import com.delhomme.jobbingtrack.events.CalendarViewType
 import com.delhomme.jobbingtrack.events.utils.mappers.toDomain
-import com.delhomme.jobbingtrack.events.viewmodels.EventViewModel
 import kotlin.collections.map
 
 

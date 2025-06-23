@@ -134,7 +134,7 @@ object AppModule {
     @Provides
     fun provideFollowUpPlatformDao(db: AppDatabase): FollowUpPlatformDao = db.followUpPlateformDao()
     @Provides
-    fun provideFollowUpStatusDao(db: AppDatabase): FollowUpStatusDao = db.followUpStatusdao()
+    fun provideFollowUpStatusDao(db: AppDatabase): FollowUpStatusDao = db.followUpStatusDao()
     @Provides
     fun provideFollowUpTypeDao(db: AppDatabase): FollowUpTypeDao = db.followUpTypeDao()
     @Provides
@@ -179,7 +179,15 @@ object AppModule {
     fun provideSkillRepository(dao: SkillDao): SkillRepository = SkillRepository(dao)
     fun provideEventRepository(dao: EventDao): EventRepository = EventRepository(dao)
     fun provideEventTypeRepository(dao: EventTypeDao): EventTypeRepository = EventTypeRepository(dao)
-    fun provideFollowUpRepository(dao: FollowUpDao): FollowUpRepository = FollowUpRepository(dao)
+    fun provideFollowUpRepository(
+        followUpDao: FollowUpDao,
+        followUpTypeDao: FollowUpTypeDao,
+        followUpStatusDao: FollowUpStatusDao
+    ): FollowUpRepository = FollowUpRepository(
+        followUpDao,
+        followUpTypeDao,
+        followUpStatusDao
+    )
     fun provideFollowUpPlateformRepository(dao: FollowUpPlatformDao): FollowUpPlatformRepository = FollowUpPlatformRepository(dao)
     fun provideFollowUpStatusRepository(dao: FollowUpStatusDao): FollowUpStatusRepository = FollowUpStatusRepository(dao)
     fun provideFollowUpTypeRepository(dao: FollowUpTypeDao): FollowUpTypeRepository = FollowUpTypeRepository(dao)

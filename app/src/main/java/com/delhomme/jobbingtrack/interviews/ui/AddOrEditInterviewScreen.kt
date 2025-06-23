@@ -26,6 +26,7 @@ import com.delhomme.jobbingtrack.commons.ui.forms.ModernDateTimePickerField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.ContactSelectorField
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
+import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewEntity
 import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
@@ -55,42 +56,62 @@ fun AddOrEditInterviewScreen(
     contactVm: ContactViewModel = hiltViewModel(),
     userId: String
 ) {
-
     val interviews by interviewVm.allForUser(userId).observeAsState(emptyList())
     val applications by applicationVm.allForUser(userId).observeAsState(emptyList())
     val companies by companyVm.allForUser(userId).observeAsState(emptyList())
     val contacts by contactVm.allForUser(userId).observeAsState(emptyList())
     val allTypes by interviewTypeVm.all.observeAsState(emptyList())
     val allStyles by interviewStyleVm.all.observeAsState(emptyList())
+
+    val selInitialContacts = if (interviewId == null) {
+        emptyList()
+    } else {
+        interviews.find { it.interview.id == interviewId }?.contacts ?: emptyList()
+    }
+
+    // Récupérer l'entretien existant (avec contacts liés)
     val existing = interviews.find { it.interview.id == interviewId }
-    val selInitialContacts = existing?.interview?.contactsIds
-        ?.filterNotNull()
-        ?.mapNotNull { contactId -> contacts.find { it.id == contactId } }
-        ?: emptyList()
+    val initialContacts = existing?.contacts ?: emptyList()
 
-    val selDateTime = existing?.interview?.dateTime ?: System.currentTimeMillis()
 
-    var selectionnedApplicationId by remember { mutableStateOf(existing?.interview?.applicationId ?: linkedApplicationId ?: "") }
-    var selectionnedCompanyId by remember { mutableStateOf(existing?.interview?.companyId ?: linkedCompanyId ?: "") }
-    var selectionnedContacts by remember { mutableStateOf(selInitialContacts) }
-    var dateTime by remember { mutableStateOf(selDateTime) }
+    var selectedApplicationId by remember { mutableStateOf(existing?.interview?.applicationId ?: linkedApplicationId ?: "") }
+    var selectedCompanyId by remember { mutableStateOf(existing?.interview?.companyId ?: linkedCompanyId ?: "") }
+    var selectedContacts by remember { mutableStateOf(initialContacts) }
+    var selectedTypeId by remember { mutableStateOf(existing?.interview?.typeId) }
+    var selectedStyleId by remember { mutableStateOf(existing?.interview?.styleId) }
+    var dateTime by remember { mutableStateOf(existing?.interview?.dateTime ?: System.currentTimeMillis()) }
 
     val finalCompanyId = resolveCompanyId(
         existingInterview = existing?.interview,
         applications = applications,
         followUps = emptyList(),
-        linkedApplicationId = selectionnedApplicationId,
-        fallbackCompanyId = selectionnedCompanyId
+        linkedApplicationId = selectedApplicationId,
+        fallbackCompanyId = selectedCompanyId
     )
+
 
     var showUnlinkDialog by remember { mutableStateOf(false) }
     var pendingSubmit by remember { mutableStateOf<(() -> Unit)?>(null) }
 
     // 5) Vos champs de formulaire
+    /*
     val fields = listOf(
         FormField("location", "Lieu de l'entretien", FieldType.TEXT),
         FormField("style", "Style d'entretien", FieldType.DROPDOWN, isRequired = true, options = FormSuggestions.interviewStyles),
         FormField("type", "Type d'entretien", FieldType.DROPDOWN, isRequired = true, options = FormSuggestions.interviewTypes),
+        FormField("preInterviewNotes", "Notes avant entretien", FieldType.MULTILINE_TEXT),
+        FormField("interviewNotes", "Notes pendant entretien", FieldType.MULTILINE_TEXT),
+        FormField("postInterviewNotes", "Notes après entretien", FieldType.MULTILINE_TEXT),
+        FormField("returnDate", "Date de retour attendu", FieldType.DATE),
+        FormField("testsNeeded", "Tests requis ?", FieldType.BOOLEAN),
+        FormField("testsDeadline", "Date limite pour les tests", FieldType.DATE),
+        FormField("durationMinutes", "Durée (min)", FieldType.NUMBER)
+    )
+     */
+
+
+    val fields = listOf(
+        FormField("location", "Lieu de l'entretien", FieldType.TEXT),
         FormField("preInterviewNotes", "Notes avant entretien", FieldType.MULTILINE_TEXT),
         FormField("interviewNotes", "Notes pendant entretien", FieldType.MULTILINE_TEXT),
         FormField("postInterviewNotes", "Notes après entretien", FieldType.MULTILINE_TEXT),
@@ -126,21 +147,21 @@ fun AddOrEditInterviewScreen(
 
         EntitySelectorField(
             label = "Candidature",
-            selectedEntityId = selectionnedApplicationId,
+            selectedEntityId = selectedApplicationId,
             allEntities = applications,
             getEntityLabel = { it.title },
-            onEntitySelected = { selectionnedApplicationId = it.id },
+            onEntitySelected = { selectedApplicationId = it.id },
             allowCreation = false
         )
 
         // Si pas de candidature, choisir directement l'entreprise
-        if (selectionnedApplicationId.isBlank()) {
+        if (selectedApplicationId.isBlank()) {
             EntitySelectorField(
                 label = "Entreprise",
-                selectedEntityId = selectionnedCompanyId,
+                selectedEntityId = selectedCompanyId,
                 allEntities = companies,
                 getEntityLabel = { it.name },
-                onEntitySelected = { selectionnedCompanyId = it.id },
+                onEntitySelected = { selectedCompanyId = it.id },
                 allowCreation = false
             )
         }
@@ -158,21 +179,38 @@ fun AddOrEditInterviewScreen(
         ContactSelectorField(
             label = "Contacts (optionnel)",
             contactViewModel = contactVm,
-            selectedContacts = selectionnedContacts,
-            onContactsChanged = { selectionnedContacts = it },
+            selectedContacts = selectedContacts,
+            onContactsChanged = { selectedContacts = it },
             userId = userId,
-            companyId = finalCompanyId.toString(),
-            interviewId = interviewId,
+            companyId = finalCompanyId ?: "",
         )
+
         contacts.filter { it.companyId == finalCompanyId }
+
+        // Sélecteur pour le type d'entretien
+        EntitySelectorField(
+            label = "Type d'entretien",
+            selectedEntityId = selectedTypeId,
+            allEntities = allTypes,
+            getEntityLabel = { it.label },
+            onEntitySelected = { selectedTypeId = it.id }
+        )
+
+        // Sélecteur pour le style d'entretien
+        EntitySelectorField(
+            label = "Style d'entretien",
+            selectedEntityId = selectedStyleId,
+            allEntities = allStyles,
+            getEntityLabel = { it.label },
+            onEntitySelected = { selectedStyleId = it.id }
+        )
+
 
         ReusableForm(
             fields = fields,
             initialValues = existing?.let {
                 mapOf(
                     "location" to (it.interview.location ?: ""),
-                    "style" to (it.interview.style ?: ""),
-                    "type" to (it.interview.type ?: ""),
                     "preInterviewNotes" to (it.interview.preInterviewNotes ?: ""),
                     "interviewNotes" to (it.interview.interviewNotes ?: ""),
                     "postInterviewNotes" to (it.interview.postInterviewNotes ?: ""),
@@ -194,35 +232,33 @@ fun AddOrEditInterviewScreen(
                         oldCompany = oldCompany,
                         newCompany = newCompany,
                         entityId = id,
-                        companyIdField = { it.interviewsIds ?: emptyList() },
-                        copyWithIds = { company, newIds -> company.copy(interviewsIds = newIds) },
+                        companyIdField = { emptyList() }, // ou { null }
+                        copyWithIds = { company, _ -> company }, // on ne modifie rien
                         save = { companyVm.save(it) }
                     )
 
                     val ent = InterviewEntity(
                         id = id,
-                        applicationId = selectionnedApplicationId,
-                        companyId = finalCompanyId ?: selectionnedCompanyId,
+                        applicationId = selectedApplicationId,
+                        companyId = finalCompanyId ?: selectedCompanyId,
                         dateTime = dateTime,
                         durationMinutes = form["durationMinutes"]?.toIntOrNull(),
                         location = form["location"],
-                        style = form["style"],
-                        type = form["type"],
+                        styleId = selectedStyleId,
+                        typeId = selectedTypeId,
+                        statusId = existing?.interview?.statusId,
                         preInterviewNotes = form["preInterviewNotes"],
                         interviewNotes = form["interviewNotes"],
                         postInterviewNotes = form["postInterviewNotes"],
                         returnDate = form["returnDate"]?.toLongOrNull(),
                         testsNeeded = form["testsNeeded"].toBoolean(),
                         testsDeadline = form["testsDeadline"]?.toLongOrNull(),
-                        typeId = existing?.interview?.typeId,
-                        styleId = existing?.interview?.styleId,
-                        contactsIds = selectionnedContacts.map { it.id },
                         base = existing?.interview?.base ?: CommonEntityFields(
                             userId = userId,
                             syncHash = hash
                         )
                     )
-                    interviewVm.save(ent, selectionnedContacts.map { it.id })
+                    interviewVm.save(ent, selectedContacts.map { it.id })
                     onCancel()
                 }
 

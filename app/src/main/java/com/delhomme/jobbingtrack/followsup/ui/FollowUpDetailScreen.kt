@@ -16,12 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.applications.ui.SectionTitle
-import com.delhomme.jobbingtrack.applications.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
-import com.delhomme.jobbingtrack.contacts.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.followsup.viewmodels.FollowUpViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
+import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +41,16 @@ fun FollowUpDetailScreen(
 
     val followUp = allFollowUps.firstOrNull { it.id == followUpId } ?: return
     val application = allApplications.firstOrNull { it.id == followUp.applicationId }
-    val contact = allContacts.firstOrNull { it.id == followUp.contactsIds.contains(it.id) }
+
+    // Récupérer les contacts liés (many-to-many)
+    val contactIds = runBlocking { followUpVm.getContactIdsForFollowUp(followUp.id) }
+    val linkedContacts = allContacts.filter { contactIds.contains(it.id) }
+
+    // Charger les labels des types et statuts
+    val allTypes by followUpVm.getAllFollowUpTypes().observeAsState(emptyList())
+    val allStatus by followUpVm.getAllFollowUpResponses().observeAsState(emptyList())
+    val typeLabel = allTypes.find { it.id == followUp.typeId }?.label ?: "Non spécifié"
+    val statusLabel = allStatus.find { it.id == followUp.statusId }?.label ?: "Non spécifié"
 
 
     BackHandler { navController.popBackStack() }
@@ -83,8 +93,8 @@ fun FollowUpDetailScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Type : ${followUp.type ?: "Non spécifié"}")
-            Text("Statut de réponse : ${followUp.responseStatus ?: "Non spécifié"}")
+            Text("Type : $typeLabel")
+            Text("Statut : $statusLabel")
             Text("Date : ${followUp.date.toFormattedDate()}")
             followUp.notes?.let { Text("Notes              : $it") }
 
@@ -92,18 +102,20 @@ fun FollowUpDetailScreen(
                 SectionTitle("Candidature liée")
                 DetailItemCard(
                     title = it.title,
-                    subtitle = it.applicationStatus.toString(),
+                    subtitle = it.applicationStatusId.toString(),
                     onClick = { navController.navigate("${Routes.APPLICATION_DETAIL}/${it.id}") }
                 )
             }
 
-            contact?.let {
-                SectionTitle("Contact lié")
-                DetailItemCard(
-                    title = "${it.firstName} ${it.lastName}",
-                    subtitle = it.position ?: "Pas de poste",
-                    onClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${it.id}") }
-                )
+            if (linkedContacts.isNotEmpty()) {
+                SectionTitle("Contacts liés")
+                linkedContacts.forEach { contact ->
+                    DetailItemCard(
+                        title = "${contact.firstName} ${contact.lastName}",
+                        subtitle = contact.positionId ?: "Pas de poste",
+                        onClick = { navController.navigate("${Routes.CONTACT_DETAIL}/${contact.id}") }
+                    )
+                }
             }
         }
     }

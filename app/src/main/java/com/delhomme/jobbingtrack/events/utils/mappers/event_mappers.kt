@@ -1,7 +1,7 @@
 package com.delhomme.jobbingtrack.events.utils.mappers
 
+import com.delhomme.jobbingtrack.datas.entities.events.EventEntity
 import com.delhomme.jobbingtrack.events.Event
-import com.delhomme.jobbingtrack.events.entities.EventEntity
 
 
 fun EventEntity.toDomain(): Event {

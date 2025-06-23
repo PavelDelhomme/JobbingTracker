@@ -5,6 +5,7 @@ import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpPlatformDao
 import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpStatusDao
 import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpTypeDao
 import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpWithContacts
+import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpContactCrossRef
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpPlateformEntity
 import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpStatusEntity
@@ -24,7 +25,9 @@ class FollowUpPlatformRepository @Inject constructor(
 
 
 class FollowUpRepository @Inject constructor(
-    private val dao: FollowUpDao
+    private val dao: FollowUpDao,
+    private val typeDao: FollowUpTypeDao,
+    private val statusDao: FollowUpStatusDao
 ) {
     fun allForUser(userId: String): Flow<List<FollowUpEntity>> = dao.getAllForUser(userId)
     fun activeForUser(userId: String): Flow<List<FollowUpEntity>> = dao.getAllActiveForUser(userId)
@@ -35,13 +38,42 @@ class FollowUpRepository @Inject constructor(
 
     fun getAllActiveWithContacts(userId: String): Flow<List<FollowUpWithContacts>> =
         dao.getAllActiveWithContacts(userId)
-    suspend fun save(entity: FollowUpEntity) = dao.upsert(entity)
+    // Dans FollowUpRepository
+    suspend fun save(followUp: FollowUpEntity, contactIds: List<String>) {
+        // Sauvegarder le suivi
+        dao.upsert(followUp)
+
+        // Supprimer les anciennes relations
+        dao.clearContactsForFollowUp(followUp.id)
+
+        // Ajouter les nouvelles relations
+        contactIds.forEach { contactId ->
+            dao.insertFollowUpContactCrossRef(
+                FollowUpContactCrossRef(followUpId = followUp.id, contactId = contactId)
+            )
+        }
+    }
+
     suspend fun update(entity: FollowUpEntity) = dao.update(entity)
     suspend fun archive(ids: List<String>, userId: String) = dao.archive(ids, userId)
     suspend fun softDelete(ids: List<String>, userId: String) = dao.softDelete(ids, userId)
     suspend fun restore(ids: List<String>, userId: String) = dao.restore(ids, userId)
     suspend fun deleteForever(ids: List<String>, userId: String) = dao.deleteForever(ids, userId)
     suspend fun deleteAll(userId: String) = dao.deleteAllForUser(userId)
+
+    suspend fun getContactIdsForFollowUp(followUpId: String): List<String> {
+        return dao.getContactIdsForFollowUp(followUpId)
+    }
+
+    // Récupérer tous les types de suivi
+    fun getAllFollowUpTypes(): Flow<List<FollowUpTypeEntity>> {
+        return typeDao.getAll()
+    }
+
+    // Récupérer tous les statuts de suivi (qui remplacent les "responses")
+    fun getAllFollowUpResponses(): Flow<List<FollowUpStatusEntity>> {
+        return statusDao.getAll()
+    }
 }
 
 

@@ -4,7 +4,7 @@ package com.delhomme.jobbingtrack.events.ui.weeks
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.delhomme.jobbingtrack.events.entities.EventEntity
+import com.delhomme.jobbingtrack.datas.entities.events.EventEntity
 import java.time.LocalDate
 
 @Composable
