@@ -1,0 +1,29 @@
+package com.delhomme.jobbingtrack.dashboard
+
+import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
+import java.time.LocalDate
+
+
+@Composable
+fun LineChart(
+    data: List<Pair<LocalDate, Int>>,
+    label: String
+) {
+    val context = LocalContext.current
+    AndroidView<MPLineChart>(
+        factory = { ctx: Context ->
+            MPLineChart(ctx).apply {
+                // on désactive la description par défaut
+                this.description.isEnabled = false
+                // TODO : buildez votre LineData ici et faites `data = yourLineData`
+            }
+        },
+        update = { chart ->
+            // si vous voulez mettre à jour le graphique quand `data` change,
+            // faites-le ici : chart.data = … ; chart.invalidate()
+        }
+    )
+}
