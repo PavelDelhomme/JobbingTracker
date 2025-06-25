@@ -32,40 +32,6 @@ object Routes {
 
     const val DASHBOARD = "dashboard"
 
-    const val CVS = "cvs"
-    const val CV_DETAIL = "cv/detail"
-    const val CV_ADD = "cv/add"
-    const val CV_EDIT = "cv/edit"
-    const val CV_REMOVE = "cv/remove"
-
-    const val EXPERIENCE_ADD = "experience/add"
-    const val EXPERIENCE_EDIT = "experience/edit"
-    const val EXPERIENCE_DETAIL = "experience/detail"
-
-    const val SKILL_ADD = "skill/add"
-    const val SKILL_EDIT = "skill/edit"
-    const val SKILL_DETAIL = "skill/detail"
-
-    const val EDUCATION_ADD = "education/add"
-    const val EDUCATION_EDIT = "education/edit"
-    const val EDUCATION_DETAIL = "education/detail"
-
-    const val LANGUAGE_ADD = "language/add"
-    const val LANGUAGE_EDIT = "language/edit"
-    const val LANGUAGE_DETAIL = "language/detail"
-
-    const val PROJECT_ADD = "project/add"
-    const val PROJECT_EDIT = "project/edit"
-    const val PROJECT_DETAIL = "project/detail"
-
-    const val COLLABORATOR_ADD = "collaborator/add"
-    const val COLLABORATOR_EDIT = "collaborator/edit"
-    const val COLLABORATOR_DETAIL = "collaborator/detail"
-
-    const val FORMATION_ADD = "formation/add"
-    const val FORMATION_EDIT = "formation/edit"
-    const val FORMATION_DETAIL = "formation/detail"
-
     const val APPLICATIONS = "applications"
     const val COMPANIES = "companies"
     const val CALLS = "calls"
@@ -73,8 +39,6 @@ object Routes {
     const val INTERVIEWS = "interviews"
     const val FOLLOWUPS = "followups"
     const val CALENDAR = "calendar"
-
-
 
     const val PROFILE = "profile"
     const val SETTINGS = "settings"

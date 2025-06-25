@@ -1,6 +1,6 @@
 package com.delhomme.jobbingtrack.authentication.repo
 
-import com.delhomme.jobbingtrack.datas.responses.LoginResponse
+import com.delhomme.jobbingtrack.authentication.responses.LoginResponse
 import com.delhomme.jobbingtrack.services.LoginService
 import javax.inject.Inject
 

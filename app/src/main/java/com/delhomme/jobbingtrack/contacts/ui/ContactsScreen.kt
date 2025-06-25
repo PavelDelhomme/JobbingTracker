@@ -14,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
-import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.PositionTypeViewModel
 import androidx.compose.runtime.getValue
+import com.delhomme.jobbingtrack.contacts.ContactEntity
+import com.delhomme.jobbingtrack.contacts.vms.ContactViewModel
+import com.delhomme.jobbingtrack.contacts.vms.PositionTypeViewModel
 
 @Composable
 fun ContactsScreen(

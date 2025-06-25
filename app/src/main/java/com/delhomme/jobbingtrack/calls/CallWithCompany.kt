@@ -1,16 +1,15 @@
-package com.delhomme.jobbingtrack.contacts
+package com.delhomme.jobbingtrack.calls
 
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.delhomme.jobbingtrack.companies.CompanyEntity
 
 
-data class ContactWithCompany(
-    @Embedded val contact: ContactEntity,
+data class CallWithCompany(
+    @Embedded val call: CallEntity,
     @Relation(
         parentColumn = "companyId",
         entityColumn = "id"
     )
-    val company: CompanyEntity
+    val company: CompanyEntity?
 )
-

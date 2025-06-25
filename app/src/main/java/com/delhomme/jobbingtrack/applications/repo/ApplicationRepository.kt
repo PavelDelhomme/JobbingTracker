@@ -1,5 +1,7 @@
 package com.delhomme.jobbingtrack.applications.repo
 
+import com.delhomme.jobbingtrack.applications.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.dao.ApplicationDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

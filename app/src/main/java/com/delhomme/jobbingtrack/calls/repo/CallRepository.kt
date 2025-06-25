@@ -2,6 +2,7 @@ package com.delhomme.jobbingtrack.calls.repo
 
 import androidx.lifecycle.ViewModel
 import com.delhomme.jobbingtrack.calls.CallEntity
+import com.delhomme.jobbingtrack.calls.dao.CallDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

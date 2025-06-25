@@ -1,6 +1,7 @@
 package com.delhomme.jobbingtrack.calls.repo
 
 import com.delhomme.jobbingtrack.calls.CallTypeEntity
+import com.delhomme.jobbingtrack.calls.dao.CallTypeDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -25,6 +25,11 @@ import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.livedata.observeAsState
+import com.delhomme.jobbingtrack.applications.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.vms.ApplicationStatusViewModel
+import com.delhomme.jobbingtrack.applications.vms.ApplicationViewModel
+import com.delhomme.jobbingtrack.companies.CompanyEntity
+import kotlin.collections.sortedByDescending
 
 
 @Composable

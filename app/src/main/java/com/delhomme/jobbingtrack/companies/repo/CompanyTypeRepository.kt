@@ -1,6 +1,7 @@
 package com.delhomme.jobbingtrack.companies.repo
 
 import com.delhomme.jobbingtrack.companies.CompanyTypeEntity
+import com.delhomme.jobbingtrack.companies.dao.CompanyTypeDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

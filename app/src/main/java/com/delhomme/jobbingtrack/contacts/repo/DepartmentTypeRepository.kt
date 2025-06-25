@@ -1,5 +1,7 @@
 package com.delhomme.jobbingtrack.contacts.repo
 
+import com.delhomme.jobbingtrack.contacts.DepartmentTypeEntity
+import com.delhomme.jobbingtrack.contacts.dao.DepartmentTypeDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

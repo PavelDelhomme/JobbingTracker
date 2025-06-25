@@ -1,24 +1,20 @@
 package com.delhomme.jobbingtrack.companies.dao
 
 import androidx.room.Dao
-import androidx.room.Embedded
 import androidx.room.Insert
-import androidx.room.Junction
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Relation
 import androidx.room.Transaction
 import androidx.room.Update
 import com.delhomme.jobbingtrack.commons.entities.CompanyApplicationCrossRef
-import com.delhomme.jobbingtrack.commons.entities.CompanyCallCrossRef
 import com.delhomme.jobbingtrack.commons.entities.CompanyContactCrossRef
-import com.delhomme.jobbingtrack.commons.entities.CompanyFollowUpCrossRef
-import com.delhomme.jobbingtrack.commons.entities.CompanyInterviewCrossRef
-import com.delhomme.jobbingtrack.datas.entities.calls.CallEntity
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
-import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
-import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewEntity
+import com.delhomme.jobbingtrack.companies.CompanyEntity
+import com.delhomme.jobbingtrack.companies.CompanyFull
+import com.delhomme.jobbingtrack.companies.CompanyWithApplications
+import com.delhomme.jobbingtrack.companies.CompanyWithCalls
+import com.delhomme.jobbingtrack.companies.CompanyWithContacts
+import com.delhomme.jobbingtrack.companies.CompanyWithFollowUps
+import com.delhomme.jobbingtrack.companies.CompanyWithInterviews
 import kotlinx.coroutines.flow.Flow
 
 

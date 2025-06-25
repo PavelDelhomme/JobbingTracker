@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
-import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
+import com.delhomme.jobbingtrack.companies.CompanyEntity
+import com.delhomme.jobbingtrack.companies.vms.CompanyViewModel
 
 
 @Composable

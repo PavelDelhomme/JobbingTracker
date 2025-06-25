@@ -1,5 +1,14 @@
 package com.delhomme.jobbingtrack.companies.vms
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import com.delhomme.jobbingtrack.companies.repo.CompanyTypeRepository
+import com.delhomme.jobbingtrack.companies.CompanyTypeEntity
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
 
 @HiltViewModel
 class CompanyTypeViewModel @Inject constructor(

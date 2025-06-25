@@ -6,9 +6,7 @@ import androidx.room.Relation
 import com.delhomme.jobbingtrack.applications.ApplicationEntity
 import com.delhomme.jobbingtrack.commons.entities.CompanyApplicationCrossRef
 import com.delhomme.jobbingtrack.commons.entities.CompanyContactCrossRef
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
-
+import com.delhomme.jobbingtrack.contacts.ContactEntity
 
 data class CompanyFull(
     @Embedded val company: CompanyEntity,

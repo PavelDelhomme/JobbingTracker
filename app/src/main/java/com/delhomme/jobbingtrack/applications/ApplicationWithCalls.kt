@@ -13,16 +13,16 @@ import com.delhomme.jobbingtrack.followsup.FollowUpEntity
 import com.delhomme.jobbingtrack.interviews.InterviewEntity
 
 
-data class ApplicationWithContacts(
+data class ApplicationWithCalls(
     @Embedded val application: ApplicationEntity,
     @Relation(
         parentColumn = "id",
         entityColumn = "id",
         associateBy = Junction(
-            ApplicationContactCrossRef::class,
+            ApplicationCallCrossRef::class,
             parentColumn = "applicationId",
-            entityColumn = "contactId"
+            entityColumn = "callId"
         )
     )
-    val contacts: List<ContactEntity>
+    val calls: List<CallEntity>
 )

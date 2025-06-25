@@ -28,25 +28,25 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.delhomme.jobbingtrack.applications.ui.SectionTitle
 import com.delhomme.jobbingtrack.commons.ui.items.DetailItemCard
-import com.delhomme.jobbingtrack.datas.daos.followsups.FollowUpWithContacts
-import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewWithContacts
-import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationStatusViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.DepartmentTypeViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpStatusViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpTypeViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.InterviewStyleViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.InterviewTypeViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.PositionTypeViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import androidx.compose.foundation.lazy.items
-
+import com.delhomme.jobbingtrack.applications.vms.ApplicationStatusViewModel
+import com.delhomme.jobbingtrack.applications.vms.ApplicationViewModel
+import com.delhomme.jobbingtrack.calls.vms.CallViewModel
+import com.delhomme.jobbingtrack.companies.vms.CompanyViewModel
+import com.delhomme.jobbingtrack.contacts.vms.ContactViewModel
+import com.delhomme.jobbingtrack.contacts.vms.DepartmentTypeViewModel
+import com.delhomme.jobbingtrack.contacts.vms.PositionTypeViewModel
+import com.delhomme.jobbingtrack.followsup.FollowUpWithContacts
+import com.delhomme.jobbingtrack.followsup.vms.FollowUpStatusViewModel
+import com.delhomme.jobbingtrack.followsup.vms.FollowUpTypeViewModel
+import com.delhomme.jobbingtrack.followsup.vms.FollowUpViewModel
+import com.delhomme.jobbingtrack.interviews.InterviewWithContacts
+import com.delhomme.jobbingtrack.interviews.vms.InterviewStyleViewModel
+import com.delhomme.jobbingtrack.interviews.vms.InterviewTypeViewModel
+import com.delhomme.jobbingtrack.interviews.vms.InterviewViewModel
+import kotlin.collections.find
 
 
 @OptIn(ExperimentalMaterial3Api::class)

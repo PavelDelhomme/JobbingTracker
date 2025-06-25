@@ -1,11 +1,7 @@
 package com.delhomme.jobbingtrack.commons.entities
 
-import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Index
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 
 
 @Entity(

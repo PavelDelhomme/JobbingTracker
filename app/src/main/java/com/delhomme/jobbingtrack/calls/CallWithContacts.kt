@@ -4,9 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import com.delhomme.jobbingtrack.commons.entities.CallContactCrossRef
-import com.delhomme.jobbingtrack.datas.entities.calls.CallEntity
-import com.delhomme.jobbingtrack.datas.entities.calls.CallWithContactsCrossRef
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
+import com.delhomme.jobbingtrack.contacts.ContactEntity
 
 
 data class CallWithContacts(

@@ -6,8 +6,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.delhomme.jobbingtrack.datas.daos.contacts.ContactWithCompany
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
+import com.delhomme.jobbingtrack.contacts.ContactEntity
+import com.delhomme.jobbingtrack.contacts.ContactWithCompany
 import kotlinx.coroutines.flow.Flow
 
 

@@ -21,8 +21,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
-import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
+import com.delhomme.jobbingtrack.contacts.ContactEntity
+import com.delhomme.jobbingtrack.contacts.vms.ContactViewModel
 import java.util.UUID
 import kotlin.collections.filter
 

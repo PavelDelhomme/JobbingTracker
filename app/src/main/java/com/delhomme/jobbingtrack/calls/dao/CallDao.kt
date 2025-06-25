@@ -11,10 +11,10 @@ import androidx.room.Relation
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.delhomme.jobbingtrack.calls.Call
+import com.delhomme.jobbingtrack.calls.CallEntity
+import com.delhomme.jobbingtrack.calls.CallWithContacts
 import com.delhomme.jobbingtrack.commons.entities.CallContactCrossRef
 import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
-import com.delhomme.jobbingtrack.datas.entities.calls.CallEntity
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
 import kotlinx.coroutines.flow.Flow
 
 

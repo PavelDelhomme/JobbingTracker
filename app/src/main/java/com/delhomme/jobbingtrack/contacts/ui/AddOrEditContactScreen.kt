@@ -8,24 +8,25 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.delhomme.jobbingtrack.applications.vms.ApplicationViewModel
+import com.delhomme.jobbingtrack.calls.vms.CallViewModel
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ReusableConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
-import com.delhomme.jobbingtrack.datas.entities.contacts.DepartmentTypeEntity
-import com.delhomme.jobbingtrack.datas.entities.contacts.PositionTypeEntity
-import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.DepartmentTypeViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.PositionTypeViewModel
+import com.delhomme.jobbingtrack.companies.CompanyEntity
+import com.delhomme.jobbingtrack.companies.vms.CompanyViewModel
+import com.delhomme.jobbingtrack.contacts.ContactEntity
+import com.delhomme.jobbingtrack.contacts.DepartmentTypeEntity
+import com.delhomme.jobbingtrack.contacts.PositionTypeEntity
+import com.delhomme.jobbingtrack.contacts.vms.ContactViewModel
+import com.delhomme.jobbingtrack.contacts.vms.DepartmentTypeViewModel
+import com.delhomme.jobbingtrack.contacts.vms.PositionTypeViewModel
+import com.delhomme.jobbingtrack.followsup.vms.FollowUpViewModel
 import java.util.UUID
+import kotlin.collections.find
 
 
 @Composable
