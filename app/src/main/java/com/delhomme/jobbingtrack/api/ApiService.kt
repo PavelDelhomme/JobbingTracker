@@ -2,13 +2,13 @@ package com.delhomme.jobbingtrack.api
 
 
 import com.delhomme.jobbingtrack.api.tokens.responses.RefreshToAccessTokenResponse
-import com.delhomme.jobbingtrack.datas.models.CV
-import com.delhomme.jobbingtrack.datas.models.Profile
-import com.delhomme.jobbingtrack.datas.models.UserInfo
-import com.delhomme.jobbingtrack.datas.requests.LoginRequest
-import com.delhomme.jobbingtrack.datas.requests.RegisterRequest
-import com.delhomme.jobbingtrack.datas.responses.LoginResponse
-import com.delhomme.jobbingtrack.datas.responses.RegisterResponse
+import com.delhomme.jobbingtrack.authentication.requests.LoginRequest
+import com.delhomme.jobbingtrack.authentication.requests.RegisterRequest
+import com.delhomme.jobbingtrack.authentication.responses.LoginResponse
+import com.delhomme.jobbingtrack.authentication.responses.RegisterResponse
+import com.delhomme.jobbingtrack.cvs.CV
+import com.delhomme.jobbingtrack.profiles.Profile
+import com.delhomme.jobbingtrack.users.UserInfo
 
 
 import okhttp3.MultipartBody

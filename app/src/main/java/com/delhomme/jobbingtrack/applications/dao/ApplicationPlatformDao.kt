@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationPlatformEntity
+import com.delhomme.jobbingtrack.applications.ApplicationPlatformEntity
 import kotlinx.coroutines.flow.Flow
 
 

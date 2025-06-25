@@ -13,117 +13,17 @@ import androidx.room.Relation
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.delhomme.jobbingtrack.applications.ApplicationEntity
+import com.delhomme.jobbingtrack.calls.CallEntity
 import com.delhomme.jobbingtrack.commons.entities.ApplicationCallCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationContactCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationFollowUpCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationInterviewCrossRef
 import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
-import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationEntity
-import com.delhomme.jobbingtrack.datas.entities.calls.CallEntity
-import com.delhomme.jobbingtrack.datas.entities.contacts.ContactEntity
-import com.delhomme.jobbingtrack.datas.entities.followsups.FollowUpEntity
-import com.delhomme.jobbingtrack.datas.entities.interviews.InterviewEntity
+import com.delhomme.jobbingtrack.contacts.ContactEntity
+import com.delhomme.jobbingtrack.followsup.FollowUpEntity
+import com.delhomme.jobbingtrack.interviews.InterviewEntity
 import kotlinx.coroutines.flow.Flow
-
-data class ApplicationWithContacts(
-    @Embedded val application: ApplicationEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            ApplicationContactCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "contactId"
-        )
-    )
-    val contacts: List<ContactEntity>
-)
-
-
-data class ApplicationWithCalls(
-    @Embedded val application: ApplicationEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            ApplicationCallCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "callId"
-        )
-    )
-    val calls: List<CallEntity>
-)
-data class ApplicationWithFollowUps(
-    @Embedded val application: ApplicationEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            ApplicationFollowUpCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "followUpId"
-        )
-    )
-    val followUps: List<FollowUpEntity>
-)
-data class ApplicationWithInterviews(
-    @Embedded val application: ApplicationEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            ApplicationInterviewCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "interviewId"
-        )
-    )
-    val interviews: List<InterviewEntity>
-)
-
-data class ApplicationFull(
-    @Embedded val application: ApplicationEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            ApplicationContactCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "contactId"
-        )
-    )
-    val contacts: List<ContactEntity>,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            ApplicationCallCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "callId"
-        )
-    )
-    val calls: List<CallEntity>,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            ApplicationFollowUpCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "followUpId"
-        )
-    )
-    val followUps: List<FollowUpEntity>,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            ApplicationInterviewCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "interviewId"
-        )
-    )
-    val interviews: List<InterviewEntity>
-)
-
 
 @Dao
 interface ApplicationDao : DateRangeProvider<ApplicationEntity> {

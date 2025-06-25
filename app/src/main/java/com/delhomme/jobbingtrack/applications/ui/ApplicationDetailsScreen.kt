@@ -32,20 +32,6 @@ import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.utils.toFormattedDate
 import kotlin.collections.find
 import androidx.compose.foundation.lazy.items
-import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationPlatformViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationStatusViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationTypeViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.CallViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.ContractTypeViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpStatusViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpTypeViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.InterviewStyleViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.InterviewTypeViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

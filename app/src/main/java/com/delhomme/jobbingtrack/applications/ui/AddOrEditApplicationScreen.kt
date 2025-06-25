@@ -13,10 +13,6 @@ import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
-import com.delhomme.jobbingtrack.datas.entities.applications.ApplicationEntity
-import com.delhomme.jobbingtrack.datas.entities.companies.CompanyEntity
-import com.delhomme.jobbingtrack.datas.viewmodels.ApplicationViewModel
-import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.utils.handleCompanyChange
 import com.delhomme.jobbingtrack.utils.toFieldMap
 import java.util.UUID

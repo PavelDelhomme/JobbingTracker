@@ -2,7 +2,7 @@ package com.delhomme.jobbingtrack.api.tokens
 
 import com.delhomme.jobbingtrack.api.ApiService
 import com.delhomme.jobbingtrack.api.RefreshTokenRequest
-import com.delhomme.jobbingtrack.datas.responses.LoginResponse
+import com.delhomme.jobbingtrack.authentication.responses.LoginResponse
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response

@@ -4,8 +4,6 @@ import android.content.Context
 import com.delhomme.jobbingtrack.api.ApiService
 import com.delhomme.jobbingtrack.api.tokens.TokenAuthenticator
 import com.delhomme.jobbingtrack.api.tokens.TokenManager
-import com.delhomme.jobbingtrack.datas.repositories.LoginRepository
-import com.delhomme.jobbingtrack.datas.repositories.RegisterRepository
 import com.delhomme.jobbingtrack.services.LoginService
 import com.delhomme.jobbingtrack.services.RegisterService
 import dagger.Module
