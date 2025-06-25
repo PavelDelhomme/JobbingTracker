@@ -14,15 +14,17 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.delhomme.jobbingtrack.applications.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.ApplicationFull
+import com.delhomme.jobbingtrack.applications.ApplicationWithCalls
+import com.delhomme.jobbingtrack.applications.ApplicationWithContacts
+import com.delhomme.jobbingtrack.applications.ApplicationWithFollowUps
+import com.delhomme.jobbingtrack.applications.ApplicationWithInterviews
 import com.delhomme.jobbingtrack.calls.CallEntity
 import com.delhomme.jobbingtrack.commons.entities.ApplicationCallCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationContactCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationFollowUpCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationInterviewCrossRef
 import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
-import com.delhomme.jobbingtrack.contacts.ContactEntity
-import com.delhomme.jobbingtrack.followsup.FollowUpEntity
-import com.delhomme.jobbingtrack.interviews.InterviewEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

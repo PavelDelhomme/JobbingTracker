@@ -6,12 +6,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.delhomme.jobbingtrack.applications.ApplicationEntity
+import com.delhomme.jobbingtrack.applications.vms.ApplicationViewModel
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.ui.dialogs.ReusableConfirmDialog
 import com.delhomme.jobbingtrack.commons.ui.forms.FieldType
 import com.delhomme.jobbingtrack.commons.ui.forms.FormField
 import com.delhomme.jobbingtrack.commons.ui.forms.ReusableForm
 import com.delhomme.jobbingtrack.commons.ui.forms.selectors.EntitySelectorField
+import com.delhomme.jobbingtrack.companies.CompanyEntity
+import com.delhomme.jobbingtrack.companies.vms.CompanyViewModel
 import com.delhomme.jobbingtrack.utils.toFieldMap
 import java.util.UUID
 import kotlin.collections.find

@@ -6,7 +6,6 @@ import com.delhomme.jobbingtrack.authentication.requests.LoginRequest
 import com.delhomme.jobbingtrack.authentication.requests.RegisterRequest
 import com.delhomme.jobbingtrack.authentication.responses.LoginResponse
 import com.delhomme.jobbingtrack.authentication.responses.RegisterResponse
-import com.delhomme.jobbingtrack.cvs.CV
 import com.delhomme.jobbingtrack.profiles.Profile
 import com.delhomme.jobbingtrack.users.UserInfo
 
@@ -47,8 +46,4 @@ interface ApiService {
     //suspend fun createProfile(@Body profile: Profile): Profile
     @POST("profiles/{id}/")
     suspend fun updateProfile(@Body profile: Profile): Profile
-
-    @Multipart
-    @POST("profiles/upload-cv/")
-    suspend fun uploadCV(@Part file: MultipartBody.Part): CV
 }

@@ -48,20 +48,6 @@ import com.delhomme.jobbingtrack.contacts.PositionTypeEntity
 import com.delhomme.jobbingtrack.contacts.dao.ContactDao
 import com.delhomme.jobbingtrack.contacts.dao.DepartmentTypeDao
 import com.delhomme.jobbingtrack.contacts.dao.PositionTypeDao
-import com.delhomme.jobbingtrack.cvs.CVEntity
-import com.delhomme.jobbingtrack.cvs.CollaboratorEntity
-import com.delhomme.jobbingtrack.cvs.EducationEntity
-import com.delhomme.jobbingtrack.cvs.ExperienceEntity
-import com.delhomme.jobbingtrack.cvs.LanguageEntity
-import com.delhomme.jobbingtrack.cvs.ProjectEntity
-import com.delhomme.jobbingtrack.cvs.SkillEntity
-import com.delhomme.jobbingtrack.cvs.dao.CVDao
-import com.delhomme.jobbingtrack.cvs.dao.CollaboratorDao
-import com.delhomme.jobbingtrack.cvs.dao.EducationDao
-import com.delhomme.jobbingtrack.cvs.dao.ExperienceDao
-import com.delhomme.jobbingtrack.cvs.dao.LanguageDao
-import com.delhomme.jobbingtrack.cvs.dao.ProjectDao
-import com.delhomme.jobbingtrack.cvs.dao.SkillDao
 import com.delhomme.jobbingtrack.events.EventEntity
 import com.delhomme.jobbingtrack.events.EventTypeEntity
 import com.delhomme.jobbingtrack.events.dao.EventDao
@@ -95,18 +81,11 @@ import com.delhomme.jobbingtrack.utils.Converters
         CallEntity::class,
         ContactEntity::class,
         EventEntity::class,
-        CVEntity::class,
-        EducationEntity::class,
         CompanyEntity::class,
         InterviewEntity::class,
         FollowUpEntity::class,
         ProfilEntity::class,
-        CollaboratorEntity::class,
         UserEntity::class,
-        ExperienceEntity::class,
-        LanguageEntity::class,
-        ProjectEntity::class,
-        SkillEntity::class,
         ApplicationStatusEntity::class,
         ApplicationTypeEntity::class,
         ApplicationPlatformEntity::class,
@@ -161,21 +140,13 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun callDao(): CallDao
 
-    abstract fun collaboratorDao(): CollaboratorDao
-
     abstract fun companyDao(): CompanyDao
     abstract fun departmentTypeDao(): DepartmentTypeDao
     abstract fun positionTypeDao(): PositionTypeDao
     abstract fun contactDao(): ContactDao
 
-    abstract fun cvDao(): CVDao
-
-    abstract fun educationDao(): EducationDao
-
     abstract fun eventTypeDao(): EventTypeDao
     abstract fun eventDao(): EventDao
-
-    abstract fun experienceDao(): ExperienceDao
 
     abstract fun followUpPlateformDao(): FollowUpPlatformDao
     abstract fun followUpStatusDao(): FollowUpStatusDao
@@ -187,10 +158,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun interviewTypeDao(): InterviewTypeDao
     abstract fun interviewDao(): InterviewDao
 
-    abstract fun languageDao(): LanguageDao
     abstract fun profileDao(): ProfileDao
-    abstract fun projectDao(): ProjectDao
-    abstract fun skillDao(): SkillDao
 
     abstract fun callTypeDao(): CallTypeDao
 
