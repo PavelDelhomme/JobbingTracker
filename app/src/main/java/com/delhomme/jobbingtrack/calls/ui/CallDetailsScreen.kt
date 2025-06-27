@@ -57,7 +57,7 @@ fun CallDetailsScreen(
     val contact    = contacts.find    { it.id == call.contactId }
     val company = companies.find { it.id == call.companyId }
 
-    val statusLabel = applicationStatuses.find { it.id == application?.applicationStatusId }?.label ?: "—"
+    val statusLabel = applicationStatuses.find { it.id == application?.statusRefId }?.label ?: "—"
     val positionLabel = positionTypes.find { it.id == contact?.positionId }?.label ?: "—"
 
     BackHandler {

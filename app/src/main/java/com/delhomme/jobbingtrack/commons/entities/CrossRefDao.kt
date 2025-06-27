@@ -12,9 +12,6 @@ data class CompanyApplicationCrossRef(
     val companyId: String,
     val applicationId: String
 )
-
-
-
 // 4) Company <-> Contact (n-à-n)
 @Entity(
     primaryKeys = ["companyId", "contactId"],

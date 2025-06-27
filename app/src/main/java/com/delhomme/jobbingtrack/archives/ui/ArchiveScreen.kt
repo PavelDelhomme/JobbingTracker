@@ -61,8 +61,8 @@ fun ArchiveScreen(navController: NavController,
         Text("Archives", style = MaterialTheme.typography.headlineMedium)
         Text("Candidatures archivées", style = MaterialTheme.typography.headlineSmall)
         applicationsArchived.forEach {
-            val statusLabel = applicationStatuses.find { status -> status.id == it.applicationStatusId }?.label ?: "—"
-            val typeLabel = applicationTypes.find { type -> type.id == it.applicationTypeId }?.label ?: "Type inconnu"
+            val statusLabel = applicationStatuses.find { status -> status.id == it.statusRefId }?.label ?: "—"
+            val typeLabel = applicationTypes.find { type -> type.id == it.typeRefId }?.label ?: "Type inconnu"
             Text(
                 text = "${it.title} ($statusLabel) ($typeLabel)",
                 modifier = Modifier.clickable {

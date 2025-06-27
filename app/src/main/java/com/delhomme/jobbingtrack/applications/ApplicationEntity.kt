@@ -17,12 +17,23 @@ data class ApplicationEntity(
     val title: String,
     val companyId: String,
     val applicationDate: Long,
-    val platformId: String?,
-    val contractTypeId: String?,
+
+    // Relations simplifiées (listes d'IDs)
+    val contactIds: List<String> = emptyList(),
+    val callIds: List<String> = emptyList(),
+    val interviewIds: List<String> = emptyList(),
+    val followUpIds: List<String> = emptyList(),
+
+    // Références unifiées
+    val platformRefId: String?,
+    val contractTypeRefId: String?,
+    val typeRefId: String,
+    val statusRefId: String,
+
+    // Autres champs
     val location: String?,
-    val applicationTypeId: String,
-    val applicationStatusId: String,
     val notes: String?,
+
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider
 

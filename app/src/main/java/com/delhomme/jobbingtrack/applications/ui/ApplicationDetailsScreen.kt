@@ -107,10 +107,10 @@ fun ApplicationDetailsScreen(
         // Pour les relances, il faudrait charger les FollowUpWithContacts si besoin
     }
 
-    val statusLabel = allStatus.find { it.id == application.applicationStatusId }?.label ?: "—"
-    val typeLabel = allTypes.find { it.id == application.applicationTypeId }?.label ?: "—"
-    val platformLabel = allPlatforms.find { it.id == application.platformId }?.label ?: "—"
-    val contractLabel = allContracts.find { it.id == application.contractTypeId }?.label ?: "—"
+    val statusLabel = allStatus.find { it.id == application.statusRefId }?.label ?: "—"
+    val typeLabel = allTypes.find { it.id == application.typeRefId }?.label ?: "—"
+    val platformLabel = allPlatforms.find { it.id == application.platformRefId }?.label ?: "—"
+    val contractLabel = allContracts.find { it.id == application.contractTypeRefId }?.label ?: "—"
     BackHandler {
         navController.popBackStack()
     }

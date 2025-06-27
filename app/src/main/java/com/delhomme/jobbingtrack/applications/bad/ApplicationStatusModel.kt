@@ -1,9 +1,7 @@
-package com.delhomme.jobbingtrack.applications
+package com.delhomme.jobbingtrack.applications.bad
 
-import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
-
-
-data class ApplicationType (
+/*
+data class ApplicationStatus(
     override val id: String,
     val userId: String,
     val label: String,
@@ -15,3 +13,5 @@ data class ApplicationType (
     var deletedAt: Long? = null,
     var archivedAt: Long? = null,
 ) : HasIdProvider
+
+*/

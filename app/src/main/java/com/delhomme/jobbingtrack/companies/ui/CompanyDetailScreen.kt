@@ -159,7 +159,7 @@ fun CompanyDetailScreen(
             if (linkedCandidatures.isNotEmpty()) {
                 item { com.delhomme.jobbingtrack.applications.ui.SectionTitle("Candidatures liées") }
                 items(linkedCandidatures) { c ->
-                    val statusLabel = applicationStatuses.find { s -> s.id == c.applicationStatusId }?.label ?: "—"
+                    val statusLabel = applicationStatuses.find { s -> s.id == c.statusRefId }?.label ?: "—"
                     DetailItemCard(
                         title = c.title,
                         subtitle = statusLabel,

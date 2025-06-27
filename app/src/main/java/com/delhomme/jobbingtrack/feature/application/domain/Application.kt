@@ -1,5 +1,5 @@
 package com.delhomme.jobbingtrack.feature.application.domain
-
+/*
 import com.delhomme.jobbingtrack.core.model.BaseModel
 
 data class Application(
@@ -10,3 +10,4 @@ data class Application(
     val companyId: String,
     // ... champs spécifiques
 ) : BaseModel()
+ */

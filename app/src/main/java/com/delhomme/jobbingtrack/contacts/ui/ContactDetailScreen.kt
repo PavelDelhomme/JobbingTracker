@@ -175,7 +175,7 @@ fun ContactDetailScreen(
             if (linkedApplications.isNotEmpty()) {
                 item { SectionTitle("Candidatures liées") }
                 items(linkedApplications) { app ->
-                    val status = appStatuses.find { it.id == app.applicationStatusId }?.label ?: "—"
+                    val status = appStatuses.find { it.id == app.statusRefId }?.label ?: "—"
                     DetailItemCard(
                         title = app.title,
                         subtitle = status,

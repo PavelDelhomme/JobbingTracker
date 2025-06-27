@@ -1,5 +1,5 @@
 package com.delhomme.jobbingtrack.feature.application.data
-
+/*
 import androidx.room.Entity
 import com.delhomme.jobbingtrack.core.database.BaseEntity
 
@@ -9,3 +9,4 @@ data class ApplicationEntity(
     val companyId: String,
     // ... autres champs spécifiques
 ) : BaseEntity()
+ */

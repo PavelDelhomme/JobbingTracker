@@ -23,7 +23,6 @@ import com.delhomme.jobbingtrack.commons.ui.lists.ListScreen
 
 import com.delhomme.jobbingtrack.utils.DialogType
 import com.delhomme.jobbingtrack.utils.toFormattedDate
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.livedata.observeAsState
 import com.delhomme.jobbingtrack.applications.ApplicationEntity
 import com.delhomme.jobbingtrack.applications.vms.ApplicationStatusViewModel
@@ -61,7 +60,7 @@ fun ApplicationsScreen(
             dateProvider = { it.applicationDate.toFormattedDate() },
             titleProvider = { it.title },
             centerInfoProvider = { app ->
-                applicationStatuses.find { status -> status.id == app.applicationStatusId }?.label ?: "—"
+                applicationStatuses.find { status -> status.id == app.statusRefId }?.label ?: "—"
             },
             bottomLeftInfoProvider = { entById[it.companyId]?.name ?: "Entreprise inconnue" },
             items = applications.filter { !it.base.isArchived },

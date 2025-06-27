@@ -15,7 +15,4 @@ interface BaseDao<T> {
 
     @Delete
     suspend fun delete(entity: T)
-
-    @Query("UPDATE ${T::class.simpleName} SET isArchived = 1 WHERE id IN(:ids) AND userId = :userId")
-    suspend fun archive(ids: List<String>, userId: String)
 }

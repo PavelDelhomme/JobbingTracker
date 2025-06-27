@@ -3,17 +3,16 @@ package com.delhomme.jobbingtrack.applications
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 import com.delhomme.jobbingtrack.commons.fields.CommonEntityFields
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
-import com.delhomme.jobbingtrack.utils.Converters
 import java.util.UUID
 
-
-@TypeConverters(Converters::class)
-@Entity(tableName = "application_statuses")
-data class ApplicationStatusEntity(
+@Entity(tableName = "application_references")
+data class ApplicationReferenceEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
+    val type: ReferenceType, // Enum : PLATFORM, STATUS, CONTRACT_TYPE
     val label: String,
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider
+
+enum class ReferenceType { PLATFORM, STATUS, CONTRACT_TYPE, APPLICATION_TYPE }

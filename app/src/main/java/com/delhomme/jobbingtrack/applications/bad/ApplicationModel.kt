@@ -1,5 +1,5 @@
-package com.delhomme.jobbingtrack.applications
-
+package com.delhomme.jobbingtrack.applications.bad
+/*
 import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
 
 
@@ -27,5 +27,4 @@ data class Application(
     var applicationType: String,
     var applicationStatus: String,
 ) : HasIdProvider
-
-
+*/

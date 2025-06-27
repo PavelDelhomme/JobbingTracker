@@ -19,18 +19,28 @@ import com.delhomme.jobbingtrack.applications.ApplicationWithCalls
 import com.delhomme.jobbingtrack.applications.ApplicationWithContacts
 import com.delhomme.jobbingtrack.applications.ApplicationWithFollowUps
 import com.delhomme.jobbingtrack.applications.ApplicationWithInterviews
+import com.delhomme.jobbingtrack.applications.ApplicationWithRelations
 import com.delhomme.jobbingtrack.calls.CallEntity
 import com.delhomme.jobbingtrack.commons.entities.ApplicationCallCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationContactCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationFollowUpCrossRef
 import com.delhomme.jobbingtrack.commons.entities.ApplicationInterviewCrossRef
 import com.delhomme.jobbingtrack.commons.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.contacts.ContactEntity
+import com.delhomme.jobbingtrack.core.database.BaseDao
+import com.delhomme.jobbingtrack.followsup.FollowUpEntity
+import com.delhomme.jobbingtrack.interviews.InterviewEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ApplicationDao : DateRangeProvider<ApplicationEntity> {
-    override val tableName: String get() = "applications"
-    override val dateColumn: String get() = "applicationDate"
+interface ApplicationDao : BaseDao<ApplicationEntity> {
+    //override val tableName: String get() = "applications"
+    //override val dateColumn: String get() = "applicationDate"
+
+    // Récupération avec relations
+    @Transaction
+    @Query("SELECT * FROM applications WHERE id = :id")
+    suspend fun getWithRelations(id: String): ApplicationWithRelations
 
     @Query("SELECT * FROM applications WHERE userId = :userId ORDER BY applicationDate DESC")
     fun getAllForUser(userId: String): Flow<List<ApplicationEntity>>
@@ -67,7 +77,7 @@ interface ApplicationDao : DateRangeProvider<ApplicationEntity> {
     suspend fun upsert(cand: ApplicationEntity)
 
     @Update
-    suspend fun update(cand: ApplicationEntity)
+    override suspend fun update(cand: ApplicationEntity)
 
     @Query("UPDATE applications SET isArchived = 1 WHERE id IN(:ids) AND userId = :userId")
     suspend fun archive(ids: List<String>, userId: String)
