@@ -7,7 +7,6 @@ import androidx.navigation.navArgument
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.applications.ui.AddOrEditApplicationScreen
 import com.delhomme.jobbingtrack.applications.ui.ApplicationDetailsScreen
 import com.delhomme.jobbingtrack.applications.vms.ApplicationViewModel
