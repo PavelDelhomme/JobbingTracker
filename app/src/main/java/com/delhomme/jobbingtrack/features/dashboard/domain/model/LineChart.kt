@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.etc.dashboard
+package com.delhomme.jobbingtrack.features.dashboard.domain.model
 
 import android.content.Context
 import androidx.compose.runtime.Composable

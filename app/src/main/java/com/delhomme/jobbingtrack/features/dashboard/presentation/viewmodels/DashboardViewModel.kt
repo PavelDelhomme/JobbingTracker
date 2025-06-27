@@ -1,11 +1,19 @@
-package com.delhomme.jobbingtrack.etc.dashboard.vms
+package com.delhomme.jobbingtrack.features.dashboard.presentation.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
-import com.delhomme.jobbingtrack.utils.countByDay
-import com.delhomme.jobbingtrack.utils.toInstant
+import com.delhomme.jobbingtrack.core.utils.countByDay
+import com.delhomme.jobbingtrack.features.application.data.repositories.ApplicationRepository
+import com.delhomme.jobbingtrack.features.calendar.data.repositories.EventRepository
+import com.delhomme.jobbingtrack.features.call.data.repositories.CallRepository
+import com.delhomme.jobbingtrack.features.company.data.repositories.CompanyRepository
+import com.delhomme.jobbingtrack.features.contact.data.repositories.ContactRepository
+import com.delhomme.jobbingtrack.features.followup.data.repositories.FollowUpRepository
+import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewRepository
+import com.delhomme.jobbingtrack.features.profil.data.repositories.ProfilRepository
+import com.delhomme.jobbingtrack.features.user.data.repositories.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

@@ -1,10 +1,6 @@
 package com.delhomme.jobbingtrack.features.call.domain.model
 
-
-data class CallType(
-    override val id: String,
-    val name: String
-) : HasIdProvider
+import com.delhomme.jobbingtrack.core.common.entities.HasIdProvider
 
 
 data class CallType(

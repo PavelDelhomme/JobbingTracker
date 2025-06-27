@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
+import com.delhomme.jobbingtrack.features.calendar.data.repositories.EventRepository
 import kotlinx.coroutines.launch
 
 

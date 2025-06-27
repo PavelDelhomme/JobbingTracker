@@ -3,8 +3,11 @@ package com.delhomme.jobbingtrack.features.company.data.entities
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import com.delhomme.jobbingtrack.followsup.FollowUpEntity
-import com.delhomme.jobbingtrack.interviews.InterviewEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.features.call.data.entities.CallEntity
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
 
 
 data class CompanyWithApplications(

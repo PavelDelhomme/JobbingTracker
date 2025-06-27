@@ -1,4 +1,4 @@
-package com.delhomme.jobbingtrack.etc.main
+package com.delhomme.jobbingtrack.features.dashboard.presentation.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -32,3 +32,4 @@ fun DashboardScreen(modifier: Modifier = Modifier, navController: NavController)
         // Rien à faire ici pour le désactiver
     }
 }
+

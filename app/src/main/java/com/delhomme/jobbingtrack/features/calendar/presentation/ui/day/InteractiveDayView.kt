@@ -24,7 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.find
+//import androidx.compose.runtime.find
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -37,7 +37,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.events.ui.event.EventCard
+import com.delhomme.jobbingtrack.core.utils.toDomain
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
+import com.delhomme.jobbingtrack.features.calendar.domain.model.Event
+import com.delhomme.jobbingtrack.features.calendar.presentation.ui.event.EventCard
+import com.delhomme.jobbingtrack.features.calendar.utils.computeOverlappingEvents
+import com.delhomme.jobbingtrack.features.call.data.entities.CallEntity
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithContacts
 import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.LocalDate

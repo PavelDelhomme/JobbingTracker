@@ -1,11 +1,17 @@
 package com.delhomme.jobbingtrack.features.profil.presentation.viewmodel
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.delhomme.jobbingtrack.api.tokens.TokenManager
+import com.delhomme.jobbingtrack.core.network.tokens.TokenManager
+import com.delhomme.jobbingtrack.features.profil.data.entities.ProfilEntity
+import com.delhomme.jobbingtrack.features.profil.data.repositories.ProfilRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @HiltViewModel

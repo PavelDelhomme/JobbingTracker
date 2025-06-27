@@ -1,5 +1,7 @@
 package com.delhomme.jobbingtrack.features.contact.data.repositories
 
+import com.delhomme.jobbingtrack.features.contact.data.dao.PositionTypeDao
+import com.delhomme.jobbingtrack.features.contact.data.entities.PositionTypeEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

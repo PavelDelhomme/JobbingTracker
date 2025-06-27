@@ -1,5 +1,7 @@
 package com.delhomme.jobbingtrack.features.cvs.domain.model
 
+import com.delhomme.jobbingtrack.core.common.entities.HasIdProvider
+
 
 data class Education(
     // Data d'héritage de HasIdProvider

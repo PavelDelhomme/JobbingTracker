@@ -7,6 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.core.utils.toDomain
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
+import com.delhomme.jobbingtrack.features.calendar.presentation.ui.day.DayContent
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.daysOfWeek

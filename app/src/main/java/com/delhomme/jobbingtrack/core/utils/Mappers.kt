@@ -1,5 +1,16 @@
 package com.delhomme.jobbingtrack.core.utils
 
+import com.delhomme.jobbingtrack.etc.enumes.InterviewStyle
+import com.delhomme.jobbingtrack.etc.enumes.InterviewType
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
+import com.delhomme.jobbingtrack.features.calendar.domain.model.Event
+import com.delhomme.jobbingtrack.features.call.data.entities.CallWithCompany
+import com.delhomme.jobbingtrack.features.call.domain.model.Call
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStyleEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewTypeEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.features.interview.domain.model.Interview
+
 
 // Mappers pour les entités d'entretiens
 fun mapToInterviewStyle(entity: InterviewStyleEntity): InterviewStyle {
@@ -108,29 +119,6 @@ fun EventEntity.toDomain(): Event {
         relatedObjectId = relatedObjectId,
     )
 }
-
-
-
-fun EventEntity.toDomain(): Event {
-    return Event(
-        id = id,
-        title = title,
-        description = description,
-        startDate = startDate ?: 0,
-        endDate = endDate ?: 0,
-        type = type,
-        userId = base.userId,
-        syncHash = base.syncHash,
-        isArchived = base.isArchived,
-        isDeleted = base.isDeleted,
-        createdAt = base.createdAt,
-        updatedAt = base.updatedAt,
-        deletedAt = base.deletedAt ?: 0,
-        archivedAt = base.archivedAt ?: 0,
-        relatedObjectId = relatedObjectId,
-    )
-}
-
 
 
 

@@ -1,9 +1,9 @@
-package com.delhomme.jobbingtrack.etc.enumes
+package com.delhomme.jobbingtrack.features.interview.domain.model
 
-import com.delhomme.jobbingtrack.commons.interfaces.HasIdProvider
+import com.delhomme.jobbingtrack.core.common.entities.HasIdProvider
 
 
-data class InterviewStyle (
+data class InterviewType (
     override val id: String,
     val userId: String,
     val label: String,
@@ -15,3 +15,4 @@ data class InterviewStyle (
     var deletedAt: Long? = null,
     var archivedAt: Long? = null,
 ) : HasIdProvider
+

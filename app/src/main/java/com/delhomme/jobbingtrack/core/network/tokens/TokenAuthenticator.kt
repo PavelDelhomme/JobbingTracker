@@ -1,6 +1,8 @@
 package com.delhomme.jobbingtrack.core.network.tokens
 
+import com.delhomme.jobbingtrack.core.network.ApiService
 import com.delhomme.jobbingtrack.etc.api.tokens.TokenManager
+import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginResponse
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response

@@ -9,7 +9,12 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.delhomme.jobbingtrack.followsup.FollowUpWithContacts
+import com.delhomme.jobbingtrack.core.common.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpContactCrossRef
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpTypeEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpWithContacts
 import kotlinx.coroutines.flow.Flow
 
 

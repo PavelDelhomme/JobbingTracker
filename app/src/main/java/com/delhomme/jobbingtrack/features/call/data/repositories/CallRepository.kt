@@ -1,6 +1,8 @@
 package com.delhomme.jobbingtrack.features.call.data.repositories
 
 import androidx.lifecycle.ViewModel
+import com.delhomme.jobbingtrack.features.call.data.dao.CallDao
+import com.delhomme.jobbingtrack.features.call.data.entities.CallEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

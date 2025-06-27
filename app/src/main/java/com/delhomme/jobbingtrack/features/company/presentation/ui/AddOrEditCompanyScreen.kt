@@ -9,6 +9,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.delhomme.jobbingtrack.core.common.entities.CommonEntityFields
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyEntity
+import com.delhomme.jobbingtrack.features.company.presentation.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.ui.shared.FieldType
+import com.delhomme.jobbingtrack.ui.shared.FormField
+import com.delhomme.jobbingtrack.ui.shared.ReusableForm
 import java.util.UUID
 
 

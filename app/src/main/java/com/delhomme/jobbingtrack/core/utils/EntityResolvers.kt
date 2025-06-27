@@ -1,5 +1,10 @@
 package com.delhomme.jobbingtrack.core.utils
 
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.features.call.data.entities.CallEntity
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
 
 
 fun resolveCompanyId(

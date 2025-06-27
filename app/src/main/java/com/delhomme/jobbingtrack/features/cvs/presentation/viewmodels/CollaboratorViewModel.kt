@@ -1,5 +1,15 @@
 package com.delhomme.jobbingtrack.features.cvs.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.delhomme.jobbingtrack.features.cvs.data.entities.CollaboratorEntity
+import com.delhomme.jobbingtrack.features.cvs.data.repositories.CollaboratorRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
 
 @HiltViewModel
 class CollaboratorViewModel @Inject constructor(

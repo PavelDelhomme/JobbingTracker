@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStyleEntity
 import kotlinx.coroutines.flow.Flow
 
 

@@ -44,4 +44,39 @@ object Routes {
 
     const val PROFILE = "profile"
     const val SETTINGS = "settings"
+
+    const val EXPERIENCE_ADD = "experience/add"
+    const val EXPERIENCE_EDIT = "experience/edit"
+    const val EXPERIENCE_DETAIL = "experience/detail"
+
+    const val SKILL_ADD = "skill/add"
+    const val SKILL_EDIT = "skill/edit"
+    const val SKILL_DETAIL = "skill/detail"
+
+    const val CV_ADD = "cv/add"
+    const val CV_EDIT = "cv/edit"
+
+    const val PROJECT_ADD = "project/add"
+    const val PROJECT_EDIT = "project/edit"
+    const val PROJECT_DETAIL = "project/detail"
+
+    const val EDUCATION_ADD = "education/add"
+    const val EDUCATION_EDIT = "education/edit"
+    const val EDUCATION_DETAIL = "education/detail"
+
+    const val CERTIFICATE_ADD = "certificate/add"
+    const val CERTIFICATE_EDIT = "certificate/edit"
+    const val CERTIFICATE_DETAIL = "certificate/detail"
+
+    const val LANGUAGE_ADD = "language/add"
+    const val LANGUAGE_EDIT = "language/edit"
+    const val LANGUAGE_DETAIL = "language/detail"
+
+    const val INTEREST_ADD = "interest/add"
+    const val INTEREST_EDIT = "interest/edit"
+    const val INTEREST_DETAIL = "interest/detail"
+
+    const val COLLABORATOR_ADD = "collaborator/add"
+    const val COLLABORATOR_EDIT = "collaborator/edit"
+    const val COLLABORATOR_DETAIL = "collaborator/detail"
 }

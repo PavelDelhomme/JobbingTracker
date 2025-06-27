@@ -18,6 +18,8 @@ import com.delhomme.jobbingtrack.bad.ui.lists.ListScreen
 import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.ContactViewModel
 import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.PositionTypeViewModel
+import com.delhomme.jobbingtrack.ui.shared.ListScreen
+import kotlin.collections.find
 
 
 @Composable

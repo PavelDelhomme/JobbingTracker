@@ -3,6 +3,7 @@ package com.delhomme.jobbingtrack.features.interview.data.entities
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 
 
 data class InterviewWithContacts(

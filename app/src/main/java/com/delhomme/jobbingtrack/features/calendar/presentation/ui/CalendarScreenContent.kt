@@ -8,11 +8,18 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.events.ui.PlanningView
-import com.delhomme.jobbingtrack.events.ui.day.DailyPagerView
-import com.delhomme.jobbingtrack.events.ui.monthly.MonthlyCalendarView
-import com.delhomme.jobbingtrack.events.ui.weeks.TwoWeekPagerView
-import com.delhomme.jobbingtrack.events.ui.weeks.WeeklyPagerView
+import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.features.calendar.presentation.ui.day.DailyPagerView
+import com.delhomme.jobbingtrack.features.calendar.presentation.ui.monthly.MonthlyCalendarView
+import com.delhomme.jobbingtrack.features.calendar.presentation.ui.planning.PlanningView
+import com.delhomme.jobbingtrack.features.calendar.presentation.ui.week.two_week.TwoWeekPagerView
+import com.delhomme.jobbingtrack.features.calendar.presentation.ui.week.weekly.WeeklyPagerView
+import com.delhomme.jobbingtrack.features.calendar.presentation.viewmodel.EventViewModel
+import com.delhomme.jobbingtrack.features.calendar.utils.enums.CalendarViewType
+import com.delhomme.jobbingtrack.features.call.presentation.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.features.followup.presentation.viewmodel.FollowUpViewModel
+import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewViewModel
 import java.time.LocalDate
 
 

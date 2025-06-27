@@ -1,5 +1,14 @@
 package com.delhomme.jobbingtrack.features.interview.data.repositories
 
+import com.delhomme.jobbingtrack.core.utils.mapToInterview
+import com.delhomme.jobbingtrack.core.utils.mapToInterviewStyle
+import com.delhomme.jobbingtrack.core.utils.mapToInterviewType
+import com.delhomme.jobbingtrack.features.interview.data.dao.InterviewDao
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStyleEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewTypeEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.features.interview.domain.model.Interview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject

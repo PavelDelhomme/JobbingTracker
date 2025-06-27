@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.features.calendar.domain.model.Event
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

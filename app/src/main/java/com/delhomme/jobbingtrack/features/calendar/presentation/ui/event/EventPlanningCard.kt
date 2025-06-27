@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
+import com.delhomme.jobbingtrack.features.calendar.utils.getEventColor
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

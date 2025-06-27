@@ -11,6 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.core.utils.toFormattedDate
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpTypeEntity
+import com.delhomme.jobbingtrack.features.followup.presentation.viewmodel.FollowUpViewModel
+import com.delhomme.jobbingtrack.ui.shared.ListScreen
 
 
 @Composable

@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.features.profil.domain.model
 
+import com.delhomme.jobbingtrack.core.common.entities.HasIdProvider
 
 
 data class Project(

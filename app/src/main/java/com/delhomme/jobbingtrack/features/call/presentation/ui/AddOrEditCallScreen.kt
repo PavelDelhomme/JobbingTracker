@@ -15,8 +15,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.delhomme.jobbingtrack.followsup.vms.FollowUpViewModel
+import com.delhomme.jobbingtrack.core.common.entities.CommonEntityFields
+import com.delhomme.jobbingtrack.core.utils.resolveCompanyId
+import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.features.call.data.entities.CallEntity
+import com.delhomme.jobbingtrack.features.call.presentation.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.features.company.presentation.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
+import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.features.followup.presentation.viewmodel.FollowUpViewModel
+import com.delhomme.jobbingtrack.ui.components.ReusableConfirmDialog
+import com.delhomme.jobbingtrack.ui.shared.EntitySelectorField
+import com.delhomme.jobbingtrack.ui.shared.FieldType
+import com.delhomme.jobbingtrack.ui.shared.FormField
+import com.delhomme.jobbingtrack.ui.shared.ReusableForm
 import java.util.UUID
+import kotlin.collections.filter
+import kotlin.collections.find
 
 
 @Composable

@@ -1,5 +1,7 @@
 package com.delhomme.jobbingtrack.features.calendar.data.repositories
 
+import com.delhomme.jobbingtrack.features.calendar.data.dao.EventDao
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
 import kotlinx.coroutines.flow.Flow
 
 

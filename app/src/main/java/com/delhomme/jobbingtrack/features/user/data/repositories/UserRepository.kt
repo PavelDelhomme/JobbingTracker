@@ -1,5 +1,7 @@
 package com.delhomme.jobbingtrack.features.user.data.repositories
 
+import com.delhomme.jobbingtrack.features.user.data.dao.UserDao
+import com.delhomme.jobbingtrack.features.user.data.entities.UserEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -2,7 +2,7 @@ package com.delhomme.jobbingtrack
 
 import android.app.Application
 import androidx.room.Room
-import com.delhomme.jobbingtrack.commons.AppDatabase
+import com.delhomme.jobbingtrack.core.database.AppDatabase
 import dagger.hilt.android.HiltAndroidApp
 
 

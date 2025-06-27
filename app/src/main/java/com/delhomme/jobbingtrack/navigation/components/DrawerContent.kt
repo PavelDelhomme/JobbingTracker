@@ -28,7 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.etc.navigation.components.DrawerItem
+import com.delhomme.jobbingtrack.features.calendar.utils.enums.CalendarViewType
 import kotlinx.coroutines.launch
 
 

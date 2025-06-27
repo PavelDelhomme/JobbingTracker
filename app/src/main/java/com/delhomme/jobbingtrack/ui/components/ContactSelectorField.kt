@@ -23,7 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.delhomme.jobbingtrack.core.common.entities.CommonEntityFields
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
+import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.ContactViewModel
 import java.util.UUID
+import kotlin.collections.filter
 
 
 @OptIn(ExperimentalLayoutApi::class)

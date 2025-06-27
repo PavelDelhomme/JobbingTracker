@@ -17,7 +17,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.delhomme.jobbingtrack.events.ui.EventPlanningCard
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
+import com.delhomme.jobbingtrack.features.calendar.presentation.ui.event.EventPlanningCard
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate

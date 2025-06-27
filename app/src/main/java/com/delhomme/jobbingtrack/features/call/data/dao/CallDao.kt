@@ -7,6 +7,10 @@ import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.delhomme.jobbingtrack.core.common.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.features.call.data.entities.CallEntity
+import com.delhomme.jobbingtrack.features.call.data.entities.CallWithContacts
+import com.delhomme.jobbingtrack.features.call.domain.model.Call
 import kotlinx.coroutines.flow.Flow
 
 
@@ -86,9 +90,9 @@ interface CallDao : DateRangeProvider<CallEntity> {
 
     // === GESTION DES CROSSREF ===
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertCallContactCrossRef(crossRef: CallContactCrossRef)
+    suspend fun insertCallContactCrossRef(crossRef: CallWithContactsCrossRef)
 
-    @Query("DELETE FROM CallContactCrossRef WHERE callId = :callId")
+    @Query("DELETE FROM CallWithContactsCrossRef WHERE callId = :callId")
     suspend fun clearContactsForCall(callId: String)
 
 }

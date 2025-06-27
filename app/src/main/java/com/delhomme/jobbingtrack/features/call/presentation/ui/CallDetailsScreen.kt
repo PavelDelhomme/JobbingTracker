@@ -23,8 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.applications.vms.ApplicationStatusViewModel
+import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationStatusViewModel
+import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.features.call.presentation.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.features.company.presentation.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.PositionTypeViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
+import com.delhomme.jobbingtrack.ui.shared.DetailItemCard
+import com.delhomme.jobbingtrack.ui.shared.SectionTitle
+import kotlin.collections.find
 
 
 @OptIn(ExperimentalMaterial3Api::class)

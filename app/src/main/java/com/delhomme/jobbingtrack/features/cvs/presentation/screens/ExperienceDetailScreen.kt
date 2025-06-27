@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.features.cvs.presentation.viewmodels.ExperienceViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

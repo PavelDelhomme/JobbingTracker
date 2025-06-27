@@ -1,7 +1,6 @@
 package com.delhomme.jobbingtrack.features.interview.domain.model
 
-import com.delhomme.jobbingtrack.datas.enumes.InterviewStyle
-import com.delhomme.jobbingtrack.datas.enumes.InterviewType
+import com.delhomme.jobbingtrack.core.common.entities.HasIdProvider
 
 
 data class Interview(

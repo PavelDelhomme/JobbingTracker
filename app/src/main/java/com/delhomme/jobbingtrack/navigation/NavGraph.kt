@@ -1,13 +1,41 @@
 package com.delhomme.jobbingtrack.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.compose.composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navArgument
 import com.delhomme.jobbingtrack.etc.main.MainScreen
-import com.delhomme.jobbingtrack.etc.navigation.Routes
+import com.delhomme.jobbingtrack.features.application.presentation.screens.AddOrEditApplicationScreen
+import com.delhomme.jobbingtrack.features.application.presentation.screens.ApplicationDetailsScreen
+import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationStatusViewModel
+import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationTypeViewModel
+import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.features.archive.presentation.ui.ArchiveScreen
+import com.delhomme.jobbingtrack.features.authentication.presentation.screens.LoginScreen
+import com.delhomme.jobbingtrack.features.authentication.presentation.screens.RegisterScreen
+import com.delhomme.jobbingtrack.features.call.presentation.ui.AddOrEditCallScreen
+import com.delhomme.jobbingtrack.features.call.presentation.ui.CallDetailsScreen
+import com.delhomme.jobbingtrack.features.call.presentation.viewmodel.CallViewModel
+import com.delhomme.jobbingtrack.features.company.presentation.ui.AddOrEditCompanyScreen
+import com.delhomme.jobbingtrack.features.company.presentation.ui.CompanyDetailScreen
+import com.delhomme.jobbingtrack.features.company.presentation.viewmodel.CompanyViewModel
+import com.delhomme.jobbingtrack.features.contact.presentation.ui.AddOrEditContactScreen
+import com.delhomme.jobbingtrack.features.contact.presentation.ui.ContactDetailScreen
+import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.features.followup.presentation.ui.AddOrEditFollowUpScreen
+import com.delhomme.jobbingtrack.features.followup.presentation.ui.FollowUpDetailScreen
+import com.delhomme.jobbingtrack.features.followup.presentation.viewmodel.FollowUpStatusViewModel
+import com.delhomme.jobbingtrack.features.followup.presentation.viewmodel.FollowUpTypeViewModel
+import com.delhomme.jobbingtrack.features.followup.presentation.viewmodel.FollowUpViewModel
+import com.delhomme.jobbingtrack.features.interview.presentation.ui.AddOrEditInterviewScreen
+import com.delhomme.jobbingtrack.features.interview.presentation.ui.InterviewDetailScreen
+import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewStyleViewModel
+import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewTypeViewModel
+import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewViewModel
+import com.delhomme.jobbingtrack.features.trash.presentation.ui.TrashScreen
 
 
 @Composable
@@ -338,6 +366,13 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             val contactVm: ContactViewModel = hiltViewModel()
             val interviewVm: InterviewViewModel = hiltViewModel()
             val followUpVm: FollowUpViewModel = hiltViewModel()
+            val applicationStatusVm: ApplicationStatusViewModel = hiltViewModel()
+            val applicationsTypeVm: ApplicationTypeViewModel = hiltViewModel()
+            val interviewsStyleVm: InterviewStyleViewModel = hiltViewModel()
+            val interviewsTypeVm: InterviewTypeViewModel = hiltViewModel()
+            val followUpTypeVm: FollowUpTypeViewModel = hiltViewModel()
+            val followUpStatusVm: FollowUpStatusViewModel = hiltViewModel()
+
             ArchiveScreen(navController, userId = userId.toString(),
                 applicationViewModel = applicationVm,
                 companyViewModel = companyVm,
@@ -346,7 +381,14 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
                 interviewViewModel = interviewVm,
                 followUpViewModel = followUpVm,
                 onDelete = { navController.navigate(Routes.TRASH) },
-                onRestore = { navController.navigate(Routes.MAIN) }
+                onRestore = { navController.navigate(Routes.MAIN) },
+                applicationsStatusVm = applicationStatusVm,
+                applicationsTypeVm = applicationsTypeVm,
+                interviewsStyleVm = interviewsStyleVm,
+                interviewsTypeVm = interviewsTypeVm,
+                followUpTypeVm = followUpTypeVm,
+                followUpStatusVm = followUpStatusVm,
+                onClear = { navController.navigate(Routes.ARCHIVES) }
             )
         }
         composable(Routes.TRASH) {

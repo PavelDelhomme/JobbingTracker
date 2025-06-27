@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
+import com.delhomme.jobbingtrack.features.call.data.entities.CallTypeEntity
+import com.delhomme.jobbingtrack.features.call.data.repositories.CallTypeRepository
 import kotlinx.coroutines.launch
 
 

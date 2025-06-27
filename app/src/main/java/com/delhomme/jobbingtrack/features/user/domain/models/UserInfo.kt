@@ -6,8 +6,3 @@ data class UserInfo(
     val email: String
 )
 
-
-data class UserInfo(
-    val id: String,
-    val email: String
-)

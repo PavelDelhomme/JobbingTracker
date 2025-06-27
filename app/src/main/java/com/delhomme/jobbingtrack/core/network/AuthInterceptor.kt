@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.core.network
 
+import com.delhomme.jobbingtrack.core.network.tokens.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

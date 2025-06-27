@@ -3,6 +3,8 @@ package com.delhomme.jobbingtrack.features.contact.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.delhomme.jobbingtrack.features.contact.data.entities.DepartmentTypeEntity
+import com.delhomme.jobbingtrack.features.contact.data.repositories.DepartmentTypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

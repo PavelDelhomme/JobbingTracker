@@ -1,7 +1,20 @@
 package com.delhomme.jobbingtrack.features.trash.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.features.application.data.repositories.ApplicationRepository
+import com.delhomme.jobbingtrack.features.call.data.entities.CallEntity
+import com.delhomme.jobbingtrack.features.call.data.repositories.CallRepository
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyEntity
+import com.delhomme.jobbingtrack.features.company.data.repositories.CompanyRepository
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
+import com.delhomme.jobbingtrack.features.contact.data.repositories.ContactRepository
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.features.followup.data.repositories.FollowUpRepository
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
+import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewRepository
 
 
 class TrashViewModel(

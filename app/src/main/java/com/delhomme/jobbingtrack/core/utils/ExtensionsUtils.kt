@@ -1,6 +1,16 @@
 package com.delhomme.jobbingtrack.core.utils
 
 
+import android.app.Application
+import com.delhomme.jobbingtrack.features.call.domain.model.Call
+import com.delhomme.jobbingtrack.features.contact.domain.model.Contact
+import com.delhomme.jobbingtrack.features.followup.domain.model.FollowUp
+import com.delhomme.jobbingtrack.features.followup.domain.model.FollowUpStatus
+import com.delhomme.jobbingtrack.features.followup.domain.model.FollowUpType
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStatusEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStyleEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewTypeEntity
+import com.delhomme.jobbingtrack.features.interview.domain.model.Interview
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

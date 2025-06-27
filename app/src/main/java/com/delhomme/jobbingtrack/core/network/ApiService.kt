@@ -1,5 +1,11 @@
 package com.delhomme.jobbingtrack.core.network
 
+import android.provider.ContactsContract.Profile
+import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginRequest
+import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginResponse
+import com.delhomme.jobbingtrack.features.authentication.domain.model.RegisterRequest
+import com.delhomme.jobbingtrack.features.authentication.domain.model.RegisterResponse
+import com.delhomme.jobbingtrack.features.user.domain.models.UserInfo
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body

@@ -20,6 +20,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.core.common.entities.CommonEntityFields
+import com.delhomme.jobbingtrack.features.cvs.data.entities.CollaboratorEntity
+import com.delhomme.jobbingtrack.features.cvs.domain.model.Collaborator
+import com.delhomme.jobbingtrack.features.cvs.presentation.viewmodels.CollaboratorViewModel
 import java.util.UUID
 
 

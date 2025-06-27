@@ -31,14 +31,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.delhomme.jobbingtrack.api.tokens.TokenManager
+import com.delhomme.jobbingtrack.core.network.tokens.TokenManager
+import com.delhomme.jobbingtrack.core.utils.DialogType
+import com.delhomme.jobbingtrack.features.cvs.presentation.viewmodels.ExperienceViewModel
+import com.delhomme.jobbingtrack.features.profil.presentation.viewmodel.ProfilViewModel
+import com.delhomme.jobbingtrack.ui.components.ConfirmDialog
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfilScreen(
     profileId: String? = null,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfilViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val userId = TokenManager.getUserId(context) ?: ""

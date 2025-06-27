@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.features.interview.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -8,6 +9,9 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.delhomme.jobbingtrack.core.common.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithContacts
 import kotlinx.coroutines.flow.Flow
 
 

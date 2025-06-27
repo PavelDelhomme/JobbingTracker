@@ -3,6 +3,9 @@ package com.delhomme.jobbingtrack.features.call.data.entities
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import com.delhomme.jobbingtrack.features.call.data.dao.CallWithContactsCrossRef
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyEntity
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 
 
 data class CallWithCompany(
@@ -21,7 +24,7 @@ data class CallWithContacts(
         parentColumn = "id",
         entityColumn = "id",
         associateBy = Junction(
-            CallContactCrossRef::class,
+            CallWithContactsCrossRef::class,
             parentColumn = "callId",
             entityColumn = "contactId"
         )

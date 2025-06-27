@@ -26,7 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.core.utils.getLabelById
+import com.delhomme.jobbingtrack.core.utils.toFormattedDateTime
+import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationViewModel
+import com.delhomme.jobbingtrack.features.contact.presentation.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
+import com.delhomme.jobbingtrack.ui.shared.DetailItemCard
+import com.delhomme.jobbingtrack.ui.shared.SectionTitle
+import kotlin.collections.isNotEmpty
 
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -2,6 +2,7 @@ package com.delhomme.jobbingtrack.features.contact.data.entities
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyEntity
 
 
 data class ContactWithCompany(

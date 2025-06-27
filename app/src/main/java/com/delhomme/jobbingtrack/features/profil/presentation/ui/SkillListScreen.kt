@@ -30,23 +30,3 @@ fun SkillListEditor(skills: List<String>, onAdd: (String) -> Unit, onRemove: (St
         }
     }
 }
-
-
-@Composable
-fun SkillListEditor(skills: List<String>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onModify: (String, String) -> Unit) {
-    var newSkill by remember { mutableStateOf("") }
-    Column {
-        skills.forEach { Text("- $it") }
-        Row {
-            OutlinedTextField(value = newSkill, onValueChange = { newSkill = it }, label = { Text("Nouvelle compétence") })
-            Button(onClick = {
-                if (newSkill.isNotBlank()) {
-                    onAdd(newSkill)
-                    newSkill = ""
-                }
-            }) {
-                Text("+")
-            }
-        }
-    }
-}

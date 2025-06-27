@@ -1,5 +1,7 @@
 package com.delhomme.jobbingtrack.features.company.data.repositories
 
+import com.delhomme.jobbingtrack.features.company.data.dao.CompanyTypeDao
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyTypeEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

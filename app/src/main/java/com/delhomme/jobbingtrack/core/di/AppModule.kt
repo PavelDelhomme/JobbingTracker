@@ -9,6 +9,11 @@ import com.delhomme.jobbingtrack.features.application.data.repositories.Applicat
 import com.delhomme.jobbingtrack.features.application.data.repositories.ApplicationTypeRepository
 import com.delhomme.jobbingtrack.features.application.data.repositories.ContractTypeRepository
 import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationDao
+import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationPlatformDao
+import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationStatusDao
+import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationTypeDao
+import com.delhomme.jobbingtrack.features.application.data.sources.local.ContractTypeDao
+import com.delhomme.jobbingtrack.features.application.data.sources.local.ReferenceDao
 import com.delhomme.jobbingtrack.features.calendar.data.dao.EventDao
 import com.delhomme.jobbingtrack.features.calendar.data.dao.EventTypeDao
 import com.delhomme.jobbingtrack.features.calendar.data.repositories.EventRepository
@@ -62,6 +67,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import java.lang.ref.Reference
 import javax.inject.Singleton
 
 
@@ -149,8 +155,8 @@ object AppModule {
 
 
     @Provides
-    fun provideApplicationRepository(dao: ApplicationDao): ApplicationRepository =
-        ApplicationRepository(dao)
+    fun provideApplicationRepository(dao: ApplicationDao, ref: ReferenceDao): ApplicationRepository =
+        ApplicationRepository(dao, ref)
 
     @Provides
     fun provideApplicationPlatformRepository(dao: ApplicationPlatformDao): ApplicationPlatformRepository =
