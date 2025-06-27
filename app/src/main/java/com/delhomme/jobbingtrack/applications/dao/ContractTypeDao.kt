@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.applications.dao
 
+/*
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -23,3 +24,5 @@ interface ContractTypeDao {
     @Delete
     suspend fun delete(entity: ContractTypeEntity)
 }
+
+ */

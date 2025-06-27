@@ -14,3 +14,5 @@ class ContractTypeRepository @Inject constructor(
     suspend fun save(entity: ContractTypeEntity) = dao.save(entity)  // Bon type
     suspend fun delete(entity: ContractTypeEntity) = dao.delete(entity)  // Bon type
 }
+
+

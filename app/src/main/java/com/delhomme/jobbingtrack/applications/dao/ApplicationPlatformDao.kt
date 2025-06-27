@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.applications.dao
 
+/*
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -7,7 +8,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.delhomme.jobbingtrack.applications.ApplicationPlatformEntity
 import kotlinx.coroutines.flow.Flow
-
 
 @Dao
 interface ApplicationPlatformDao {
@@ -25,3 +25,4 @@ interface ApplicationPlatformDao {
     @Delete
     suspend fun delete(status: ApplicationPlatformEntity)
 }
+*/

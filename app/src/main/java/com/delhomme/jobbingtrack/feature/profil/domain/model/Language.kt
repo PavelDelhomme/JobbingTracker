@@ -1,0 +1,21 @@
+package com.delhomme.jobbingtrack.feature.profil.domain.model
+
+
+data class Language(
+    // Data d'héritage de HasIdProvider
+    override val id: String,
+    val userId: String,
+    val syncHash: String,
+    var isArchived: Boolean = false,
+    var isDeleted: Boolean = false,
+    var createdAt: Long,
+    var updatedAt: Long,
+    var deletedAt: Long? = null,
+    var archivedAt: Long? = null,
+
+    // Data propre
+    val profile: String,
+    val name: String,
+    val level: String,
+    val certification: String?,
+) : HasIdProvider

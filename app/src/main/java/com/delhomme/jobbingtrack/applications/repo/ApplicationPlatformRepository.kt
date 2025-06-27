@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.applications.repo
 
+
 import com.delhomme.jobbingtrack.applications.ApplicationPlatformEntity
 import com.delhomme.jobbingtrack.applications.dao.ApplicationPlatformDao
 import kotlinx.coroutines.flow.Flow
@@ -15,3 +16,5 @@ class ApplicationPlatformRepository @Inject constructor(
     suspend fun save(status: ApplicationPlatformEntity) = dao.save(status)
     suspend fun delete(status: ApplicationPlatformEntity) = dao.delete(status)
 }
+
+

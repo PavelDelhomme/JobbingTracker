@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.applications.dao
 
+/*
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -26,3 +27,5 @@ interface ApplicationStatusDao {
     @Query("SELECT * FROM application_statuses WHERE userId = :userId")
     fun getAllForUser(userId: String): Flow<List<ApplicationStatusEntity>>
 }
+
+ */

@@ -24,7 +24,7 @@ import com.delhomme.jobbingtrack.datas.viewmodels.CompanyViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.ContactViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.FollowUpViewModel
 import com.delhomme.jobbingtrack.datas.viewmodels.InterviewViewModel
-import com.delhomme.jobbingtrack.followsup.ui.FollowUpsScreen
+import com.delhomme.jobbingtrack.followsup.ui.FollowUpListScreen
 import com.delhomme.jobbingtrack.interviews.ui.InterviewsScreen
 import com.delhomme.jobbingtrack.navigation.Routes
 
@@ -100,7 +100,7 @@ fun ApplicationsTabsContent(
                     },
                     onAddClick = { /* handled by FAB */ },
                 )
-                2 -> FollowUpsScreen    (
+                2 -> FollowUpListScreen    (
                     followUps = followUps,
                     followUpVm = followUpsVm,
                     onItemClick = {

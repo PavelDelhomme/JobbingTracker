@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.applications.repo
 
+
 import com.delhomme.jobbingtrack.applications.ApplicationStatusEntity
 import com.delhomme.jobbingtrack.applications.dao.ApplicationStatusDao
 import kotlinx.coroutines.flow.Flow

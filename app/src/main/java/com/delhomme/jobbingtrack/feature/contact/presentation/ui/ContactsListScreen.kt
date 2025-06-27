@@ -14,6 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.delhomme.jobbingtrack.bad.ui.lists.ListScreen
+import com.delhomme.jobbingtrack.feature.contact.data.entities.ContactEntity
+import com.delhomme.jobbingtrack.feature.contact.presentation.viewmodel.ContactViewModel
+import com.delhomme.jobbingtrack.feature.contact.presentation.viewmodel.PositionTypeViewModel
 
 
 @Composable
