@@ -16,7 +16,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-
+/*
 data class PositionedEvent(
     val event: Event,
     val column: Int,
@@ -141,3 +141,4 @@ fun getEventColor(type: String): Color {
         else -> Color(0xFFB0BEC5)
     }
 }
+ */

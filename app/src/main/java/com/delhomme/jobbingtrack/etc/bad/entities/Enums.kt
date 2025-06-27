@@ -1,5 +1,5 @@
 package com.delhomme.jobbingtrack.etc.bad.entities
-
+/*
 
 enum class BottomSheetContentType {
     NONE,
@@ -10,3 +10,5 @@ enum class BottomSheetContentType {
     ADD_INTERVIEW,
     ADD_CALL
 }
+
+ */

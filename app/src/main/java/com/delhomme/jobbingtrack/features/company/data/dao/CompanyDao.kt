@@ -6,6 +6,15 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.delhomme.jobbingtrack.etc.bad.entities.CompanyApplicationCrossRef
+import com.delhomme.jobbingtrack.etc.bad.entities.CompanyContactCrossRef
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyEntity
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyFull
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyWithApplications
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyWithCalls
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyWithContacts
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyWithFollowUps
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyWithInterviews
 import kotlinx.coroutines.flow.Flow
 
 

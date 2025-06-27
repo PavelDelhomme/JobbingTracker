@@ -1,5 +1,5 @@
 package com.delhomme.jobbingtrack.etc.bad.entities
-
+/*
 import androidx.room.Entity
 import androidx.room.Index
 
@@ -196,3 +196,4 @@ data class CVEducationCrossRef(
     val educationId: String,
     val cvId: String
 )
+ */
