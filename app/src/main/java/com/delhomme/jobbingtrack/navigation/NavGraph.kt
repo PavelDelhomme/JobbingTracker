@@ -2,38 +2,13 @@ package com.delhomme.jobbingtrack.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.delhomme.jobbingtrack.applications.ui.AddOrEditApplicationScreen
-import com.delhomme.jobbingtrack.applications.ui.ApplicationDetailsScreen
-import com.delhomme.jobbingtrack.applications.vms.ApplicationViewModel
-import com.delhomme.jobbingtrack.archives.ui.ArchiveScreen
-import com.delhomme.jobbingtrack.authentication.ui.LoginScreen
-import com.delhomme.jobbingtrack.authentication.ui.RegisterScreen
-import com.delhomme.jobbingtrack.calls.ui.AddOrEditCallScreen
-import com.delhomme.jobbingtrack.calls.ui.CallDetailsScreen
-import com.delhomme.jobbingtrack.calls.vms.CallViewModel
-import com.delhomme.jobbingtrack.companies.ui.AddOrEditCompanyScreen
-import com.delhomme.jobbingtrack.companies.ui.CompanyDetailScreen
-import com.delhomme.jobbingtrack.companies.vms.CompanyViewModel
-import com.delhomme.jobbingtrack.contacts.ui.AddOrEditContactScreen
-import com.delhomme.jobbingtrack.contacts.ui.ContactDetailScreen
-import com.delhomme.jobbingtrack.contacts.vms.ContactViewModel
-import com.delhomme.jobbingtrack.followsup.ui.AddOrEditFollowUpScreen
-import com.delhomme.jobbingtrack.followsup.ui.FollowUpDetailScreen
-import com.delhomme.jobbingtrack.followsup.vms.FollowUpViewModel
-import com.delhomme.jobbingtrack.interviews.ui.AddOrEditInterviewScreen
-import com.delhomme.jobbingtrack.interviews.ui.InterviewDetailScreen
-import com.delhomme.jobbingtrack.interviews.vms.InterviewViewModel
-import com.delhomme.jobbingtrack.ui.trash.*
-import com.delhomme.jobbingtrack.ui.cvs.*
-import com.delhomme.jobbingtrack.ui.main.*
-import com.delhomme.jobbingtrack.ui.profiles.*
+import androidx.navigation.navArgument
+import com.delhomme.jobbingtrack.etc.main.MainScreen
+import com.delhomme.jobbingtrack.etc.navigation.Routes
 
-import com.delhomme.jobbingtrack.ui.main.MainScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: String?) {
@@ -310,8 +285,8 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
         }
         composable(
             route = "${Routes.INTERVIEW_EDIT}/{entretienId}"
-                  + "?linkedCandidatureId={linkedCandidatureId"
-                  + "&linkedCompanyId={linkedCompanyId}",
+                    + "?linkedCandidatureId={linkedCandidatureId"
+                    + "&linkedCompanyId={linkedCompanyId}",
             arguments = listOf(
                 navArgument("entretienId") {
                     type = NavType.StringType
