@@ -1,11 +1,12 @@
 package com.delhomme.jobbingtrack.features.cvs.data.entities
 
-package com.delhomme.jobbingtrack.cvs.entities
 
 import androidx.room.Embedded
 import java.util.UUID
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.delhomme.jobbingtrack.core.common.entities.CommonEntityFields
+import com.delhomme.jobbingtrack.core.common.entities.HasIdProvider
 
 
 @Entity(tableName = "collaborators")

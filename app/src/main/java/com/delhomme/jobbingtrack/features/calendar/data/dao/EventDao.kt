@@ -7,6 +7,8 @@ import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.delhomme.jobbingtrack.core.common.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
 import kotlinx.coroutines.flow.Flow
 
 

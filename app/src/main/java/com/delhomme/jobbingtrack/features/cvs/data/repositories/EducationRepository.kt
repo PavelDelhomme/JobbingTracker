@@ -1,5 +1,10 @@
 package com.delhomme.jobbingtrack.features.cvs.data.repositories
 
+import com.delhomme.jobbingtrack.features.cvs.data.entities.EducationEntity
+import com.delhomme.jobbingtrack.features.cvs.data.sources.local.EducationDao
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
 
 class EducationRepository @Inject constructor(
     private val dao: EducationDao

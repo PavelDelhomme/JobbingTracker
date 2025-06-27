@@ -1,13 +1,11 @@
 package com.delhomme.jobbingtrack.features.application.data.sources.local
 
-
-/*
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.delhomme.jobbingtrack.applications.ApplicationStatusEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationStatusEntity
 import kotlinx.coroutines.flow.Flow
 
 
@@ -29,4 +27,3 @@ interface ApplicationStatusDao {
     fun getAllForUser(userId: String): Flow<List<ApplicationStatusEntity>>
 }
 
- */

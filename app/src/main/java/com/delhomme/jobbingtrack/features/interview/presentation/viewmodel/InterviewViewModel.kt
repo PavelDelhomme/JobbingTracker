@@ -1,8 +1,18 @@
 package com.delhomme.jobbingtrack.features.interview.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStyleEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewTypeEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewRepository
+import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewStyleRepository
+import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewTypeRepository
+import com.delhomme.jobbingtrack.features.interview.domain.model.Interview
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,5 +1,13 @@
 package com.delhomme.jobbingtrack.features.followup.data.repositories
 
+import com.delhomme.jobbingtrack.features.followup.data.dao.FollowUpDao
+import com.delhomme.jobbingtrack.features.followup.data.dao.FollowUpStatusDao
+import com.delhomme.jobbingtrack.features.followup.data.dao.FollowUpTypeDao
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpContactCrossRef
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpTypeEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpWithContacts
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

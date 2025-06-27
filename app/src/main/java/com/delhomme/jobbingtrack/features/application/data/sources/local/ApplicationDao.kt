@@ -10,6 +10,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.delhomme.jobbingtrack.core.database.BaseDao
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
 import kotlinx.coroutines.flow.Flow
 
 

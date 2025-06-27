@@ -1,5 +1,10 @@
 package com.delhomme.jobbingtrack.features.cvs.data.repositories
 
+import com.delhomme.jobbingtrack.features.cvs.data.entities.LanguageEntity
+import com.delhomme.jobbingtrack.features.cvs.data.sources.local.LanguageDao
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
 
 class LanguageRepository @Inject constructor(
     private val dao: LanguageDao

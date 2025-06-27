@@ -1,5 +1,10 @@
 package com.delhomme.jobbingtrack.features.cvs.data.repositories
 
+import com.delhomme.jobbingtrack.features.cvs.data.entities.ProjectEntity
+import com.delhomme.jobbingtrack.features.cvs.data.sources.local.ProjectDao
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
 
 class ProjectRepository @Inject constructor(
     private val dao: ProjectDao

@@ -1,8 +1,20 @@
 package com.delhomme.jobbingtrack.features.application.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationPlatformEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationStatusEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationTypeEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ContractTypeEntity
+import com.delhomme.jobbingtrack.features.application.data.repositories.ApplicationPlatformRepository
+import com.delhomme.jobbingtrack.features.application.data.repositories.ApplicationRepository
+import com.delhomme.jobbingtrack.features.application.data.repositories.ApplicationStatusRepository
+import com.delhomme.jobbingtrack.features.application.data.repositories.ApplicationTypeRepository
+import com.delhomme.jobbingtrack.features.application.data.repositories.ContractTypeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

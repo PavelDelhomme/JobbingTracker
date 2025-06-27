@@ -3,6 +3,13 @@ package com.delhomme.jobbingtrack.features.interview.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStatusEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStyleEntity
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewTypeEntity
+import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewStatusRepository
+import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewStyleRepository
+import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewTypeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

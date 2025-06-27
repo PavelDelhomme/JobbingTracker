@@ -1,6 +1,19 @@
 package com.delhomme.jobbingtrack.core.di
 
 import android.content.Context
+import com.delhomme.jobbingtrack.core.network.ApiService
+import com.delhomme.jobbingtrack.core.network.tokens.TokenAuthenticator
+import com.delhomme.jobbingtrack.core.network.tokens.TokenManager
+import com.delhomme.jobbingtrack.features.authentication.data.repositories.LoginRepository
+import com.delhomme.jobbingtrack.features.authentication.data.repositories.RegisterRepository
+import com.delhomme.jobbingtrack.services.api.LoginService
+import com.delhomme.jobbingtrack.services.api.RegisterService
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 
 @Module

@@ -1,13 +1,12 @@
 package com.delhomme.jobbingtrack.features.application.data.sources.local
 
 
-/*
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.delhomme.jobbingtrack.applications.ApplicationPlatformEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationPlatformEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,4 +25,3 @@ interface ApplicationPlatformDao {
     @Delete
     suspend fun delete(status: ApplicationPlatformEntity)
 }
-*/

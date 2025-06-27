@@ -3,6 +3,7 @@ package com.delhomme.jobbingtrack.features.application.data.repositories
 import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.features.application.data.entities.ReferenceType
 import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationDao
+import com.delhomme.jobbingtrack.features.application.data.sources.local.ReferenceDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -17,7 +18,7 @@ class ApplicationRepository @Inject constructor(
     fun deletedForUser(userId: String): Flow<List<ApplicationEntity>> = appDao.getDeletedForUser(userId)
 
     fun byId(id: String, userId: String): Flow<ApplicationEntity?> = appDao.getByIdForUser(id, userId)
-    fun getReferences(type: ReferenceType): refDao.getByType(type)
+    fun getReferences(type: ReferenceType) = refDao.getByType(type)
 
     fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<ApplicationEntity>> = appDao.getByDateRangeForUser(userId, from, to)
 

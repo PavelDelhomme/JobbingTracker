@@ -1,13 +1,10 @@
 package com.delhomme.jobbingtrack.features.application.data.sources.local
-
-
-/*
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.delhomme.jobbingtrack.applications.ContractTypeEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ContractTypeEntity
 import kotlinx.coroutines.flow.Flow
 
 
@@ -25,5 +22,3 @@ interface ContractTypeDao {
     @Delete
     suspend fun delete(entity: ContractTypeEntity)
 }
-
- */

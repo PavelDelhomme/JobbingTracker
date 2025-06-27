@@ -1,8 +1,19 @@
 package com.delhomme.jobbingtrack.features.followup.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.delhomme.jobbingtrack.features.followup.data.dao.FollowUpDao
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpStatusEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpTypeEntity
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpWithContacts
+import com.delhomme.jobbingtrack.features.followup.data.repositories.FollowUpPlatformRepository
+import com.delhomme.jobbingtrack.features.followup.data.repositories.FollowUpRepository
+import com.delhomme.jobbingtrack.features.followup.data.repositories.FollowUpStatusRepository
+import com.delhomme.jobbingtrack.features.followup.data.repositories.FollowUpTypeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

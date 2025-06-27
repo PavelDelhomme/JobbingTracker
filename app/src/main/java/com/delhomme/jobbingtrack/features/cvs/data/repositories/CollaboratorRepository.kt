@@ -1,6 +1,7 @@
 package com.delhomme.jobbingtrack.features.cvs.data.repositories
 
 import com.delhomme.jobbingtrack.features.cvs.data.entities.CollaboratorEntity
+import com.delhomme.jobbingtrack.features.cvs.data.sources.local.CollaboratorDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
