@@ -4,8 +4,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.delhomme.jobbingtrack.features.profil.data.entities.ProfilEntity
+import com.delhomme.jobbingtrack.features.profil.data.entities.ProfilWithRelations
 import kotlinx.coroutines.flow.Flow
 
 
@@ -13,6 +15,10 @@ import kotlinx.coroutines.flow.Flow
 interface ProfilDao {
     @Query("SELECT * FROM profiles ORDER BY id")
     fun getAll(): Flow<List<ProfilEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM profiles WHERE id = :id")
+    suspend fun getWithRelations(id: String): ProfilWithRelations?
 
     @Query("SELECT * FROM profiles WHERE id = :id")
     fun getById(id: String): Flow<ProfilEntity?>

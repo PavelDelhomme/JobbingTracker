@@ -11,5 +11,6 @@ import java.util.UUID
 data class CVEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
     val file: String,
+    val userId: String,
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider

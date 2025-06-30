@@ -19,7 +19,6 @@ class ApplicationRepository @Inject constructor(
 
     fun byId(id: String, userId: String): Flow<ApplicationEntity?> = appDao.getByIdForUser(id, userId)
     fun getReferences(type: ReferenceType) = refDao.getByType(type)
-
     fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<ApplicationEntity>> = appDao.getByDateRangeForUser(userId, from, to)
 
     suspend fun save(candidature: ApplicationEntity) = appDao.upsert(candidature)

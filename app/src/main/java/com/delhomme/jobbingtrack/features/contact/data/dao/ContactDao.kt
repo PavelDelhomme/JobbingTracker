@@ -6,13 +6,20 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.delhomme.jobbingtrack.core.database.BaseDao
 import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 import com.delhomme.jobbingtrack.features.contact.data.entities.ContactWithCompany
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface ContactDao {
+interface ContactDao : BaseDao<ContactEntity> {
+
+    @Transaction
+    @Query("SELECT * FROM contacts WHERE id = :id")
+    suspend fun getWithRelations(id: String): ContactWithRelations
+
+
     @Query("SELECT * FROM contacts WHERE userId = :userId ORDER BY createdAt DESC")
     fun getAllForUser(userId: String): Flow<List<ContactEntity>>
 
@@ -49,7 +56,7 @@ interface ContactDao {
     suspend fun upsert(contact: ContactEntity)
 
     @Update
-    suspend fun update(contact: ContactEntity)
+    override suspend fun update(contact: ContactEntity)
 
     @Query("UPDATE contacts SET isArchived = 1 WHERE id IN(:ids) AND userId = :userId")
     suspend fun archive(ids: List<String>, userId: String)

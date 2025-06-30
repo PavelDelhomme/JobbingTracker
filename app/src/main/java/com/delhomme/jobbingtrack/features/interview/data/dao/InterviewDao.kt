@@ -10,19 +10,25 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.delhomme.jobbingtrack.core.common.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.core.database.BaseDao
 import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
 import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithContacts
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithRelations
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface InterviewDao : DateRangeProvider<InterviewEntity> {
+interface InterviewDao : DateRangeProvider<InterviewEntity>, BaseDao<InterviewEntity> {
     override val tableName: String get() = "interviews"
     override val dateColumn: String get() = "dateTime"
 
     @Transaction
     @Query("SELECT * FROM interviews ORDER BY dateTime DESC")
     fun getAll(): Flow<List<InterviewEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM interviews WHERE id = :id")
+    suspend fun getWithRelations(id: String): InterviewWithRelations
 
     @Transaction
     @Query("""
@@ -81,13 +87,7 @@ interface InterviewDao : DateRangeProvider<InterviewEntity> {
     suspend fun upsert(entretien: InterviewEntity)
 
     @Update
-    suspend fun update(entretien: InterviewEntity)
-
-    @Query("DELETE FROM InterviewContactCrossRef WHERE interviewId = :interviewId")
-    suspend fun clearContactsFor(interviewId: String)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertCrossRef(ref: InterviewContactCrossRef)
+    override suspend fun update(entretien: InterviewEntity)
 
     @Query("UPDATE interviews SET isArchived = 1 WHERE id IN(:ids) AND userId = :userId")
     suspend fun archive(ids: List<String>, userId: String)

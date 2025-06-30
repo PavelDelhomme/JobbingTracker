@@ -12,6 +12,8 @@ import com.delhomme.jobbingtrack.core.common.entities.HasIdProvider
 @Entity(tableName = "collaborators")
 data class CollaboratorEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
+    val cvId: String,
+    val projectId: String,
     val role: String? = null,
     val name: String = "",
     val email: String? = null,

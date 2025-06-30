@@ -48,4 +48,3 @@ data class ApplicationEntity(
 
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider
-

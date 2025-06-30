@@ -10,6 +10,7 @@ import java.util.UUID
 @Entity(tableName = "experiences")
 data class ExperienceEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
+    val cvId: String,
     val title: String,
     val company: String,
     val description: String?,

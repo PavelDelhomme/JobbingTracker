@@ -11,6 +11,11 @@ import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.delhomme.jobbingtrack.core.database.BaseDao
 import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationWithCalls
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationWithContacts
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationWithFollowUps
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationWithInterviews
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationWithRelations
 import kotlinx.coroutines.flow.Flow
 
 
@@ -77,63 +82,5 @@ interface ApplicationDao : BaseDao<ApplicationEntity> {
     suspend fun deleteAllForUser(userId: String)
 
     @RawQuery(observedEntities = [ApplicationEntity::class])
-    override fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<ApplicationEntity>>
-
-    @Transaction
-    @Query("SELECT * FROM applications WHERE id = :id AND userId = :userId")
-    fun getApplicationWithContacts(id: String, userId: String): Flow<ApplicationWithContacts?>
-
-
-    @Transaction
-    @Query("SELECT * FROM applications WHERE id = :id AND userId = :userId")
-    fun getApplicationWithCalls(id: String, userId: String): Flow<ApplicationWithCalls?>
-
-    @Transaction
-    @Query("SELECT * FROM applications WHERE id = :id AND userId = :userId")
-    fun getApplicationWithFollowUps(id: String, userId: String): Flow<ApplicationWithFollowUps?>
-
-    @Transaction
-    @Query("SELECT * FROM applications WHERE id = :id AND userId = :userId")
-    fun getApplicationWithInterviews(id: String, userId: String): Flow<ApplicationWithInterviews?>
-
-    @Transaction
-    @Query("SELECT * FROM applications WHERE id = :id AND userId = :userId")
-    fun getApplicationFull(id: String, userId: String): Flow<ApplicationFull?>
-
-    @Transaction
-    @Query("""
-        SELECT * FROM applications 
-        WHERE userId = :userId AND isDeleted = 0 AND isArchived = 0
-        ORDER BY applicationDate DESC
-    """)
-    fun getAllActiveWithContacts(userId: String): Flow<List<ApplicationWithContacts>>
-
-    // === GESTION DES CROSSREF ===
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertApplicationContactCrossRef(crossRef: ApplicationContactCrossRef)
-
-    @Delete
-    suspend fun deleteApplicationContactCrossRef(crossRef: ApplicationContactCrossRef)
-
-    @Query("DELETE FROM ApplicationContactCrossRef WHERE applicationId = :applicationId")
-    suspend fun clearContactsForApplication(applicationId: String)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertApplicationCallCrossRef(crossRef: ApplicationCallCrossRef)
-
-    @Query("DELETE FROM ApplicationCallCrossRef WHERE applicationId = :applicationId")
-    suspend fun clearCallsForApplication(applicationId: String)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertApplicationFollowUpCrossRef(crossRef: ApplicationFollowUpCrossRef)
-
-    @Query("DELETE FROM ApplicationFollowUpCrossRef WHERE applicationId = :applicationId")
-    suspend fun clearFollowUpsForApplication(applicationId: String)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertApplicationInterviewCrossRef(crossRef: ApplicationInterviewCrossRef)
-
-    @Query("DELETE FROM ApplicationInterviewCrossRef WHERE applicationId = :applicationId")
-    suspend fun clearInterviewsForApplication(applicationId: String)
-
+    fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<ApplicationEntity>>
 }

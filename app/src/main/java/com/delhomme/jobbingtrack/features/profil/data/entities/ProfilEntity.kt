@@ -14,6 +14,7 @@ import java.util.UUID
 @Entity(tableName = "profiles")
 data class ProfilEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
+    val userId: String,
     val subject: String,
     val companyIds: String,
     val contactIds: String?,

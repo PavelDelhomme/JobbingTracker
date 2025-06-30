@@ -12,6 +12,7 @@ import java.util.UUID
 @Entity(tableName = "languages")
 data class LanguageEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
+    val cvId: String,
     val name: String,
     val level: String?,
     @Embedded val base: CommonEntityFields

@@ -4,13 +4,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
+import com.delhomme.jobbingtrack.core.database.BaseDao
 import com.delhomme.jobbingtrack.features.user.data.entities.UserEntity
+import com.delhomme.jobbingtrack.features.user.data.entities.UserWithRelations
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface UserDao {
+interface UserDao : BaseDao<UserEntity> {
+
+    @Transaction
+    @Query("SELECT * FROM users WHERE id = :id")
+    suspend fun getWithRelations(id: String): UserWithRelations?
+
     /** Toutes les users */
     @Query("SELECT * FROM users ORDER BY email")
     fun getAll(): Flow<List<UserEntity>>
@@ -25,7 +33,7 @@ interface UserDao {
 
     /** Mise à jour (tous champs) */
     @Update
-    suspend fun update(user: UserEntity)
+    override suspend fun update(user: UserEntity)
 
     /** Archive */
     @Query("UPDATE users SET isArchived = 1 WHERE id = :id")

@@ -11,6 +11,7 @@ import java.util.UUID
 @Entity(tableName = "skills")
 data class SkillEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
+    val cvId: String,
     val label: String,
     @Embedded val base: CommonEntityFields
 ) : HasIdProvider
