@@ -9,6 +9,7 @@ import androidx.room.Update
 import com.delhomme.jobbingtrack.core.database.BaseDao
 import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 import com.delhomme.jobbingtrack.features.contact.data.entities.ContactWithCompany
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactWithRelations
 import kotlinx.coroutines.flow.Flow
 
 
