@@ -5,14 +5,26 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.delhomme.jobbingtrack.JobbingTrackApp
 import com.delhomme.jobbingtrack.core.utils.countByDay
+import com.delhomme.jobbingtrack.core.utils.toInstant
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.features.application.data.repositories.ApplicationRepository
+import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
 import com.delhomme.jobbingtrack.features.calendar.data.repositories.EventRepository
+import com.delhomme.jobbingtrack.features.call.data.entities.CallEntity
 import com.delhomme.jobbingtrack.features.call.data.repositories.CallRepository
+import com.delhomme.jobbingtrack.features.company.data.entities.CompanyEntity
 import com.delhomme.jobbingtrack.features.company.data.repositories.CompanyRepository
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 import com.delhomme.jobbingtrack.features.contact.data.repositories.ContactRepository
+import com.delhomme.jobbingtrack.features.cvs.data.entities.CVEntity
+import com.delhomme.jobbingtrack.features.cvs.data.repositories.CvRepository
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
 import com.delhomme.jobbingtrack.features.followup.data.repositories.FollowUpRepository
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
 import com.delhomme.jobbingtrack.features.interview.data.repositories.InterviewRepository
+import com.delhomme.jobbingtrack.features.profil.data.entities.ProfilEntity
 import com.delhomme.jobbingtrack.features.profil.data.repositories.ProfilRepository
+import com.delhomme.jobbingtrack.features.user.data.entities.UserEntity
 import com.delhomme.jobbingtrack.features.user.data.repositories.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,7 +40,9 @@ class DashboardViewModel(app: Application, private val userId: String): AndroidV
 
     private val db = JobbingTrackApp.database
 
-    private val repoApplication = ApplicationRepository(db.applicationDao())
+    private val refDao = db.referenceDao()
+
+    private val repoApplication = ApplicationRepository(db.applicationDao(), refDao)
     private val repoCompany = CompanyRepository(db.companyDao())
     private val repoInterview = InterviewRepository(db.interviewDao())
     private val repoCall = CallRepository(db.callDao())
