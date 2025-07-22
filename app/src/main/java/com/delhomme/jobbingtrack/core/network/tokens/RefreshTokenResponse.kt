@@ -1,3 +1,3 @@
 package com.delhomme.jobbingtrack.core.network.tokens
 
-data class RefreshTokenRequest(val access: String)
+data class RefreshTokenResponse(val access: String, val refresh: String)

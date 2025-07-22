@@ -70,46 +70,44 @@ fun SplashScreen(
         }
     }
 }
-
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val tokenManager: TokenManager,
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private val _isAuthenticated = MutableLiveData<Boolean>()
-    val isAuthenticated: LiveData<Boolean> = _isAuthenticated
+    private val _authState = MutableLiveData<AuthState>()
+    val authState: LiveData<AuthState> = _authState
 
-    private val _isChecking = MutableLiveData(true)
-    val isChecking: LiveData<Boolean> = _isChecking
-
-    init {
-        checkAuthentication()
-    }
-
-    private fun checkAuthentication() {
+    fun checkAuthStatus() {
         viewModelScope.launch {
-            val refreshToken = tokenManager.getRefreshToken()
-            val accessToken = tokenManager.getAccessToken()
+            _authState.value = AuthState.Loading
 
-            if (refreshToken != null) {
-                if (accessToken != null) {
-                    // Vérifier que le token est valide en appelant getCurrentUser
-                    try {
-                        val user = authRepository.getCurrentUser()
-                        _isAuthenticated.value = user != null
-                    } catch (e: Exception) {
-                        _isAuthenticated.value = false
+            if (tokenManager.isLoggedIn()) {
+                try {
+                    // Vérifier si le token est valide en appelant un endpoint protégé
+                    val profileResponse = authRepository.getProfile()
+
+                    if (profileResponse != null) {
+                        _authState.value = AuthState.Authenticated
+                    } else {
+                        // Si la réponse est null, c'est que le token n'est plus valide
+                        tokenManager.clearTokens()
+                        _authState.value = AuthState.Unauthenticated
                     }
-                } else {
-                    // Tenter un refresh token
-                    _isAuthenticated.value = false
+                } catch (e: Exception) {
+                    _authState.value = AuthState.Error(e.message ?: "Une erreur est survenue")
                 }
             } else {
-                _isAuthenticated.value = false
+                _authState.value = AuthState.Unauthenticated
             }
-
-            _isChecking.value = false
         }
     }
+}
+
+sealed class AuthState {
+    object Authenticated : AuthState()
+    object Unauthenticated : AuthState()
+    object Loading : AuthState()
+    data class Error(val message: String) : AuthState()
 }

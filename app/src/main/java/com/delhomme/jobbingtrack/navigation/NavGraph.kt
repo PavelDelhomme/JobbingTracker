@@ -7,7 +7,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navArgument
-import com.delhomme.jobbingtrack.etc.main.MainScreen
 import com.delhomme.jobbingtrack.features.application.presentation.screens.AddOrEditApplicationScreen
 import com.delhomme.jobbingtrack.features.application.presentation.screens.ApplicationDetailsScreen
 import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationStatusViewModel

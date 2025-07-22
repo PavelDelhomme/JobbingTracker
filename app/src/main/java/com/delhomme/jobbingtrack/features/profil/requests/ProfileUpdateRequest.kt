@@ -1,0 +1,40 @@
+package com.delhomme.jobbingtrack.features.profil.requests
+
+data class ProfileUpdateRequest(
+    val bio: String? = null,
+    val phone: String? = null,
+    val website: String? = null,
+    val linkedin_url: String? = null,
+    val github_url: String? = null,
+    val target_salary_min: Long? = null,
+    val target_salary_max: Long? = null,
+    val target_locations: List<String>? = null,
+    val remote_work_preferences: List<String>? = null,
+
+    val email_notifications: Boolean? = null,
+    val sms_notifications: Boolean? = null,
+    val timezone: String? = null,
+    val notes: String? = null,
+
+    val apps_last_7: Int? = null,
+    val calls_last_7: Int? = null,
+    val fu_last_7: Int? = null,
+    val itw_last_7: Int? = null,
+    val contacts_last_7: Int? = null,
+
+    val applications: List<String>? = null,
+    val calls: List<String>? = null,
+    val followups: List<String>? = null,
+    val interviews: List<String>? = null,
+    val contacts: List<String>? = null,
+    val calendars: List<String>? = null,
+    val events: List<String>? = null,
+    val companies: List<String>? = null,
+    val projects: List<String>? = null,
+    val cvs: List<String>? = null,
+    val educations: List<String>? = null,
+    val experiences: List<String>? = null,
+    val languages: List<String>? = null,
+    val skills: List<String>? = null,
+    val certificates: List<String>? = null,
+)

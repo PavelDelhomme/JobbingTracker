@@ -8,3 +8,10 @@ import androidx.room.PrimaryKey
 data class SyncTracker(
     @PrimaryKey val id: String,
 )
+
+
+data class SyncResponse(
+    val updatedRecords: List<Any>,
+    val deletedRecords: List<Any>,
+    val timestamp: Long
+)

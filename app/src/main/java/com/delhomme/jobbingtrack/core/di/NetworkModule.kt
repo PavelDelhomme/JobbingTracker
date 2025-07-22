@@ -9,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -27,11 +28,11 @@ object NetworkModule {
                 val originalRequest = chain.request()
                 val token = tokenManager.getAccessToken()
 
-                val request = if (token != null) [
-                        originalRequest.newBuilder()
-                            .header("Authorization", "Bearer $token")
-                            .build()
-                ] else {
+                val request = if (token != null) {
+                    originalRequest.newBuilder()
+                        .header("Authorization", "Bearer $token")
+                        .build()
+                } else {
                     originalRequest
                 }
 
@@ -48,7 +49,10 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.jobbingtrack.delhomme.ovh/")
+            // Pour le développement local, utilisez:
+            .baseUrl("http://10.0.2.2:8000/") // Ceci pointe vers localhost de votre machine hôte depuis l'émulateur
+            // Pour la production, utilisez:
+            //.baseUrl("https://api.jobbingtrack.delhomme.ovh/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

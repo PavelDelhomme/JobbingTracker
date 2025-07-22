@@ -2,12 +2,16 @@ package com.delhomme.jobbingtrack.core.network
 
 import android.provider.ContactsContract.Profile
 import com.delhomme.jobbingtrack.core.network.tokens.RefreshTokenRequest
+import com.delhomme.jobbingtrack.core.network.tokens.RefreshTokenResponse
+import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginRequest
 import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginResponse
 import com.delhomme.jobbingtrack.features.authentication.domain.model.RegisterRequest
 import com.delhomme.jobbingtrack.features.authentication.domain.model.RegisterResponse
 import com.delhomme.jobbingtrack.features.profil.domain.model.ProfileResponse
+import com.delhomme.jobbingtrack.features.profil.requests.ProfileUpdateRequest
 import com.delhomme.jobbingtrack.features.user.domain.models.UserInfo
+import com.delhomme.jobbingtrack.services.sync.SyncResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -43,5 +47,14 @@ interface ApiService {
     suspend fun syncData(@Query("updated_after") timestamp: Long): Response<SyncResponse>
 
     @POST("api/client-sync/")
-    suspend fun clientSync(@Body data: Map<String, List<Any>>): Response<ClientSyncResponse>
+    suspend fun clientSync(@Body data: Map<String, List<Any>>): Response<SyncResponse>
+
+    // Applications
+    @GET("api/applications/")
+    suspend fun getApplications(): Response<List<ApplicationEntity>>
+
+    @POST("api/applications/")
+    suspend fun createApplication(@Body application: ApplicationEntity): Response<ApplicationEntity>
+
+
 }
