@@ -1,60 +1,64 @@
 package com.delhomme.jobbingtrack.features.company.data.entities
 
-import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.Junction
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import androidx.room.TypeConverters
 import com.delhomme.jobbingtrack.core.common.entities.CommonEntityFields
-import com.delhomme.jobbingtrack.core.common.entities.HasIdProvider
+import com.delhomme.jobbingtrack.core.model.BaseEntity
 import com.delhomme.jobbingtrack.core.utils.Converters
-import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
-import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 import java.util.UUID
-
 
 @Entity(tableName = "companies")
 @TypeConverters(Converters::class)
 data class CompanyEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
+    override val userId: String,
+
     val name: String,
-    var type: String?, // FK vers CompanyTypeEntity
+    val type: String? = null,
     val phone: String? = null,
     val email: String? = null,
     val hrEmail: String? = null,
     val address: String? = null,
     val notes: String? = null,
-    //val applicationsIds: List<String>?,
-    //val contactsIds: List<String>?,
-    //val followUpsIds: List<String>?,
-    //val interviewsIds: List<String>?,
-    //val callsIds: List<String>?,
-    @Embedded val base: CommonEntityFields
-) : HasIdProvider
 
-
-data class CompanyFull(
-    @Embedded val company: CompanyEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            CompanyContactCrossRef::class,
-            parentColumn = "companyId",
-            entityColumn = "contactId"
-        )
-    )
-    val contacts: List<ContactEntity>,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
-        associateBy = Junction(
-            CompanyApplicationCrossRef::class,
-            parentColumn = "companyId",
-            entityColumn = "applicationId"
-        )
-    )
-    val applications: List<ApplicationEntity>,
-    // Ajoute ici d'autres relations si besoin
-)
+    // Relations (si nécessaire)
+    val applicationIds: List<String> = emptyList(),
+    val contactIds: List<String> = emptyList(),
+    val followUpIds: List<String> = emptyList(),
+    val interviewIds: List<String> = emptyList(),
+    val callIds: List<String> = emptyList()
+) : BaseEntity() {
+    // Constructeur secondaire pour la migration depuis l'ancien format
+    constructor(
+        id: String = UUID.randomUUID().toString(),
+        name: String,
+        type: String?,
+        phone: String?,
+        email: String?,
+        hrEmail: String?,
+        address: String?,
+        notes: String?,
+        base: CommonEntityFields
+    ) : this(
+        id = id,
+        userId = base.userId,
+        name = name,
+        type = type,
+        phone = phone,
+        email = email,
+        hrEmail = hrEmail,
+        address = address,
+        notes = notes
+    ) {
+        // Copier les métadonnées depuis CommonEntityFields
+        this.createdAt = base.createdAt
+        this.updatedAt = base.updatedAt
+        this.isDeleted = base.isDeleted
+        this.isArchived = base.isArchived
+        this.deletedAt = base.deletedAt
+        this.archivedAt = base.archivedAt
+        this.syncHash = base.syncHash
+        this.entityHash = base.syncHash // Utiliser syncHash comme entityHash initial
+    }
+}

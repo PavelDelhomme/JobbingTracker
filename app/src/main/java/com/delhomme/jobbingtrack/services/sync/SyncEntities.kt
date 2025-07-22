@@ -1,17 +1,7 @@
 package com.delhomme.jobbingtrack.services.sync
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-
-@Entity
-data class SyncTracker(
-    @PrimaryKey val id: String,
-)
-
-
 data class SyncResponse(
-    val updatedRecords: List<Any>,
-    val deletedRecords: List<Any>,
+    val updatedRecords: Map<String, List<Any>>,
+    val deletedRecords: Map<String, List<String>>,
     val timestamp: Long
 )

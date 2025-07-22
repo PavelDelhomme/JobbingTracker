@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -66,6 +68,9 @@ dependencies {
     implementation(libs.places)
     implementation(libs.androidx.annotation)
     implementation(libs.common)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Material
@@ -125,13 +130,18 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    kapt("com.google.dagger:hilt-android-compiler:2.56.2")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
     // Pour intégration Compose Navigation (optionnel mais recommandé)
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-    implementation("com.google.code.gson:gson:2.10")
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.gson)
 
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.logging.interceptor)
+    implementation(libs.converter.gson)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.startup.runtime)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.security.crypto.ktx)
 }

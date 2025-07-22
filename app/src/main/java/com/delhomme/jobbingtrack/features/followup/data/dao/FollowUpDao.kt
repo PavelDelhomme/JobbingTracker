@@ -1,15 +1,14 @@
 package com.delhomme.jobbingtrack.features.followup.data.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
-import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.delhomme.jobbingtrack.core.common.interfaces.DateRangeProvider
+import com.delhomme.jobbingtrack.core.database.BaseDao
 import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpContactCrossRef
 import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpEntity
 import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpStatusEntity
@@ -17,126 +16,103 @@ import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpTypeEnt
 import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpWithContacts
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao
-interface FollowUpDao : DateRangeProvider<FollowUpEntity> {
+interface FollowUpDao : DateRangeProvider<FollowUpEntity>, BaseDao<FollowUpEntity> {
     override val tableName: String get() = "followups"
     override val dateColumn: String get() = "date"
 
-    /** 1) Tout pour cet user */
     @Query("SELECT * FROM followups WHERE userId = :userId ORDER BY date DESC")
     fun getAllForUser(userId: String): Flow<List<FollowUpEntity>>
 
-    /** 2) Actifs */
     @Query("""
       SELECT * FROM followups
-       WHERE userId=:userId AND isDeleted=0 AND isArchived=0
+       WHERE userId = :userId AND is_deleted = 0 AND is_archived = 0
        ORDER BY date DESC
     """)
     fun getAllActiveForUser(userId: String): Flow<List<FollowUpEntity>>
 
-    /** 3) Archivés */
     @Query("""
       SELECT * FROM followups
-       WHERE userId=:userId AND isArchived=1 AND isDeleted=0
+       WHERE userId = :userId AND is_archived = 1 AND is_deleted = 0
        ORDER BY date DESC
     """)
     fun getArchivedForUser(userId: String): Flow<List<FollowUpEntity>>
 
-    /** 4) Supprimés (corbeille) */
     @Query("""
       SELECT * FROM followups
-       WHERE userId=:userId AND isDeleted=1
+       WHERE userId = :userId AND is_deleted = 1
        ORDER BY date DESC
     """)
     fun getDeletedForUser(userId: String): Flow<List<FollowUpEntity>>
 
-    /** 5) Détail */
-    @Query("SELECT * FROM followups WHERE id=:id AND userId=:userId")
+    @Query("SELECT * FROM followups WHERE id = :id AND userId = :userId")
     fun getByIdForUser(id: String, userId: String): Flow<FollowUpEntity?>
 
-    /** Insert ou replace */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(relance: FollowUpEntity)
+    @Query("UPDATE followups SET is_archived = 1, archived_at = :timestamp WHERE id IN(:ids) AND userId = :userId")
+    suspend fun archive(ids: List<String>, userId: String, timestamp: Long = System.currentTimeMillis())
 
-    /** Mise à jour (tous champs) */
-    @Update
-    suspend fun update(relance: FollowUpEntity)
+    @Query("UPDATE followups SET is_deleted = 1, deleted_at = :timestamp WHERE id IN(:ids) AND userId = :userId")
+    suspend fun softDelete(ids: List<String>, userId: String, timestamp: Long = System.currentTimeMillis())
 
-    /** Batch archive */
-    @Query("UPDATE followups SET isArchived=1 WHERE id IN(:ids) AND userId=:userId")
-    suspend fun archive(ids: List<String>, userId: String)
-
-    /** Batch soft-delete */
-    @Query("UPDATE followups SET isDeleted=1 WHERE id IN(:ids) AND userId=:userId")
-    suspend fun softDelete(ids: List<String>, userId: String)
-
-    /** Batch restore */
-    @Query("UPDATE followups SET isDeleted=0 WHERE id IN(:ids) AND userId=:userId")
+    @Query("UPDATE followups SET is_deleted = 0, deleted_at = NULL WHERE id IN(:ids) AND userId = :userId")
     suspend fun restore(ids: List<String>, userId: String)
 
-    /** Batch delete forever */
-    @Query("DELETE FROM followups WHERE id IN(:ids) AND userId=:userId")
+    @Query("DELETE FROM followups WHERE id IN(:ids) AND userId = :userId")
     suspend fun deleteForever(ids: List<String>, userId: String)
 
-    /** Tout vider pour l'user */
-    @Query("DELETE FROM followups WHERE userId=:userId")
+    @Query("DELETE FROM followups WHERE userId = :userId")
     suspend fun deleteAllForUser(userId: String)
 
-    /** Tout vider pour cet entreprise **/
-    @Query("DELETE FROM followups WHERE companyId=:companyId")
+    @Query("DELETE FROM followups WHERE companyId = :companyId")
     suspend fun deleteAllForCompany(companyId: String)
 
-    /** Tout vider pour cet candidature **/
-    @Query("DELETE FROM followups WHERE applicationId=:applicationId")
+    @Query("DELETE FROM followups WHERE applicationId = :applicationId")
     suspend fun deleteAllForApplication(applicationId: String)
 
     @RawQuery(observedEntities = [FollowUpEntity::class])
     override fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<FollowUpEntity>>
 
-    // === NOUVELLES MÉTHODES AVEC RELATIONS ===
     @Transaction
     @Query("SELECT * FROM followups WHERE id = :id AND userId = :userId")
     fun getFollowUpWithContacts(id: String, userId: String): Flow<FollowUpWithContacts?>
 
     @Transaction
-    @Query("SELECT * FROM followups WHERE id = :id AND userId = :userId")
-    fun getFollowUpFull(id: String, userId: String): Flow<FollowUpEntity?>
-
-    @Transaction
     @Query("""
         SELECT * FROM followups 
-        WHERE userId = :userId AND isDeleted = 0 AND isArchived = 0
+        WHERE userId = :userId AND is_deleted = 0 AND is_archived = 0
         ORDER BY date DESC
     """)
     fun getAllActiveWithContacts(userId: String): Flow<List<FollowUpWithContacts>>
 
-    // === GESTION DES CROSSREF ===
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFollowUpContactCrossRef(crossRef: FollowUpContactCrossRef)
-
-    @Delete
-    suspend fun deleteFollowUpContactCrossRef(crossRef: FollowUpContactCrossRef)
 
     @Query("DELETE FROM FollowUpContactCrossRef WHERE followUpId = :followUpId")
     suspend fun clearContactsForFollowUp(followUpId: String)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertFollowUpCallCrossRef(crossRef: FollowUpCallCrossRef)
-
-    @Query("DELETE FROM FollowUpCallCrossRef WHERE followUpId = :followUpId")
-    suspend fun clearCallsForFollowUp(followUpId: String)
-
-
-    // Récupérer les IDs des contacts pour un suivi spécifique
     @Query("SELECT contactId FROM FollowUpContactCrossRef WHERE followUpId = :followUpId")
     suspend fun getContactIdsForFollowUp(followUpId: String): List<String>
 
-    // Récupérer tous les types de suivi
     @Query("SELECT * FROM follow_up_types WHERE isDeleted = 0")
     fun getAllFollowUpTypes(): Flow<List<FollowUpTypeEntity>>
 
-    // Récupérer tous les statuts de suivi
-    @Query("SELECT * FROM follow_up_status WHERE isDeleted = 0")
+    @Query("SELECT * FROM follow_up_status WHERE is_deleted = 0")
     fun getAllFollowUpStatuses(): Flow<List<FollowUpStatusEntity>>
+
+    @Query("""
+        SELECT * FROM followups 
+        WHERE userId = :userId 
+        AND updated_at > :timestamp 
+        AND (last_sync_at IS NULL OR updated_at > last_sync_at)
+    """)
+    override suspend fun getUpdatedSince(timestamp: Long, userId: String): List<FollowUpEntity>
+
+    @Query("UPDATE followups SET last_sync_at = :syncTime WHERE id IN (:ids)")
+    override suspend fun updateSyncTimestamp(ids: List<String>, syncTime: Long)
+
+    @Query("SELECT * FROM followups WHERE id = :id AND userId = :userId LIMIT 1")
+    override suspend fun getById(id: String, userId: String): FollowUpEntity?
+
+    @Query("UPDATE followups SET is_deleted = 1, deleted_at = :timestamp WHERE id = :id AND userId = :userId")
+    suspend fun softDeleteById(id: String, userId: String, timestamp: Long): Int
 }

@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.core.common.interfaces
 
+import androidx.room.RawQuery
 import androidx.sqlite.db.SimpleSQLiteQuery
 import kotlinx.coroutines.flow.Flow
 
@@ -12,18 +13,18 @@ interface DateRangeProvider<T> {
     val tableName: String
     val dateColumn: String
 
+    @RawQuery
     fun getByDateRange(query: SimpleSQLiteQuery): Flow<List<T>>
 
-    fun getByDateRangeForUser(userId: String, start: Long, end: Long): Flow<List<T>> {
-        val sql = """
-      SELECT * 
-        FROM $tableName
-       WHERE userId = ?
-         AND $dateColumn BETWEEN ? AND ?
-       ORDER BY $dateColumn
-    """.trimIndent()
-        return getByDateRange(
-            SimpleSQLiteQuery(sql, arrayOf(userId, start, end))
+    fun getByDateRangeForUser(userId: String, from: Long, to: Long): Flow<List<T>> {
+        val query = SimpleSQLiteQuery(
+            """
+            SELECT * FROM $tableName 
+            WHERE user_id = '$userId' 
+            AND $dateColumn BETWEEN $from AND $to 
+            ORDER BY $dateColumn DESC
+            """
         )
+        return getByDateRange(query)
     }
 }

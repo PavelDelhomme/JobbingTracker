@@ -2,6 +2,8 @@ package com.delhomme.jobbingtrack.core.utils
 
 
 import android.app.Application
+import com.delhomme.jobbingtrack.core.common.entities.CommonEntityFields
+import com.delhomme.jobbingtrack.core.model.BaseEntity
 import com.delhomme.jobbingtrack.features.call.domain.model.Call
 import com.delhomme.jobbingtrack.features.contact.domain.model.Contact
 import com.delhomme.jobbingtrack.features.followup.domain.model.FollowUp
@@ -144,4 +146,13 @@ fun <T> List<T>.countByDay(
         }
         .map { (day, items) -> day to items.size }
         .sortedBy { it.first }
+}
+
+
+
+
+// Extension pour faciliter la conversion depuis les entités existantes
+fun <T : BaseEntity> T.applyCommonFields(fields: CommonEntityFields): T {
+    fields.applyToBaseEntity(this)
+    return this
 }
