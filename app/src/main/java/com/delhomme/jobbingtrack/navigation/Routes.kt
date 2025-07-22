@@ -6,6 +6,7 @@ object Routes {
     const val MAIN = "main"
     const val LOGIN = "login"
     const val REGISTER = "register"
+    const val SPLASH = "splash" // Route de l'ecran SPLASH
 
     // Routes Détails avec paramètre
     const val APPLICATION_DETAIL = "candidature/detail"

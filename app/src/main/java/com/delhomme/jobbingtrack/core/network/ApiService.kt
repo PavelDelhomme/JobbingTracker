@@ -1,10 +1,12 @@
 package com.delhomme.jobbingtrack.core.network
 
 import android.provider.ContactsContract.Profile
+import com.delhomme.jobbingtrack.core.network.tokens.RefreshTokenRequest
 import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginRequest
 import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginResponse
 import com.delhomme.jobbingtrack.features.authentication.domain.model.RegisterRequest
 import com.delhomme.jobbingtrack.features.authentication.domain.model.RegisterResponse
+import com.delhomme.jobbingtrack.features.profil.domain.model.ProfileResponse
 import com.delhomme.jobbingtrack.features.user.domain.models.UserInfo
 import retrofit2.Call
 import retrofit2.Response
@@ -12,29 +14,34 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 
 interface ApiService {
-    @POST("auth/login/")
+    // Authentification
+    @POST("api/auth/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
-    @POST("auth/refresh/")
-    fun refreshToken(@Body body: RefreshTokenRequest): Call<RefreshToAccessTokenResponse>
-    @POST("auth/register/")
+
+    @POST("api/auth/register/")
     suspend fun register(@Body body: RegisterRequest): Response<RegisterResponse>
-    @Multipart
-    @POST("user/avatar/")
-    suspend fun uploadAvatar(): Response<String>//TODO
 
+    @POST("api/auth/refresh/")
+    suspend fun refreshToken(@Body body: RefreshTokenRequest): Response<RefreshTokenResponse>
 
-    @GET("auth/me/")
+    // Profil utilisateur
+    @GET("api/auth/me/")
     suspend fun getCurrentUser(): Response<UserInfo>
-    // Ajouter plus tard : GET/PUT sur `/profiles/` si tu veux éditer
-    @GET("profiles/")
-    suspend fun getMyProfile(): Profile
-    @GET("profiles/{id}/")
-    suspend fun getProfile(id: String): Profile
-    //@POST("api/profiles/")
-    //suspend fun createProfile(@Body profile: Profile): Profile
-    @POST("profiles/{id}/")
-    suspend fun updateProfile(@Body profile: Profile): Profile
+
+    @GET("api/profiles/")
+    suspend fun getMyProfile(): Response<ProfileResponse>
+
+    @POST("api/profiles/")
+    suspend fun updateProfile(@Body profile: ProfileUpdateRequest): Response<ProfileResponse>
+
+    // Synchronisation
+    @GET("api/sync/")
+    suspend fun syncData(@Query("updated_after") timestamp: Long): Response<SyncResponse>
+
+    @POST("api/client-sync/")
+    suspend fun clientSync(@Body data: Map<String, List<Any>>): Response<ClientSyncResponse>
 }

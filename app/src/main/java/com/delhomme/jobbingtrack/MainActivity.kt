@@ -12,7 +12,7 @@ import com.delhomme.jobbingtrack.navigation.NavGraph
 import android.Manifest
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
-import com.delhomme.jobbingtrack.api.tokens.TokenManager
+import com.delhomme.jobbingtrack.core.network.tokens.TokenManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

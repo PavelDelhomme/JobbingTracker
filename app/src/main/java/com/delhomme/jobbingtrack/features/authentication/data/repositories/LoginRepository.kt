@@ -1,5 +1,7 @@
 package com.delhomme.jobbingtrack.features.authentication.data.repositories
 
+import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginResponse
+import com.delhomme.jobbingtrack.services.api.LoginService
 import javax.inject.Inject
 
 

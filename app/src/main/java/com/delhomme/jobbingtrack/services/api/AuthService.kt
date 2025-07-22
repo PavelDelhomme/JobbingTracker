@@ -1,5 +1,10 @@
 package com.delhomme.jobbingtrack.services.api
 
+import com.delhomme.jobbingtrack.core.network.ApiService
+import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginRequest
+import com.delhomme.jobbingtrack.features.authentication.domain.model.LoginResponse
+import com.delhomme.jobbingtrack.features.authentication.domain.model.RegisterRequest
+import com.delhomme.jobbingtrack.features.authentication.domain.model.RegisterResponse
 import javax.inject.Inject
 
 

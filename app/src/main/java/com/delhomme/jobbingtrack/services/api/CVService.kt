@@ -1,6 +1,8 @@
 package com.delhomme.jobbingtrack.services.api
 
 import android.util.Log
+import com.delhomme.jobbingtrack.core.network.ApiService
+import com.delhomme.jobbingtrack.features.cvs.data.entities.CVEntity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -11,7 +13,7 @@ import javax.inject.Inject
 class CVService @Inject constructor(
     private val apiService: ApiService
 ) {
-    suspend fun uploadCV(file: File): CV? {
+    suspend fun uploadCV(file: File): CVEntity? {
         return try {
             val filePart = MultipartBody.Part.createFormData(
                 name = "file",
