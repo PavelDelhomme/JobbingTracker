@@ -13,18 +13,27 @@ import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntit
 
 data class EventWithRelations(
     @Embedded override val mainEntity: EventEntity,
-    @Relation(parentColumn="relatedObjectId", entityColumn="id", entity= ApplicationEntity::class)
+
+    @Relation(parentColumn = "type_id", entityColumn = "id")
+    val eventType: EventTypeEntity? = null,
+
+    @Relation(parentColumn = "application_id", entityColumn = "id")
     override val applications: List<ApplicationEntity> = emptyList(),
-    @Relation(parentColumn="relatedObjectId", entityColumn="id", entity= CallEntity::class)
-    override val calls: List<CallEntity> = emptyList(),
-    @Relation(parentColumn = "relatedObjectId", entityColumn = "id", entity = InterviewEntity::class)
-    override val interviews: List<InterviewEntity> = emptyList(),
-    @Relation(parentColumn = "relatedObjectId", entityColumn = "id", entity = FollowUpEntity::class)
+
+    @Relation(parentColumn = "company_id", entityColumn = "id")
+    override val companies: List<CompanyEntity> = emptyList(),
+
+    @Relation(parentColumn = "contact_id", entityColumn = "id")
+    override val contacts: List<ContactEntity> = emptyList(),
+
+    @Relation(parentColumn = "follow_up_id", entityColumn = "id")
     override val followUps: List<FollowUpEntity> = emptyList(),
 
-    // Propriétés non utilisées
-    override val contacts: List<ContactEntity> = emptyList(),
-    override val companies: List<CompanyEntity> = emptyList(),
+    @Relation(parentColumn = "interview_id", entityColumn = "id")
+    override val interviews: List<InterviewEntity> = emptyList(),
+
+    // Propriétés non utilisées pour cette entité
+    override val calls: List<CallEntity> = emptyList(),
     override val events: List<EventEntity> = emptyList(),
     override val cvs: List<CVEntity> = emptyList()
 ) : WithRelations<EventEntity>
