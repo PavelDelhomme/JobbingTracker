@@ -2,7 +2,7 @@ package com.delhomme.jobbingtrack.features.contact.data.repositories
 
 import com.delhomme.jobbingtrack.features.contact.data.dao.ContactDao
 import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
-import com.delhomme.jobbingtrack.features.contact.data.entities.ContactWithCompany
+import com.delhomme.jobbingtrack.features.contact.data.entities.ContactWithRelations
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,11 +15,15 @@ class ContactRepository @Inject constructor(
     fun activeForUser(userId: String): Flow<List<ContactEntity>> = dao.getAllActiveForUser(userId)
     fun archivedForUser(userId: String): Flow<List<ContactEntity>> = dao.getArchivedForUser(userId)
     fun deletedForUser(userId: String): Flow<List<ContactEntity>> = dao.getDeletedForUser(userId)
-    fun byId(id: String, userId: String): Flow<ContactEntity?> = dao.getByIdForUser(id, userId)
-    fun byIdWithCompany(id: String, userId: String): Flow<ContactWithCompany?> = dao.getContactWithCompany(id, userId)
-    fun allActiveWithCompany(userId: String): Flow<List<ContactWithCompany>> = dao.getAllActiveWithCompany(userId)
 
-    suspend fun save(contact: ContactEntity) = dao.insert(contact)
+    fun byId(id: String, userId: String): Flow<ContactEntity?> = dao.getByIdForUser(id, userId)
+    fun getContactWithRelations(id: String, userId: String): Flow<ContactWithRelations?> = dao.getContactWithRelations(id, userId)
+    suspend fun getWithRelations(id: String): ContactWithRelations? = dao.getWithRelations(id)
+
+    fun getByCompanyId(userId: String, companyId: String): Flow<List<ContactEntity>> =
+        dao.getByCompanyId(userId, companyId)
+
+    suspend fun save(contact: ContactEntity): Long = dao.insert(contact)
     suspend fun update(contact: ContactEntity) = dao.update(contact)
     suspend fun archive(ids: List<String>, userId: String) = dao.archive(ids, userId)
     suspend fun softDelete(ids: List<String>, userId: String) = dao.softDelete(ids, userId)

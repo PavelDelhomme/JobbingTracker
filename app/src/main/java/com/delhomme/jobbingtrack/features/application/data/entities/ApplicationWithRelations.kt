@@ -25,7 +25,7 @@ data class ApplicationWithRelations(
     @Relation(parentColumn = "interviewIds", entityColumn = "id")
     override val interviews: List<InterviewEntity> = emptyList(),
 
-    @Relation(parentColumn = "company_id", entityColumn = "id")
+    @Relation(parentColumn = "companyIds", entityColumn = "id")
     override val companies: List<CompanyEntity> = emptyList(),
 
     // Propriétés non utilisées

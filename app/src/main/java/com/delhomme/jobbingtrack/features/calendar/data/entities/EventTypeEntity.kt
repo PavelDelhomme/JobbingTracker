@@ -12,7 +12,7 @@ import java.util.UUID
 @TypeConverters(Converters::class)
 data class EventTypeEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "user_id") override var userId: String,
+    @ColumnInfo(name = "userId") override var userId: String,
     val label: String,
     val color: String? = null
 ) : BaseEntity()

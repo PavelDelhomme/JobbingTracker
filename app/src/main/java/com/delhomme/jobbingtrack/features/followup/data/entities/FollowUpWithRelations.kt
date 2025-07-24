@@ -13,19 +13,19 @@ import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntit
 
 data class FollowUpWithRelations(
     @Embedded override val mainEntity: FollowUpEntity,
-    @Relation(parentColumn = "application_id", entityColumn = "id")
+    @Relation(parentColumn = "applicationId", entityColumn = "id")
     override val applications: List<ApplicationEntity> = emptyList(),
-    @Relation(parentColumn = "company_id", entityColumn = "id")
+    @Relation(parentColumn = "companyId", entityColumn = "id")
     override val companies: List<CompanyEntity> = emptyList(),
-    @Relation(parentColumn = "contact_id", entityColumn = "id")
+    @Relation(parentColumn = "contactId", entityColumn = "id")
     override val contacts: List<ContactEntity> = emptyList(),
 
     // Relations pour les types/status/platforms
-    @Relation(parentColumn = "type_id", entityColumn = "id")
+    @Relation(parentColumn = "typeId", entityColumn = "id")
     val type: FollowUpTypeEntity? = null,
-    @Relation(parentColumn = "platform_id", entityColumn = "id")
+    @Relation(parentColumn = "platformId", entityColumn = "id")
     val platform: FollowUpPlatformEntity? = null,
-    @Relation(parentColumn = "status_id", entityColumn = "id")
+    @Relation(parentColumn = "statusId", entityColumn = "id")
     val status: FollowUpStatusEntity? = null,
 
     // Propriétés non utilisées pour cette entité

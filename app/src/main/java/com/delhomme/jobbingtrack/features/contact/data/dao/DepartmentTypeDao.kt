@@ -17,6 +17,9 @@ interface DepartmentTypeDao : BaseDao<DepartmentTypeEntity> {
     @Query("SELECT * FROM department_types WHERE userId = :userId AND isDeleted = 0")
     fun getAllForUser(userId: String): Flow<List<DepartmentTypeEntity>>
 
+    @Query("SELECT * FROM department_types WHERE companyId = :companyId AND isDeleted = 0")
+    fun getByCompanyId(companyId: String): Flow<List<DepartmentTypeEntity>>
+
     @Query("""
         SELECT * FROM department_types 
         WHERE userId = :userId 

@@ -64,13 +64,6 @@ class TokenAuthenticator @Inject constructor(
             }
             return null
         }
-        val newTokens = getNewTokens(refreshToken) ?: return null
-
-        tokenManager.saveTokens(newTokens.access, newTokens.refresh)
-
-        return response.request.newBuilder()
-            .header("Authorization", "Bearer ${newTokens.access}")
-            .build()
     }
 
     private fun getNewTokens(refresh: String): LoginResponse? {

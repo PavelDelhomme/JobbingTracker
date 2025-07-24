@@ -14,9 +14,10 @@ class PositionTypeRepository @Inject constructor(
     fun byId(id: String): Flow<PositionTypeEntity?> = dao.getById(id)
     fun allForUser(userId: String): Flow<List<PositionTypeEntity>> = dao.getAllForUser(userId)
 
-    suspend fun save(positionType: PositionTypeEntity) = dao.insert(positionType)
-    suspend fun update(positionType: PositionTypeEntity) = dao.update(positionType)
-    suspend fun delete(id: String, userId: String) = dao.softDeleteById(id, userId)
+    suspend fun save(entity: PositionTypeEntity): Long = dao.insert(entity)
+    suspend fun update(entity: PositionTypeEntity) = dao.update(entity)
+    suspend fun delete(id: String, userId: String) =
+        dao.softDeleteById(id, userId, System.currentTimeMillis())
 
     // Méthodes pour la synchronisation
     suspend fun getUpdatedSince(timestamp: Long, userId: String): List<PositionTypeEntity> =

@@ -14,22 +14,22 @@ import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntit
 data class EventWithRelations(
     @Embedded override val mainEntity: EventEntity,
 
-    @Relation(parentColumn = "type_id", entityColumn = "id")
+    @Relation(parentColumn = "typeId", entityColumn = "id")
     val eventType: EventTypeEntity? = null,
 
-    @Relation(parentColumn = "application_id", entityColumn = "id")
+    @Relation(parentColumn = "applicationId", entityColumn = "id")
     override val applications: List<ApplicationEntity> = emptyList(),
 
-    @Relation(parentColumn = "company_id", entityColumn = "id")
+    @Relation(parentColumn = "companyId", entityColumn = "id")
     override val companies: List<CompanyEntity> = emptyList(),
 
-    @Relation(parentColumn = "contact_id", entityColumn = "id")
+    @Relation(parentColumn = "contactId", entityColumn = "id")
     override val contacts: List<ContactEntity> = emptyList(),
 
-    @Relation(parentColumn = "follow_up_id", entityColumn = "id")
+    @Relation(parentColumn = "followUpId", entityColumn = "id")
     override val followUps: List<FollowUpEntity> = emptyList(),
 
-    @Relation(parentColumn = "interview_id", entityColumn = "id")
+    @Relation(parentColumn = "interviewId", entityColumn = "id")
     override val interviews: List<InterviewEntity> = emptyList(),
 
     // Propriétés non utilisées pour cette entité

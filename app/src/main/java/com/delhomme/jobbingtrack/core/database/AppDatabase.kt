@@ -4,12 +4,12 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.delhomme.jobbingtrack.core.utils.Converters
+import com.delhomme.jobbingtrack.features.application.data.dao.ApplicationPlatformDao
+import com.delhomme.jobbingtrack.features.application.data.dao.ApplicationStatusDao
+import com.delhomme.jobbingtrack.features.application.data.dao.ApplicationTypeDao
+import com.delhomme.jobbingtrack.features.application.data.dao.ContractTypeDao
 import com.delhomme.jobbingtrack.features.application.data.entities.ApplicationEntity
 import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationDao
-import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationPlatformDao
-import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationStatusDao
-import com.delhomme.jobbingtrack.features.application.data.sources.local.ApplicationTypeDao
-import com.delhomme.jobbingtrack.features.application.data.sources.local.ContractTypeDao
 import com.delhomme.jobbingtrack.features.application.data.sources.local.ReferenceDao
 import com.delhomme.jobbingtrack.features.calendar.data.dao.EventTypeDao
 import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity

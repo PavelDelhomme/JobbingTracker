@@ -15,13 +15,13 @@ data class CallEntity(
     @ColumnInfo(name = "userId") override var userId: String,
 
     val subject: String,
-    @ColumnInfo(name = "company_id") val companyId: String,
-    @ColumnInfo(name = "contact_id") val contactId: String? = null,
-    @ColumnInfo(name = "application_id") val applicationId: String? = null,
-    @ColumnInfo(name = "follow_up_id") val followUpId: String? = null,
+    @ColumnInfo(name = "companyId") val companyId: String,
+    @ColumnInfo(name = "contactId") val contactId: String? = null,
+    @ColumnInfo(name = "applicationId") val applicationId: String? = null,
+    @ColumnInfo(name = "followUpId") val followUpId: String? = null,
     val timestamp: Long,
     val notes: String? = null,
 
     // TypeID pour lier à CallTypeEntity
-    @ColumnInfo(name = "type_id") val typeId: String? = null
+    @ColumnInfo(name = "typeId") val typeId: String? = null
 ) : BaseEntity()

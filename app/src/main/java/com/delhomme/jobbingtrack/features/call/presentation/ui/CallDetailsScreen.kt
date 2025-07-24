@@ -59,14 +59,14 @@ fun CallDetailsScreen(
     val contacts    by contactVm.allForUser(userId = userId).observeAsState(emptyList())
     val companies by companyVm.allForUser(userId = userId).observeAsState(emptyList())
 
-    val application      = applications.find       { it.id == call.application_id }
+    val application      = applications.find       { it.id == call.applicationId }
     val positionTypes = positionTypeVm.all.observeAsState(emptyList()).value
     val applicationStatuses = applicationStatusVm.all.observeAsState(emptyList()).value
-    val contact    = contacts.find    { it.id == call.contact_id }
-    val company = companies.find { it.id == call.company_id }
+    val contact    = contacts.find    { it.id == call.contactId }
+    val company = companies.find { it.id == call.companyId }
 
     val statusLabel = applicationStatuses.find { it.id == application?.statusRefId }?.label ?: "—"
-    val positionLabel = positionTypes.find { it.id == contact?.positionId }?.label ?: "—"
+    val positionLabel = positionTypes.find { it.id == contact?.positionTypeId }?.name ?: "—"
 
     BackHandler {
         navController.popBackStack()

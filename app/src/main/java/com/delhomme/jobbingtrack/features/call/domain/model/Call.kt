@@ -20,6 +20,6 @@ data class Call(
     val contactId: String?,
     val applicationId: String?,
     val followUpId: String?,
-    val datetime: Long,
+    val dateTime: Long,
     val notes: String?,
 ) : HasIdProvider

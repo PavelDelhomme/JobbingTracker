@@ -37,40 +37,40 @@ import kotlin.collections.find
 @Composable
 fun AddOrEditCallScreen(
     userId: String,
-    call_id: String? = null,
-    linked_application_id: String? = null,
-    linked_company_id: String? = null,
-    linked_contact_id: String? = null,
-    linked_followup_id: String? = null,
+    callId: String? = null,
+    linkedApplicationId: String? = null,
+    linkedCompanyId: String? = null,
+    linkedContactId: String? = null,
+    linkedFollowUpId: String? = null,
     vm: CallViewModel = hiltViewModel(),
-    application_vm: ApplicationViewModel = hiltViewModel(),
-    contact_vm: ContactViewModel = hiltViewModel(),
-    followup_vm: FollowUpViewModel = hiltViewModel(),
-    company_vm: CompanyViewModel = hiltViewModel(),
+    applicationVm: ApplicationViewModel = hiltViewModel(),
+    contactVm: ContactViewModel = hiltViewModel(),
+    followUpVm: FollowUpViewModel = hiltViewModel(),
+    companyVm: CompanyViewModel = hiltViewModel(),
     onCancel: () -> Unit
 ) {
     val calls    = vm.activeForUser(userId).observeAsState(emptyList()).value
-    val applications = application_vm.activeForUser(userId = userId).observeAsState(emptyList()).value
-    val contacts  = contact_vm.activeForUser(userId = userId).observeAsState(emptyList()).value
-    val follow_ups  = followup_vm.activeForUser(userId = userId).observeAsState(emptyList()).value
-    val companies = company_vm.activeForUser(userId = userId).observeAsState(emptyList()).value
+    val applications = applicationVm.activeForUser(userId = userId).observeAsState(emptyList()).value
+    val contacts  = contactVm.activeForUser(userId = userId).observeAsState(emptyList()).value
+    val followUps  = followUpVm.activeForUser(userId = userId).observeAsState(emptyList()).value
+    val companies = companyVm.activeForUser(userId = userId).observeAsState(emptyList()).value
 
-    val existing = calls.find { it.id == call_id }
+    val existing = calls.find { it.id == callId }
 
-    var selected_application_id by remember { mutableStateOf(existing?.application_id ?: linked_application_id )}
-    var selected_contact_id by remember { mutableStateOf(existing?.contact_id ?: linked_contact_id) }
-    var selected_follow_up_id by remember { mutableStateOf(existing?.follow_up_id ?: linked_followup_id) }
+    var selectedApplicationId by remember { mutableStateOf(existing?.applicationId ?: linkedApplicationId) }
+    var selectedContactId by remember { mutableStateOf(existing?.contactId ?: linkedContactId) }
+    var selectedFollowUpId by remember { mutableStateOf(existing?.followUpId ?: linkedFollowUpId) }
 
-    val final_company_id = resolveCompanyId(
-        existing_call = existing,
+    val finalCompanyId = resolveCompanyId(
+        existingCall = existing,
         applications = applications,
-        follow_ups = follow_ups,
-        linked_application_d = selected_application_id,
-        linked_follow_up_id = selected_follow_up_id,
-        fallback_company_id = linked_company_id
+        followUps = followUps,
+        linkedApplicationId = selectedApplicationId,
+        linkedFollowUpId = selectedFollowUpId,
+        fallbackCompanyId = linkedCompanyId
     )
 
-    val company_name = companies.find { it.id == final_company_id }?.name.orEmpty()
+    val companyName = companies.find { it.id == finalCompanyId }?.name.orEmpty()
 
     // 5) Définir les champs du formulaire
     val fields = listOf(
@@ -102,31 +102,31 @@ fun AddOrEditCallScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Sélecteur de candidature (optionnel)
-        if (linked_application_id == null) {
+        if (linkedApplicationId == null) {
             EntitySelectorField(
                 label = "Candidature (opt.)",
-                selectedEntityId = selected_application_id,
+                selectedEntityId = selectedApplicationId,
                 allEntities = applications,
                 getEntityLabel = { it.title },
-                onEntitySelected = { selected_application_id = it.id },
+                onEntitySelected = { selectedApplicationId = it.id },
                 allowCreation = false
             )
         }
         // Sélecteur de relance (optionnel)
-        if (linked_followup_id == null) {
+        if (linkedFollowUpId == null) {
             EntitySelectorField(
                 label = "Relance (opt.)",
-                selectedEntityId = selected_follow_up_id,
-                allEntities = follow_ups,
+                selectedEntityId = selectedFollowUpId,
+                allEntities = followUps,
                 getEntityLabel = { it.notes.toString() },
-                onEntitySelected = { selected_follow_up_id = it.id },
+                onEntitySelected = { selectedFollowUpId = it.id },
                 allowCreation = false
             )
         }
 
         // Affichage de l’entreprise (non éditable)
         OutlinedTextField(
-            value    = company_name,
+            value    = companyName,
             onValueChange = {},
             label = { Text("Entreprise liée") },
             readOnly = true,
@@ -136,33 +136,30 @@ fun AddOrEditCallScreen(
         // Contact optionnel avec création rapide
         EntitySelectorField(
             label = "Contact (optionnel)",
-            selectedEntityId = selected_contact_id,
-            allEntities = contacts.filter { it.companyId == final_company_id },
-            getEntityLabel = { "${it.first_name} ${it.last_name}" },
-            onEntitySelected = { selected_contact_id = it.id },
+            selectedEntityId = selectedContactId,
+            allEntities = contacts.filter { it.companyId == finalCompanyId },
+            getEntityLabel = { "${it.firstName} ${it.lastName}" },
+            onEntitySelected = { selectedContactId = it.id },
             allowCreation = true,
-            onCreateEntity = { full_name ->
-                val parts = full_name.trim().split(" ")
-                val first_name = parts.firstOrNull() ?: ""
-                val last_name = parts.drop(1).joinToString(" ")
-                val new_id = UUID.randomUUID().toString()
-                val new_contact = ContactEntity(
-                    id = new_id,
-                    firstName = first_name,
-                    lastName = last_name,
+            onCreateEntity = { fullName ->
+                val parts = fullName.trim().split(" ")
+                val firstName = parts.firstOrNull() ?: ""
+                val lastName = parts.drop(1).joinToString(" ")
+                val newId = UUID.randomUUID().toString()
+                val newContact = ContactEntity(
+                    id = newId,
+                    firstName = firstName,
+                    lastName = lastName,
                     phone = null,
                     email = null,
-                    positionId = null,      // ou une valeur si tu veux lier à un type de poste
-                    departmentId = null,    // ou une valeur si tu veux lier à un département
-                    companyId = final_company_id ?: "",
+                    positionTypeId = null,      // ou une valeur si tu veux lier à un type de poste
+                    departmentTypeId = null,    // ou une valeur si tu veux lier à un département
+                    companyId = finalCompanyId ?: "",
                     notes = null,
-                    base = CommonEntityFields(
-                        userId = userId,
-                        syncHash = "contact-$new_id"
-                    )
+                    userId = userId
                 )
-                contact_vm.save(new_contact)
-                selected_contact_id = new_id
+                contactVm.save(newContact)
+                selectedContactId = newId
             }
         )
 
@@ -177,15 +174,15 @@ fun AddOrEditCallScreen(
             } ?: emptyMap(),onSubmit = { form ->
                 val id = existing?.id ?: UUID.randomUUID().toString()
                 val entity = CallEntity(
+                    userId = userId,
                     id = id,
                     subject = form["subject"]!!,
-                    company_id = final_company_id ?: "",
-                    contact_id = selected_contact_id?.ifBlank { null },
-                    application_id = selected_application_id,
-                    follow_up_id = selected_follow_up_id?.ifBlank { null },
+                    companyId = finalCompanyId ?: "",
+                    contactId = selectedContactId?.ifBlank { null },
+                    applicationId = selectedApplicationId,
+                    followUpId = selectedFollowUpId?.ifBlank { null },
                     timestamp = form["timestamp"]!!.toLong(),
                     notes = form["notes"]?.takeIf(String::isNotBlank),
-                    base = existing?.base ?: CommonEntityFields(userId = userId, syncHash = "call-$id")
                 )
                 vm.save(entity)
                 onCancel()

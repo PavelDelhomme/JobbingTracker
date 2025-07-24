@@ -36,12 +36,12 @@ object Routes {
     // Calls
     const val CALL_ADD = "call/add"
     const val CALL_EDIT = "call/edit"
-    const val DETAIL_CALL = "call/detail"
+    const val CALL_DETAIL = "call/detail"
 
     // Interviews
     const val INTERVIEW_ADD = "interview/add"
     const val INTERVIEW_EDIT = "interview/edit"
-    const val ENTRETIEN_DETAIL = "interview/detail"
+    const val INTERVIEW_DETAIL = "interview/detail"
 
     // Special sections
     const val ARCHIVES = "archives"

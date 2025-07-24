@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExperienceDao {
-    @Query("SELECT * FROM experiences WHERE is_deleted = 0")
+    @Query("SELECT * FROM experiences WHERE isDeleted = 0")
     fun getAll(): Flow<List<ExperienceEntity>>
 
     @Query("SELECT * FROM experiences WHERE id = :id LIMIT 1")

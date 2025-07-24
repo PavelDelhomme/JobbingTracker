@@ -26,14 +26,16 @@ import com.delhomme.jobbingtrack.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.map
 
 @Composable
 fun SplashScreen(
     navController: NavController,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
-    val isAuthenticated by viewModel.isAuthenticated.observeAsState(false)
-    val isChecking by viewModel.isChecking.observeAsState(true)
+    val isAuthenticated by viewModel.authState.map { it == AuthState.Authenticated }.observeAsState(false)
+    val isChecking by viewModel.authState.map { it == AuthState.Loading }.observeAsState(true)
 
     LaunchedEffect(isAuthenticated, isChecking) {
         if (!isChecking) {

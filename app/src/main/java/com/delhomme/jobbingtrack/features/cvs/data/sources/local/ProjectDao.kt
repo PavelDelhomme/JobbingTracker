@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProjectDao {
-    @Query("SELECT * FROM projects WHERE is_deleted = 0")
+    @Query("SELECT * FROM projects WHERE isDeleted = 0")
     fun getAll(): Flow<List<ProjectEntity>>
 
     @Query("SELECT * FROM projects WHERE id = :id LIMIT 1")

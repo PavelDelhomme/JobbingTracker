@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SkillDao {
-    @Query("SELECT * FROM skills WHERE is_deleted = 0")
+    @Query("SELECT * FROM skills WHERE isDeleted = 0")
     fun getAll(): Flow<List<SkillEntity>>
 
     @Query("SELECT * FROM skills WHERE id = :id LIMIT 1")

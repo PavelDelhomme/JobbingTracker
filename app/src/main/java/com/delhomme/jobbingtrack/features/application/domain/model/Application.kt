@@ -9,7 +9,7 @@ data class Application(
     override val userId: String,
     // ... hérite de BaseModel
     val title: String,
-    val company_id: String,
+    val companyId: String,
     // ... champs spécifiques
 ) : BaseModel()
  */

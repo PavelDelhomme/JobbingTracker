@@ -85,7 +85,7 @@ fun ArchiveScreen(navController: NavController,
             Text(
                 text = it.subject,
                 modifier = Modifier.clickable {
-                    navController.navigate("${Routes.DETAIL_CALL}/${it.id}")
+                    navController.navigate("${Routes.CALL_DETAIL}/${it.id}")
                 }.padding(8.dp)
             )
         }
@@ -105,7 +105,7 @@ fun ArchiveScreen(navController: NavController,
             Text(
                 text = "$typeLabel $styleLabel ${it.interview.dateTime}${it.interview.applicationId} ${it.interview.companyId}",
                 modifier = Modifier.clickable {
-                    navController.navigate("${Routes.ENTRETIEN_DETAIL}/${it.interview.id}")
+                    navController.navigate("${Routes.INTERVIEW_DETAIL}/${it.interview.id}")
                 }.padding(8.dp)
             )
         }

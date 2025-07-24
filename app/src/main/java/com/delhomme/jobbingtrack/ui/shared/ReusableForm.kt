@@ -447,7 +447,7 @@ fun ReusableForm(
             Button(
                 onClick = { onSubmit(
                     fieldValues.mapValues { (key, value) ->
-                        if (key.endsWith("Id") || key == "contact_id") {
+                        if (key.endsWith("Id") || key == "contactId") {
                             // Exemple de format : "Nom complet (ID)" -> on récupère juste l'ID entre parenthèse
                             value.substringAfterLast("(").removeSuffix(")").trim()
                         } else value

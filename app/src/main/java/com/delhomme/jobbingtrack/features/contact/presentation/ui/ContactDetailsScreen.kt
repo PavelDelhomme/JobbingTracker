@@ -189,7 +189,7 @@ fun ContactDetailScreen(
                     DetailItemCard(
                         title = call.subject,
                         subtitle = call.timestamp.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.DETAIL_CALL}/${call.id}") }
+                        onClick = { navController.navigate("${Routes.CALL_DETAIL}/${call.id}") }
                     )
                 }
             }
@@ -204,7 +204,7 @@ fun ContactDetailScreen(
                     DetailItemCard(
                         title = "$typeLabel — $styleLabel",
                         subtitle = interview.dateTime.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${interview.id}") }
+                        onClick = { navController.navigate("${Routes.INTERVIEW_DETAIL}/${interview.id}") }
                     )
                 }
             }

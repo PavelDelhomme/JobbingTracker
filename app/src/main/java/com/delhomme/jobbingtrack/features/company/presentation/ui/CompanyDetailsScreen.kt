@@ -40,6 +40,7 @@ import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.Inter
 import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.shared.DetailItemCard
+import com.delhomme.jobbingtrack.ui.shared.SectionTitle
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +85,7 @@ fun CompanyDetailScreen(
     val linkedContacts     = allContacts.filter     { it.companyId == companyId }
     val linkedCandidatures = allCandidatures.filter { it.companyId == companyId }
     val linkedEntretiens   = allEntretiens.filter   { it.interview.companyId == companyId }
-    val linkedAppels       = allAppels.filter       { it.company_id == companyId }
+    val linkedAppels       = allAppels.filter       { it.companyId == companyId }
     val linkedRelances     = allRelances.filter     { it.companyId == companyId }
     BackHandler { navController.popBackStack() }
 
@@ -140,9 +141,9 @@ fun CompanyDetailScreen(
 
             // Contacts
             if (linkedContacts.isNotEmpty()) {
-                item { com.delhomme.jobbingtrack.applications.ui.SectionTitle("Contacts liés") }
+                item { SectionTitle("Contacts liés") }
                 items(linkedContacts) { c ->
-                    val positionLabel = positionTypes.find { it.id == c.positionId }?.label ?: "Aucun poste défini"
+                    val positionLabel = positionTypes.find { it.id == c.positionTypeId }?.name ?: "Aucun poste défini"
                     DetailItemCard(
                         title = "${c.firstName} ${c.lastName}",
                         subtitle = positionLabel,
@@ -153,11 +154,11 @@ fun CompanyDetailScreen(
 
             // Candidatures
             if (linkedCandidatures.isNotEmpty()) {
-                item { com.delhomme.jobbingtrack.applications.ui.SectionTitle("Candidatures liées") }
+                item { SectionTitle("Candidatures liées") }
                 items(linkedCandidatures) { c ->
                     val statusLabel = applicationStatuses.find { s -> s.id == c.statusRefId }?.label ?: "—"
                     DetailItemCard(
-                        title = c.title,
+                        title = c.titre,
                         subtitle = statusLabel,
                         onClick = { navController.navigate("${Routes.APPLICATION_DETAIL}/${c.id}") },
                     )
@@ -166,22 +167,22 @@ fun CompanyDetailScreen(
 
             // Entretiens
             if (linkedEntretiens.isNotEmpty()) {
-                item { com.delhomme.jobbingtrack.applications.ui.SectionTitle("Entretiens liés") }
+                item { SectionTitle("Entretiens liés") }
                 items(linkedEntretiens) { ewc ->
-                    val e = ewc.interview
+                    val e = ewc.interviews
                     val typeLabel = interviewTypes.find { t -> t.id == e.typeId }?.label ?: "Type inconnu"
                     val styleLabel = interviewStyles.find { s -> s.id == e.styleId }?.label ?: "Style inconnu"
                     DetailItemCard(
                         title = "$typeLabel - $styleLabel",
                         subtitle = e.dateTime.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.ENTRETIEN_DETAIL}/${e.id}") },
+                        onClick = { navController.navigate("${Routes.INTERVIEW_DETAIL}/${e.id}") },
                     )
                 }
             }
 
             // Relances
             if (linkedRelances.isNotEmpty()) {
-                item { com.delhomme.jobbingtrack.applications.ui.SectionTitle("Relances liées") }
+                item { SectionTitle("Relances liées") }
                 items(linkedRelances) { r ->
                     val typeLabel = followUpTypes.find { t -> t.id == r.typeId }?.label ?: "Type inconnu"
                     val statusLabel = followUpStatuses.find { s -> s.id == r.statusId }?.label ?: "Statut inconnu"
@@ -195,12 +196,12 @@ fun CompanyDetailScreen(
 
             // Appels
             if (linkedAppels.isNotEmpty()) {
-                item { com.delhomme.jobbingtrack.applications.ui.SectionTitle("Appels liés") }
+                item { SectionTitle("Appels liés") }
                 items(linkedAppels) { a ->
                     DetailItemCard(
                         title = a.subject,
                         subtitle = a.dateTime.toFormattedDate(),
-                        onClick = { navController.navigate("${Routes.DETAIL_CALL}/${a.id}") },
+                        onClick = { navController.navigate("${Routes.CALL_DETAIL}/${a.id}") },
                     )
                 }
             }

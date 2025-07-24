@@ -13,10 +13,12 @@ class DepartmentTypeRepository @Inject constructor(
     val all: Flow<List<DepartmentTypeEntity>> = dao.getAll()
     fun byId(id: String): Flow<DepartmentTypeEntity?> = dao.getById(id)
     fun allForUser(userId: String): Flow<List<DepartmentTypeEntity>> = dao.getAllForUser(userId)
+    fun byCompanyId(companyId: String): Flow<List<DepartmentTypeEntity>> = dao.getByCompanyId(companyId)
 
-    suspend fun save(departmentType: DepartmentTypeEntity) = dao.insert(departmentType)
-    suspend fun update(departmentType: DepartmentTypeEntity) = dao.update(departmentType)
-    suspend fun delete(id: String, userId: String) = dao.softDeleteById(id, userId)
+    suspend fun save(entity: DepartmentTypeEntity): Long = dao.insert(entity)
+    suspend fun update(entity: DepartmentTypeEntity) = dao.update(entity)
+    suspend fun delete(id: String, userId: String) =
+        dao.softDeleteById(id, userId, System.currentTimeMillis())
 
     // Méthodes pour la synchronisation
     suspend fun getUpdatedSince(timestamp: Long, userId: String): List<DepartmentTypeEntity> =

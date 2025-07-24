@@ -12,24 +12,24 @@ import java.util.UUID
 @TypeConverters(Converters::class)
 data class EventEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "user_id") override var userId: String,
+    @ColumnInfo(name = "userId") override var userId: String,
 
     val title: String,
     val description: String? = null,
-    @ColumnInfo(name = "start_date") val startDate: Long,
-    @ColumnInfo(name = "end_date") val endDate: Long,
-    @ColumnInfo(name = "all_day") val allDay: Boolean = false,
+    @ColumnInfo(name = "startDate") val startDate: Long,
+    @ColumnInfo(name = "endDate") val endDate: Long,
+    @ColumnInfo(name = "allDay") val allDay: Boolean = false,
     val location: String? = null,
-    @ColumnInfo(name = "type_id") val typeId: String? = null,
+    @ColumnInfo(name = "typeId") val typeId: String? = null,
 
     // Relations avec d'autres entités
-    @ColumnInfo(name = "application_id") val applicationId: String? = null,
-    @ColumnInfo(name = "company_id") val companyId: String? = null,
-    @ColumnInfo(name = "contact_id") val contactId: String? = null,
-    @ColumnInfo(name = "follow_up_id") val followUpId: String? = null,
-    @ColumnInfo(name = "interview_id") val interviewId: String? = null,
+    @ColumnInfo(name = "applicationId") val applicationId: String? = null,
+    @ColumnInfo(name = "companyId") val companyId: String? = null,
+    @ColumnInfo(name = "contactId") val contactId: String? = null,
+    @ColumnInfo(name = "followUpId") val followUpId: String? = null,
+    @ColumnInfo(name = "interviewId") val interviewId: String? = null,
 
     // Champs de notification/rappel
-    @ColumnInfo(name = "reminder_minutes") val reminderMinutes: Int? = null,
-    @ColumnInfo(name = "reminder_sent") val reminderSent: Boolean = false
+    @ColumnInfo(name = "reminderMinutes") val reminderMinutes: Int? = null,
+    @ColumnInfo(name = "reminderSent") val reminderSent: Boolean = false
 ) : BaseEntity()

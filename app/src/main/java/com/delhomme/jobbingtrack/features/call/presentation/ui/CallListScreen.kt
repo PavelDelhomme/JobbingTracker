@@ -35,8 +35,8 @@ fun CallListScreen(
         ListScreen(
             dateProvider = { it.timestamp.toFormattedDate() },
             titleProvider = { it.subject },
-            centerInfoProvider = { it.contact_id ?: it.company_id },
-            bottomLeftInfoProvider = { "Entreprise : ${it.company_id}" },
+            centerInfoProvider = { it.contactId ?: it.companyId },
+            bottomLeftInfoProvider = { "Entreprise : ${it.companyId}" },
             items = visible,
             onItemClick = onItemClick,
             onEdit = onEdit,

@@ -21,7 +21,7 @@ data class Interview(
     val dateTime: Long,
     val durationMinutes: Int?,
     val location: String?,
-    val contacts_ids: List<String>,
+    val contactsIds: List<String>,
     val style: InterviewStyle?,
     val type: InterviewType?,
     val preInterviewNotes: String?,

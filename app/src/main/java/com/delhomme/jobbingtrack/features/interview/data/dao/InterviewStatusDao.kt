@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface InterviewStatusDao {
-    @Query("SELECT * FROM interview_status WHERE is_deleted = 0")
+    @Query("SELECT * FROM interview_status WHERE isDeleted = 0")
     fun getAll(): Flow<List<InterviewStatusEntity>>
 
     @Query("SELECT * FROM interview_status WHERE id = :id LIMIT 1")
@@ -19,10 +19,10 @@ interface InterviewStatusDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(status: InterviewStatusEntity)
 
-    @Query("UPDATE interview_status SET is_deleted = 1 WHERE id = :id")
+    @Query("UPDATE interview_status SET isDeleted = 1 WHERE id = :id")
     suspend fun delete(id: String)
 
-    @Query("UPDATE interview_status SET is_deleted = 0 WHERE id = :id")
+    @Query("UPDATE interview_status SET isDeleted = 0 WHERE id = :id")
     suspend fun restore(id: String)
 
     @Query("UPDATE interview_status SET isArchived = 1 WHERE id = :id")

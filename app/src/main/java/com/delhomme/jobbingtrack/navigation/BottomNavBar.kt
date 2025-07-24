@@ -15,9 +15,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,8 +31,8 @@ fun TopAppBar(
                     currentRoute?.startsWith(Routes.CONTACT_DETAIL) == true -> "Détails du contact"
                     currentRoute?.startsWith(Routes.COMPANY_DETAIL) == true -> "Détails de l'entreprise"
                     currentRoute?.startsWith(Routes.FOLLOWUP_DETAIL) == true -> "Détails de la relance"
-                    currentRoute?.startsWith(Routes.DETAIL_CALL) == true -> "Détails de l'appel"
-                    currentRoute?.startsWith(Routes.ENTRETIEN_DETAIL) == true -> "Détails de l'entretien"
+                    currentRoute?.startsWith(Routes.CALL_DETAIL) == true -> "Détails de l'appel"
+                    currentRoute?.startsWith(Routes.INTERVIEW_DETAIL) == true -> "Détails de l'entretien"
                     currentRoute == Routes.ARCHIVES -> "Archives"
                     currentRoute == Routes.TRASH -> "Corbeille"
                     currentRoute == Routes.SETTINGS -> "Paramètres"
