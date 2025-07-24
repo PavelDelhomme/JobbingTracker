@@ -24,7 +24,7 @@ class TokenManager @Inject constructor(@ApplicationContext private val context: 
     companion object {
         private const val ACCESS_TOKEN = "access_token"
         private const val REFRESH_TOKEN = "refresh_token"
-        private const val USER_ID = "user_id"
+        private const val USERID = "userId"
         private const val TOKEN_EXPIRY = "token_expiry"
     }
 
@@ -37,12 +37,12 @@ class TokenManager @Inject constructor(@ApplicationContext private val context: 
     }
 
     fun saveUserId(userId: String) {
-        prefs.edit().putString(USER_ID, userId).apply()
+        prefs.edit().putString(USERID, userId).apply()
     }
 
     fun getAccessToken(): String? = prefs.getString(ACCESS_TOKEN, null)
     fun getRefreshToken(): String? = prefs.getString(REFRESH_TOKEN, null)
-    fun getUserId(): String? = prefs.getString(USER_ID, null)
+    fun getUserId(): String? = prefs.getString(USERID, null)
     fun getTokenExpiry(): Long = prefs.getLong(TOKEN_EXPIRY, 0)
 
     fun setLastFailedToken(token: String?) {
@@ -73,6 +73,6 @@ class TokenManager @Inject constructor(@ApplicationContext private val context: 
 
     fun logout() {
         clearTokens()
-        prefs.edit().remove(USER_ID).apply()
+        prefs.edit().remove(USERID).apply()
     }
 }

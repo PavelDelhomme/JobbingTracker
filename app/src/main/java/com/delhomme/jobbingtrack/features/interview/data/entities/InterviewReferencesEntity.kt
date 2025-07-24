@@ -14,7 +14,7 @@ data class InterviewWithContacts(
         associateBy = Junction(
             InterviewContactCrossRef::class,
             parentColumn = "interviewId",
-            entityColumn = "contactId"
+            entityColumn = "contact_id"
         )
     )
     val contacts: List<ContactEntity>

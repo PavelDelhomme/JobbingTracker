@@ -29,14 +29,14 @@ fun CallListScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
 
-        val sorted = calls.sortedByDescending { it.dateTime }
+        val sorted = calls.sortedByDescending { it.timestamp }
         val visible = sorted.filter { !it.base.isArchived }
 
         ListScreen(
-            dateProvider = { it.dateTime.toFormattedDate() },
+            dateProvider = { it.timestamp.toFormattedDate() },
             titleProvider = { it.subject },
-            centerInfoProvider = { it.contactId ?: it.companyId },
-            bottomLeftInfoProvider = { "Entreprise : ${it.companyId}" },
+            centerInfoProvider = { it.contact_id ?: it.company_id },
+            bottomLeftInfoProvider = { "Entreprise : ${it.company_id}" },
             items = visible,
             onItemClick = onItemClick,
             onEdit = onEdit,

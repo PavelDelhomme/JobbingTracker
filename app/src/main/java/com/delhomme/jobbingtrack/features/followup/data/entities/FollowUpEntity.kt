@@ -54,11 +54,11 @@ data class FollowUpEntity(
         statusId = statusId
     ) {
         // Copier les métadonnées depuis CommonEntityFields
-        this.createdAt = base.createdAt
-        this.updatedAt = base.updatedAt
-        this.isDeleted = base.isDeleted
+        this.createdAt = base.created_at
+        this.updatedAt = base.updated_at
+        this.isDeleted = base.is_deleted
         this.isArchived = base.isArchived
-        this.deletedAt = base.deletedAt
+        this.deletedAt = base.deleted_at
         this.archivedAt = base.archivedAt
         this.syncHash = base.syncHash
         this.entityHash = base.syncHash
@@ -95,8 +95,8 @@ data class FollowUpTypeEntity(
 
 @TypeConverters(Converters::class)
 @Entity(
-    primaryKeys = ["followUpId", "contactId"],
-    indices = [ Index("contactId") ]
+    primaryKeys = ["follow_up_id", "contact_id"],
+    indices = [ Index("contact_id") ]
 )
 data class FollowUpContactCrossRef(
     val followUpId: String,
@@ -108,8 +108,8 @@ data class FollowUpContactCrossRef(
 
 @TypeConverters(Converters::class)
 @Entity(
-    primaryKeys = ["followUpId", "contactId"],
-    indices = [ Index("contactId") ]
+    primaryKeys = ["follow_up_id", "contact_id"],
+    indices = [ Index("contact_id") ]
 )
 data class FollowUpContactCrossRef(
     val followUpId: String,
@@ -155,8 +155,8 @@ data class FollowUpWithContacts(
         entityColumn = "id",
         associateBy = Junction(
             FollowUpContactCrossRef::class,
-            parentColumn = "followUpId",
-            entityColumn = "contactId"
+            parentColumn = "follow_up_id",
+            entityColumn = "contact_id"
         )
     )
     val contacts: List<ContactEntity>

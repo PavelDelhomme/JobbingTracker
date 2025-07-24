@@ -81,11 +81,11 @@ fun AddOrEditCollaboratorScreen(
                         id = collaboratorId ?: UUID.randomUUID().toString(),
                         name = name,
                         role = role,
-                        base = existing?.base?.copy(updatedAt = now) ?: CommonEntityFields(
+                        base = existing?.base?.copy(updated_at = now) ?: CommonEntityFields(
                             userId = userId,
                             syncHash = UUID.randomUUID().toString(),
-                            createdAt = now,
-                            updatedAt = now
+                            created_at = now,
+                            updated_at = now
                         )
                     )
 

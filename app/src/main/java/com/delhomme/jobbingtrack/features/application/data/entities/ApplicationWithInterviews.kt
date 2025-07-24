@@ -19,7 +19,7 @@ data class ApplicationWithInterviews(
         entityColumn = "id",
         associateBy = Junction(
             ApplicationInterviewCrossRef::class,
-            parentColumn = "applicationId",
+            parentColumn = "application_id",
             entityColumn = "interviewId"
         )
     )

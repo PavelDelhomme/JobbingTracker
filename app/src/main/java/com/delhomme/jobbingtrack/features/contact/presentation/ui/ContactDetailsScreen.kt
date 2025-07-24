@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.applications.vms.ApplicationStatusViewModel
 import com.delhomme.jobbingtrack.core.utils.toFormattedDate
 import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationStatusViewModel
 import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationViewModel
@@ -44,14 +43,6 @@ import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithC
 import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewStyleViewModel
 import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewTypeViewModel
 import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewViewModel
-import com.delhomme.jobbingtrack.followsup.FollowUpWithContacts
-import com.delhomme.jobbingtrack.followsup.vms.FollowUpStatusViewModel
-import com.delhomme.jobbingtrack.followsup.vms.FollowUpTypeViewModel
-import com.delhomme.jobbingtrack.followsup.vms.FollowUpViewModel
-import com.delhomme.jobbingtrack.interviews.InterviewWithContacts
-import com.delhomme.jobbingtrack.interviews.vms.InterviewStyleViewModel
-import com.delhomme.jobbingtrack.interviews.vms.InterviewTypeViewModel
-import com.delhomme.jobbingtrack.interviews.vms.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.shared.DetailItemCard
 import com.delhomme.jobbingtrack.ui.shared.SectionTitle
@@ -197,7 +188,7 @@ fun ContactDetailScreen(
                 items(linkedCalls) { call ->
                     DetailItemCard(
                         title = call.subject,
-                        subtitle = call.dateTime.toFormattedDate(),
+                        subtitle = call.timestamp.toFormattedDate(),
                         onClick = { navController.navigate("${Routes.DETAIL_CALL}/${call.id}") }
                     )
                 }

@@ -21,8 +21,8 @@ interface ApplicationDao : BaseDao<ApplicationEntity> {
     @Query("""
       SELECT * FROM applications
        WHERE userId = :userId
-         AND is_deleted = 0
-         AND is_archived = 0
+         AND isDeleted = 0
+         AND isArchived = 0
       ORDER BY applicationDate DESC
     """)
     fun getAllActiveForUser(userId: String): Flow<List<ApplicationEntity>>
@@ -30,7 +30,7 @@ interface ApplicationDao : BaseDao<ApplicationEntity> {
     @Query("""
       SELECT * FROM applications
        WHERE userId = :userId
-         AND is_archived = 1
+         AND isArchived = 1
       ORDER BY applicationDate DESC
     """)
     fun getArchivedForUser(userId: String): Flow<List<ApplicationEntity>>
@@ -38,7 +38,7 @@ interface ApplicationDao : BaseDao<ApplicationEntity> {
     @Query("""
       SELECT * FROM applications
        WHERE userId = :userId
-         AND is_deleted = 1
+         AND isDeleted = 1
       ORDER BY applicationDate DESC
     """)
     fun getDeletedForUser(userId: String): Flow<List<ApplicationEntity>>
@@ -46,13 +46,13 @@ interface ApplicationDao : BaseDao<ApplicationEntity> {
     @Query("SELECT * FROM applications WHERE id = :id AND userId = :userId")
     fun getByIdForUser(id: String, userId: String): Flow<ApplicationEntity?>
 
-    @Query("UPDATE applications SET is_archived = 1, archived_at = :timestamp WHERE id IN(:ids) AND userId = :userId")
+    @Query("UPDATE applications SET isArchived = 1, archivedAt = :timestamp WHERE id IN(:ids) AND userId = :userId")
     suspend fun archive(ids: List<String>, userId: String, timestamp: Long = System.currentTimeMillis())
 
-    @Query("UPDATE applications SET is_deleted = 1, deleted_at = :timestamp WHERE id IN(:ids) AND userId = :userId")
+    @Query("UPDATE applications SET isDeleted = 1, deletedAt = :timestamp WHERE id IN(:ids) AND userId = :userId")
     suspend fun softDelete(ids: List<String>, userId: String, timestamp: Long = System.currentTimeMillis())
 
-    @Query("UPDATE applications SET is_deleted = 0, deleted_at = NULL WHERE id IN(:ids) AND userId = :userId")
+    @Query("UPDATE applications SET isDeleted = 0, deletedAt = NULL WHERE id IN(:ids) AND userId = :userId")
     suspend fun restore(ids: List<String>, userId: String)
 
     @Query("DELETE FROM applications WHERE id IN(:ids) AND userId = :userId")
@@ -67,11 +67,11 @@ interface ApplicationDao : BaseDao<ApplicationEntity> {
     @Query("""
         SELECT * FROM applications 
         WHERE userId = :userId 
-        AND updated_at > :timestamp 
-        AND (last_sync_at IS NULL OR updated_at > last_sync_at)
+        AND updatedAt > :timestamp 
+        AND (lastSyncAt IS NULL OR updatedAt > lastSyncAt)
     """)
     override suspend fun getUpdatedSince(timestamp: Long, userId: String): List<ApplicationEntity>
 
-    @Query("UPDATE applications SET last_sync_at = :syncTime WHERE id IN (:ids)")
-    suspend fun updateSyncTimestamp(ids: List<String>, syncTime: Long)
+    @Query("UPDATE applications SET lastSyncAt = :syncTime WHERE id IN (:ids)")
+    override suspend fun updateSyncTimestamp(ids: List<String>, syncTime: Long)
 }

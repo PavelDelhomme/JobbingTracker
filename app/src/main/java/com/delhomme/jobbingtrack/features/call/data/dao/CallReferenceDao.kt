@@ -1,14 +1,14 @@
 package com.delhomme.jobbingtrack.features.call.data.dao
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 
-
 @Entity(
-    primaryKeys = ["callId", "contactId"],
-    indices = [Index("contactId")]
+    primaryKeys = ["call_id", "contact_id"],
+    indices = [Index("contact_id")]
 )
 data class CallWithContactsCrossRef(
-    val callId: String,
-    val contactId: String
+    @ColumnInfo(name = "call_id") val callId: String,
+    @ColumnInfo(name = "contact_id") val contactId: String
 )

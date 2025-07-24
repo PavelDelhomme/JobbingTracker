@@ -11,8 +11,8 @@ data class ApplicationWithFollowUps(
         entityColumn = "id",
         associateBy = Junction(
             ApplicationFollowUpCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "followUpId"
+            parentColumn = "application_id",
+            entityColumn = "follow_up_id"
         )
     )
     val followUps: List<FollowUpEntity>

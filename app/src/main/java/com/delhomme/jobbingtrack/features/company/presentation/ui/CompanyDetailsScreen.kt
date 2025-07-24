@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.delhomme.jobbingtrack.applications.vms.ApplicationStatusViewModel
 import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationStatusViewModel
 import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.features.call.presentation.viewmodel.CallViewModel
@@ -39,12 +38,6 @@ import com.delhomme.jobbingtrack.features.followup.presentation.viewmodel.Follow
 import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewStyleViewModel
 import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewTypeViewModel
 import com.delhomme.jobbingtrack.features.interview.presentation.viewmodel.InterviewViewModel
-import com.delhomme.jobbingtrack.followsup.vms.FollowUpStatusViewModel
-import com.delhomme.jobbingtrack.followsup.vms.FollowUpTypeViewModel
-import com.delhomme.jobbingtrack.followsup.vms.FollowUpViewModel
-import com.delhomme.jobbingtrack.interviews.vms.InterviewStyleViewModel
-import com.delhomme.jobbingtrack.interviews.vms.InterviewTypeViewModel
-import com.delhomme.jobbingtrack.interviews.vms.InterviewViewModel
 import com.delhomme.jobbingtrack.navigation.Routes
 import com.delhomme.jobbingtrack.ui.shared.DetailItemCard
 
@@ -91,7 +84,7 @@ fun CompanyDetailScreen(
     val linkedContacts     = allContacts.filter     { it.companyId == companyId }
     val linkedCandidatures = allCandidatures.filter { it.companyId == companyId }
     val linkedEntretiens   = allEntretiens.filter   { it.interview.companyId == companyId }
-    val linkedAppels       = allAppels.filter       { it.companyId == companyId }
+    val linkedAppels       = allAppels.filter       { it.company_id == companyId }
     val linkedRelances     = allRelances.filter     { it.companyId == companyId }
     BackHandler { navController.popBackStack() }
 

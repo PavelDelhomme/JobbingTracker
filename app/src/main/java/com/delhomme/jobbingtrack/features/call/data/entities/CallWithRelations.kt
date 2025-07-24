@@ -13,13 +13,13 @@ import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntit
 
 data class CallWithRelations(
     @Embedded override val mainEntity: CallEntity,
-    @Relation(parentColumn = "companyId", entityColumn = "id")
+    @Relation(parentColumn = "company_id", entityColumn = "id")
     override val companies: List<CompanyEntity> = emptyList(),
-    @Relation(parentColumn = "contactIds", entityColumn = "id")
+    @Relation(parentColumn = "contact_ids", entityColumn = "id")
     override val contacts: List<ContactEntity> = emptyList(),
-    @Relation(parentColumn = "applicationId", entityColumn = "id")
+    @Relation(parentColumn = "application_id", entityColumn = "id")
     override val applications: List<ApplicationEntity> = emptyList(),
-    @Relation(parentColumn = "followUpId", entityColumn = "id")
+    @Relation(parentColumn = "follow_up_id", entityColumn = "id")
     override val followUps: List<FollowUpEntity> = emptyList(),
 
     // Propriété non utilisée

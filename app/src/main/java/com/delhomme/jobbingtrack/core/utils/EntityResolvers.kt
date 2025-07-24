@@ -20,7 +20,7 @@ fun resolveCompanyId(
 ): String? {
     // 1. Priorité : appel ou entretien ou relance ou contact existant
     listOfNotNull(
-        existingCall?.companyId,
+        existingCall?.company_id,
         existingInterview?.companyId,
         existingFollowUp?.companyId,
         existingContact?.companyId
@@ -28,7 +28,7 @@ fun resolveCompanyId(
 
     // 2. Via une candidature liée (manuelle ou déduite via appel / relance)
     val candidatureId = listOfNotNull(
-        existingCall?.applicationId,
+        existingCall?.application_id,
         existingFollowUp?.applicationId,
         existingInterview?.applicationId,
         existingContact?.applicationIds?.firstOrNull { id ->

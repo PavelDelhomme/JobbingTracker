@@ -12,7 +12,7 @@ import java.util.UUID
 @TypeConverters(Converters::class)
 data class ApplicationEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
-    override val userId: String,
+    override var userId: String,
 
     // Champs spécifiques à l'application
     val title: String,

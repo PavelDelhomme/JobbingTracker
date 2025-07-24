@@ -8,7 +8,7 @@ import com.delhomme.jobbingtrack.features.company.data.entities.CompanyEntity
 data class ContactWithCompany(
     @Embedded val contact: ContactEntity,
     @Relation(
-        parentColumn = "companyId",
+        parentColumn = "company_id",
         entityColumn = "id"
     )
     val company: CompanyEntity

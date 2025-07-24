@@ -33,11 +33,11 @@ fun Any?.toFieldMap(): Map<String, String> {
         )
         is Call -> mapOf(
             "subject" to (this.subject ?: ""),
-            "companyId" to (this.companyId ?: ""),
-            "contactId" to (this.contactId ?: ""),
+            "company_id" to (this.companyId ?: ""),
+            "contact_id" to (this.contactId ?: ""),
             "candidatureId" to (this.applicationId ?: ""),
             "notes" to (this.notes ?: ""),
-            "dateTime" to this.dateTime.toString()
+            "timestamp" to this.dateTime.toString()
         )
         is Contact -> mapOf(
             "firstName" to (this.firstName ?: ""),
@@ -51,7 +51,7 @@ fun Any?.toFieldMap(): Map<String, String> {
         )
         is Interview -> mapOf(
             "candidatureId" to this.applicationId,
-            "companyId" to this.companyId,
+            "company_id" to this.companyId,
             "location" to (this.location ?: ""),
             "contacts" to this.contacts_ids.joinToString(","),
             "type" to (this.type?.label ?: ""),
@@ -59,7 +59,7 @@ fun Any?.toFieldMap(): Map<String, String> {
             "preInterviewNotes" to (this.preInterviewNotes ?: ""),
             "interviewNotes" to (this.interviewNotes ?: ""),
             "postInterviewNotes" to (this.postInterviewNotes ?: ""),
-            "dateTime" to this.dateTime.toString(),
+            "timestamp" to this.dateTime.toString(),
             "returnDate" to (this.returnDate?.toString() ?: ""),
             "testsNeeded" to this.testsNeeded.toString(),
             "testsDeadline" to (this.testsDeadline?.toString() ?: "")
@@ -67,8 +67,8 @@ fun Any?.toFieldMap(): Map<String, String> {
         is FollowUp -> mapOf(
             "date" to this.date.toString(),
             "candidatureId" to this.applicationId,
-            "companyId" to this.companyId,
-            "contactId" to (this.contactsIds ?: ""),
+            "company_id" to this.companyId,
+            "contact_id" to (this.contactsIds ?: ""),
             "type" to (this.typeId ?: ""),
             "responseStatus" to (this.responseStatusId ?: ""),
             "notes" to (this.notes ?: "")

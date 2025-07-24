@@ -1,7 +1,6 @@
 package com.delhomme.jobbingtrack.core.utils
 
-import com.delhomme.jobbingtrack.etc.enumes.InterviewStyle
-import com.delhomme.jobbingtrack.etc.enumes.InterviewType
+
 import com.delhomme.jobbingtrack.features.calendar.data.entities.EventEntity
 import com.delhomme.jobbingtrack.features.calendar.domain.model.Event
 import com.delhomme.jobbingtrack.features.call.data.entities.CallWithCompany
@@ -10,6 +9,8 @@ import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStyle
 import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewTypeEntity
 import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithContacts
 import com.delhomme.jobbingtrack.features.interview.domain.model.Interview
+import com.delhomme.jobbingtrack.features.interview.domain.model.InterviewStyle
+import com.delhomme.jobbingtrack.features.interview.domain.model.InterviewType
 
 
 // Mappers pour les entités d'entretiens
@@ -35,9 +36,9 @@ fun mapToInterviewType(entity: InterviewTypeEntity): InterviewType {
         userId = entity.base.userId,
         syncHash = entity.base.syncHash,
         isArchived = entity.base.isArchived,
-        isDeleted = entity.base.isDeleted,
-        createdAt = entity.base.createdAt,
-        updatedAt = entity.base.updatedAt,
+        isDeleted = entity.base.is_deleted,
+        createdAt = entity.base.created_at,
+        updatedAt = entity.base.updated_at,
         deletedAt = entity.base.deletedAt,
         archivedAt = entity.base.archivedAt
     )
@@ -81,13 +82,13 @@ fun mapToCall(entity: CallWithCompany): Call {
     return Call(
         id = entity.call.id,
         subject = entity.call.subject,
-        companyId = entity.call.companyId,
-        contactId = entity.call.contactId,
-        applicationId = entity.call.applicationId,
-        dateTime = entity.call.dateTime,
+        companyId = entity.call.company_id,
+        contactId = entity.call.contact_id,
+        applicationId = entity.call.application_id,
+        dateTime = entity.call.timestamp,
         notes = entity.call.notes,
         syncHash = entity.call.base.syncHash,
-        followUpId = entity.call.followUpId,
+        followUpId = entity.call.follow_up_id,
         userId = entity.call.base.userId,
         isArchived = entity.call.base.isArchived,
         isDeleted = entity.call.base.isDeleted,
@@ -111,10 +112,10 @@ fun EventEntity.toDomain(): Event {
         userId = base.userId,
         syncHash = base.syncHash,
         isArchived = base.isArchived,
-        isDeleted = base.isDeleted,
-        createdAt = base.createdAt,
-        updatedAt = base.updatedAt,
-        deletedAt = base.deletedAt ?: 0,
+        isDeleted = base.is_deleted,
+        createdAt = base.created_at,
+        updatedAt = base.updated_at,
+        deletedAt = base.deleted_at ?: 0,
         archivedAt = base.archivedAt ?: 0,
         relatedObjectId = relatedObjectId,
     )
@@ -126,13 +127,13 @@ fun CallWithCompany.toDomain(): Call {
     return Call(
         id = this.call.id,
         subject = this.call.subject,
-        companyId = this.call.companyId,
-        contactId = this.call.contactId,
-        applicationId = this.call.applicationId,
-        dateTime = this.call.dateTime,
+        companyId = this.call.company_id,
+        contactId = this.call.contact_id,
+        applicationId = this.call.application_id,
+        dateTime = this.call.timestamp,
         notes = this.call.notes,
         syncHash = this.call.base.syncHash,
-        followUpId = this.call.followUpId,
+        followUpId = this.call.follow_up_id,
         userId = this.call.base.userId,
         isArchived = this.call.base.isArchived,
         isDeleted = this.call.base.isDeleted,

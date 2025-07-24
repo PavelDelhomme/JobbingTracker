@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EventTypeDao {
-    @Query("SELECT * FROM event_types WHERE isDeleted = 0")
+    @Query("SELECT * FROM event_types WHERE is_deleted = 0")
     fun getAll(): Flow<List<EventTypeEntity>>
 
     @Query("SELECT * FROM event_types WHERE id = :id LIMIT 1")

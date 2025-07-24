@@ -11,7 +11,9 @@ data class CommonEntityFields(
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
     val deletedAt: Long? = null,
-    val archivedAt: Long? = null
+    val archivedAt: Long? = null,
+    val lastSyncHash: String? = null,
+    val lastSyncAt: String? = null
 ) {
     // Méthode pour convertir CommonEntityFields en propriétés de BaseEntity
     fun applyToBaseEntity(entity: BaseEntity) {
@@ -24,7 +26,8 @@ data class CommonEntityFields(
             this.archivedAt = this@CommonEntityFields.archivedAt
             this.syncHash = this@CommonEntityFields.syncHash
             this.entityHash = this@CommonEntityFields.syncHash
-
+            this.lastSyncHash = this@CommonEntityFields.lastSyncHash
+            this.lastSyncAt = this@CommonEntityFields.lastSyncAt
         }
     }
 }

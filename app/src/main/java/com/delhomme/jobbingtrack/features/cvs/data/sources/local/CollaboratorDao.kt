@@ -12,7 +12,7 @@ import com.delhomme.jobbingtrack.features.cvs.data.entities.CollaboratorEntity
 
 @Dao
 interface CollaboratorDao {
-    @Query("SELECT * FROM collaborators WHERE isDeleted = 0")
+    @Query("SELECT * FROM collaborators WHERE is_deleted = 0")
     fun getAll(): Flow<List<CollaboratorEntity>>
 
     @Query("SELECT * FROM collaborators WHERE id = :id LIMIT 1")

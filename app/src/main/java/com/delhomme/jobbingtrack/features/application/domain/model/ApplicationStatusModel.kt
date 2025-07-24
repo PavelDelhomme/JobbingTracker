@@ -7,10 +7,10 @@ data class ApplicationStatus(
     val label: String,
     val syncHash: String,
     var isArchived: Boolean = false,
-    var isDeleted: Boolean = false,
-    var createdAt: Long,
-    var updatedAt: Long,
-    var deletedAt: Long? = null,
+    var is_deleted: Boolean = false,
+    var created_at: Long,
+    var updated_at: Long,
+    var deleted_at: Long? = null,
     var archivedAt: Long? = null,
 ) : HasIdProvider
 

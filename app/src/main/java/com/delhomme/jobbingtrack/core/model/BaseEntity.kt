@@ -10,39 +10,43 @@ abstract class BaseEntity {
     abstract val id: String
 
     // Champ utilisateur obligatoire pour la synchronisation
-    @ColumnInfo(name = "user_id")
-    abstract val userId: String
+    @ColumnInfo(name = "userId")
+    abstract var userId: String  // Renommé en camelCase
 
     // Champs de métadonnées temporelles
-    @ColumnInfo(name = "created_at")
-    var createdAt: Long = System.currentTimeMillis()
+    @ColumnInfo(name = "createdAt")
+    var createdAt: Long = System.currentTimeMillis()  // Renommé en camelCase
 
-    @ColumnInfo(name = "updated_at")
-    var updatedAt: Long = System.currentTimeMillis()
-
-    @ColumnInfo(name = "last_sync_at")
-    var lastSyncAt: Long? = null
+    @ColumnInfo(name = "updatedAt")
+    var updatedAt: Long = System.currentTimeMillis()  // Renommé en camelCase
 
     // Champs d'état
-    @ColumnInfo(name = "is_deleted")
-    var isDeleted: Boolean = false
+    @ColumnInfo(name = "isDeleted")
+    var isDeleted: Boolean = false  // Renommé en camelCase
 
-    @ColumnInfo(name = "is_archived")
-    var isArchived: Boolean = false
+    @ColumnInfo(name = "isArchived")
+    var isArchived: Boolean = false  // Renommé en camelCase
 
-    @ColumnInfo(name = "deleted_at")
-    var deletedAt: Long? = null
+    @ColumnInfo(name = "deletedAt")
+    var deletedAt: Long? = null  // Renommé en camelCase
 
-    @ColumnInfo(name = "archived_at")
-    var archivedAt: Long? = null
+    @ColumnInfo(name = "archivedAt")
+    var archivedAt: Long? = null  // Renommé en camelCase
 
     // Champ de hachage pour détecter les modifications
-    @ColumnInfo(name = "entity_hash")
-    var entityHash: String = ""
+    @ColumnInfo(name = "entityHash")
+    var entityHash: String = ""  // Renommé en camelCase
 
     // Champ de hachage de synchronisation (maintenu pour compatibilité)
-    @ColumnInfo(name = "sync_hash")
-    var syncHash: String = ""
+    @ColumnInfo(name = "syncHash")
+    var syncHash: String = ""  // Renommé en camelCase
+
+    // Champ de hachage de dernière synchronisation (maintenu pour compatibilité)
+    @ColumnInfo(name = "lastSyncHash")
+    var lastSyncHash: String? = ""  // Renommé en camelCase
+
+    @ColumnInfo(name = "lastSyncAt")
+    var lastSyncAt: Long? = null  // Modifié en Long et renommé en camelCase
 
     // Génère un hash basé sur le contenu de l'entité
     fun calculateHash(): String {

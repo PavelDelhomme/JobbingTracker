@@ -55,6 +55,6 @@ data class ContactEntity(
         this.deletedAt = base.deletedAt
         this.archivedAt = base.archivedAt
         this.syncHash = base.syncHash
-        this.entityHash = base.syncHash
+        this.entityHash = base.entityHash
     }
 }

@@ -134,13 +134,13 @@ fun ReusableForm(
         fields.forEach { field ->
             val initial = initialValues?.get(field.name) ?: field.initialValue
             val defaultDate = when (field.name) {
-                "applicationDate", "date", "dateTime" -> now.toString()
+                "applicationDate", "date", "timestamp" -> now.toString()
                 "returnDate", "testsDeadline" -> tomorrow9AM.toString()
                 else -> null
             }
 
             // Entretien spécial -> Demain 9h
-            val entretienDefaultDateTime = if (field.name == "dateTime" && fields.any { it.label.contains("entretien", ignoreCase = true) }) {
+            val entretienDefaultDateTime = if (field.name == "timestamp" && fields.any { it.label.contains("entretien", ignoreCase = true) }) {
                 LocalDate.now().plusDays(1).atTime(9, 0).format(dateTimeFormatter)
             } else null
 
@@ -447,7 +447,7 @@ fun ReusableForm(
             Button(
                 onClick = { onSubmit(
                     fieldValues.mapValues { (key, value) ->
-                        if (key.endsWith("Id") || key == "contactId") {
+                        if (key.endsWith("Id") || key == "contact_id") {
                             // Exemple de format : "Nom complet (ID)" -> on récupère juste l'ID entre parenthèse
                             value.substringAfterLast("(").removeSuffix(")").trim()
                         } else value

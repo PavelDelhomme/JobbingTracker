@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface InterviewStyleDao {
-    @Query("SELECT * FROM interview_styles WHERE isDeleted = 0")
+    @Query("SELECT * FROM interview_styles WHERE is_deleted = 0")
     fun getAll(): Flow<List<InterviewStyleEntity>>
 
     @Query("SELECT * FROM interview_styles WHERE id = :id LIMIT 1")

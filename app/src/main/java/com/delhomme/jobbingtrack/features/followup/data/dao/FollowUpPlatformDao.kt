@@ -1,0 +1,36 @@
+package com.delhomme.jobbingtrack.features.followup.data.dao
+
+import androidx.room.Dao
+import androidx.room.Query
+import com.delhomme.jobbingtrack.core.database.BaseDao
+import com.delhomme.jobbingtrack.features.followup.data.entities.FollowUpPlateformEntity
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface FollowUpPlatformDao : BaseDao<FollowUpPlateformEntity> {
+    @Query("SELECT * FROM follow_up_platforms WHERE isDeleted = 0")
+    fun getAll(): Flow<List<FollowUpPlateformEntity>>
+
+    @Query("SELECT * FROM follow_up_platforms WHERE id = :id AND isDeleted = 0 LIMIT 1")
+    fun getById(id: String): Flow<FollowUpPlateformEntity?>
+
+    @Query("SELECT * FROM follow_up_platforms WHERE userId = :userId AND isDeleted = 0")
+    fun getAllForUser(userId: String): Flow<List<FollowUpPlateformEntity>>
+
+    @Query("""
+        SELECT * FROM follow_up_platforms 
+        WHERE userId = :userId 
+        AND updatedAt > :timestamp 
+        AND (lastSyncAt IS NULL OR updatedAt > lastSyncAt)
+    """)
+    override suspend fun getUpdatedSince(timestamp: Long, userId: String): List<FollowUpPlateformEntity>
+
+    @Query("UPDATE follow_up_platforms SET lastSyncAt = :syncTime WHERE id IN (:ids)")
+    override suspend fun updateSyncTimestamp(ids: List<String>, syncTime: Long)
+
+    @Query("SELECT * FROM follow_up_platforms WHERE id = :id AND userId = :userId LIMIT 1")
+    override suspend fun getById(id: String, userId: String): FollowUpPlateformEntity?
+
+    @Query("UPDATE follow_up_platforms SET isDeleted = 1, deletedAt = :timestamp WHERE id = :id AND userId = :userId")
+    override suspend fun softDeleteById(id: String, userId: String, timestamp: Long): Int
+}

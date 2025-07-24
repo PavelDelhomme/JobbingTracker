@@ -1,59 +1,55 @@
 package com.delhomme.jobbingtrack.features.interview.data.repositories
 
-import com.delhomme.jobbingtrack.core.utils.mapToInterview
-import com.delhomme.jobbingtrack.core.utils.mapToInterviewStyle
-import com.delhomme.jobbingtrack.core.utils.mapToInterviewType
+import androidx.lifecycle.LiveData
 import com.delhomme.jobbingtrack.features.interview.data.dao.InterviewDao
 import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntity
-import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewStyleEntity
-import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewTypeEntity
 import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithContacts
-import com.delhomme.jobbingtrack.features.interview.domain.model.Interview
+import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewWithRelations
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
+import javax.inject.Singleton
 
-
+@Singleton
 class InterviewRepository @Inject constructor(
-    private val dao: InterviewDao
+    private val interviewDao: InterviewDao
 ) {
-    fun allForUser(userId: String): Flow<List<InterviewWithContacts>> = dao.getAllActiveForUser(userId)
-    fun withContactsForUser(userId: String): Flow<List<InterviewWithContacts>> = dao.getAllWithContactsForUser(userId)
-    fun archivedForUser(userId: String): Flow<List<InterviewEntity>> = dao.getArchivedForUser(userId)
-    fun deletedForUser(userId: String): Flow<List<InterviewEntity>> = dao.getDeletedForUser(userId)
-    fun byIdWithContacts(id: String, userId: String): Flow<InterviewWithContacts?> = dao.getByIdActiveWithContacts(id, userId)
-    fun getAllActiveWithContacts(userId: String): Flow<List<InterviewWithContacts>> = dao.getAllWithContactsForUser(userId)
-    fun activeForUser(
-        userId: String,
-        stylesFlow: Flow<List<InterviewStyleEntity>>,
-        typesFlow: Flow<List<InterviewTypeEntity>>
-    ): Flow<List<Interview>> =
-        combine(
-            withContactsForUser(userId),
-            stylesFlow,
-            typesFlow
-        ) { interviewsWithContacts, styleEntities, typeEntities ->
-            val styles = styleEntities.map { mapToInterviewStyle(it) }
-            val types = typeEntities.map { mapToInterviewType(it) }
+    fun getAll(): Flow<List<InterviewEntity>> = interviewDao.getAll()
 
-            interviewsWithContacts.map { iwc ->
-                val style = styles.find { it.id == iwc.interview.styleId }
-                val type = types.find { it.id == iwc.interview.typeId }
-                mapToInterview(iwc, style, type)
-            }
-        }
+    suspend fun getWithRelations(id: String): InterviewWithRelations = interviewDao.getWithRelations(id)
 
-    fun getByDateRange(userId: String, from: Long, to: Long): Flow<List<InterviewEntity>> = dao.getByDateRangeForUser(userId, from, to)
+    fun getAllActiveForUser(userId: String): Flow<List<InterviewWithContacts>> = interviewDao.getAllActiveForUser(userId)
 
-    suspend fun save(entretien: InterviewEntity, contactIds: List<String>) {
-        dao.upsert(entretien)
-        dao.clearContactsFor(entretien.id)
-        contactIds.forEach { dao.insertCrossRef(InterviewContactCrossRef(entretien.id, it)) }
-    }
-    suspend fun update(entretien: InterviewEntity) = dao.update(entretien)
-    suspend fun archive(ids: List<String>, userId: String) = dao.archive(ids, userId)
-    suspend fun softDelete(ids: List<String>, userId: String) = dao.softDelete(ids, userId)
-    suspend fun restore(ids: List<String>, userId: String) = dao.restore(ids, userId)
-    suspend fun deleteForever(ids: List<String>, userId: String) = dao.deleteForever(ids, userId)
-    suspend fun deleteAll(userId: String) = dao.deleteAllForUser(userId)
+    fun getActiveWithContacts(userId: String): LiveData<List<InterviewWithContacts>> = interviewDao.getActiveWithContacts(userId)
+
+    fun getArchivedForUser(userId: String): Flow<List<InterviewEntity>> = interviewDao.getArchivedForUser(userId)
+
+    fun getDeletedForUser(userId: String): Flow<List<InterviewEntity>> = interviewDao.getDeletedForUser(userId)
+
+    fun getByIdForUser(id: String, userId: String): Flow<InterviewEntity?> = interviewDao.getByIdForUser(id, userId)
+
+    fun getAllWithContactsForUser(userId: String): Flow<List<InterviewWithContacts>> = interviewDao.getAllWithContactsForUser(userId)
+
+    fun getByIdActiveWithContacts(id: String, userId: String): Flow<InterviewWithContacts?> = interviewDao.getByIdActiveWithContacts(id, userId)
+
+    suspend fun save(interview: InterviewEntity): Long = interviewDao.insert(interview)
+
+    suspend fun update(interview: InterviewEntity) = interviewDao.update(interview)
+
+    suspend fun archive(ids: List<String>, userId: String) = interviewDao.archive(ids, userId)
+
+    suspend fun softDelete(ids: List<String>, userId: String) = interviewDao.softDelete(ids, userId)
+
+    suspend fun restore(ids: List<String>, userId: String) = interviewDao.restore(ids, userId)
+
+    suspend fun deleteForever(ids: List<String>, userId: String) = interviewDao.deleteForever(ids, userId)
+
+    suspend fun deleteAll(userId: String) = interviewDao.deleteAllForUser(userId)
+
+    fun getInterviewWithContacts(id: String, userId: String): Flow<InterviewWithContacts?> = interviewDao.getInterviewWithContacts(id, userId)
+
+    fun getAllActiveWithContacts(userId: String): Flow<List<InterviewWithContacts>> = interviewDao.getAllActiveWithContacts(userId)
+
+    suspend fun getUpdatedSince(timestamp: Long, userId: String): List<InterviewEntity> = interviewDao.getUpdatedSince(timestamp, userId)
+
+    suspend fun updateSyncTimestamp(ids: List<String>, syncTime: Long) = interviewDao.updateSyncTimestamp(ids, syncTime)
 }

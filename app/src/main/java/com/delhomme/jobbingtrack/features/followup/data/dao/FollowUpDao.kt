@@ -26,21 +26,21 @@ interface FollowUpDao : DateRangeProvider<FollowUpEntity>, BaseDao<FollowUpEntit
 
     @Query("""
       SELECT * FROM followups
-       WHERE userId = :userId AND is_deleted = 0 AND is_archived = 0
+       WHERE userId = :userId AND isDeleted = 0 AND isArchived = 0
        ORDER BY date DESC
     """)
     fun getAllActiveForUser(userId: String): Flow<List<FollowUpEntity>>
 
     @Query("""
       SELECT * FROM followups
-       WHERE userId = :userId AND is_archived = 1 AND is_deleted = 0
+       WHERE userId = :userId AND isArchived = 1 AND isDeleted = 0
        ORDER BY date DESC
     """)
     fun getArchivedForUser(userId: String): Flow<List<FollowUpEntity>>
 
     @Query("""
       SELECT * FROM followups
-       WHERE userId = :userId AND is_deleted = 1
+       WHERE userId = :userId AND isDeleted = 1
        ORDER BY date DESC
     """)
     fun getDeletedForUser(userId: String): Flow<List<FollowUpEntity>>
@@ -48,13 +48,13 @@ interface FollowUpDao : DateRangeProvider<FollowUpEntity>, BaseDao<FollowUpEntit
     @Query("SELECT * FROM followups WHERE id = :id AND userId = :userId")
     fun getByIdForUser(id: String, userId: String): Flow<FollowUpEntity?>
 
-    @Query("UPDATE followups SET is_archived = 1, archived_at = :timestamp WHERE id IN(:ids) AND userId = :userId")
+    @Query("UPDATE followups SET isArchived = 1, archivedAt = :timestamp WHERE id IN(:ids) AND userId = :userId")
     suspend fun archive(ids: List<String>, userId: String, timestamp: Long = System.currentTimeMillis())
 
-    @Query("UPDATE followups SET is_deleted = 1, deleted_at = :timestamp WHERE id IN(:ids) AND userId = :userId")
+    @Query("UPDATE followups SET isDeleted = 1, deletedAt = :timestamp WHERE id IN(:ids) AND userId = :userId")
     suspend fun softDelete(ids: List<String>, userId: String, timestamp: Long = System.currentTimeMillis())
 
-    @Query("UPDATE followups SET is_deleted = 0, deleted_at = NULL WHERE id IN(:ids) AND userId = :userId")
+    @Query("UPDATE followups SET isDeleted = 0, deletedAt = NULL WHERE id IN(:ids) AND userId = :userId")
     suspend fun restore(ids: List<String>, userId: String)
 
     @Query("DELETE FROM followups WHERE id IN(:ids) AND userId = :userId")
@@ -79,7 +79,7 @@ interface FollowUpDao : DateRangeProvider<FollowUpEntity>, BaseDao<FollowUpEntit
     @Transaction
     @Query("""
         SELECT * FROM followups 
-        WHERE userId = :userId AND is_deleted = 0 AND is_archived = 0
+        WHERE userId = :userId AND isDeleted = 0 AND isArchived = 0
         ORDER BY date DESC
     """)
     fun getAllActiveWithContacts(userId: String): Flow<List<FollowUpWithContacts>>
@@ -96,23 +96,23 @@ interface FollowUpDao : DateRangeProvider<FollowUpEntity>, BaseDao<FollowUpEntit
     @Query("SELECT * FROM follow_up_types WHERE isDeleted = 0")
     fun getAllFollowUpTypes(): Flow<List<FollowUpTypeEntity>>
 
-    @Query("SELECT * FROM follow_up_status WHERE is_deleted = 0")
+    @Query("SELECT * FROM follow_up_status WHERE isDeleted = 0")
     fun getAllFollowUpStatuses(): Flow<List<FollowUpStatusEntity>>
 
     @Query("""
         SELECT * FROM followups 
         WHERE userId = :userId 
-        AND updated_at > :timestamp 
-        AND (last_sync_at IS NULL OR updated_at > last_sync_at)
+        AND updatedAt > :timestamp 
+        AND (lastSyncAt IS NULL OR updatedAt > lastSyncAt)
     """)
     override suspend fun getUpdatedSince(timestamp: Long, userId: String): List<FollowUpEntity>
 
-    @Query("UPDATE followups SET last_sync_at = :syncTime WHERE id IN (:ids)")
+    @Query("UPDATE followups SET lastSyncAt = :syncTime WHERE id IN (:ids)")
     override suspend fun updateSyncTimestamp(ids: List<String>, syncTime: Long)
 
     @Query("SELECT * FROM followups WHERE id = :id AND userId = :userId LIMIT 1")
     override suspend fun getById(id: String, userId: String): FollowUpEntity?
 
-    @Query("UPDATE followups SET is_deleted = 1, deleted_at = :timestamp WHERE id = :id AND userId = :userId")
-    suspend fun softDeleteById(id: String, userId: String, timestamp: Long): Int
+    @Query("UPDATE followups SET isDeleted = 1, deletedAt = :timestamp WHERE id = :id AND userId = :userId")
+    override suspend fun softDeleteById(id: String, userId: String, timestamp: Long): Int
 }

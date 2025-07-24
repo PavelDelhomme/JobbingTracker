@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.features.call.data.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -11,6 +12,6 @@ import java.util.UUID
 @TypeConverters(Converters::class)
 data class CallTypeEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
-    override val userId: String,
+    @ColumnInfo(name = "userId") override var userId: String,
     val label: String
 ) : BaseEntity()

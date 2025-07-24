@@ -20,7 +20,7 @@ interface DateRangeProvider<T> {
         val query = SimpleSQLiteQuery(
             """
             SELECT * FROM $tableName 
-            WHERE user_id = '$userId' 
+            WHERE userId = '$userId' 
             AND $dateColumn BETWEEN $from AND $to 
             ORDER BY $dateColumn DESC
             """

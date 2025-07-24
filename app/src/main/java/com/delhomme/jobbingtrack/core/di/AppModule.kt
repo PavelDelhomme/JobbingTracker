@@ -1,5 +1,6 @@
 package com.delhomme.jobbingtrack.core.di
 
+import FollowUpTypeRepository
 import android.content.Context
 import androidx.room.Room
 import com.delhomme.jobbingtrack.core.database.AppDatabase

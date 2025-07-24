@@ -19,8 +19,8 @@ data class ApplicationWithContacts(
         entityColumn = "id",
         associateBy = Junction(
             ApplicationContactCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "contactId"
+            parentColumn = "application_id",
+            entityColumn = "contact_id"
         )
     )
     val contacts: List<ContactEntity>

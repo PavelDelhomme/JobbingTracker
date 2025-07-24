@@ -13,13 +13,13 @@ import com.delhomme.jobbingtrack.features.interview.data.entities.InterviewEntit
 
 data class FollowUpWithRelations(
     @Embedded override val mainEntity: FollowUpEntity,
-    @Relation(parentColumn = "companyId", entityColumn = "id")
+    @Relation(parentColumn = "company_id", entityColumn = "id")
     override val companies: List<CompanyEntity> = emptyList(),
 
     @Relation(parentColumn = "contactIds", entityColumn = "id")
     override val contacts: List<ContactEntity> = emptyList(),
 
-    @Relation(parentColumn = "applicationId", entityColumn = "id")
+    @Relation(parentColumn = "application_id", entityColumn = "id")
     override val applications: List<ApplicationEntity> = emptyList(),
 
     @Relation(parentColumn = "callId", entityColumn = "id")

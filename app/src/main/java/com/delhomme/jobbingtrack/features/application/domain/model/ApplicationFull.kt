@@ -9,8 +9,8 @@ data class ApplicationFull(
         entityColumn = "id",
         associateBy = Junction(
             ApplicationContactCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "contactId"
+            parentColumn = "application_id",
+            entityColumn = "contact_id"
         )
     )
     val contacts: List<ContactEntity>,
@@ -19,7 +19,7 @@ data class ApplicationFull(
         entityColumn = "id",
         associateBy = Junction(
             ApplicationCallCrossRef::class,
-            parentColumn = "applicationId",
+            parentColumn = "application_id",
             entityColumn = "callId"
         )
     )
@@ -29,8 +29,8 @@ data class ApplicationFull(
         entityColumn = "id",
         associateBy = Junction(
             ApplicationFollowUpCrossRef::class,
-            parentColumn = "applicationId",
-            entityColumn = "followUpId"
+            parentColumn = "application_id",
+            entityColumn = "follow_up_id"
         )
     )
     val followUps: List<FollowUpEntity>,
@@ -39,7 +39,7 @@ data class ApplicationFull(
         entityColumn = "id",
         associateBy = Junction(
             ApplicationInterviewCrossRef::class,
-            parentColumn = "applicationId",
+            parentColumn = "application_id",
             entityColumn = "interviewId"
         )
     )

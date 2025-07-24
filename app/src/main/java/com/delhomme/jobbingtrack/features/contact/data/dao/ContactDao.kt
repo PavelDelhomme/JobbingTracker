@@ -88,5 +88,5 @@ interface ContactDao : BaseDao<ContactEntity> {
     override suspend fun getById(id: String, userId: String): ContactEntity?
 
     @Query("UPDATE contacts SET is_deleted = 1, deleted_at = :timestamp WHERE id = :id AND userId = :userId")
-    suspend fun softDeleteById(id: String, userId: String, timestamp: Long): Int
+    override suspend fun softDeleteById(id: String, userId: String, timestamp: Long): Int
 }

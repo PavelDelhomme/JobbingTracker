@@ -73,12 +73,12 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         }
         composable(
-            route = "${Routes.APPLICATION_EDIT}/{applicationId}",
-            arguments = listOf(navArgument("applicationId") {
+            route = "${Routes.APPLICATION_EDIT}/{application_id}",
+            arguments = listOf(navArgument("application_id") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("applicationId")!!
+            val id = backStack.arguments!!.getString("application_id")!!
             AddOrEditApplicationScreen(
                 userId = userId.toString(),
                 applicationId = id,
@@ -87,12 +87,12 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         }
         composable(
-            "${Routes.APPLICATION_DETAIL}/{applicationId}",
-            arguments = listOf(navArgument("applicationId") {
+            "${Routes.APPLICATION_DETAIL}/{application_id}",
+            arguments = listOf(navArgument("application_id") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("applicationId")!!
+            val id = backStack.arguments!!.getString("application_id")!!
             ApplicationDetailsScreen(userId = userId.toString(), applicationId = id, navController = navController)
         }
 
@@ -115,10 +115,10 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         }
         composable(
-            route = "${Routes.CONTACT_EDIT}/{contactId}",
-            arguments = listOf(navArgument("contactId"){ type=NavType.StringType })
+            route = "${Routes.CONTACT_EDIT}/{contact_id}",
+            arguments = listOf(navArgument("contact_id"){ type=NavType.StringType })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("contactId")!!
+            val id = backStack.arguments!!.getString("contact_id")!!
             AddOrEditContactScreen(
                 contactId = id,
                 userId = userId.toString(),
@@ -128,12 +128,12 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         }
         composable(
-            "${Routes.CONTACT_DETAIL}/{contactId}",
-            arguments = listOf(navArgument("contactId") {
+            "${Routes.CONTACT_DETAIL}/{contact_id}",
+            arguments = listOf(navArgument("contact_id") {
                 type = NavType.StringType
             })
         ) { bs ->
-            val id = bs.arguments!!.getString("contactId")!!
+            val id = bs.arguments!!.getString("contact_id")!!
             ContactDetailScreen(
                 contactId = id,
                 userId = userId.toString(),
@@ -150,12 +150,12 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         }
         composable(
-            "${Routes.COMPANY_EDIT}/{companyId}",
-            arguments = listOf(navArgument("companyId") {
+            "${Routes.COMPANY_EDIT}/{company_id}",
+            arguments = listOf(navArgument("company_id") {
                 type = NavType.StringType
             })
         ) { bs ->
-            val id = bs.arguments!!.getString("companyId")!!
+            val id = bs.arguments!!.getString("company_id")!!
             AddOrEditCompanyScreen(
                 companyId = id,
                 userId = userId,
@@ -163,12 +163,12 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         }
         composable(
-            "${Routes.COMPANY_DETAIL}/{companyId}",
-            arguments = listOf(navArgument("companyId") {
+            "${Routes.COMPANY_DETAIL}/{company_id}",
+            arguments = listOf(navArgument("company_id") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("companyId")!!
+            val id = backStack.arguments!!.getString("company_id")!!
             CompanyDetailScreen(
                 companyId = id,
                 userId = userId.toString(),
@@ -196,17 +196,17 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         }
         composable(
-            route = "${Routes.FOLLOWUP_EDIT}/{followUpId}"
+            route = "${Routes.FOLLOWUP_EDIT}/{follow_up_id}"
                     + "?linkedApplicationId={linkedApplicationId}"
                     + "&linkedCompanyId={linkedCompanyId}",
             arguments = listOf(
-                navArgument("followUpId"){ type=NavType.StringType },
+                navArgument("follow_up_id"){ type=NavType.StringType },
                 navArgument("linkedApplicationId"){ type=NavType.StringType; nullable=true; defaultValue=null },
                 navArgument("linkedCompanyId"){ type=NavType.StringType; nullable=true; defaultValue=null }
             )
         ) { bs ->
             AddOrEditFollowUpScreen(
-                followUpId           = bs.arguments!!.getString("followUpId"),
+                followUpId           = bs.arguments!!.getString("follow_up_id"),
                 userId = userId.toString(),
                 linkedApplicationId = bs.arguments?.getString("linkedApplicationId"),
                 linkedCompanyId     = bs.arguments?.getString("linkedCompanyId"),
@@ -214,12 +214,12 @@ fun NavGraph(navController: NavHostController, isLoggedIn: Boolean, userId: Stri
             )
         }
         composable(
-            "${Routes.FOLLOWUP_DETAIL}/{followUpId}",
-            arguments = listOf(navArgument("followUpId") {
+            "${Routes.FOLLOWUP_DETAIL}/{follow_up_id}",
+            arguments = listOf(navArgument("follow_up_id") {
                 type = NavType.StringType
             })
         ) { backStack ->
-            val id = backStack.arguments!!.getString("followUpId")!!
+            val id = backStack.arguments!!.getString("follow_up_id")!!
             FollowUpDetailScreen(followUpId = id, userId = userId.toString(), navController = navController)
         }
 

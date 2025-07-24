@@ -4,13 +4,30 @@ import com.delhomme.jobbingtrack.features.company.data.dao.CompanyTypeDao
 import com.delhomme.jobbingtrack.features.company.data.entities.CompanyTypeEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
-
+@Singleton
 class CompanyTypeRepository @Inject constructor(
-    private val dao: CompanyTypeDao
+    private val companyTypeDao: CompanyTypeDao
 ) {
-    val all: Flow<List<CompanyTypeEntity>> = dao.getAll()
-    fun byId(id: String): Flow<CompanyTypeEntity?> = dao.getById(id)
-    suspend fun save(entity: CompanyTypeEntity) = dao.save(entity)
-    suspend fun delete(entity: CompanyTypeEntity) = dao.delete(entity)
+    fun getAll(): Flow<List<CompanyTypeEntity>> = companyTypeDao.getAll()
+
+    fun getById(id: String): Flow<CompanyTypeEntity?> = companyTypeDao.getById(id)
+
+    fun getAllForUser(userId: String): Flow<List<CompanyTypeEntity>> = companyTypeDao.getAllForUser(userId)
+
+    suspend fun insert(companyType: CompanyTypeEntity): Long = companyTypeDao.insert(companyType)
+
+    suspend fun update(companyType: CompanyTypeEntity) = companyTypeDao.update(companyType)
+
+    suspend fun delete(companyType: CompanyTypeEntity) = companyTypeDao.delete(companyType)
+
+    suspend fun softDelete(id: String, userId: String) =
+        companyTypeDao.softDeleteById(id, userId, System.currentTimeMillis())
+
+    suspend fun getUpdatedSince(timestamp: Long, userId: String): List<CompanyTypeEntity> =
+        companyTypeDao.getUpdatedSince(timestamp, userId)
+
+    suspend fun updateSyncTimestamp(ids: List<String>, syncTime: Long) =
+        companyTypeDao.updateSyncTimestamp(ids, syncTime)
 }

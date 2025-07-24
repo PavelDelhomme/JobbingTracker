@@ -18,49 +18,59 @@ interface EventDao : DateRangeProvider<EventEntity> {
     override val dateColumn: String get() = "startDate"
 
     /** 1) Tous les événements pour un user (actifs + archivés + supprimés) */
-    @Query("""
+    @Query(
+        """
     SELECT * FROM events
      WHERE userId = :userId
     ORDER BY startDate DESC
-  """)
+  """
+    )
     fun getAllForUser(userId: String): Flow<List<EventEntity>>
 
     /** 2) Actifs (ni supprimés ni archivés) */
-    @Query("""
+    @Query(
+        """
     SELECT * FROM events
      WHERE userId = :userId
        AND isDeleted = 0
        AND isArchived = 0
     ORDER BY startDate DESC
-  """)
+  """
+    )
     fun getAllActiveForUser(userId: String): Flow<List<EventEntity>>
 
 
     /** 3) Archivés */
-    @Query("""
+    @Query(
+        """
     SELECT * FROM events
      WHERE userId = :userId
        AND isArchived = 1
        AND isDeleted = 0
     ORDER BY startDate DESC
-  """)
+  """
+    )
     fun getArchivedForUser(userId: String): Flow<List<EventEntity>>
 
     /** 4) Supprimés (corbeille) */
-    @Query("""
+    @Query(
+        """
     SELECT * FROM events
      WHERE userId = :userId
        AND isDeleted = 1
     ORDER BY startDate DESC
-  """)
+  """
+    )
     fun getDeletedForUser(userId: String): Flow<List<EventEntity>>
 
     /** 5) Détail par ID + userId */
-    @Query("""
+    @Query(
+        """
     SELECT * FROM events
      WHERE id = :id
        AND userId = :userId
-  """)
+  """
+    )
     fun getByIdForUser(id: String, userId: String): Flow<EventEntity?>
 
     /** Upsert (insert ou remplace) */
@@ -72,45 +82,55 @@ interface EventDao : DateRangeProvider<EventEntity> {
     suspend fun update(event: EventEntity)
 
     /** Batch : archive “soft” */
-    @Query("""
+    @Query(
+        """
     UPDATE events
      SET isArchived = 1
      WHERE id   IN (:ids)
        AND userId = :userId
-  """)
+  """
+    )
     suspend fun archive(ids: List<String>, userId: String)
 
     /** Batch : suppression douce */
-    @Query("""
+    @Query(
+        """
     UPDATE events
      SET isDeleted = 1
      WHERE id   IN (:ids)
        AND userId = :userId
-  """)
+  """
+    )
     suspend fun softDelete(ids: List<String>, userId: String)
 
     /** Batch : restore */
-    @Query("""
+    @Query(
+        """
     UPDATE events
      SET isDeleted = 0
      WHERE id   IN (:ids)
        AND userId = :userId
-  """)
+  """
+    )
     suspend fun restore(ids: List<String>, userId: String)
 
     /** Batch : delete forever */
-    @Query("""
+    @Query(
+        """
     DELETE FROM events
      WHERE id   IN (:ids)
        AND userId = :userId
-  """)
+  """
+    )
     suspend fun deleteForever(ids: List<String>, userId: String)
 
     /** Tout supprimer pour cet user */
-    @Query("""
+    @Query(
+        """
     DELETE FROM events
      WHERE userId = :userId
-  """)
+  """
+    )
     suspend fun deleteAllForUser(userId: String)
 
     @RawQuery(observedEntities = [EventEntity::class])

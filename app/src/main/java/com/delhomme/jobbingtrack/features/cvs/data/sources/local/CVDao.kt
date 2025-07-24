@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CVDao : BaseDao<CVEntity> {
-    @Query("SELECT * FROM cvs WHERE isDeleted = 0")
+    @Query("SELECT * FROM cvs WHERE is_deleted = 0")
     fun getAll(): Flow<List<CVEntity>>
 
     @Query("SELECT * FROM cvs WHERE id = :id LIMIT 1")

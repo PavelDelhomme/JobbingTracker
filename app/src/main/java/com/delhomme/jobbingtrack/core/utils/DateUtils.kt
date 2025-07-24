@@ -38,7 +38,7 @@ fun parseDateToMillis(input: String?): Long {
 
 fun ApplicationEntity.toInstant()   = Instant.ofEpochMilli(applicationDate)
 fun FollowUpEntity.toInstant()       = Instant.ofEpochMilli(date)
-fun CallEntity.toInstant()         = Instant.ofEpochMilli(dateTime)
+fun CallEntity.toInstant()         = Instant.ofEpochMilli(timestamp)
 fun InterviewEntity.toInstant()     = Instant.ofEpochMilli(dateTime)
 fun EventEntity.toInstant()         = startDate?.let { Instant.ofEpochMilli(it) }
 fun EventEntity.toEndDateInstant()  = endDate?.let { Instant.ofEpochMilli(it) }

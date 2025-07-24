@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LanguageDao {
-    @Query("SELECT * FROM languages WHERE isDeleted = 0")
+    @Query("SELECT * FROM languages WHERE is_deleted = 0")
     fun getAll(): Flow<List<LanguageEntity>>
 
     @Query("SELECT * FROM languages WHERE id = :id LIMIT 1")

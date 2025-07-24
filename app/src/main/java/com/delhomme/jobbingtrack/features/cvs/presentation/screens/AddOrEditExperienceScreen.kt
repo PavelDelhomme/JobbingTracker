@@ -109,7 +109,8 @@ fun AddOrEditExperienceScreen(
                         endDate = endDate,
                         base = existing?.base?.copy(
                             updatedAt = now
-                        ) ?: common
+                        ) ?: common,
+                        cvId = existing?.cvId ?: ""
                     )
 
                     if (experienceId == null) {

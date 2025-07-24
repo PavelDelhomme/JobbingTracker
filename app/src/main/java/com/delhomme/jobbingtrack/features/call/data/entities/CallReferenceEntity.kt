@@ -7,16 +7,14 @@ import com.delhomme.jobbingtrack.features.call.data.dao.CallWithContactsCrossRef
 import com.delhomme.jobbingtrack.features.company.data.entities.CompanyEntity
 import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 
-
 data class CallWithCompany(
     @Embedded val call: CallEntity,
     @Relation(
-        parentColumn = "companyId",
+        parentColumn = "company_id",
         entityColumn = "id"
     )
     val company: CompanyEntity?
 )
-
 
 data class CallWithContacts(
     @Embedded val call: CallEntity,
@@ -25,8 +23,8 @@ data class CallWithContacts(
         entityColumn = "id",
         associateBy = Junction(
             CallWithContactsCrossRef::class,
-            parentColumn = "callId",
-            entityColumn = "contactId"
+            parentColumn = "call_id",
+            entityColumn = "contact_id"
         )
     )
     val contacts: List<ContactEntity>

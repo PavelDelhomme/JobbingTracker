@@ -60,7 +60,7 @@ fun InterviewDetailScreen(
     val allStyles by interviewViewModel.allStyles.observeAsState(emptyList())
 
     // Type et style
-    //val typeLabel = allTypes.find { it.id == interview.typeId }?.label ?: "Non spécifié"
+    //val typeLabel = allTypes.find { it.id == interview.type_id }?.label ?: "Non spécifié"
     val typeLabel = getLabelById(interview.typeId, allTypes) { it.label }
     //val styleLabel = allStyles.find { it.id == interview.styleId }?.label ?: "Non spécifié"
     val styleLabel = getLabelById(interview.styleId, allStyles) { it.label }

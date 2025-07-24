@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.delhomme.jobbingtrack.core.utils.toFormattedDate
 import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationStatusViewModel
 import com.delhomme.jobbingtrack.features.application.presentation.viewmodels.ApplicationViewModel
 import com.delhomme.jobbingtrack.features.call.presentation.viewmodel.CallViewModel
@@ -58,11 +59,11 @@ fun CallDetailsScreen(
     val contacts    by contactVm.allForUser(userId = userId).observeAsState(emptyList())
     val companies by companyVm.allForUser(userId = userId).observeAsState(emptyList())
 
-    val application      = applications.find       { it.id == call.applicationId }
+    val application      = applications.find       { it.id == call.application_id }
     val positionTypes = positionTypeVm.all.observeAsState(emptyList()).value
     val applicationStatuses = applicationStatusVm.all.observeAsState(emptyList()).value
-    val contact    = contacts.find    { it.id == call.contactId }
-    val company = companies.find { it.id == call.companyId }
+    val contact    = contacts.find    { it.id == call.contact_id }
+    val company = companies.find { it.id == call.company_id }
 
     val statusLabel = applicationStatuses.find { it.id == application?.statusRefId }?.label ?: "—"
     val positionLabel = positionTypes.find { it.id == contact?.positionId }?.label ?: "—"
@@ -112,7 +113,7 @@ fun CallDetailsScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text("Sujet : ${call.subject}")
-            Text("Date  : ${call.dateTime.toFormattedDate()}")
+            Text("Date  : ${call.timestamp.toFormattedDate()}")
             Text("Entreprise : ${company?.name ?: "—"}")
             call.notes?.let { Text("Notes  : $it") }
 

@@ -14,7 +14,7 @@ data class ApplicationWithCalls(
         entityColumn = "id",
         associateBy = Junction(
             ApplicationCallCrossRef::class,
-            parentColumn = "applicationId",
+            parentColumn = "application_id",
             entityColumn = "callId"
         )
     )

@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
 import com.delhomme.jobbingtrack.core.model.BaseEntity
-import java.util.Date
 
 interface BaseDao<T : BaseEntity> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -36,10 +35,5 @@ interface BaseDao<T : BaseEntity> {
     suspend fun updateSyncTimestamp(ids: List<String>, syncTime: Long)
 
     // Marquer une entité comme supprimée (soft delete)
-    suspend fun softDeleteById(id: String, userId: String)
-
-    // Méthode pour calculer le hash d'une entité
-    fun calculateEntityHash(entity: T): String {
-        return entity.calculateHash()
-    }
+    suspend fun softDeleteById(id: String, userId: String, timestamp: Long): Int
 }
