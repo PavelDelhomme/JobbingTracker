@@ -14,71 +14,38 @@ import com.delhomme.jobbingtrack.core.utils.Converters
 import com.delhomme.jobbingtrack.features.contact.data.entities.ContactEntity
 import java.util.UUID
 
-@Entity(tableName = "followups")
+@Entity(tableName = "follow_ups")
 @TypeConverters(Converters::class)
 data class FollowUpEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
-    override val userId: String,
+    @ColumnInfo(name = "user_id") override val userId: String,
 
+    val title: String,
+    val description: String? = null,
+    @ColumnInfo(name = "application_id") val applicationId: String? = null,
+    @ColumnInfo(name = "company_id") val companyId: String,
+    @ColumnInfo(name = "contact_id") val contactId: String? = null,
     val date: Long,
-    val notes: String?,
-    val applicationId: String,
-    val companyId: String,
-    val platformId: String? = null,
-    val typeId: String? = null,
-    val responseId: String? = null,
-    val statusId: String? = null
-) : BaseEntity() {
-    // Constructeur secondaire pour la migration depuis l'ancien format
-    constructor(
-        id: String = UUID.randomUUID().toString(),
-        date: Long,
-        notes: String?,
-        applicationId: String,
-        companyId: String,
-        platformId: String?,
-        typeId: String?,
-        responseId: String?,
-        statusId: String?,
-        base: CommonEntityFields
-    ) : this(
-        id = id,
-        userId = base.userId,
-        date = date,
-        notes = notes,
-        applicationId = applicationId,
-        companyId = companyId,
-        platformId = platformId,
-        typeId = typeId,
-        responseId = responseId,
-        statusId = statusId
-    ) {
-        // Copier les métadonnées depuis CommonEntityFields
-        this.createdAt = base.created_at
-        this.updatedAt = base.updated_at
-        this.isDeleted = base.is_deleted
-        this.isArchived = base.isArchived
-        this.deletedAt = base.deleted_at
-        this.archivedAt = base.archivedAt
-        this.syncHash = base.syncHash
-        this.entityHash = base.syncHash
-    }
-}
+    @ColumnInfo(name = "reminder_date") val reminderDate: Long? = null,
+    @ColumnInfo(name = "type_id") val typeId: String? = null,
+    @ColumnInfo(name = "platform_id") val platformId: String? = null,
+    @ColumnInfo(name = "status_id") val statusId: String? = null
+) : BaseEntity()
 
 // Les entités liées restent les mêmes, mais héritent de BaseEntity
 @Entity(tableName = "follow_up_platforms")
 @TypeConverters(Converters::class)
-data class FollowUpPlateformEntity(
+data class FollowUpPlatformEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
-    override val userId: String,
+    @ColumnInfo(name = "user_id") override val userId: String,
     val label: String
 ) : BaseEntity()
 
-@Entity(tableName = "follow_up_status")
+@Entity(tableName = "follow_up_statuses")
 @TypeConverters(Converters::class)
 data class FollowUpStatusEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
-    override val userId: String,
+    @ColumnInfo(name = "user_id") override val userId: String,
     val label: String
 ) : BaseEntity()
 
@@ -86,7 +53,7 @@ data class FollowUpStatusEntity(
 @TypeConverters(Converters::class)
 data class FollowUpTypeEntity(
     @PrimaryKey override val id: String = UUID.randomUUID().toString(),
-    override val userId: String,
+    @ColumnInfo(name = "user_id") override val userId: String,
     val label: String
 ) : BaseEntity()
 

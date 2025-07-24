@@ -14,9 +14,10 @@ class FollowUpTypeRepository @Inject constructor(
     fun byId(id: String): Flow<FollowUpTypeEntity?> = dao.getById(id)
     fun allForUser(userId: String): Flow<List<FollowUpTypeEntity>> = dao.getAllForUser(userId)
 
-    suspend fun save(followUpType: FollowUpTypeEntity) = dao.insert(followUpType)
-    suspend fun update(followUpType: FollowUpTypeEntity) = dao.update(followUpType)
-    suspend fun delete(id: String, userId: String) = dao.softDeleteById(id, userId)
+    suspend fun save(entity: FollowUpTypeEntity): Long = dao.insert(entity)
+    suspend fun update(entity: FollowUpTypeEntity) = dao.update(entity)
+    suspend fun delete(id: String, userId: String) =
+        dao.softDeleteById(id, userId, System.currentTimeMillis())
 
     // Méthodes pour la synchronisation
     suspend fun getUpdatedSince(timestamp: Long, userId: String): List<FollowUpTypeEntity> =
