@@ -14,9 +14,10 @@ class CallTypeRepository @Inject constructor(
     fun byId(id: String): Flow<CallTypeEntity?> = dao.getById(id)
     fun allForUser(userId: String): Flow<List<CallTypeEntity>> = dao.getAllForUser(userId)
 
-    suspend fun save(callType: CallTypeEntity) = dao.insert(callType)
+    suspend fun save(callType: CallTypeEntity): Long = dao.insert(callType)
     suspend fun update(callType: CallTypeEntity) = dao.update(callType)
-    suspend fun delete(id: String, userId: String) = dao.softDeleteById(id, userId)
+    suspend fun delete(id: String, userId: String) =
+        dao.softDeleteById(id, userId, System.currentTimeMillis())
 
     // Méthodes pour la synchronisation
     suspend fun getUpdatedSince(timestamp: Long, userId: String): List<CallTypeEntity> =

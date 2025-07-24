@@ -19,7 +19,7 @@ class CallRepository @Inject constructor(
     fun byIdWithContacts(id: String, userId: String): Flow<CallWithContacts?> = dao.getCallWithContacts(id, userId)
     fun allActiveWithContacts(userId: String): Flow<List<CallWithContacts>> = dao.getAllActiveWithContacts(userId)
 
-    suspend fun save(call: CallEntity) = dao.insert(call)
+    suspend fun save(call: CallEntity): Long = dao.insert(call)
     suspend fun update(call: CallEntity) = dao.update(call)
     suspend fun archive(ids: List<String>, userId: String) = dao.archive(ids, userId)
     suspend fun softDelete(ids: List<String>, userId: String) = dao.softDelete(ids, userId)
@@ -33,4 +33,13 @@ class CallRepository @Inject constructor(
 
     suspend fun updateSyncTimestamp(ids: List<String>, timestamp: Long) =
         dao.updateSyncTimestamp(ids, timestamp)
+
+    // Helper method for CallViewModel
+    fun getByDateRange(userId: String, fromTimestamp: Long, toTimestamp: Long): Flow<List<CallEntity>> {
+        val query = androidx.sqlite.db.SimpleSQLiteQuery(
+            "SELECT * FROM calls WHERE userId = ? AND timestamp BETWEEN ? AND ? AND isDeleted = 0 ORDER BY timestamp DESC",
+            arrayOf(userId, fromTimestamp, toTimestamp)
+        )
+        return dao.getByDateRange(query)
+    }
 }

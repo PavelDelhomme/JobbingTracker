@@ -10,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 
-
 @HiltViewModel
 class CallViewModel @Inject constructor(
     private val repo: CallRepository
@@ -42,5 +41,6 @@ class CallViewModel @Inject constructor(
     fun deleteForever(ids: List<String>, userId: String) = viewModelScope.launch { repo.deleteForever(ids, userId) }
     fun clearAll(userId: String) = viewModelScope.launch { repo.deleteAll(userId) }
 
-    fun callsBetween(userId: String, fromTimestamp: Long, toTimestamp: Long): LiveData<List<CallEntity>> = repo.getByDateRange(userId, fromTimestamp, toTimestamp).asLiveData()
+    fun callsBetween(userId: String, fromTimestamp: Long, toTimestamp: Long): LiveData<List<CallEntity>> =
+        repo.getByDateRange(userId, fromTimestamp, toTimestamp).asLiveData()
 }

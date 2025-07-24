@@ -9,7 +9,6 @@ import com.delhomme.jobbingtrack.features.call.data.entities.CallTypeEntity
 import com.delhomme.jobbingtrack.features.call.data.repositories.CallTypeRepository
 import kotlinx.coroutines.launch
 
-
 class CallTypeViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = CallTypeRepository(JobbingTrackApp.database.callTypeDao())
 
@@ -17,5 +16,8 @@ class CallTypeViewModel(app: Application) : AndroidViewModel(app) {
     fun byId(id: String) = repo.byId(id).asLiveData()
 
     fun save(entity: CallTypeEntity) = viewModelScope.launch { repo.save(entity) }
-    fun delete(entity: CallTypeEntity) = viewModelScope.launch { repo.delete(entity) }
+    fun update(entity: CallTypeEntity) = viewModelScope.launch { repo.update(entity) }
+    fun delete(entity: CallTypeEntity) = viewModelScope.launch {
+        repo.delete(entity.id, entity.userId)
+    }
 }
